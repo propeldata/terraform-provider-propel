@@ -12,6 +12,11 @@ import (
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
+			"host": &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("HASHICUPS_HOST", nil),
+			},
 			"username": &schema.Schema{
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -39,35 +44,38 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	username := d.Get("username").(string)
 	password := d.Get("password").(string)
 
+	var host *string
+
+	hVal, ok := d.GetOk("host")
+	if ok {
+		tempHost := hVal.(string)
+		host = &tempHost
+	}
+
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	// diags = append(diags, diag.Diagnostic{
-	// 	Severity: diag.Warning,
-	// 	Summary:  "Warning Message Summary",
-	// 	Detail:   "This is the detailed warning message from providerConfigure",
-	// })
-
 	if (username != "") && (password != "") {
-		c, err := hashicups.NewClient(nil, &username, &password)
+		c, err := hashicups.NewClient(host, &username, &password)
 		if err != nil {
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Error,
 				Summary:  "Unable to create HashiCups client",
-				Detail:   "Unable to auth user for authenticated HashiCups client",
+				Detail:   "Unable to authenticate user for authenticated HashiCups client",
 			})
+
 			return nil, diags
 		}
 
 		return c, diags
 	}
 
-	c, err := hashicups.NewClient(nil, nil, nil)
+	c, err := hashicups.NewClient(host, nil, nil)
 	if err != nil {
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
 			Summary:  "Unable to create HashiCups client",
-			Detail:   "Unable to auth user for authenticated HashiCups client",
+			Detail:   "Unable to create anonymous HashiCups client",
 		})
 		return nil, diags
 	}

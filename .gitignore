@@ -1,4 +1,8 @@
 .DS_Store
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 terraform-provider-hashicups
 bin
 
