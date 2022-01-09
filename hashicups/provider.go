@@ -33,8 +33,9 @@ func Provider() *schema.Provider {
 			"hashicups_order": resourceOrder(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"hashicups_coffees": dataSourceCoffees(),
-			"hashicups_order":   dataSourceOrder(),
+			"hashicups_coffees":     dataSourceCoffees(),
+			"hashicups_order":       dataSourceOrder(),
+			"hashicups_ingredients": dataSourceIngredients(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}
