@@ -40,3 +40,4 @@ terraform
 
 dist
 examples/.terraform.lock.hcl
+.idea
