@@ -24,14 +24,14 @@ operations:
 #- mutations/deleteApplicationByName.mutation.graphql
 #- mutations/deleteDataPool.mutation.graphql
 #- mutations/deleteDataPoolByName.mutation.graphql
-#- mutations/deleteDataSource.mutation.graphql
-#- mutations/deleteDataSourceByName.mutation.graphql
+- mutations/deleteDataSource.mutation.graphql
+- mutations/deleteDataSourceByName.mutation.graphql
 #- mutations/deleteMetric.mutation.graphql
 #- mutations/deleteMetricByName.mutation.graphql
 #- mutations/introspectTables.mutation.graphql
 #- mutations/modifyApplication.mutation.graphql
 #- mutations/modifyDataPool.mutation.graphql
-#- mutations/modifyDataSource.mutation.graphql
+- mutations/modifyDataSource.mutation.graphql
 #- mutations/modifyMetric.mutation.graphql
 #- mutations/reconnectDataPool.mutation.graphql
 #- mutations/reconnectDataSource.mutation.graphql
