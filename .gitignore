@@ -39,3 +39,4 @@ terraform.rc
 terraform
 
 dist
+examples/.terraform.lock.hcl
