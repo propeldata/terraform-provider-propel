@@ -1,0 +1,3 @@
+mutation DeleteDataSourceByName($uniqueName: String!) {
+  deleteDataSourceByName(uniqueName: $uniqueName)
+}

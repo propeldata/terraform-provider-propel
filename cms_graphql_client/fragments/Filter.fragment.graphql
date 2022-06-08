@@ -1,0 +1,5 @@
+fragment filter on Filter {
+    column
+    operator
+    value
+}

@@ -1,0 +1,12 @@
+query TimeSeries($id: ID!, $timeRange: TimeRangeInput!, $granularity: TimeSeriesGranularity!, $filters: [FilterInput!]) {
+    metric (id: $id) {
+        timeSeries (input: {
+            timeRange: $timeRange
+            granularity: $granularity
+            filters: $filters
+        }) {
+            labels
+            values
+        }
+    }
+}

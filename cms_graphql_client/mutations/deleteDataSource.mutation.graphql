@@ -1,0 +1,3 @@
+mutation DeleteDataSource($id: ID!) {
+  deleteDataSource(id: $id)
+}

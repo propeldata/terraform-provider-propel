@@ -1,0 +1,6 @@
+fragment application on Application {
+    id
+    ...common
+    clientId
+    secret
+}
