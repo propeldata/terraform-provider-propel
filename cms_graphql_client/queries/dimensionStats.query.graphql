@@ -1,0 +1,13 @@
+query DimensionStats($metricId: ID!) {
+    metric(id: $metricId) {
+        measure {
+            stats {
+                min
+                max
+                average
+                cardinality
+                uniqueValues
+            }
+        }
+    }
+}

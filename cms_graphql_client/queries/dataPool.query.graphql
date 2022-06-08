@@ -1,0 +1,5 @@
+query DataPool($id: ID!) {
+    dataPool(id: $id) {
+        ...dataPool
+    }
+}

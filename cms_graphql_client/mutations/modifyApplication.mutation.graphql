@@ -1,0 +1,15 @@
+mutation ModifyApplication($input: modifyApplicationInput!) {
+    modifyApplication(input: $input) {
+        __typename
+        ... on ApplicationResponse {
+            application {
+                ...application
+            }
+        }
+        ... on FailureResponse {
+            error {
+                ...gqlError
+            }
+        }
+    }
+}

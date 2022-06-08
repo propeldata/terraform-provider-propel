@@ -1,0 +1,5 @@
+query DataPoolByName($uniqueName: String!) {
+    dataPool: dataPoolByName(uniqueName: $uniqueName) {
+        ...dataPool
+    }
+}

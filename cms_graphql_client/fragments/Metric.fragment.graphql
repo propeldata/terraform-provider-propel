@@ -1,0 +1,43 @@
+fragment metric on Metric {
+    ...common
+    id
+    dataPool {
+        ...dataPool
+    }
+    dimensions {
+        ...dimension
+    }
+    timestamp {
+        ...dimension
+    }
+    measure {
+        ...dimension
+    }
+    settings {
+        ... on CountMetricSettings {
+            __typename
+            filters {
+                ...filter
+            }
+        }
+        ... on SumMetricSettings {
+            __typename
+            filters {
+                ...filter
+            }
+            measure {
+                ...dimension
+            }
+        }
+        ... on CountDistinctMetricSettings {
+            __typename
+            filters {
+                ...filter
+            }
+            dimension {
+                ...dimension
+            }
+        }
+    }
+    type
+}

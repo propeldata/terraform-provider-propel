@@ -1,0 +1,4 @@
+fragment gqlError on Error {
+    code
+    message
+}

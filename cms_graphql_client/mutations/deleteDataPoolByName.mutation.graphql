@@ -1,0 +1,3 @@
+mutation DeleteDataPoolByName($uniqueName: String!) {
+  deleteDataPoolByName(uniqueName: $uniqueName)
+}

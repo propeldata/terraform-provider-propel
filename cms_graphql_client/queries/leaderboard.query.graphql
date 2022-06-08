@@ -1,0 +1,19 @@
+query Leaderboard(
+    $id: ID!,
+    $timeRange: TimeRangeInput!,
+    $dimensions: [DimensionInput!]!,
+    $rowLimit: Int!,
+    $filters: [FilterInput!]
+) {
+    metric (id: $id) {
+        leaderboard (input: {
+            timeRange: $timeRange
+            dimensions: $dimensions
+            rowLimit: $rowLimit
+            filters: $filters
+        }) {
+            headers
+            rows
+        }
+    }
+}

@@ -1,0 +1,15 @@
+mutation CreateApplication($input: createApplicationInput!) {
+    createApplication(input: $input) {
+        __typename
+        ... on ApplicationResponse {
+            application {
+                ...application
+            }
+        }
+        ... on FailureResponse {
+            error {
+                ...gqlError
+            }
+        }
+    }
+}

@@ -1,0 +1,3 @@
+mutation DeleteMetricByName($uniqueName: String!) {
+    deleteMetricByName(uniqueName: $uniqueName)
+}
