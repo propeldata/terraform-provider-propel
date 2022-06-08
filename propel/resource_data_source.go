@@ -1,4 +1,4 @@
-package hashicups
+package propel
 
 import (
 	"context"
@@ -10,62 +10,29 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceOrder() *schema.Resource {
+func resourceDataSource() *schema.Resource {
 	return &schema.Resource{
-		CreateContext: resourceOrderCreate,
-		ReadContext:   resourceOrderRead,
-		UpdateContext: resourceOrderUpdate,
-		DeleteContext: resourceOrderDelete,
+		CreateContext: resourceDataSourceCreate,
+		ReadContext:   resourceDataSourceRead,
+		UpdateContext: resourceDataSourceUpdate,
+		DeleteContext: resourceDataSourceDelete,
 		Schema: map[string]*schema.Schema{
-			"last_updated": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
+			"id": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Computed:    true,
+				Description: "The DataSource ID",
 			},
-			"items": &schema.Schema{
-				Type:     schema.TypeList,
-				Required: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"coffee": &schema.Schema{
-							Type:     schema.TypeList,
-							MaxItems: 1,
-							Required: true,
-							Elem: &schema.Resource{
-								Schema: map[string]*schema.Schema{
-									"id": &schema.Schema{
-										Type:     schema.TypeInt,
-										Required: true,
-									},
-									"name": &schema.Schema{
-										Type:     schema.TypeString,
-										Computed: true,
-									},
-									"teaser": &schema.Schema{
-										Type:     schema.TypeString,
-										Computed: true,
-									},
-									"description": &schema.Schema{
-										Type:     schema.TypeString,
-										Computed: true,
-									},
-									"price": &schema.Schema{
-										Type:     schema.TypeInt,
-										Computed: true,
-									},
-									"image": &schema.Schema{
-										Type:     schema.TypeString,
-										Computed: true,
-									},
-								},
-							},
-						},
-						"quantity": &schema.Schema{
-							Type:     schema.TypeInt,
-							Required: true,
-						},
-					},
-				},
+			"uniqueName": &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    false,
+				Computed:    true,
+				Description: "The DataSource name",
+			},
+			"createdAt": &schema.Schema{
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The date and time of when the DataSource was created",
 			},
 		},
 		Importer: &schema.ResourceImporter{
@@ -74,7 +41,7 @@ func resourceOrder() *schema.Resource {
 	}
 }
 
-func resourceOrderCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(*hc.Client)
 
 	// Warning or errors can be collected in a slice type
@@ -106,12 +73,12 @@ func resourceOrderCreate(ctx context.Context, d *schema.ResourceData, m interfac
 
 	d.SetId(strconv.Itoa(o.ID))
 
-	resourceOrderRead(ctx, d, m)
+	resourceDataSourceRead(ctx, d, m)
 
 	return diags
 }
 
-func resourceOrderRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(*hc.Client)
 
 	// Warning or errors can be collected in a slice type
@@ -132,7 +99,7 @@ func resourceOrderRead(ctx context.Context, d *schema.ResourceData, m interface{
 	return diags
 }
 
-func resourceOrderUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(*hc.Client)
 
 	orderID := d.Id()
@@ -164,10 +131,10 @@ func resourceOrderUpdate(ctx context.Context, d *schema.ResourceData, m interfac
 		d.Set("last_updated", time.Now().Format(time.RFC850))
 	}
 
-	return resourceOrderRead(ctx, d, m)
+	return resourceDataSourceRead(ctx, d, m)
 }
 
-func resourceOrderDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(*hc.Client)
 
 	// Warning or errors can be collected in a slice type

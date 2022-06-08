@@ -1,4 +1,4 @@
-package hashicups
+package propel
 
 import (
 	"os"
@@ -13,7 +13,7 @@ var testAccProvider *schema.Provider
 func init() {
 	testAccProvider = Provider()
 	testAccProviders = map[string]*schema.Provider{
-		"hashicups": testAccProvider,
+		"propel": testAccProvider,
 	}
 }
 
@@ -28,10 +28,10 @@ func TestProvider_impl(t *testing.T) {
 }
 
 func testAccPreCheck(t *testing.T) {
-	if err := os.Getenv("HASHICUPS_USERNAME"); err == "" {
-		t.Fatal("HASHICUPS_USERNAME must be set for acceptance tests")
+	if err := os.Getenv("PROPEL_CLIENT_ID"); err == "" {
+		t.Fatal("PROPEL_CLIENT_ID must be set for acceptance tests")
 	}
-	if err := os.Getenv("HASHICUPS_PASSWORD"); err == "" {
-		t.Fatal("HASHICUPS_PASSWORD must be set for acceptance tests")
+	if err := os.Getenv("PROPEL_CLIENT_SECRET"); err == "" {
+		t.Fatal("PROPEL_CLIENT_SECRET must be set for acceptance tests")
 	}
 }
