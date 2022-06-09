@@ -7,7 +7,6 @@ import (
 	cms "terraform-provider-hashicups/cms_graphql_client"
 
 	"github.com/Khan/genqlient/graphql"
-	hc "github.com/hashicorp-demoapp/hashicups-client-go"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
@@ -120,12 +119,12 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 }
 
 func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	c := m.(graphql.Client)
+	c := m.(*graphql.Client)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	response, err := cms.DataSource(ctx, c, d.Get("id").(string))
+	response, err := cms.DataSource(ctx, *c, d.Get("id").(string))
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -139,49 +138,20 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 }
 
 func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	c := m.(*hc.Client)
-
-	orderID := d.Id()
-
-	if d.HasChange("items") {
-		items := d.Get("items").([]interface{})
-		ois := []hc.OrderItem{}
-
-		for _, item := range items {
-			i := item.(map[string]interface{})
-
-			co := i["coffee"].([]interface{})[0]
-			coffee := co.(map[string]interface{})
-
-			oi := hc.OrderItem{
-				Coffee: hc.Coffee{
-					ID: coffee["id"].(int),
-				},
-				Quantity: i["quantity"].(int),
-			}
-			ois = append(ois, oi)
-		}
-
-		_, err := c.UpdateOrder(orderID, ois)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-
-		d.Set("last_updated", time.Now().Format(time.RFC850))
-	}
+	//c := m.(*graphql.Client)
 
 	return resourceDataSourceRead(ctx, d, m)
 }
 
 func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	c := m.(graphql.Client)
+	c := m.(*graphql.Client)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
 	dataSourceId := d.Id()
 
-	_, err := cms.DeleteDataSource(ctx, c, dataSourceId)
+	_, err := cms.DeleteDataSource(ctx, *c, dataSourceId)
 	if err != nil {
 		return diag.FromErr(err)
 	}

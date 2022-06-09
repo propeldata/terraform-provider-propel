@@ -24,11 +24,14 @@ func getToken(oauthUrl string, clientId string, secret string) (string, error) {
 	payload.Set("grant_type", "client_credentials")
 	payload.Set("client_id", clientId)
 	payload.Set("client_secret", secret)
+
 	client := &http.Client{}
+
 	req, err := http.NewRequest(http.MethodPost, oauthUrl, strings.NewReader(payload.Encode()))
 	if err != nil {
 		return "", err
 	}
+
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	resp, err := client.Do(req)
 	if err != nil {

@@ -9,3 +9,5 @@ variable "password" { type = string }
 variable "warehouse" { type = string }
 variable "role" { type = string }
 variable "account" { type = string }
+variable "database" { type = string }
+variable "schema" { type = string }

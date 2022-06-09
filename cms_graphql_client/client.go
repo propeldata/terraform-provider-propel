@@ -1,8 +1,9 @@
 package cms
 
 import (
-	"github.com/Khan/genqlient/graphql"
 	"net/http"
+
+	"github.com/Khan/genqlient/graphql"
 )
 
 type withHeaders struct {
@@ -31,12 +32,13 @@ func newAuthenticatedHttpClientWithHeaders(headers map[string]string) *http.Clie
 	return &client
 }
 
-func NewCmsClient(url string, oauthUrl string, clientId string, secret string) (*graphql.Client, error) {
+func NewCmsClient(url string, oauthUrl string, clientId string, secret string) (graphql.Client, error) {
 	token, err := getToken(oauthUrl, clientId, secret)
 	if err != nil {
 		return nil, err
 	}
 	httpClient := newAuthenticatedHttpClientWithHeaders(map[string]string{"Authentication": "Bearer " + token})
+
 	gqlClient := graphql.NewClient(url, httpClient)
-	return &gqlClient, nil
+	return gqlClient, nil
 }
