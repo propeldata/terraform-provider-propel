@@ -124,16 +124,17 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	response, err := cms.DataSource(ctx, c, d.Get("id").(string))
+	response, err := cms.DataSource(ctx, c, d.Id())
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	dataSource := flattenDataSource(response.DataSource)
-	if err := d.Set("dataSource", dataSource); err != nil {
+	if err := d.Set("unique_name", response.DataSource.UniqueName); err != nil {
 		return diag.FromErr(err)
 	}
-
+	if err := d.Set("description", response.DataSource.Description); err != nil {
+		return diag.FromErr(err)
+	}
 	return diags
 }
 
