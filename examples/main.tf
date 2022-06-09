@@ -1,19 +1,19 @@
 terraform {
   required_providers {
-    hashicups = {
-      version = ">= 0.3.1"
-      source = "hashicorp.com/edu/hashicups"
+    propel = {
+      version = ">= 0.0.1"
+      source = "propeldata.com/propeldata/propel"
     }
   }
 }
 
 provider "propel" {
   client_id = var.client_id
-  secret = var.secret
+  client_secret = var.client_secret
 }
 
-resource "datasource" "test-datasource" {
-  uniqueName = var.uniqueName
+resource "propel_data_source" "test-datasource" {
+  unique_name = var.uniqueName
   description = var.description
   username = var.username
   password = var.password
@@ -22,6 +22,6 @@ resource "datasource" "test-datasource" {
   account = var.account
 }
 
-output "psl" {
-  value = datasource.test-datasource.id
+output "test-datasource" {
+  value = propel_data_source.test-datasource.id
 }
