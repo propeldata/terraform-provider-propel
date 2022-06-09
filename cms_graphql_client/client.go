@@ -23,13 +23,12 @@ func (wh *withHeaders) RoundTrip(req *http.Request) (*http.Response, error) {
 //
 // Additionally, it allows including default headers.
 func newAuthenticatedHttpClientWithHeaders(headers map[string]string) *http.Client {
-	client := http.Client{}
-	transport := client.Transport
+	client := http.DefaultClient
 	client.Transport = &withHeaders{
 		headers:   headers,
-		transport: transport,
+		transport: http.DefaultTransport,
 	}
-	return &client
+	return client
 }
 
 func NewCmsClient(url string, oauthUrl string, clientId string, secret string) (graphql.Client, error) {
@@ -37,7 +36,7 @@ func NewCmsClient(url string, oauthUrl string, clientId string, secret string) (
 	if err != nil {
 		return nil, err
 	}
-	httpClient := newAuthenticatedHttpClientWithHeaders(map[string]string{"Authentication": "Bearer " + token})
+	httpClient := newAuthenticatedHttpClientWithHeaders(map[string]string{"Authorization": "Bearer " + token})
 
 	gqlClient := graphql.NewClient(url, httpClient)
 	return gqlClient, nil

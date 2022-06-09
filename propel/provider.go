@@ -2,7 +2,6 @@ package propel
 
 import (
 	"context"
-	"fmt"
 
 	cms "terraform-provider-hashicups/cms_graphql_client"
 
@@ -11,7 +10,7 @@ import (
 )
 
 const (
-	apiURL   = "https://api.us-east-2.propeldata.com"
+	apiURL   = "https://api.us-east-2.propeldata.com/graphql"
 	oauthURL = "https://auth.us-east-2.propeldata.com/oauth2/token"
 )
 
@@ -62,8 +61,6 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	if err != nil {
 		return nil, diag.FromErr(err)
 	}
-
-	fmt.Println(c)
 
 	return c, nil
 }

@@ -17,7 +17,6 @@ func resourceDataSource() *schema.Resource {
 		ReadContext:   resourceDataSourceRead,
 		UpdateContext: resourceDataSourceUpdate,
 		DeleteContext: resourceDataSourceDelete,
-		SchemaVersion: 1,
 		Schema: map[string]*schema.Schema{
 			"unique_name": &schema.Schema{
 				Type:        schema.TypeString,
@@ -59,6 +58,7 @@ func resourceDataSource() *schema.Resource {
 			"password": &schema.Schema{
 				Type:        schema.TypeString,
 				Required:    true,
+				Sensitive:   true,
 				Description: "Password",
 			},
 			"role": &schema.Schema{
@@ -119,12 +119,12 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 }
 
 func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	c := m.(*graphql.Client)
+	c := m.(graphql.Client)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	response, err := cms.DataSource(ctx, *c, d.Get("id").(string))
+	response, err := cms.DataSource(ctx, c, d.Get("id").(string))
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -144,14 +144,14 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m int
 }
 
 func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	c := m.(*graphql.Client)
+	c := m.(graphql.Client)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
 	dataSourceId := d.Id()
 
-	_, err := cms.DeleteDataSource(ctx, *c, dataSourceId)
+	_, err := cms.DeleteDataSource(ctx, c, dataSourceId)
 	if err != nil {
 		return diag.FromErr(err)
 	}
