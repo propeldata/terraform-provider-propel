@@ -1,0 +1,7 @@
+uniqueName = "my datasource"
+description = "my description"
+username = "my username"
+password = "my pass"
+warehouse = "my warehouse"
+role = "my role"
+account = "my account"
