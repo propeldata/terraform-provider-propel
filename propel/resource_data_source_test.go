@@ -1,44 +1,45 @@
 package propel
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
-	hc "github.com/hashicorp-demoapp/hashicups-client-go"
+	cms "terraform-provider-hashicups/cms_graphql_client"
+
+	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
-func TestAccHashicupsOrderBasic(t *testing.T) {
-	coffeeID := "1"
-	quantity := "2"
+func TestCreateDataSource(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
-		CheckDestroy: testAccCheckHashicupsOrderDestroy,
+		CheckDestroy: testAccCheckPropelDataSourceDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCheckHashicupsOrderConfigBasic(coffeeID, quantity),
+				Config: "test",
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckHashicupsOrderExists("hashicups_order.new"),
+					testAccCheckPropelDataSourceExists("datasource-test"),
 				),
 			},
 		},
 	})
 }
 
-func testAccCheckHashicupsOrderDestroy(s *terraform.State) error {
-	c := testAccProvider.Meta().(*hc.Client)
+func testAccCheckPropelDataSourceDestroy(s *terraform.State) error {
+	c := testAccProvider.Meta().(graphql.Client)
 
 	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "hashicups_order" {
+		if rs.Type != "propel_data_source" {
 			continue
 		}
 
-		orderID := rs.Primary.ID
+		dataSourceID := rs.Primary.ID
 
-		err := c.DeleteOrder(orderID)
+		_, err := cms.DeleteDataSource(context.Background(), c, dataSourceID)
 		if err != nil {
 			return err
 		}
@@ -47,20 +48,7 @@ func testAccCheckHashicupsOrderDestroy(s *terraform.State) error {
 	return nil
 }
 
-func testAccCheckHashicupsOrderConfigBasic(coffeeID, quantity string) string {
-	return fmt.Sprintf(`
-	resource "hashicups_order" "new" {
-		items {
-			coffee {
-				id = %s
-			}
-    		quantity = %s
-  		}
-	}
-	`, coffeeID, quantity)
-}
-
-func testAccCheckHashicupsOrderExists(n string) resource.TestCheckFunc {
+func testAccCheckPropelDataSourceExists(n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
 

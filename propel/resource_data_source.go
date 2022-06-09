@@ -2,9 +2,11 @@ package propel
 
 import (
 	"context"
-	"strconv"
 	"time"
 
+	cms "terraform-provider-hashicups/cms_graphql_client"
+
+	"github.com/Khan/genqlient/graphql"
 	hc "github.com/hashicorp-demoapp/hashicups-client-go"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -17,82 +19,118 @@ func resourceDataSource() *schema.Resource {
 		UpdateContext: resourceDataSourceUpdate,
 		DeleteContext: resourceDataSourceDelete,
 		Schema: map[string]*schema.Schema{
-			"id": &schema.Schema{
+			"unique_name": &schema.Schema{
 				Type:        schema.TypeString,
-				Required:    true,
-				Computed:    true,
-				Description: "The DataSource ID",
-			},
-			"uniqueName": &schema.Schema{
-				Type:        schema.TypeString,
-				Optional:    false,
+				Optional:    true,
 				Computed:    true,
 				Description: "The DataSource name",
 			},
-			"createdAt": &schema.Schema{
+			"description": &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
+				Description: "The DataSource description",
+			},
+			"account": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Account",
+			},
+			"database": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Database",
+			},
+			"warehouse": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "WareHouse",
+			},
+			"schema": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Schema",
+			},
+			"username": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Username",
+			},
+			"password": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Password",
+			},
+			"role": &schema.Schema{
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Role",
+			},
+			"created_at": &schema.Schema{
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The date and time of when the DataSource was created",
 			},
 		},
-		Importer: &schema.ResourceImporter{
-			State: schema.ImportStatePassthrough,
+		Timeouts: &schema.ResourceTimeout{
+			Create: schema.DefaultTimeout(30 * time.Minute),
 		},
 	}
 }
 
-func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	c := m.(*hc.Client)
+func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	c := meta.(graphql.Client)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	items := d.Get("items").([]interface{})
-	ois := []hc.OrderItem{}
-
-	for _, item := range items {
-		i := item.(map[string]interface{})
-
-		co := i["coffee"].([]interface{})[0]
-		coffee := co.(map[string]interface{})
-
-		oi := hc.OrderItem{
-			Coffee: hc.Coffee{
-				ID: coffee["id"].(int),
-			},
-			Quantity: i["quantity"].(int),
-		}
-
-		ois = append(ois, oi)
+	input := cms.CreateSnowflakeDataSourceInput{
+		UniqueName:  d.Get("unique_name").(string),
+		Description: d.Get("description").(string),
+		ConnectionSettings: cms.SnowflakeConnectionSettingsInput{
+			Account:   d.Get("account").(string),
+			Database:  d.Get("database").(string),
+			Warehouse: d.Get("warehouse").(string),
+			Schema:    d.Get("schema").(string),
+			Username:  d.Get("username").(string),
+			Password:  d.Get("password").(string),
+			Role:      d.Get("role").(string),
+		},
 	}
 
-	o, err := c.CreateOrder(ois)
+	response, err := cms.CreateSnowflakeDataSource(ctx, c, input)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	d.SetId(strconv.Itoa(o.ID))
+	switch resource := response.GetCreateSnowflakeDataSource().(type) {
+	case *cms.CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse:
+		d.SetId(resource.DataSource.Id)
 
-	resourceDataSourceRead(ctx, d, m)
+		resourceDataSourceRead(ctx, d, meta)
+	case *cms.CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse:
+		diags = append(diags, diag.Diagnostic{
+			Severity: diag.Error,
+			Summary:  "Failed to create DataSource",
+		})
+	}
 
 	return diags
 }
 
 func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	c := m.(*hc.Client)
+	c := m.(graphql.Client)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	orderID := d.Id()
-
-	order, err := c.GetOrder(orderID)
+	response, err := cms.DataSource(ctx, c, d.Get("id").(string))
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	orderItems := flattenOrderItems(&order.Items)
-	if err := d.Set("items", orderItems); err != nil {
+	dataSource := flattenDataSource(response.DataSource)
+	if err := d.Set("dataSource", dataSource); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -135,14 +173,14 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m int
 }
 
 func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	c := m.(*hc.Client)
+	c := m.(graphql.Client)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	orderID := d.Id()
+	dataSourceId := d.Id()
 
-	err := c.DeleteOrder(orderID)
+	_, err := cms.DeleteDataSource(ctx, c, dataSourceId)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -154,32 +192,14 @@ func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m int
 	return diags
 }
 
-func flattenOrderItems(orderItems *[]hc.OrderItem) []interface{} {
-	if orderItems != nil {
-		ois := make([]interface{}, len(*orderItems), len(*orderItems))
+func flattenDataSource(dataSource cms.DataSourceDataSource) []interface{} {
+	d := make(map[string]interface{})
+	d["id"] = dataSource.Id
+	d["uniqueName"] = dataSource.UniqueName
+	d["description"] = dataSource.Description
+	d["account"] = dataSource.Account
+	d["createdAt"] = dataSource.CreatedAt
+	d["createdBy"] = dataSource.CreatedBy
 
-		for i, orderItem := range *orderItems {
-			oi := make(map[string]interface{})
-
-			oi["coffee"] = flattenCoffee(orderItem.Coffee)
-			oi["quantity"] = orderItem.Quantity
-			ois[i] = oi
-		}
-
-		return ois
-	}
-
-	return make([]interface{}, 0)
-}
-
-func flattenCoffee(coffee hc.Coffee) []interface{} {
-	c := make(map[string]interface{})
-	c["id"] = coffee.ID
-	c["name"] = coffee.Name
-	c["teaser"] = coffee.Teaser
-	c["description"] = coffee.Description
-	c["price"] = coffee.Price
-	c["image"] = coffee.Image
-
-	return []interface{}{c}
+	return []interface{}{d}
 }

@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     propel = {
-      version = ">= 0.3.1"
+      version = ">= 0.0.1"
       source = "hashicorp.com/edu/hashicups"
     }
   }

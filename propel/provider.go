@@ -9,6 +9,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
+const (
+	apiURL   = "https://api.us-east-2.propeldata.com"
+	oauthURL = "https://auth.us-east-2.propeldata.com/oauth2/token"
+)
+
 // Provider -
 func Provider() *schema.Provider {
 	return &schema.Provider{
@@ -55,6 +60,6 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		return nil, diags
 	}
 
-	c := graphql.NewClient("https://api.us-east-2.propeldata.com", http.DefaultClient)
+	c := graphql.NewClient(apiURL, http.DefaultClient)
 	return c, nil
 }
