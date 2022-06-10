@@ -30,46 +30,43 @@ func resourceDataSource() *schema.Resource {
 				Computed:    true,
 				Description: "The DataSource description",
 			},
+			"type": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
 			"account": &schema.Schema{
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "Account",
+				Type:     schema.TypeString,
+				Computed: true,
 			},
-			"database": &schema.Schema{
+			"environment": &schema.Schema{
 				Type:        schema.TypeString,
-				Required:    true,
-				Description: "Database",
-			},
-			"warehouse": &schema.Schema{
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "WareHouse",
-			},
-			"schema": &schema.Schema{
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "Schema",
-			},
-			"username": &schema.Schema{
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "Username",
-			},
-			"password": &schema.Schema{
-				Type:        schema.TypeString,
-				Required:    true,
-				Sensitive:   true,
-				Description: "Password",
-			},
-			"role": &schema.Schema{
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "Role",
+				Computed:    true,
+				Description: "The Environment where belong the DataSource",
 			},
 			"created_at": &schema.Schema{
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The date and time of when the DataSource was created",
+			},
+			"modified_at": &schema.Schema{
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The date and time of when the DataSource was modified",
+			},
+			"created_by": &schema.Schema{
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The user who created the DataSource",
+			},
+			"modified_by": &schema.Schema{
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The user who modified the DataSource",
+			},
+			"connection_settings": &schema.Schema{
+				Type:     schema.TypeMap,
+				Required: true,
+				Elem:     &schema.Schema{Type: schema.TypeString},
 			},
 		},
 		Timeouts: &schema.ResourceTimeout{
@@ -84,17 +81,19 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
+	connectionSettings := d.Get("connection_settings").(map[string]interface{})
+
 	input := cms.CreateSnowflakeDataSourceInput{
 		UniqueName:  d.Get("unique_name").(string),
 		Description: d.Get("description").(string),
 		ConnectionSettings: cms.SnowflakeConnectionSettingsInput{
-			Account:   d.Get("account").(string),
-			Database:  d.Get("database").(string),
-			Warehouse: d.Get("warehouse").(string),
-			Schema:    d.Get("schema").(string),
-			Username:  d.Get("username").(string),
-			Password:  d.Get("password").(string),
-			Role:      d.Get("role").(string),
+			Account:   connectionSettings["account"].(string),
+			Database:  connectionSettings["database"].(string),
+			Warehouse: connectionSettings["warehouse"].(string),
+			Schema:    connectionSettings["schema"].(string),
+			Username:  connectionSettings["username"].(string),
+			Password:  connectionSettings["password"].(string),
+			Role:      connectionSettings["role"].(string),
 		},
 	}
 
@@ -129,10 +128,40 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.FromErr(err)
 	}
 
+	d.SetId(response.DataSource.Id)
 	if err := d.Set("unique_name", response.DataSource.UniqueName); err != nil {
 		return diag.FromErr(err)
 	}
+
 	if err := d.Set("description", response.DataSource.Description); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("created_at", response.DataSource.CreatedAt.String()); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("created_by", response.DataSource.CreatedBy); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("modified_at", response.DataSource.ModifiedAt.String()); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("modified_by", response.DataSource.ModifiedBy); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("environment", response.DataSource.Environment.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("account", response.DataSource.Account.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("type", response.DataSource.Type); err != nil {
 		return diag.FromErr(err)
 	}
 	return diags
@@ -162,16 +191,4 @@ func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m int
 	d.SetId("")
 
 	return diags
-}
-
-func flattenDataSource(dataSource cms.DataSourceDataSource) []interface{} {
-	d := make(map[string]interface{})
-	d["id"] = dataSource.Id
-	d["uniqueName"] = dataSource.UniqueName
-	d["description"] = dataSource.Description
-	d["account"] = dataSource.Account
-	d["createdAt"] = dataSource.CreatedAt
-	d["createdBy"] = dataSource.CreatedBy
-
-	return []interface{}{d}
 }
