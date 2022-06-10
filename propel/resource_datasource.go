@@ -17,6 +17,7 @@ func resourceDataSource() *schema.Resource {
 		ReadContext:   resourceDataSourceRead,
 		UpdateContext: resourceDataSourceUpdate,
 		DeleteContext: resourceDataSourceDelete,
+		SchemaVersion: 1,
 		Schema: map[string]*schema.Schema{
 			"unique_name": &schema.Schema{
 				Type:        schema.TypeString,
