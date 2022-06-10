@@ -35,6 +35,10 @@ func resourceDataSource() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
+			"status": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
 			"account": &schema.Schema{
 				Type:     schema.TypeString,
 				Computed: true,
@@ -165,11 +169,30 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 	if err := d.Set("type", response.DataSource.Type); err != nil {
 		return diag.FromErr(err)
 	}
+
+	if err := d.Set("status", response.DataSource.Status); err != nil {
+		return diag.FromErr(err)
+	}
 	return diags
 }
 
 func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	//c := m.(*graphql.Client)
+	c := m.(graphql.Client)
+
+	if d.HasChange("unique_name") {
+		modifyDataSource := cms.ModifySnowflakeDataSourceInput{
+			IdOrUniqueName: cms.IdOrUniqueName{
+				Id: d.Id(),
+			},
+			UniqueName:  d.Get("unique_name").(string),
+			Description: d.Get("description").(string),
+		}
+
+		_, err := cms.ModifySnowflakeDataSource(ctx, c, modifyDataSource)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+	}
 
 	return resourceDataSourceRead(ctx, d, m)
 }

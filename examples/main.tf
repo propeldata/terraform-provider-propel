@@ -27,5 +27,5 @@ resource "propel_datasource" "datasource" {
 }
 
 output "datasource" {
-  value = propel_datasource.datasource.id
+  value = propel_datasource.datasource
 }
