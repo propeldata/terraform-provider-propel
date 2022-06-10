@@ -12,16 +12,20 @@ provider "propel" {
   client_secret = var.client_secret
 }
 
-resource "propel_data_source" "test-datasource" {
+resource "propel_datasource" "datasource" {
   unique_name = var.uniqueName
   description = var.description
-  username = var.username
-  password = var.password
-  warehouse = var.warehouse
-  role = var.role
-  account = var.account
+  connection_settings = {
+    username = var.username
+    password = var.password
+    warehouse = var.warehouse
+    role = var.role
+    account = var.account
+    database = var.database
+    schema = var.schema
+  }
 }
 
-output "test-datasource" {
-  value = propel_data_source.test-datasource.id
+output "datasource" {
+  value = propel_datasource.datasource.id
 }

@@ -2,15 +2,15 @@ package propel
 
 import (
 	"context"
-	"net/http"
 
-	"github.com/Khan/genqlient/graphql"
+	cms "terraform-provider-hashicups/cms_graphql_client"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 const (
-	apiURL   = "https://api.us-east-2.propeldata.com"
+	apiURL   = "https://api.us-east-2.propeldata.com/graphql"
 	oauthURL = "https://auth.us-east-2.propeldata.com/oauth2/token"
 )
 
@@ -34,10 +34,7 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"propel_data_source": resourceDataSource(),
-		},
-		DataSourcesMap: map[string]*schema.Resource{
-			"propel_datasources": dataSourcePropelDataSources(),
+			"propel_datasource": resourceDataSource(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}
@@ -60,6 +57,10 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		return nil, diags
 	}
 
-	c := graphql.NewClient(apiURL, http.DefaultClient)
+	c, err := cms.NewCmsClient(apiURL, oauthURL, clientID, clientSecret)
+	if err != nil {
+		return nil, diag.FromErr(err)
+	}
+
 	return c, nil
 }
