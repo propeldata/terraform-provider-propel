@@ -1,4 +1,4 @@
-module terraform-provider-hashicups
+module github.com/propeldata/terraform-provider
 
 go 1.17
 

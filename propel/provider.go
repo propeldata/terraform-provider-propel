@@ -3,7 +3,7 @@ package propel
 import (
 	"context"
 
-	cms "terraform-provider-hashicups/cms_graphql_client"
+	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"

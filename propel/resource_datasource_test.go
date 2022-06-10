@@ -3,9 +3,10 @@ package propel
 import (
 	"context"
 	"fmt"
+	"log"
 	"testing"
 
-	cms "terraform-provider-hashicups/cms_graphql_client"
+	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -20,20 +21,27 @@ func TestCreateDataSource(t *testing.T) {
 		CheckDestroy: testAccCheckPropelDataSourceDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: "test",
+				Config: testAccCheckPropelDataSource(),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckPropelDataSourceExists("datasource-test"),
+					testAccCheckPropelDataSourceExists("propel_datasource.new"),
 				),
 			},
 		},
 	})
 }
 
+func testAccCheckPropelDataSource() string {
+	return fmt.Sprintf(`
+	resource "propel_datasource" "new" {
+		database = test
+	}`)
+}
+
 func testAccCheckPropelDataSourceDestroy(s *terraform.State) error {
 	c := testAccProvider.Meta().(graphql.Client)
 
 	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "propel_data_source" {
+		if rs.Type != "propel_datasource" {
 			continue
 		}
 
@@ -57,7 +65,7 @@ func testAccCheckPropelDataSourceExists(n string) resource.TestCheckFunc {
 		}
 
 		if rs.Primary.ID == "" {
-			return fmt.Errorf("No OrderID set")
+			return fmt.Errorf("No DataSourceID set")
 		}
 
 		return nil

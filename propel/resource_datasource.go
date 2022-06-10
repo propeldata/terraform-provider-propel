@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	cms "terraform-provider-hashicups/cms_graphql_client"
+	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
