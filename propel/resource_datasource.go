@@ -2,6 +2,7 @@ package propel
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
@@ -76,6 +77,7 @@ func resourceDataSource() *schema.Resource {
 		},
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(30 * time.Minute),
+			Delete: schema.DefaultTimeout(30 * time.Minute),
 		},
 	}
 }
@@ -111,7 +113,14 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 	case *cms.CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse:
 		d.SetId(resource.DataSource.Id)
 
-		resourceDataSourceRead(ctx, d, meta)
+		timeout := d.Timeout(schema.TimeoutCreate)
+
+		err = waitForDataSourceConnected(ctx, c, d.Id(), timeout)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		return resourceDataSourceRead(ctx, d, meta)
 	case *cms.CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse:
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
@@ -203,9 +212,14 @@ func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m int
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	dataSourceId := d.Id()
+	_, err := cms.DeleteDataSource(ctx, c, d.Id())
+	if err != nil {
+		return diag.FromErr(err)
+	}
 
-	_, err := cms.DeleteDataSource(ctx, c, dataSourceId)
+	timeout := d.Timeout(schema.TimeoutDelete)
+
+	err = waitForDataSourceDeleted(ctx, c, d.Id(), timeout)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -215,4 +229,61 @@ func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m int
 	d.SetId("")
 
 	return diags
+}
+
+func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
+	ticketInterval := 10 // 10s
+	timeoutSeconds := int(timeout.Seconds())
+	n := 0
+
+	ticker := time.NewTicker(time.Duration(ticketInterval) * time.Second)
+	for range ticker.C {
+		if n*ticketInterval > timeoutSeconds {
+			ticker.Stop()
+			break
+		}
+
+		response, err := cms.DataSource(ctx, client, id)
+		if err != nil {
+			ticker.Stop()
+			return fmt.Errorf("error trying to read DataSource status: %s", err)
+		}
+
+		if response.DataSource.Status == cms.DataSourceStatusConnected {
+			ticker.Stop()
+			return nil
+		}
+
+		if response.DataSource.Status == cms.DataSourceStatusBroken {
+			ticker.Stop()
+			return fmt.Errorf("DataSource in BROKEN status")
+		}
+
+		n++
+	}
+	return fmt.Errorf("timeout waiting for DataSource (%s) to be CONNECTED", id)
+}
+
+func waitForDataSourceDeleted(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
+	ticketInterval := 10 // 10s
+	timeoutSeconds := int(timeout.Seconds())
+	n := 0
+
+	ticker := time.NewTicker(time.Duration(ticketInterval) * time.Second)
+	for range ticker.C {
+		if n*ticketInterval > timeoutSeconds {
+			ticker.Stop()
+			break
+		}
+
+		_, err := cms.DataSource(ctx, client, id)
+		if err != nil {
+			ticker.Stop()
+			fmt.Println(err)
+			return fmt.Errorf("error trying to fetch DataSource: %s", err)
+		}
+
+		n++
+	}
+	return fmt.Errorf("timeout waiting for DataSource (%s) to be deleted", id)
 }

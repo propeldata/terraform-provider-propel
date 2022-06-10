@@ -3,7 +3,7 @@ package propel
 import (
 	"context"
 
-	cms "terraform-provider-hashicups/cms_graphql_client"
+	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -13,6 +13,9 @@ import (
 func resourceDataPool() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: resourceDataPoolCreate,
+		ReadContext:   resourceDataPoolRead,
+		UpdateContext: resourceDataPoolUpdate,
+		DeleteContext: resourceDataPoolDelete,
 		SchemaVersion: 1,
 		Schema: map[string]*schema.Schema{
 			"unique_name": {
@@ -27,7 +30,7 @@ func resourceDataPool() *schema.Resource {
 				Computed:    true,
 				Description: "The DataPool description",
 			},
-			"data_source": {
+			"datasource": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
@@ -49,10 +52,10 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 	var diags diag.Diagnostics
 
 	response, err := cms.CreateDataPool(ctx, c, cms.CreateDataPoolInput{
-		UniqueName:  "",
-		Description: "",
+		UniqueName:  d.Get("unique_name").(string),
+		Description: d.Get("description").(string),
 		DataSource: cms.IdOrUniqueName{
-			Id: d.Get("data_source").(string),
+			Id: d.Get("datasource").(string),
 		},
 		Table: d.Get("table").(string),
 		Timestamp: cms.DimensionInput{
@@ -94,5 +97,40 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
+	return diags
+}
+
+func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	c := m.(graphql.Client)
+
+	if d.HasChange("unique_name") {
+		input := cms.ModifyDataPoolInput{
+			IdOrUniqueName: cms.IdOrUniqueName{
+				Id: d.Id(),
+			},
+			UniqueName:  d.Get("unique_name").(string),
+			Description: d.Get("description").(string),
+		}
+
+		_, err := cms.ModifyDataPool(ctx, c, input)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	return resourceDataPoolRead(ctx, d, m)
+}
+
+func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	c := m.(graphql.Client)
+
+	var diags diag.Diagnostics
+
+	_, err := cms.DeleteDataPool(ctx, c, d.Id())
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	d.SetId("")
 	return diags
 }
