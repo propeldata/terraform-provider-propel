@@ -26,6 +26,14 @@ resource "propel_datasource" "datasource" {
   }
 }
 
+resource "propel_datapool" "datapool" {
+  unique_name = "My DataPool"
+  description = "DataPool description"
+  data_source_id = propel_datasource.datasource.id
+  table = "my Table"
+  timestamp = "created_at"
+}
+
 output "datasource" {
   value = propel_datasource.datasource
 }
