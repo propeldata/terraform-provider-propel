@@ -1,7 +1,6 @@
 variable "client_id" { type = string }
 variable "client_secret" { type = string }
 
-
 variable "uniqueName" { type = string }
 variable "description" { type = string }
 variable "username" { type = string }

@@ -41,3 +41,5 @@ func NewCmsClient(url string, oauthUrl string, clientId string, secret string) (
 	gqlClient := graphql.NewClient(url, httpClient)
 	return gqlClient, nil
 }
+
+//go:generate go run github.com/Khan/genqlient genqlient.yaml
