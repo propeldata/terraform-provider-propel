@@ -3,11 +3,11 @@ package propel
 import (
 	"context"
 
-	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
-
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
 )
 
 func resourceDataPool() *schema.Resource {
