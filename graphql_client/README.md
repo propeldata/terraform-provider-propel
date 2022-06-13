@@ -24,13 +24,13 @@ import (
 	"fmt"
 	"github.com/Khan/genqlient/graphql"
 	"net/http"
-	cms "terraform-provider-hashicups/cms_graphql_client"
+	pc "terraform-provider-hashicups/graphql_client"
 )
 
 func main() {
 	ctx := context.Background()
 	client := graphql.NewClient("https://api.github.com/graphql", http.DefaultClient)
-	resp, err := cms.DataSource(ctx, client, "benjaminjkraft")
+	resp, err := pc.DataSource(ctx, client, "benjaminjkraft")
 	fmt.Println(resp.DataSource.Account.Id, err)
 }
 ```

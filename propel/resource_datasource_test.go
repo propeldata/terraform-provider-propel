@@ -3,10 +3,9 @@ package propel
 import (
 	"context"
 	"fmt"
-	"log"
 	"testing"
 
-	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
+	cms "github.com/propeldata/terraform-provider/graphql_client"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"

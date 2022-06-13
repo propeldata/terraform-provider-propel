@@ -57,4 +57,4 @@ generated: generated.go
 bindings:
   DateTime:
     type: time.Time
-package: cms
+package: client

@@ -1,4 +1,4 @@
-package cms
+package client
 
 import (
 	"encoding/json"

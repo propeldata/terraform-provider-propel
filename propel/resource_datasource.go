@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
+	pc "github.com/propeldata/terraform-provider/graphql_client"
 )
 
 func resourceDataSource() *schema.Resource {
@@ -91,10 +91,10 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 
 	connectionSettings := d.Get("connection_settings").(map[string]interface{})
 
-	input := cms.CreateSnowflakeDataSourceInput{
+	input := pc.CreateSnowflakeDataSourceInput{
 		UniqueName:  d.Get("unique_name").(string),
 		Description: d.Get("description").(string),
-		ConnectionSettings: cms.SnowflakeConnectionSettingsInput{
+		ConnectionSettings: pc.SnowflakeConnectionSettingsInput{
 			Account:   connectionSettings["account"].(string),
 			Database:  connectionSettings["database"].(string),
 			Warehouse: connectionSettings["warehouse"].(string),
@@ -105,13 +105,13 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 		},
 	}
 
-	response, err := cms.CreateSnowflakeDataSource(ctx, c, input)
+	response, err := pc.CreateSnowflakeDataSource(ctx, c, input)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
 	switch resource := response.GetCreateSnowflakeDataSource().(type) {
-	case *cms.CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse:
+	case *pc.CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse:
 		d.SetId(resource.DataSource.Id)
 
 		timeout := d.Timeout(schema.TimeoutCreate)
@@ -122,7 +122,7 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 		}
 
 		return resourceDataSourceRead(ctx, d, meta)
-	case *cms.CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse:
+	case *pc.CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse:
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
 			Summary:  "Failed to create DataSource",
@@ -138,7 +138,7 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	response, err := cms.DataSource(ctx, c, d.Id())
+	response, err := pc.DataSource(ctx, c, d.Id())
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -190,15 +190,15 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m int
 	c := m.(graphql.Client)
 
 	if d.HasChange("unique_name") {
-		modifyDataSource := cms.ModifySnowflakeDataSourceInput{
-			IdOrUniqueName: cms.IdOrUniqueName{
+		modifyDataSource := pc.ModifySnowflakeDataSourceInput{
+			IdOrUniqueName: pc.IdOrUniqueName{
 				Id: d.Id(),
 			},
 			UniqueName:  d.Get("unique_name").(string),
 			Description: d.Get("description").(string),
 		}
 
-		_, err := cms.ModifySnowflakeDataSource(ctx, c, modifyDataSource)
+		_, err := pc.ModifySnowflakeDataSource(ctx, c, modifyDataSource)
 		if err != nil {
 			return diag.FromErr(err)
 		}
@@ -213,7 +213,7 @@ func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m int
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	_, err := cms.DeleteDataSource(ctx, c, d.Id())
+	_, err := pc.DeleteDataSource(ctx, c, d.Id())
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -228,27 +228,26 @@ func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m int
 func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
 	createStateConf := &resource.StateChangeConf{
 		Pending: []string{
-			string(cms.DataSourceStatusCreated),
-			string(cms.DataSourceStatusConnecting),
+			string(pc.DataSourceStatusCreated),
+			string(pc.DataSourceStatusConnecting),
 		},
 		Target: []string{
-			string(cms.DataSourceStatusConnected),
+			string(pc.DataSourceStatusConnected),
 		},
 		Refresh: func() (interface{}, string, error) {
-			resp, err := cms.DataSource(ctx, client, id)
+			resp, err := pc.DataSource(ctx, client, id)
 			if err != nil {
 				return 0, "", fmt.Errorf("error trying to read DataSource status: %s", err)
 			}
 
-			if resp.DataSource.Status == cms.DataSourceStatusBroken {
+			if resp.DataSource.Status == pc.DataSourceStatusBroken {
 				return 0, string(resp.DataSource.Status), fmt.Errorf("DataSource in BROKEN status")
 			}
 			return resp, string(resp.DataSource.Status), nil
 		},
-		Timeout:                   timeout - time.Minute,
-		Delay:                     10 * time.Second,
-		MinTimeout:                5 * time.Second,
-		ContinuousTargetOccurence: 5,
+		Timeout:    timeout - time.Minute,
+		Delay:      10 * time.Second,
+		MinTimeout: 5 * time.Second,
 	}
 
 	_, err := createStateConf.WaitForStateContext(ctx)

@@ -152,6 +152,8 @@ type DataSource implements Node & Common {
 
   """ A list of checks performed on the Data Source during its most recent connection attempt. """
   checks: [DataSourceCheck!]
+
+  dataPools (first: Int, after: String, last: Int, before: String): DataPoolConnection
 }
 
 type DataSourceCheck {
@@ -291,6 +293,7 @@ type Column {
 type DataSourceConnection {
   pageInfo: PageInfo!
   edges: [DataSourceEdge!]
+  nodes: [DataSource!]
 }
 
 type DataSourceEdge {
@@ -417,6 +420,8 @@ type DataPool implements Node & Common {
   syncing: DataPoolSyncStatus
   syncs (first: Int, after: String, last: Int, before: String): SyncConnection
 
+  metrics (first: Int, after: String, last: Int, before: String): MetricConnection
+
   """ The destination that the Data Pool will be synced to. """
   syncDestination: TableLocation! @tag(name: "internal")
 }
@@ -500,8 +505,8 @@ input DimensionInput {
 
 type DataPoolConnection {
   pageInfo: PageInfo!
-
   edges: [DataPoolEdge!]
+  nodes: [DataPool!]
 }
 
 type DataPoolEdge {
@@ -593,6 +598,18 @@ enum DataPoolSyncStatus {
 type Sync implements Node {
   """ The ID of the Sync resource. """
   id: ID!
+
+  """ The Account to which the Sync belongs. """
+  account: Account
+
+  """ The Environment to which the Sync belongs. """
+  environment: Environment
+
+  """ The Data Source to which the Sync belongs. """
+  dataSource: DataSource
+
+  """ The Data Pool to which the Sync belongs. """
+  dataPool: DataPool
 
   """ This is the ID of the query which generated the Sync in Snowflake. In the future, this will become private. """
   queryId: String! @tag(name: "internal")

@@ -3,7 +3,7 @@ package propel
 import (
 	"context"
 
-	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
+	pc "github.com/propeldata/terraform-provider/graphql_client"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -58,7 +58,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		return nil, diags
 	}
 
-	c, err := cms.NewCmsClient(apiURL, oauthURL, clientID, clientSecret)
+	c, err := pc.NewCmsClient(apiURL, oauthURL, clientID, clientSecret)
 	if err != nil {
 		return nil, diag.FromErr(err)
 	}

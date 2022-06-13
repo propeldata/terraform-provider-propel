@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	cms "github.com/propeldata/terraform-provider/cms_graphql_client"
+	pc "github.com/propeldata/terraform-provider/graphql_client"
 )
 
 func resourceDataPool() *schema.Resource {
@@ -54,14 +54,14 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 
 	var diags diag.Diagnostics
 
-	response, err := cms.CreateDataPool(ctx, c, cms.CreateDataPoolInput{
+	response, err := pc.CreateDataPool(ctx, c, pc.CreateDataPoolInput{
 		UniqueName:  d.Get("unique_name").(string),
 		Description: d.Get("description").(string),
-		DataSource: cms.IdOrUniqueName{
+		DataSource: pc.IdOrUniqueName{
 			Id: d.Get("datasource").(string),
 		},
 		Table: d.Get("table").(string),
-		Timestamp: cms.DimensionInput{
+		Timestamp: pc.DimensionInput{
 			ColumnName: d.Get("timestamp").(string),
 		},
 	})
@@ -71,11 +71,11 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 	}
 
 	switch resource := response.GetCreateDataPool().(type) {
-	case *cms.CreateDataPoolCreateDataPoolDataPoolResponse:
+	case *pc.CreateDataPoolCreateDataPoolDataPoolResponse:
 		d.SetId(resource.DataPool.Id)
 
 		resourceDataPoolRead(ctx, d, meta)
-	case *cms.CreateDataPoolCreateDataPoolFailureResponse:
+	case *pc.CreateDataPoolCreateDataPoolFailureResponse:
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
 			Summary:  "Failed to create DataPool",
@@ -90,7 +90,7 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 
 	var diags diag.Diagnostics
 
-	response, err := cms.DataPool(ctx, c, d.Id())
+	response, err := pc.DataPool(ctx, c, d.Id())
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -107,15 +107,15 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m inter
 	c := m.(graphql.Client)
 
 	if d.HasChange("unique_name") || d.HasChange("description") {
-		input := cms.ModifyDataPoolInput{
-			IdOrUniqueName: cms.IdOrUniqueName{
+		input := pc.ModifyDataPoolInput{
+			IdOrUniqueName: pc.IdOrUniqueName{
 				Id: d.Id(),
 			},
 			UniqueName:  d.Get("unique_name").(string),
 			Description: d.Get("description").(string),
 		}
 
-		_, err := cms.ModifyDataPool(ctx, c, input)
+		_, err := pc.ModifyDataPool(ctx, c, input)
 		if err != nil {
 			return diag.FromErr(err)
 		}
@@ -129,7 +129,7 @@ func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m inter
 
 	var diags diag.Diagnostics
 
-	_, err := cms.DeleteDataPool(ctx, c, d.Id())
+	_, err := pc.DeleteDataPool(ctx, c, d.Id())
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -156,7 +156,7 @@ func waitForDataPoolDeletion(ctx context.Context, client graphql.Client, id stri
 			break
 		}
 
-		_, err := cms.DataPool(ctx, client, id)
+		_, err := pc.DataPool(ctx, client, id)
 		if err != nil {
 			ticker.Stop()
 
