@@ -2,6 +2,9 @@ package propel
 
 import (
 	"context"
+	"fmt"
+	"strings"
+	"time"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -103,7 +106,7 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	if d.HasChange("unique_name") {
+	if d.HasChange("unique_name") || d.HasChange("description") {
 		input := cms.ModifyDataPoolInput{
 			IdOrUniqueName: cms.IdOrUniqueName{
 				Id: d.Id(),
@@ -131,6 +134,40 @@ func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.FromErr(err)
 	}
 
+	timeout := d.Timeout(schema.TimeoutDelete)
+	err = waitForDataPoolDeletion(ctx, c, d.Id(), timeout)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
 	d.SetId("")
 	return diags
+}
+
+func waitForDataPoolDeletion(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
+	ticketInterval := 10 // 10s
+	timeoutSeconds := int(timeout.Seconds())
+	n := 0
+
+	ticker := time.NewTicker(time.Duration(ticketInterval) * time.Second)
+	for range ticker.C {
+		if n*ticketInterval > timeoutSeconds {
+			ticker.Stop()
+			break
+		}
+
+		_, err := cms.DataPool(ctx, client, id)
+		if err != nil {
+			ticker.Stop()
+
+			if strings.Contains(err.Error(), "not found") {
+				return nil
+			}
+
+			return fmt.Errorf("error trying to fetch DataPool: %s", err)
+		}
+
+		n++
+	}
+	return nil
 }

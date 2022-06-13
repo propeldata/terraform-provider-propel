@@ -1,5 +1,8 @@
 variable "client_id" { type = string }
-variable "client_secret" { type = string }
+variable "client_secret" {
+  type = string
+  sensitive = true
+}
 
 variable "datasource_unique_name" { type = string }
 variable "datasource_description" { type = string }

@@ -32,10 +32,6 @@ resource "propel_datapool" "datapool" {
   datasource = propel_datasource.datasource.id
   table = var.datapool_table
   timestamp = var.datapool_timestamp
-
-  depends_on = [
-    propel_datasource.datasource
-  ]
 }
 
 output "datasource" {
