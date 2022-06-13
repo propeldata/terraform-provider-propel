@@ -245,9 +245,10 @@ func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id s
 			}
 			return resp, string(resp.DataSource.Status), nil
 		},
-		Timeout:    timeout - time.Minute,
-		Delay:      10 * time.Second,
-		MinTimeout: 5 * time.Second,
+		Timeout:                   timeout - time.Minute,
+		Delay:                     10 * time.Second,
+		MinTimeout:                5 * time.Second,
+		ContinuousTargetOccurence: 3,
 	}
 
 	_, err := createStateConf.WaitForStateContext(ctx)

@@ -36,6 +36,7 @@ func Provider() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 			"propel_datasource": resourceDataSource(),
 			"propel_datapool":   resourceDataPool(),
+			"propel_metric":     resourceMetric(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}

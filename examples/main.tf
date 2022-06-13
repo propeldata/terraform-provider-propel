@@ -34,10 +34,67 @@ resource "propel_datapool" "datapool" {
   timestamp = var.datapool_timestamp
 }
 
-output "datasource" {
-  value = propel_datasource.datasource
+resource "propel_metric" "count_metric" {
+  unique_name = var.metric_unique_name
+  description = var.metric_description
+  datapool = propel_datapool.datapool.id
+  type = "COUNT"
+
+  filter {
+    column = var.metric_filter_column
+    operator = var.metric_filter_operator
+    value = var.metric_filter_value
+  }
+
+  dimensions = var.metric_dimensions
 }
 
-output "datapool" {
-  value = propel_datapool.datapool
+resource "propel_metric" "sum_metric" {
+  unique_name = var.metric_sum_unique_name
+  datapool = propel_datapool.datapool.id
+  type = "SUM"
+  measure = var.metric_sum_measure
+
+  filter {
+    column = var.metric_filter_column
+    operator = var.metric_filter_operator
+    value = var.metric_filter_value
+  }
+
+  dimensions = var.metric_dimensions
+}
+
+resource "propel_metric" "count_distinct_metric" {
+  unique_name = var.metric_count_distinct_unique_name
+  datapool = propel_datapool.datapool.id
+  type = "COUNT_DISTINCT"
+  dimension = var.metric_count_distinct_dimension
+
+  filter {
+    column = var.metric_filter_column
+    operator = var.metric_filter_operator
+    value = var.metric_filter_value
+  }
+
+  dimensions = var.metric_dimensions
+}
+
+output "datasource_id" {
+  value = propel_datasource.datasource.id
+}
+
+output "datapool_id" {
+  value = propel_datapool.datapool.id
+}
+
+output "count_metric_id" {
+  value = propel_metric.count_metric.id
+}
+
+output "sum_metric_id" {
+  value = propel_metric.sum_metric.id
+}
+
+output "count_distinct_metric_id" {
+  value = propel_metric.count_distinct_metric.id
 }
