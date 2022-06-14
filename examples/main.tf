@@ -15,7 +15,8 @@ provider "propel" {
 resource "propel_datasource" "datasource" {
   unique_name = var.datasource_unique_name
   description = var.datasource_description
-  connection_settings = {
+
+  connection_settings {
     username = var.datasource_username
     password = var.datasource_password
     warehouse = var.datasource_warehouse

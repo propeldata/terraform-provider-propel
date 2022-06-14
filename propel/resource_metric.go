@@ -46,6 +46,7 @@ func resourceMetric() *schema.Resource {
 			"measure": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Computed: true,
 			},
 			"datapool": {
 				Type:        schema.TypeString,
@@ -83,11 +84,13 @@ func resourceMetric() *schema.Resource {
 			"dimensions": {
 				Type:     schema.TypeSet,
 				Optional: true,
+				Computed: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 			},
 			"dimension": {
 				Type:     schema.TypeString,
 				Optional: true,
+				Computed: true,
 			},
 		},
 	}

@@ -25,13 +25,13 @@ func resourceDataSource() *schema.Resource {
 		},
 		SchemaVersion: 1,
 		Schema: map[string]*schema.Schema{
-			"unique_name": &schema.Schema{
+			"unique_name": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
 				Description: "The DataSource name",
 			},
-			"description": &schema.Schema{
+			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
@@ -45,39 +45,72 @@ func resourceDataSource() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"account": &schema.Schema{
+			"account": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"environment": &schema.Schema{
+			"environment": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The Environment where belong the DataSource",
 			},
-			"created_at": &schema.Schema{
+			"created_at": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The date and time of when the DataSource was created",
 			},
-			"modified_at": &schema.Schema{
+			"modified_at": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The date and time of when the DataSource was modified",
 			},
-			"created_by": &schema.Schema{
+			"created_by": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The user who created the DataSource",
 			},
-			"modified_by": &schema.Schema{
+			"modified_by": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The user who modified the DataSource",
 			},
-			"connection_settings": &schema.Schema{
-				Type:     schema.TypeMap,
+			"connection_settings": {
+				Type:     schema.TypeList,
 				Required: true,
-				Elem:     &schema.Schema{Type: schema.TypeString},
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"account": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"database": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"warehouse": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"schema": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"role": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"username": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"password": {
+							Type:      schema.TypeString,
+							Required:  true,
+							Sensitive: true,
+						},
+					},
+				},
 			},
 		},
 		Timeouts: &schema.ResourceTimeout{
