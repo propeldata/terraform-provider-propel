@@ -31,7 +31,7 @@ func newAuthenticatedHttpClientWithHeaders(headers map[string]string) *http.Clie
 	return client
 }
 
-func NewCmsClient(url string, oauthUrl string, clientId string, secret string) (graphql.Client, error) {
+func NewPropelClient(url string, oauthUrl string, clientId string, secret string) (graphql.Client, error) {
 	token, err := getToken(oauthUrl, clientId, secret)
 	if err != nil {
 		return nil, err

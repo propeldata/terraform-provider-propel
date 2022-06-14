@@ -17,6 +17,9 @@ func resourceMetric() *schema.Resource {
 		ReadContext:   resourceMetricRead,
 		UpdateContext: resourceMetricUpdate,
 		DeleteContext: resourceMetricDelete,
+		Importer: &schema.ResourceImporter{
+			StateContext: schema.ImportStatePassthroughContext,
+		},
 		Schema: map[string]*schema.Schema{
 			"unique_name": {
 				Type:        schema.TypeString,
@@ -38,6 +41,7 @@ func resourceMetric() *schema.Resource {
 					"COUNT",
 					"COUNT_DISTINCT",
 				}, false),
+				Description: "The Metric type. The different Metric types determine how the values are calculated.",
 			},
 			"measure": {
 				Type:     schema.TypeString,
@@ -63,6 +67,10 @@ func resourceMetric() *schema.Resource {
 							ValidateFunc: validation.StringInSlice([]string{
 								"EQUALS",
 								"NOT_EQUALS",
+								"GREATER_THAN",
+								"GREATER_THAN_OR_EQUAL_TO",
+								"LESS_THAN",
+								"LESS_THAN_OR_EQUAL_TO",
 							}, false),
 						},
 						"value": {
@@ -149,7 +157,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 				ColumnName: d.Get("dimension").(string),
 			},
 		}
-		
+
 		response, err := pc.CreateCountDistinctMetric(ctx, c, input)
 		if err != nil {
 			return diag.FromErr(err)
@@ -180,7 +188,20 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(err)
 	}
 
+	dimensions := make([]string, 0)
+	for _, dimension := range response.Metric.Dimensions {
+		dimensions = append(dimensions, dimension.ColumnName)
+	}
+
+	if err := d.Set("dimensions", dimensions); err != nil {
+		return diag.FromErr(err)
+	}
+
 	if err := d.Set("type", response.Metric.Type); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("measure", response.Metric.Measure.ColumnName); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -233,6 +254,14 @@ func expandMetricFilters(def []interface{}) []pc.FilterInput {
 			operator = pc.FilterOperatorEquals
 		case "NOT_EQUALS":
 			operator = pc.FilterOperatorNotEquals
+		case "GREATER_THAN":
+			operator = pc.FilterOperatorGreaterThan
+		case "GREATER_THAN_OR_EQUAL_TO":
+			operator = pc.FilterOperatorGreaterThanOrEqualTo
+		case "LESS_THAN":
+			operator = pc.FilterOperatorLessThan
+		case "LESS_THAN_OR_EQUAL_TO":
+			operator = pc.FilterOperatorLessThanOrEqualTo
 		}
 
 		f := pc.FilterInput{

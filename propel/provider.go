@@ -59,7 +59,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		return nil, diags
 	}
 
-	c, err := pc.NewCmsClient(apiURL, oauthURL, clientID, clientSecret)
+	c, err := pc.NewPropelClient(apiURL, oauthURL, clientID, clientSecret)
 	if err != nil {
 		return nil, diag.FromErr(err)
 	}

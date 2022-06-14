@@ -19,6 +19,9 @@ func resourceDataPool() *schema.Resource {
 		ReadContext:   resourceDataPoolRead,
 		UpdateContext: resourceDataPoolUpdate,
 		DeleteContext: resourceDataPoolDelete,
+		Importer: &schema.ResourceImporter{
+			StateContext: schema.ImportStatePassthroughContext,
+		},
 		SchemaVersion: 1,
 		Schema: map[string]*schema.Schema{
 			"unique_name": {
@@ -100,13 +103,29 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
+	if err := d.Set("description", response.DataPool.Description); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("datasource", response.DataPool.DataSource.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("table", response.DataPool.Table); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("timestamp", response.DataPool.Timestamp.ColumnName); err != nil {
+		return diag.FromErr(err)
+	}
+
 	return diags
 }
 
 func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	if d.HasChange("unique_name") || d.HasChange("description") {
+	if d.HasChanges("unique_name", "description") {
 		input := pc.ModifyDataPoolInput{
 			IdOrUniqueName: pc.IdOrUniqueName{
 				Id: d.Id(),

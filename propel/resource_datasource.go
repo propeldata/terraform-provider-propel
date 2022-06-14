@@ -2,6 +2,7 @@ package propel
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -19,6 +20,9 @@ func resourceDataSource() *schema.Resource {
 		ReadContext:   resourceDataSourceRead,
 		UpdateContext: resourceDataSourceUpdate,
 		DeleteContext: resourceDataSourceDelete,
+		Importer: &schema.ResourceImporter{
+			StateContext: schema.ImportStatePassthroughContext,
+		},
 		SchemaVersion: 1,
 		Schema: map[string]*schema.Schema{
 			"unique_name": &schema.Schema{
@@ -183,13 +187,30 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 	if err := d.Set("status", response.DataSource.Status); err != nil {
 		return diag.FromErr(err)
 	}
+
+	// NOTE: Hack to parse connection settings
+	settingsJSON, err := json.Marshal(response.DataSource.ConnectionSettings)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	var settings map[string]interface{}
+
+	err = json.Unmarshal(settingsJSON, &settings)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("connection_settings", settings); err != nil {
+		return diag.FromErr(err)
+	}
 	return diags
 }
 
 func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	if d.HasChange("unique_name") {
+	if d.HasChanges("unique_name", "description") {
 		modifyDataSource := pc.ModifySnowflakeDataSourceInput{
 			IdOrUniqueName: pc.IdOrUniqueName{
 				Id: d.Id(),
