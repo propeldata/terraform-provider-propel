@@ -112,7 +112,36 @@ func resourceDataSource() *schema.Resource {
 					},
 				},
 			},
+			"checks": {
+				Type:     schema.TypeList,
+				Computed: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"name": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"description": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"status": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"error": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"checked_at": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+					},
+				},
+			},
 		},
+
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(30 * time.Minute),
 			Delete: schema.DefaultTimeout(30 * time.Minute),
@@ -126,7 +155,7 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	connectionSettings := d.Get("connection_settings").(map[string]interface{})
+	connectionSettings := d.Get("connection_settings").([]interface{})[0].(map[string]interface{})
 
 	input := pc.CreateSnowflakeDataSourceInput{
 		UniqueName:  d.Get("unique_name").(string),
@@ -136,9 +165,9 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 			Database:  connectionSettings["database"].(string),
 			Warehouse: connectionSettings["warehouse"].(string),
 			Schema:    connectionSettings["schema"].(string),
+			Role:      connectionSettings["role"].(string),
 			Username:  connectionSettings["username"].(string),
 			Password:  connectionSettings["password"].(string),
-			Role:      connectionSettings["role"].(string),
 		},
 	}
 
@@ -227,14 +256,41 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.FromErr(err)
 	}
 
-	var settings map[string]interface{}
+	var settingsRaw map[string]string
 
-	err = json.Unmarshal(settingsJSON, &settings)
+	err = json.Unmarshal(settingsJSON, &settingsRaw)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
+	settings := []map[string]interface{}{
+		{
+			"account":   settingsRaw["account"],
+			"database":  settingsRaw["database"],
+			"warehouse": settingsRaw["warehouse"],
+			"schema":    settingsRaw["schema"],
+			"role":      settingsRaw["role"],
+			"username":  settingsRaw["username"],
+		},
+	}
+
 	if err := d.Set("connection_settings", settings); err != nil {
+		return diag.FromErr(err)
+	}
+
+	checks := make([]map[string]interface{}, 0)
+	for _, c := range response.DataSource.Checks {
+		check := make(map[string]interface{}, 0)
+		check["name"] = c.Name
+		check["description"] = c.Description
+		check["status"] = c.Status
+		check["error"] = c.Error.GetMessage()
+		check["checked_at"] = c.CheckedAt.String()
+
+		checks = append(checks, check)
+	}
+
+	if err := d.Set("checks", checks); err != nil {
 		return diag.FromErr(err)
 	}
 	return diags
