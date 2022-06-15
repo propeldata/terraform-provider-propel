@@ -1,10 +1,10 @@
 # Propel Terraform Provider
 
-The [Propel](https://propeldata.com) provider is used to interact with resources supported by PropelData. The provider needs to be configured with the proper credentials before it can be used.
+The [Propel](https://propeldata.com) provider is used to interact with Propel resources, including Data Sources, Data Pools and Metrics. The provider needs to be configured with the proper Application credentials (client ID and secret) before it can be used.
 
-## Requeriments
--	[Terraform](https://www.terraform.io/downloads.html) 1.2.x
--	[Go](https://golang.org/doc/install) 1.17 (to build the provider plugin)
+## Requirements
+- [Terraform](https://www.terraform.io/downloads.html) 1.2.x
+- [Go](https://golang.org/doc/install) 1.17 (to build the provider plugin)
 
 ## Build provider
 
@@ -43,3 +43,26 @@ Run the following command to initialize the workspace and apply the sample confi
 ```shell
 $ terraform init && terraform apply
 ```
+
+## Developing the provider
+
+### Running Tests
+
+Configuring tests is similar to configuring the provider; Tests generally assume the following environment variables must be set in order to run tests:
+```
+PROPEL_CLIENT_ID
+PROPEL_CLIENT_SECRET
+```
+
+Additional variable may be required for other tests.
+```
+PROPEL_TEST_SNOWFLAKE_ACCOUNT
+PROPEL_TEST_SNOWFLAKE_WAREHOUSE
+PROPEL_TEST_SNOWFLAKE_ROLE
+PROPEL_TEST_SNOWFLAKE_USERNAME
+PROPEL_TEST_SNOWFLAKE_PASSWORD
+```
+
+Command to run the acceptance tests
+`make testacc`
+

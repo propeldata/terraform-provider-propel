@@ -6,7 +6,7 @@ Provides a Propel metric resource. This can be used to create and manage Propel 
 ---
 
 # Resource `propel_metric`
-Provides a Propel metric resource. This can be used to create and manage Propel metrics.
+Provides a Propel Metric resource. This can be used to create and manage Propel metrics.
 
 ## Example Usage
 
@@ -14,14 +14,21 @@ Provides a Propel metric resource. This can be used to create and manage Propel 
 resource "propel_metric" "my_sum_metric" {
   unique_name = "my_sum_metric"
   description = "Metric Description"
+  datapool = propel_data_pool.my_data_pool.id
+  
   type = "SUM"
   measure = "price"
-  datapool = propel_datapool.my_datapool.id
   
   filter {
     column = "product_name"
     operator = "EQUALS"
     value = "foo"
+  }
+
+  filter {
+    column = "country"
+    operator = "EQUALS"
+    value = "bar"
   }
   
   dimensions = ["store"]
@@ -30,8 +37,9 @@ resource "propel_metric" "my_sum_metric" {
 resource "propel_metric" "my_count_metric" {
   unique_name = "my_count_metric"
   description = "Metric Description"
+  datapool = propel_data_pool.my_data_pool.id
+  
   type = "COUNT"
-  datapool = propel_datapool.my_datapool.id
 
   filter {
     column = "product_name"
@@ -45,10 +53,11 @@ resource "propel_metric" "my_count_metric" {
 resource "propel_metric" "my_count_distinct_metric" {
   unique_name = "my_count_distinct_metric"
   description = "Metric Description"
+  datapool = propel_data_pool.my_data_pool.id
+  
   type = "COUNT_DISTINCT"
   dimension = "product_id"
-  datapool = propel_datapool.my_datapool.id
-
+  
   filter {
     column = "product_name"
     operator = "EQUALS"
@@ -75,12 +84,12 @@ resource "propel_metric" "my_count_distinct_metric" {
 Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included.
 
 ### Required
-- `column` (String) The column name
-- `database` (String) The operator for the filter. can be `EQUALS`, `NOT_EQUALS`, `GREATER_THAN`, `GREATER_THAN_OR_EQUAL_TO`,  `LESS_THAN` and `LESS_THAN_OR_EQUAL_TO`
-- `value` (String) The column value
+- `column` (String) The column name.
+- `database` (String) The operator for the filter. can be `EQUALS`, `NOT_EQUALS`, `GREATER_THAN`, `GREATER_THAN_OR_EQUAL_TO`,  `LESS_THAN` and `LESS_THAN_OR_EQUAL_TO`.
+- `value` (String) The column value.
 
 ## Import
 Import is supported using the following syntax:
-`terraform import propel_metric.my_sum_meric MET1111111111111111111111111111`
-
-
+```
+terraform import propel_metric.my_sum_meric MET00000000000000000000000000
+```

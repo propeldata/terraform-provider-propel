@@ -6,6 +6,11 @@ import (
 	"github.com/Khan/genqlient/graphql"
 )
 
+const (
+	apiURL   = "https://api.us-east-2.propeldata.com/graphql"
+	oauthURL = "https://auth.us-east-2.propeldata.com/oauth2/token"
+)
+
 type withHeaders struct {
 	headers   map[string]string
 	transport http.RoundTripper
@@ -31,15 +36,15 @@ func newAuthenticatedHttpClientWithHeaders(headers map[string]string) *http.Clie
 	return client
 }
 
-func NewPropelClient(url string, oauthUrl string, clientId string, secret string) (graphql.Client, error) {
-	token, err := getToken(oauthUrl, clientId, secret)
+func NewPropelClient(clientId string, secret string) (graphql.Client, error) {
+	token, err := getToken(oauthURL, clientId, secret)
 	if err != nil {
 		return nil, err
 	}
 
 	httpClient := newAuthenticatedHttpClientWithHeaders(map[string]string{"Authorization": "Bearer " + token})
-	gqlClient := graphql.NewClient(url, httpClient)
-	
+	gqlClient := graphql.NewClient(apiURL, httpClient)
+
 	return gqlClient, nil
 }
 

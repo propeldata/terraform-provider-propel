@@ -8,6 +8,7 @@ import (
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	pc "github.com/propeldata/terraform-provider/propel_client"
@@ -35,6 +36,19 @@ func resourceDataPool() *schema.Resource {
 				Optional:    true,
 				Computed:    true,
 				Description: "The DataPool description",
+			},
+			"status": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
+			"account": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
+			"environment": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The Environment where belong the DataSource",
 			},
 			"datasource": {
 				Type:     schema.TypeString,
@@ -75,9 +89,16 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 		return diag.FromErr(err)
 	}
 
-	switch resource := response.GetCreateDataPool().(type) {
+	switch r := response.GetCreateDataPool().(type) {
 	case *pc.CreateDataPoolCreateDataPoolDataPoolResponse:
-		d.SetId(resource.DataPool.Id)
+		d.SetId(r.DataPool.Id)
+
+		timeout := d.Timeout(schema.TimeoutCreate)
+
+		err = waitForDataPoolLive(ctx, c, d.Id(), timeout)
+		if err != nil {
+			return diag.FromErr(err)
+		}
 
 		resourceDataPoolRead(ctx, d, meta)
 	case *pc.CreateDataPoolCreateDataPoolFailureResponse:
@@ -106,6 +127,18 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 	}
 
 	if err := d.Set("description", response.DataPool.Description); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("status", response.DataPool.Status); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("environment", response.DataPool.Environment.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("account", response.DataPool.Account.Id); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -163,6 +196,37 @@ func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m inter
 
 	d.SetId("")
 	return diags
+}
+
+func waitForDataPoolLive(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
+	createStateConf := &resource.StateChangeConf{
+		Pending: []string{
+			string(pc.DataPoolStatusCreated),
+			string(pc.DataPoolStatusPending),
+		},
+		Target: []string{
+			string(pc.DataPoolStatusLive),
+		},
+		Refresh: func() (interface{}, string, error) {
+			resp, err := pc.DataPool(ctx, client, id)
+			if err != nil {
+				return 0, "", fmt.Errorf("error trying to read DataPool status: %s", err)
+			}
+
+			return resp, string(resp.DataPool.Status), nil
+		},
+		Timeout:                   timeout - time.Minute,
+		Delay:                     10 * time.Second,
+		MinTimeout:                5 * time.Second,
+		ContinuousTargetOccurence: 3,
+	}
+
+	_, err := createStateConf.WaitForStateContext(ctx)
+	if err != nil {
+		return fmt.Errorf("error waiting for DataPool to be LIVE: %s", err)
+	}
+
+	return nil
 }
 
 func waitForDataPoolDeletion(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {

@@ -22,15 +22,19 @@ package my_package
 import (
 	"context"
 	"fmt"
-	"github.com/Khan/genqlient/graphql"
-	"net/http"
+	"log"
+
 	pc "github.com/propeldata/terraform-provider/propel_client"
 )
 
 func main() {
-	ctx := context.Background()
-	client := graphql.NewClient("https://api.github.com/graphql", http.DefaultClient)
-	resp, err := pc.DataSource(ctx, client, "benjaminjkraft")
+	c, err := pc.NewPropelClient("clientID", "clientSecret")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	resp, err := pc.DataSource(context.Background(), c, "DSO00000000000000000000000000")
+	
 	fmt.Println(resp.DataSource.Account.Id, err)
 }
 ```

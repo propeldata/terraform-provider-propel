@@ -106,36 +106,8 @@ func resourceDataSource() *schema.Resource {
 						},
 						"password": {
 							Type:      schema.TypeString,
-							Required:  true,
+							Optional:  true,
 							Sensitive: true,
-						},
-					},
-				},
-			},
-			"checks": {
-				Type:     schema.TypeList,
-				Computed: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"name": {
-							Type:     schema.TypeString,
-							Computed: true,
-						},
-						"description": {
-							Type:     schema.TypeString,
-							Computed: true,
-						},
-						"status": {
-							Type:     schema.TypeString,
-							Computed: true,
-						},
-						"error": {
-							Type:     schema.TypeString,
-							Computed: true,
-						},
-						"checked_at": {
-							Type:     schema.TypeString,
-							Computed: true,
 						},
 					},
 				},
@@ -176,9 +148,9 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 		return diag.FromErr(err)
 	}
 
-	switch resource := response.GetCreateSnowflakeDataSource().(type) {
+	switch r := response.GetCreateSnowflakeDataSource().(type) {
 	case *pc.CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse:
-		d.SetId(resource.DataSource.Id)
+		d.SetId(r.DataSource.Id)
 
 		timeout := d.Timeout(schema.TimeoutCreate)
 
@@ -250,6 +222,8 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.FromErr(err)
 	}
 
+	cs := d.Get("connection_settings").([]interface{})[0].(map[string]interface{})
+
 	// NOTE: Hack to parse connection settings
 	settingsJSON, err := json.Marshal(response.DataSource.ConnectionSettings)
 	if err != nil {
@@ -271,6 +245,7 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 			"schema":    settingsRaw["schema"],
 			"role":      settingsRaw["role"],
 			"username":  settingsRaw["username"],
+			"password":  cs["password"],
 		},
 	}
 
@@ -278,21 +253,6 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.FromErr(err)
 	}
 
-	checks := make([]map[string]interface{}, 0)
-	for _, c := range response.DataSource.Checks {
-		check := make(map[string]interface{}, 0)
-		check["name"] = c.Name
-		check["description"] = c.Description
-		check["status"] = c.Status
-		check["error"] = c.Error.GetMessage()
-		check["checked_at"] = c.CheckedAt.String()
-
-		checks = append(checks, check)
-	}
-
-	if err := d.Set("checks", checks); err != nil {
-		return diag.FromErr(err)
-	}
 	return diags
 }
 
@@ -347,12 +307,9 @@ func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id s
 		Refresh: func() (interface{}, string, error) {
 			resp, err := pc.DataSource(ctx, client, id)
 			if err != nil {
-				return 0, "", fmt.Errorf("error trying to read DataSource status: %s", err)
+				return nil, "", fmt.Errorf("error trying to read DataSource status: %s", err)
 			}
 
-			if resp.DataSource.Status == pc.DataSourceStatusBroken {
-				return 0, string(resp.DataSource.Status), fmt.Errorf("DataSource in BROKEN status")
-			}
 			return resp, string(resp.DataSource.Status), nil
 		},
 		Timeout:                   timeout - time.Minute,

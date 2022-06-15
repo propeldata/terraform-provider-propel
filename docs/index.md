@@ -6,7 +6,7 @@ description: |-
 ---
 
 # Propel Provider
-The [Propel](https://www.propeldata.com) provider is used to interact with the resources supported by Propel. The provider needs to be configured with the proper credentials before it can be used.
+The [Propel](https://propeldata.com) provider is used to interact with Propel resources, including Data Sources, Data Pools and Metrics. The provider needs to be configured with the proper Application credentials (client ID and secret) before it can be used.
 
 ## Example Usage
 
@@ -20,7 +20,7 @@ terraform {
   }
 }
 
-# Configure your Propel provider
+# Configure the provider to use your Propel Application
 provider "propel" {
   client_id = var.propel_client_id
   client_secret = var.propel_client_secret
@@ -31,5 +31,5 @@ provider "propel" {
 
 ### Optional
 
-- **client_id** (String) Your Propel Application's clientId value
-- **client_secret** (String) Your Propel Application's secret value.
+- **client_id** (String) Your Propel Application's client ID
+- **client_secret** (String) Your Propel Application's client secret

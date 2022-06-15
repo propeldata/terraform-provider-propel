@@ -12,80 +12,90 @@ provider "propel" {
   client_secret = var.client_secret
 }
 
-resource "propel_datasource" "datasource" {
-  unique_name = var.datasource_unique_name
-  description = var.datasource_description
+resource "propel_data_source" "data_source" {
+  unique_name = "My Data Source"
+  description = "Data Source Description"
 
   connection_settings {
-    username = var.datasource_username
-    password = var.datasource_password
-    warehouse = var.datasource_warehouse
-    role = var.datasource_role
-    account = var.datasource_account
-    database = var.datasource_database
-    schema = var.datasource_schema
+    account = "Snowflake Account"
+    database = "Snowflake Database"
+    warehouse = "Snowflake Warehouse"
+    schema = "Snowflake Schema"
+    role = "Snowflake Role"
+    username = "Snowflake Username"
+    password = var.snowflake_password
   }
 }
 
-resource "propel_datapool" "datapool" {
-  unique_name = var.datapool_unique_name
-  description = var.datapool_description
-  datasource = propel_datasource.datasource.id
-  table = var.datapool_table
-  timestamp = var.datapool_timestamp
+resource "propel_data_pool" "data_pool" {
+  unique_name = "My Data Pool"
+  description = "Data Pool Description"
+  datasource = propel_data_source.data_source.id
+
+  table = "sample"
+  timestamp = "date"
 }
 
 resource "propel_metric" "count_metric" {
-  unique_name = var.metric_unique_name
-  description = var.metric_description
-  datapool = propel_datapool.datapool.id
+  unique_name = "My Count Metric"
+  description = "Metric Description"
+  datapool = propel_data_pool.data_pool.id
+
   type = "COUNT"
 
   filter {
-    column = var.metric_filter_column
-    operator = var.metric_filter_operator
-    value = var.metric_filter_value
+    column = "column_3"
+    operator = "EQUALS"
+    value = "value"
   }
 
-  dimensions = var.metric_dimensions
+  filter {
+    column = "column_4"
+    operator = "EQUALS"
+    value = "value"
+  }
+
+  dimensions = ["column_1", "column_2"]
 }
 
 resource "propel_metric" "sum_metric" {
-  unique_name = var.metric_sum_unique_name
-  datapool = propel_datapool.datapool.id
+  unique_name = "My Sum Metric"
+  datapool = propel_data_pool.data_pool.id
+
   type = "SUM"
-  measure = var.metric_sum_measure
+  measure = "column_1"
 
   filter {
-    column = var.metric_filter_column
-    operator = var.metric_filter_operator
-    value = var.metric_filter_value
+    column = "column_3"
+    operator = "EQUALS"
+    value = "value"
   }
 
-  dimensions = var.metric_dimensions
+  dimensions = ["column_1", "column_2"]
 }
 
 resource "propel_metric" "count_distinct_metric" {
-  unique_name = var.metric_count_distinct_unique_name
-  datapool = propel_datapool.datapool.id
+  unique_name = "My Count Distinct Metric"
+  datapool = propel_data_pool.data_pool.id
+
   type = "COUNT_DISTINCT"
-  dimension = var.metric_count_distinct_dimension
+  dimension = "column_1"
 
   filter {
-    column = var.metric_filter_column
-    operator = var.metric_filter_operator
-    value = var.metric_filter_value
+    column = "column_4"
+    operator = "EQUALS"
+    value = "value"
   }
 
-  dimensions = var.metric_dimensions
+  dimensions = ["column_1", "column_2"]
 }
 
-output "datasource_id" {
-  value = propel_datasource.datasource.id
+output "data_source_id" {
+  value = propel_data_source.data_source.id
 }
 
-output "datapool_id" {
-  value = propel_datapool.datapool.id
+output "data_pool_id" {
+  value = propel_data_pool.data_pool.id
 }
 
 output "count_metric_id" {

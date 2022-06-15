@@ -9,11 +9,6 @@ import (
 	pc "github.com/propeldata/terraform-provider/propel_client"
 )
 
-const (
-	apiURL   = "https://api.us-east-2.propeldata.com/graphql"
-	oauthURL = "https://auth.us-east-2.propeldata.com/oauth2/token"
-)
-
 // Provider -
 func Provider() *schema.Provider {
 	return &schema.Provider{
@@ -34,9 +29,9 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"propel_datasource": resourceDataSource(),
-			"propel_datapool":   resourceDataPool(),
-			"propel_metric":     resourceMetric(),
+			"propel_data_source": resourceDataSource(),
+			"propel_data_pool":   resourceDataPool(),
+			"propel_metric":      resourceMetric(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}
@@ -59,7 +54,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		return nil, diags
 	}
 
-	c, err := pc.NewPropelClient(apiURL, oauthURL, clientID, clientSecret)
+	c, err := pc.NewPropelClient(clientID, clientSecret)
 	if err != nil {
 		return nil, diag.FromErr(err)
 	}
