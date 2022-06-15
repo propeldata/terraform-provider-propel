@@ -29,13 +29,13 @@ func resourceDataPool() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "The DataPool name",
+				Description: "The Data Pool name",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "The DataPool description",
+				Description: "The Data Pool description",
 			},
 			"status": {
 				Type:     schema.TypeString,
@@ -48,7 +48,7 @@ func resourceDataPool() *schema.Resource {
 			"environment": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The Environment where belong the DataSource",
+				Description: "The Environment where belong the Data Source",
 			},
 			"datasource": {
 				Type:     schema.TypeString,
@@ -210,7 +210,7 @@ func waitForDataPoolLive(ctx context.Context, client graphql.Client, id string, 
 		Refresh: func() (interface{}, string, error) {
 			resp, err := pc.DataPool(ctx, client, id)
 			if err != nil {
-				return 0, "", fmt.Errorf("error trying to read DataPool status: %s", err)
+				return 0, "", fmt.Errorf("error trying to read Data Pool status: %s", err)
 			}
 
 			return resp, string(resp.DataPool.Status), nil
@@ -223,7 +223,7 @@ func waitForDataPoolLive(ctx context.Context, client graphql.Client, id string, 
 
 	_, err := createStateConf.WaitForStateContext(ctx)
 	if err != nil {
-		return fmt.Errorf("error waiting for DataPool to be LIVE: %s", err)
+		return fmt.Errorf("error waiting for Data Pool to be LIVE: %s", err)
 	}
 
 	return nil
@@ -249,7 +249,7 @@ func waitForDataPoolDeletion(ctx context.Context, client graphql.Client, id stri
 				return nil
 			}
 
-			return fmt.Errorf("error trying to fetch DataPool: %s", err)
+			return fmt.Errorf("error trying to fetch Data Pool: %s", err)
 		}
 
 		n++
