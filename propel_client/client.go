@@ -36,9 +36,10 @@ func NewPropelClient(url string, oauthUrl string, clientId string, secret string
 	if err != nil {
 		return nil, err
 	}
-	httpClient := newAuthenticatedHttpClientWithHeaders(map[string]string{"Authorization": "Bearer " + token})
 
+	httpClient := newAuthenticatedHttpClientWithHeaders(map[string]string{"Authorization": "Bearer " + token})
 	gqlClient := graphql.NewClient(url, httpClient)
+	
 	return gqlClient, nil
 }
 

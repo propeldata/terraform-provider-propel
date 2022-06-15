@@ -3,10 +3,10 @@ package propel
 import (
 	"context"
 
-	pc "github.com/propeldata/terraform-provider/graphql_client"
-
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	pc "github.com/propeldata/terraform-provider/propel_client"
 )
 
 const (

@@ -24,7 +24,7 @@ import (
 	"fmt"
 	"github.com/Khan/genqlient/graphql"
 	"net/http"
-	pc "github.com/propeldata/terraform-provider/graphql_client"
+	pc "github.com/propeldata/terraform-provider/propel_client"
 )
 
 func main() {
