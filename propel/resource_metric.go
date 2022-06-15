@@ -36,6 +36,7 @@ func resourceMetric() *schema.Resource {
 			"type": {
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 				ValidateFunc: validation.StringInSlice([]string{
 					"SUM",
 					"COUNT",
@@ -46,6 +47,7 @@ func resourceMetric() *schema.Resource {
 			"measure": {
 				Type:     schema.TypeString,
 				Optional: true,
+				ForceNew: true,
 				Computed: true,
 			},
 			"datapool": {
@@ -56,6 +58,7 @@ func resourceMetric() *schema.Resource {
 			"filter": {
 				Type:     schema.TypeList,
 				Optional: true,
+				ForceNew: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"column": {
@@ -85,12 +88,14 @@ func resourceMetric() *schema.Resource {
 				Type:     schema.TypeSet,
 				Optional: true,
 				Computed: true,
+				ForceNew: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 			},
 			"dimension": {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
+				ForceNew: true,
 			},
 		},
 	}
@@ -212,7 +217,6 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 }
 
 func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-
 	c := m.(graphql.Client)
 
 	if d.HasChanges("unique_name", "description") {

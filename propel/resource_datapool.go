@@ -43,10 +43,12 @@ func resourceDataPool() *schema.Resource {
 			"table": {
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 			},
 			"timestamp": {
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 			},
 		},
 	}
