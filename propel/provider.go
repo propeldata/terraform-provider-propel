@@ -2,10 +2,13 @@ package propel
 
 import (
 	"context"
+	"fmt"
+	"runtime"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
+	"github.com/propeldata/terraform-provider/propel/internal/utils"
 	pc "github.com/propeldata/terraform-provider/propel_client"
 )
 
@@ -54,7 +57,14 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		return nil, diags
 	}
 
-	c, err := pc.NewPropelClient(clientID, clientSecret)
+	userAgent := utils.GetUserAgent(fmt.Sprintf(
+		"propel-client-go (go %s; os %s; arch %s)",
+		runtime.Version(),
+		runtime.GOOS,
+		runtime.GOARCH,
+	))
+
+	c, err := pc.NewPropelClient(clientID, clientSecret, userAgent)
 	if err != nil {
 		return nil, diag.FromErr(err)
 	}

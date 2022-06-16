@@ -9,16 +9,12 @@ import (
 	"strings"
 )
 
-type CredentialsToken struct {
+type credentials struct {
 	AccessToken string `json:"access_token"`
-	Expiry      string `json:"expires_in"`
-	TokenType   string `json:"token_type"`
 }
 
-//const URL = "https://auth.%s.propeldata.com/oauth2/token"
-
 func getToken(oauthUrl string, clientId string, secret string) (string, error) {
-	var token CredentialsToken
+	var credentials credentials
 
 	payload := url.Values{}
 	payload.Set("grant_type", "client_credentials")
@@ -40,9 +36,8 @@ func getToken(oauthUrl string, clientId string, secret string) (string, error) {
 	}
 
 	defer resp.Body.Close()
-	if resp.StatusCode == http.StatusOK {
-		_ = json.NewDecoder(resp.Body).Decode(&token)
-	} else {
+
+	if resp.StatusCode != http.StatusOK {
 		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return "", err
@@ -52,5 +47,10 @@ func getToken(oauthUrl string, clientId string, secret string) (string, error) {
 
 		return "", fmt.Errorf("Unable to generate Access Token (%d): %s\n\n", resp.StatusCode, bodyString)
 	}
-	return token.AccessToken, nil
+
+	if err := json.NewDecoder(resp.Body).Decode(&credentials); err != nil {
+		return "", err
+	}
+
+	return credentials.AccessToken, nil
 }

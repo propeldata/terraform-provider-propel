@@ -2,7 +2,6 @@
 # behavior.
 before:
   hooks:
-    # this is just an example and not a requirement for provider building/publishing
     - go mod tidy
 builds:
   - env:
@@ -14,10 +13,16 @@ builds:
     flags:
       - -trimpath
     ldflags:
-      - "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}}"
+      - "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X github.com/propeldata/terraform-provider/version.ProviderVersion={{.Version}}"
     goos:
+      - freebsd
+      - windows
+      - linux
       - darwin
     goarch:
+      - amd64
+      - "386"
+      - arm
       - arm64
     ignore:
       - goos: darwin

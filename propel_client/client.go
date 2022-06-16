@@ -36,13 +36,16 @@ func newAuthenticatedHttpClientWithHeaders(headers map[string]string) *http.Clie
 	return client
 }
 
-func NewPropelClient(clientId string, secret string) (graphql.Client, error) {
+func NewPropelClient(clientId string, secret string, userAgent string) (graphql.Client, error) {
 	token, err := getToken(oauthURL, clientId, secret)
 	if err != nil {
 		return nil, err
 	}
 
-	httpClient := newAuthenticatedHttpClientWithHeaders(map[string]string{"Authorization": "Bearer " + token})
+	httpClient := newAuthenticatedHttpClientWithHeaders(map[string]string{
+		"Authorization": "Bearer " + token,
+		"User-Agent":    userAgent,
+	})
 	gqlClient := graphql.NewClient(apiURL, httpClient)
 
 	return gqlClient, nil
