@@ -92,7 +92,7 @@ func testAccCheckPropelDataPoolExists(n string) resource.TestCheckFunc {
 		}
 
 		if rs.Primary.ID == "" {
-			return errors.New("no DataPoolID set")
+			return errors.New("no Data Pool ID set")
 		}
 
 		return nil

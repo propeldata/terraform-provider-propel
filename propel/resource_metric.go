@@ -213,16 +213,51 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(err)
 	}
 
+	filters := make([]map[string]interface{}, 0)
+
 	switch s := response.Metric.Settings.(type) {
 	case *pc.MetricDataSettingsCountMetricSettings:
+		for _, f := range s.Filters {
+			filter := map[string]interface{}{
+				"column":   f.Column,
+				"operator": f.Operator,
+				"value":    f.Value,
+			}
+
+			filters = append(filters, filter)
+		}
 	case *pc.MetricDataSettingsSumMetricSettings:
 		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
 			return diag.FromErr(err)
+		}
+
+		for _, f := range s.Filters {
+			filter := map[string]interface{}{
+				"column":   f.Column,
+				"operator": f.Operator,
+				"value":    f.Value,
+			}
+
+			filters = append(filters, filter)
 		}
 	case *pc.MetricDataSettingsCountDistinctMetricSettings:
 		if err := d.Set("dimension", s.Dimension.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
+
+		for _, f := range s.Filters {
+			filter := map[string]interface{}{
+				"column":   f.Column,
+				"operator": f.Operator,
+				"value":    f.Value,
+			}
+
+			filters = append(filters, filter)
+		}
+	}
+
+	if err := d.Set("filter", filters); err != nil {
+		return diag.FromErr(err)
 	}
 
 	return diags

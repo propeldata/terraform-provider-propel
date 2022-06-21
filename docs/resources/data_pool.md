@@ -2,7 +2,7 @@
 page_title: "propel_data_pool Resource - terraform-provider-propel"
 subcategory: ""
 description: |-
-The data pool resource allows you to configure a Propel Data Pool.
+  The data pool resource allows you to configure a Propel Data Pool.
 ---
 
 # Resource `propel_data_pool`

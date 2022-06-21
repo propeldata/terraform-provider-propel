@@ -112,7 +112,7 @@ func testAccCheckPropelDataSourceExists(n string) resource.TestCheckFunc {
 		}
 
 		if rs.Primary.ID == "" {
-			return errors.New("no DataSourceID set")
+			return errors.New("no Data Source ID set")
 		}
 
 		return nil

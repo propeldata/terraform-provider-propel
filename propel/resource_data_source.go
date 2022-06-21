@@ -163,7 +163,7 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 	case *pc.CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse:
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
-			Summary:  "Failed to create DataSource",
+			Summary:  "Failed to create Data Source",
 		})
 	}
 
@@ -296,7 +296,7 @@ func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id s
 		Refresh: func() (interface{}, string, error) {
 			resp, err := pc.DataSource(ctx, client, id)
 			if err != nil {
-				return nil, "", fmt.Errorf("error trying to read DataSource status: %s", err)
+				return nil, "", fmt.Errorf("error trying to read Data Source status: %s", err)
 			}
 
 			return resp, string(resp.DataSource.Status), nil
@@ -309,7 +309,7 @@ func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id s
 
 	_, err := createStateConf.WaitForStateContext(ctx)
 	if err != nil {
-		return fmt.Errorf("error waiting for DataSource to be CONNECTED: %s", err)
+		return fmt.Errorf("error waiting for Data Source to be CONNECTED: %s", err)
 	}
 
 	return nil

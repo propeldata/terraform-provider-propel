@@ -2,7 +2,7 @@
 page_title: "propel_metric Resource - terraform-provider-propel"
 subcategory: ""
 description: |-
-Provides a Propel metric resource. This can be used to create and manage Propel metrics.
+  Provides a Propel metric resource. This can be used to create and manage Propel metrics.
 ---
 
 # Resource `propel_metric`
