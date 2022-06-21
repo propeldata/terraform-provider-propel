@@ -193,31 +193,31 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("created_by", response.DataSource.CreatedBy); err != nil {
+	if err := d.Set("created_by", response.DataSource.GetCreatedBy()); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("modified_at", response.DataSource.ModifiedAt.String()); err != nil {
+	if err := d.Set("modified_at", response.DataSource.GetModifiedAt().String()); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("modified_by", response.DataSource.ModifiedBy); err != nil {
+	if err := d.Set("modified_by", response.DataSource.GetModifiedBy()); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("environment", response.DataSource.Environment.Id); err != nil {
+	if err := d.Set("environment", response.DataSource.GetEnvironment().Id); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("account", response.DataSource.Account.Id); err != nil {
+	if err := d.Set("account", response.DataSource.GetAccount().Id); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("type", response.DataSource.Type); err != nil {
+	if err := d.Set("type", response.DataSource.GetType()); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("status", response.DataSource.Status); err != nil {
+	if err := d.Set("status", response.DataSource.GetStatus()); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -237,7 +237,7 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		settings["username"] = s.GetUsername()
 	}
 
-	if err := d.Set("connection_settings", settings); err != nil {
+	if err := d.Set("connection_settings", []map[string]interface{}{settings}); err != nil {
 		return diag.FromErr(err)
 	}
 
