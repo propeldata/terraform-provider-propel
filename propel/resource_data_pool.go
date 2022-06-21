@@ -42,15 +42,16 @@ func resourceDataPool() *schema.Resource {
 				Computed: true,
 			},
 			"account": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The Account that the Data Pool belongs to",
 			},
 			"environment": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The Environment where belong the Data Source",
+				Description: "The Environment that the Data Pool belongs to",
 			},
-			"datasource": {
+			"data_source": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
@@ -77,7 +78,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 		UniqueName:  d.Get("unique_name").(string),
 		Description: d.Get("description").(string),
 		DataSource: pc.IdOrUniqueName{
-			Id: d.Get("datasource").(string),
+			Id: d.Get("data_source").(string),
 		},
 		Table: d.Get("table").(string),
 		Timestamp: pc.DimensionInput{
@@ -104,7 +105,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 	case *pc.CreateDataPoolCreateDataPoolFailureResponse:
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
-			Summary:  "Failed to create DataPool",
+			Summary:  "Failed to create Data Pool",
 		})
 	}
 
@@ -142,7 +143,7 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("datasource", response.DataPool.DataSource.Id); err != nil {
+	if err := d.Set("data_source", response.DataPool.DataSource.Id); err != nil {
 		return diag.FromErr(err)
 	}
 

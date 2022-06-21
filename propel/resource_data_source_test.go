@@ -48,19 +48,19 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 			{
 				Config: testAccCheckPropelDataSourceConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckPropelDataSourceExists("propel_datasource.new"),
-					resource.TestCheckResourceAttr("propel_datasource.new", "description", ""),
-					resource.TestCheckResourceAttr("propel_datasource.new", "type", "Snowflake"),
-					resource.TestCheckResourceAttr("propel_datasource.new", "status", "CONNECTED"),
+					testAccCheckPropelDataSourceExists("propel_data_source.new"),
+					resource.TestCheckResourceAttr("propel_data_source.new", "description", ""),
+					resource.TestCheckResourceAttr("propel_data_source.new", "type", "Snowflake"),
+					resource.TestCheckResourceAttr("propel_data_source.new", "status", "CONNECTED"),
 				),
 			},
 			{
 				Config:      testAccCheckPropelDataSourceConfigBasic(ctxInvalid),
 				ExpectError: regexp.MustCompile(`DataSource in BROKEN status`),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckPropelDataSourceExists("propel_datasource.foo"),
-					resource.TestCheckResourceAttr("propel_datasource.new", "type", "Snowflake"),
-					resource.TestCheckResourceAttr("propel_datasource.foo", "status", "BROKEN"),
+					testAccCheckPropelDataSourceExists("propel_data_source.foo"),
+					resource.TestCheckResourceAttr("propel_data_source.new", "type", "Snowflake"),
+					resource.TestCheckResourceAttr("propel_data_source.foo", "status", "BROKEN"),
 				),
 			},
 		},
@@ -69,7 +69,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 
 func testAccCheckPropelDataSourceConfigBasic(ctx map[string]interface{}) string {
 	return Nprintf(`
-	resource "propel_datasource" "%{resource_name}" {
+	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
 
 		connection_settings {
@@ -88,7 +88,7 @@ func testAccCheckPropelDataSourceDestroy(s *terraform.State) error {
 	c := testAccProvider.Meta().(graphql.Client)
 
 	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "propel_datasource" {
+		if rs.Type != "propel_data_source" {
 			continue
 		}
 

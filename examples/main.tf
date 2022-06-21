@@ -30,7 +30,7 @@ resource "propel_data_source" "data_source" {
 resource "propel_data_pool" "data_pool" {
   unique_name = "My Data Pool"
   description = "Data Pool Description"
-  datasource = propel_data_source.data_source.id
+  data_source = propel_data_source.data_source.id
 
   table = "sample"
   timestamp = "date"
@@ -39,7 +39,7 @@ resource "propel_data_pool" "data_pool" {
 resource "propel_metric" "count_metric" {
   unique_name = "My Count Metric"
   description = "Metric Description"
-  datapool = propel_data_pool.data_pool.id
+  data_pool = propel_data_pool.data_pool.id
 
   type = "COUNT"
 
@@ -60,7 +60,7 @@ resource "propel_metric" "count_metric" {
 
 resource "propel_metric" "sum_metric" {
   unique_name = "My Sum Metric"
-  datapool = propel_data_pool.data_pool.id
+  data_pool = propel_data_pool.data_pool.id
 
   type = "SUM"
   measure = "column_1"
@@ -76,7 +76,7 @@ resource "propel_metric" "sum_metric" {
 
 resource "propel_metric" "count_distinct_metric" {
   unique_name = "My Count Distinct Metric"
-  datapool = propel_data_pool.data_pool.id
+  data_pool = propel_data_pool.data_pool.id
 
   type = "COUNT_DISTINCT"
   dimension = "column_1"

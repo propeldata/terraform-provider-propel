@@ -28,13 +28,13 @@ func resourceDataSource() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "The DataSource name",
+				Description: "The Data Source name",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "The DataSource description",
+				Description: "The Data Source description",
 			},
 			"type": {
 				Type:     schema.TypeString,
@@ -45,33 +45,34 @@ func resourceDataSource() *schema.Resource {
 				Computed: true,
 			},
 			"account": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The Account that the Data Source belongs to",
 			},
 			"environment": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The Environment where belong the DataSource",
+				Description: "The Environment that the Data Source belongs to",
 			},
 			"created_at": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The date and time of when the DataSource was created",
+				Description: "The date and time of when the Data Source was created",
 			},
 			"modified_at": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The date and time of when the DataSource was modified",
+				Description: "The date and time of when the Data Source was modified",
 			},
 			"created_by": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The user who created the DataSource",
+				Description: "The user who created the Data Source",
 			},
 			"modified_by": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The user who modified the DataSource",
+				Description: "The user who modified the Data Source",
 			},
 			"connection_settings": {
 				Type:     schema.TypeList,
@@ -105,7 +106,7 @@ func resourceDataSource() *schema.Resource {
 						},
 						"password": {
 							Type:      schema.TypeString,
-							Optional:  true,
+							Required:  true,
 							Sensitive: true,
 						},
 					},

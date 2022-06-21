@@ -16,7 +16,7 @@ resource "propel_data_pool" "my_data_pool" {
   description = "Data Pool Description"
   table = "events"
   timestamp = "date"
-  datasource = propel_data_source.my_data_source.id
+  data_source = propel_data_source.my_data_source.id
 }
 ```
 

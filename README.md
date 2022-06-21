@@ -48,13 +48,13 @@ $ terraform init && terraform apply
 
 ### Running Tests
 
-Configuring tests is similar to configuring the provider; Tests generally assume the following environment variables must be set in order to run tests:
+Configuring tests is similar to configuring the provider. Tests generally assume the following environment variables must be set in order to run tests:
 ```
 PROPEL_CLIENT_ID
 PROPEL_CLIENT_SECRET
 ```
 
-Additional variable may be required for other tests.
+Additional variables may be required for other tests:
 ```
 PROPEL_TEST_SNOWFLAKE_ACCOUNT
 PROPEL_TEST_SNOWFLAKE_WAREHOUSE
@@ -63,6 +63,7 @@ PROPEL_TEST_SNOWFLAKE_USERNAME
 PROPEL_TEST_SNOWFLAKE_PASSWORD
 ```
 
-Command to run the acceptance tests
-`make testacc`
-
+Command to run the acceptance tests:
+```
+make testacc
+```

@@ -32,8 +32,8 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 			{
 				Config: testAccCheckPropelDataPoolConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckPropelDataPoolExists("propel_datapool.bar"),
-					resource.TestCheckResourceAttr("propel_datapool.bar", "table", "CLUSTER_TEST_TABLE_1"),
+					testAccCheckPropelDataPoolExists("propel_data_pool.bar"),
+					resource.TestCheckResourceAttr("propel_data_pool.bar", "table", "CLUSTER_TEST_TABLE_1"),
 				),
 			},
 		},
@@ -42,7 +42,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 
 func testAccCheckPropelDataPoolConfigBasic(ctx map[string]interface{}) string {
 	return Nprintf(`
-	resource "propel_datasource" "foo" {
+	resource "propel_data_source" "foo" {
 		unique_name = "test"
 
 		connection_settings {
@@ -56,11 +56,11 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]interface{}) string {
 		}
 	}
 
-	resource "propel_datapool" "bar" {
+	resource "propel_data_pool" "bar" {
 		unique_name = "test"
 		table = "CLUSTER_TEST_TABLE_1"
 		timestamp = "timestamp_tz"
-		datasource = "${propel_datasource.foo.id}"
+		data_source = "${propel_data_source.foo.id}"
 	}`, ctx)
 }
 
@@ -68,7 +68,7 @@ func testAccCheckPropelDataPoolDestroy(s *terraform.State) error {
 	c := testAccProvider.Meta().(graphql.Client)
 
 	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "propel_datapool" {
+		if rs.Type != "propel_data_pool" {
 			continue
 		}
 

@@ -50,7 +50,7 @@ func resourceMetric() *schema.Resource {
 				ForceNew: true,
 				Computed: true,
 			},
-			"datapool": {
+			"data_pool": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "The Data Pool that powers this Metric.",
@@ -119,7 +119,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 	switch d.Get("type") {
 	case "SUM":
 		input := pc.CreateSumMetricInput{
-			DataPool:    d.Get("datapool").(string),
+			DataPool:    d.Get("data_pool").(string),
 			UniqueName:  d.Get("unique_name").(string),
 			Description: d.Get("description").(string),
 			Filters:     filters,
@@ -141,7 +141,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 		d.SetId(response.GetCreateSumMetric().Metric.Id)
 	case "COUNT":
 		input := pc.CreateCountMetricInput{
-			DataPool:    d.Get("datapool").(string),
+			DataPool:    d.Get("data_pool").(string),
 			UniqueName:  d.Get("unique_name").(string),
 			Description: d.Get("description").(string),
 			Filters:     filters,
@@ -156,7 +156,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 		d.SetId(response.GetCreateCountMetric().Metric.Id)
 	case "COUNT_DISTINCT":
 		input := pc.CreateCountDistinctMetricInput{
-			DataPool:    d.Get("datapool").(string),
+			DataPool:    d.Get("data_pool").(string),
 			UniqueName:  d.Get("unique_name").(string),
 			Description: d.Get("description").(string),
 			Filters:     filters,
@@ -196,6 +196,10 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(err)
 	}
 
+	if err := d.Set("data_pool", response.Metric.DataPool.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
 	dimensions := make([]string, 0)
 	for _, dimension := range response.Metric.Dimensions {
 		dimensions = append(dimensions, dimension.ColumnName)
@@ -209,8 +213,16 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("measure", response.Metric.Measure.ColumnName); err != nil {
-		return diag.FromErr(err)
+	switch s := response.Metric.Settings.(type) {
+	case *pc.MetricDataSettingsCountMetricSettings:
+	case *pc.MetricDataSettingsSumMetricSettings:
+		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
+	case *pc.MetricDataSettingsCountDistinctMetricSettings:
+		if err := d.Set("dimension", s.Dimension.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	return diags

@@ -6,7 +6,7 @@ description: |-
 ---
 
 # Resource `propel_data_source`
-Provides a Propel Data Source resource. This can be used to create and manage Propel DataSources.
+Provides a Propel Data Source resource. This can be used to create and manage Propel Data Sources.
 
 ## Example Usage
 
@@ -53,5 +53,5 @@ Snowflake connection details.
 ## Import
 Import is supported using the following syntax:
 ```
-terraform import propel_datasource.my_datasource DSO00000000000000000000000000
+terraform import propel_data_source.my_data_source DSO00000000000000000000000000
 ```

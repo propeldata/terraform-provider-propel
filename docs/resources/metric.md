@@ -6,7 +6,7 @@ Provides a Propel metric resource. This can be used to create and manage Propel 
 ---
 
 # Resource `propel_metric`
-Provides a Propel Metric resource. This can be used to create and manage Propel metrics.
+Provides a Propel Metric resource. This can be used to create and manage Propel Metrics.
 
 ## Example Usage
 
@@ -14,7 +14,7 @@ Provides a Propel Metric resource. This can be used to create and manage Propel 
 resource "propel_metric" "my_sum_metric" {
   unique_name = "my_sum_metric"
   description = "Metric Description"
-  datapool = propel_data_pool.my_data_pool.id
+  data_pool = propel_data_pool.my_data_pool.id
   
   type = "SUM"
   measure = "price"
@@ -37,7 +37,7 @@ resource "propel_metric" "my_sum_metric" {
 resource "propel_metric" "my_count_metric" {
   unique_name = "my_count_metric"
   description = "Metric Description"
-  datapool = propel_data_pool.my_data_pool.id
+  data_pool = propel_data_pool.my_data_pool.id
   
   type = "COUNT"
 
@@ -53,7 +53,7 @@ resource "propel_metric" "my_count_metric" {
 resource "propel_metric" "my_count_distinct_metric" {
   unique_name = "my_count_distinct_metric"
   description = "Metric Description"
-  datapool = propel_data_pool.my_data_pool.id
+  data_pool = propel_data_pool.my_data_pool.id
   
   type = "COUNT_DISTINCT"
   dimension = "product_id"
@@ -76,7 +76,7 @@ resource "propel_metric" "my_count_distinct_metric" {
 ### Optional
 - `unique_name` - (String) The unique name of the Metric.
 - `description` - (String) The description of the Metric.
-- `dimension` - (String) The column which the count distinct is going to be performed.
+- `dimension` - (String) The column on which the count distinct is going to be performed.
 - `measure` - (String) The column you want to sum.
 - `dimensions` - (List of String) An array of column names that are used as dimensions for your Metric.
 
