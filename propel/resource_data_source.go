@@ -2,7 +2,6 @@ package propel
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -182,15 +181,15 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 	}
 
 	d.SetId(response.DataSource.Id)
-	if err := d.Set("unique_name", response.DataSource.UniqueName); err != nil {
+	if err := d.Set("unique_name", response.DataSource.GetUniqueName()); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("description", response.DataSource.Description); err != nil {
+	if err := d.Set("description", response.DataSource.GetDescription()); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("created_at", response.DataSource.CreatedAt.String()); err != nil {
+	if err := d.Set("created_at", response.DataSource.GetCreatedAt().String()); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -224,29 +223,18 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 
 	cs := d.Get("connection_settings").([]interface{})[0].(map[string]interface{})
 
-	// NOTE: Hack to parse connection settings
-	settingsJSON, err := json.Marshal(response.DataSource.ConnectionSettings)
-	if err != nil {
-		return diag.FromErr(err)
+	settings := map[string]interface{}{
+		"password": cs["password"],
 	}
 
-	var settingsRaw map[string]string
-
-	err = json.Unmarshal(settingsJSON, &settingsRaw)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	settings := []map[string]interface{}{
-		{
-			"account":   settingsRaw["account"],
-			"database":  settingsRaw["database"],
-			"warehouse": settingsRaw["warehouse"],
-			"schema":    settingsRaw["schema"],
-			"role":      settingsRaw["role"],
-			"username":  settingsRaw["username"],
-			"password":  cs["password"],
-		},
+	switch s := response.DataSource.GetConnectionSettings().(type) {
+	case *pc.DataSourceDataConnectionSettingsSnowflakeConnectionSettings:
+		settings["account"] = s.GetAccount()
+		settings["database"] = s.GetDatabase()
+		settings["warehouse"] = s.GetWarehouse()
+		settings["schema"] = s.GetSchema()
+		settings["role"] = s.GetRole()
+		settings["username"] = s.GetUsername()
 	}
 
 	if err := d.Set("connection_settings", settings); err != nil {
