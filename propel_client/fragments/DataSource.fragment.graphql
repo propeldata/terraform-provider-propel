@@ -1,6 +1,6 @@
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
     id
-    ...common
+    ...CommonData
     type
     status
     error {
@@ -22,12 +22,12 @@ fragment dataSource on DataSource {
             name
             availableTimestamps (first: 100) {
                 nodes {
-                    ...column
+                    ...ColumnData
                 }
             }
             availableMeasures (first: 100) {
                 nodes {
-                    ...column
+                    ...ColumnData
                 }
             }
         }
@@ -44,7 +44,7 @@ fragment dataSource on DataSource {
     }
     tableIntrospections (first: 100) {
         nodes {
-            ...tableIntrospection
+            ...TableIntrospectionData
         }
     }
 }

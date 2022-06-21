@@ -11,6 +11,329 @@ import (
 	"github.com/Khan/genqlient/graphql"
 )
 
+// ColumnData includes the GraphQL fields of Column requested by the fragment ColumnData.
+type ColumnData struct {
+	Name         string    `json:"name"`
+	Type         string    `json:"type"`
+	Kind         string    `json:"kind"`
+	IsNullable   bool      `json:"isNullable"`
+	DefaultValue string    `json:"defaultValue"`
+	IsPrimaryKey bool      `json:"isPrimaryKey"`
+	IsUniqueKey  bool      `json:"isUniqueKey"`
+	Comment      string    `json:"comment"`
+	PolicyName   string    `json:"policyName"`
+	CachedAt     time.Time `json:"cachedAt"`
+	CreatedAt    time.Time `json:"createdAt"`
+	CreatedBy    string    `json:"createdBy"`
+}
+
+// GetName returns ColumnData.Name, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetName() string { return v.Name }
+
+// GetType returns ColumnData.Type, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetType() string { return v.Type }
+
+// GetKind returns ColumnData.Kind, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetKind() string { return v.Kind }
+
+// GetIsNullable returns ColumnData.IsNullable, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetIsNullable() bool { return v.IsNullable }
+
+// GetDefaultValue returns ColumnData.DefaultValue, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetDefaultValue() string { return v.DefaultValue }
+
+// GetIsPrimaryKey returns ColumnData.IsPrimaryKey, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetIsPrimaryKey() bool { return v.IsPrimaryKey }
+
+// GetIsUniqueKey returns ColumnData.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetIsUniqueKey() bool { return v.IsUniqueKey }
+
+// GetComment returns ColumnData.Comment, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetComment() string { return v.Comment }
+
+// GetPolicyName returns ColumnData.PolicyName, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetPolicyName() string { return v.PolicyName }
+
+// GetCachedAt returns ColumnData.CachedAt, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetCachedAt() time.Time { return v.CachedAt }
+
+// GetCreatedAt returns ColumnData.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetCreatedAt() time.Time { return v.CreatedAt }
+
+// GetCreatedBy returns ColumnData.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ColumnData) GetCreatedBy() string { return v.CreatedBy }
+
+// CommonData includes the GraphQL fields of Common requested by the fragment CommonData.
+//
+// CommonData is implemented by the following types:
+// CommonDataApplication
+// CommonDataDataSource
+// CommonDataDataPool
+// CommonDataMetric
+type CommonData interface {
+	implementsGraphQLInterfaceCommonData()
+	// GetUniqueName returns the interface-field "uniqueName" from its implementation.
+	GetUniqueName() string
+	// GetDescription returns the interface-field "description" from its implementation.
+	GetDescription() string
+	// GetAccount returns the interface-field "account" from its implementation.
+	GetAccount() CommonDataAccount
+	// GetEnvironment returns the interface-field "environment" from its implementation.
+	GetEnvironment() CommonDataEnvironment
+	// GetCreatedAt returns the interface-field "createdAt" from its implementation.
+	GetCreatedAt() time.Time
+	// GetModifiedAt returns the interface-field "modifiedAt" from its implementation.
+	GetModifiedAt() time.Time
+	// GetCreatedBy returns the interface-field "createdBy" from its implementation.
+	GetCreatedBy() string
+	// GetModifiedBy returns the interface-field "modifiedBy" from its implementation.
+	GetModifiedBy() string
+}
+
+func (v *CommonDataApplication) implementsGraphQLInterfaceCommonData() {}
+func (v *CommonDataDataSource) implementsGraphQLInterfaceCommonData()  {}
+func (v *CommonDataDataPool) implementsGraphQLInterfaceCommonData()    {}
+func (v *CommonDataMetric) implementsGraphQLInterfaceCommonData()      {}
+
+func __unmarshalCommonData(b []byte, v *CommonData) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "Application":
+		*v = new(CommonDataApplication)
+		return json.Unmarshal(b, *v)
+	case "DataSource":
+		*v = new(CommonDataDataSource)
+		return json.Unmarshal(b, *v)
+	case "DataPool":
+		*v = new(CommonDataDataPool)
+		return json.Unmarshal(b, *v)
+	case "Metric":
+		*v = new(CommonDataMetric)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing Common.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for CommonData: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalCommonData(v *CommonData) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *CommonDataApplication:
+		typename = "Application"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CommonDataApplication
+		}{typename, v}
+		return json.Marshal(result)
+	case *CommonDataDataSource:
+		typename = "DataSource"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CommonDataDataSource
+		}{typename, v}
+		return json.Marshal(result)
+	case *CommonDataDataPool:
+		typename = "DataPool"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CommonDataDataPool
+		}{typename, v}
+		return json.Marshal(result)
+	case *CommonDataMetric:
+		typename = "Metric"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CommonDataMetric
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for CommonData: "%T"`, v)
+	}
+}
+
+// CommonDataAccount includes the requested fields of the GraphQL type Account.
+type CommonDataAccount struct {
+	Id string `json:"id"`
+}
+
+// GetId returns CommonDataAccount.Id, and is useful for accessing the field via an interface.
+func (v *CommonDataAccount) GetId() string { return v.Id }
+
+// CommonData includes the GraphQL fields of Application requested by the fragment CommonData.
+type CommonDataApplication struct {
+	UniqueName  string                `json:"uniqueName"`
+	Description string                `json:"description"`
+	Account     CommonDataAccount     `json:"account"`
+	Environment CommonDataEnvironment `json:"environment"`
+	CreatedAt   time.Time             `json:"createdAt"`
+	ModifiedAt  time.Time             `json:"modifiedAt"`
+	CreatedBy   string                `json:"createdBy"`
+	ModifiedBy  string                `json:"modifiedBy"`
+}
+
+// GetUniqueName returns CommonDataApplication.UniqueName, and is useful for accessing the field via an interface.
+func (v *CommonDataApplication) GetUniqueName() string { return v.UniqueName }
+
+// GetDescription returns CommonDataApplication.Description, and is useful for accessing the field via an interface.
+func (v *CommonDataApplication) GetDescription() string { return v.Description }
+
+// GetAccount returns CommonDataApplication.Account, and is useful for accessing the field via an interface.
+func (v *CommonDataApplication) GetAccount() CommonDataAccount { return v.Account }
+
+// GetEnvironment returns CommonDataApplication.Environment, and is useful for accessing the field via an interface.
+func (v *CommonDataApplication) GetEnvironment() CommonDataEnvironment { return v.Environment }
+
+// GetCreatedAt returns CommonDataApplication.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataApplication) GetCreatedAt() time.Time { return v.CreatedAt }
+
+// GetModifiedAt returns CommonDataApplication.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataApplication) GetModifiedAt() time.Time { return v.ModifiedAt }
+
+// GetCreatedBy returns CommonDataApplication.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataApplication) GetCreatedBy() string { return v.CreatedBy }
+
+// GetModifiedBy returns CommonDataApplication.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataApplication) GetModifiedBy() string { return v.ModifiedBy }
+
+// CommonData includes the GraphQL fields of DataPool requested by the fragment CommonData.
+type CommonDataDataPool struct {
+	UniqueName  string                `json:"uniqueName"`
+	Description string                `json:"description"`
+	Account     CommonDataAccount     `json:"account"`
+	Environment CommonDataEnvironment `json:"environment"`
+	CreatedAt   time.Time             `json:"createdAt"`
+	ModifiedAt  time.Time             `json:"modifiedAt"`
+	CreatedBy   string                `json:"createdBy"`
+	ModifiedBy  string                `json:"modifiedBy"`
+}
+
+// GetUniqueName returns CommonDataDataPool.UniqueName, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPool) GetUniqueName() string { return v.UniqueName }
+
+// GetDescription returns CommonDataDataPool.Description, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPool) GetDescription() string { return v.Description }
+
+// GetAccount returns CommonDataDataPool.Account, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPool) GetAccount() CommonDataAccount { return v.Account }
+
+// GetEnvironment returns CommonDataDataPool.Environment, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPool) GetEnvironment() CommonDataEnvironment { return v.Environment }
+
+// GetCreatedAt returns CommonDataDataPool.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPool) GetCreatedAt() time.Time { return v.CreatedAt }
+
+// GetModifiedAt returns CommonDataDataPool.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPool) GetModifiedAt() time.Time { return v.ModifiedAt }
+
+// GetCreatedBy returns CommonDataDataPool.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPool) GetCreatedBy() string { return v.CreatedBy }
+
+// GetModifiedBy returns CommonDataDataPool.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPool) GetModifiedBy() string { return v.ModifiedBy }
+
+// CommonData includes the GraphQL fields of DataSource requested by the fragment CommonData.
+type CommonDataDataSource struct {
+	UniqueName  string                `json:"uniqueName"`
+	Description string                `json:"description"`
+	Account     CommonDataAccount     `json:"account"`
+	Environment CommonDataEnvironment `json:"environment"`
+	CreatedAt   time.Time             `json:"createdAt"`
+	ModifiedAt  time.Time             `json:"modifiedAt"`
+	CreatedBy   string                `json:"createdBy"`
+	ModifiedBy  string                `json:"modifiedBy"`
+}
+
+// GetUniqueName returns CommonDataDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *CommonDataDataSource) GetUniqueName() string { return v.UniqueName }
+
+// GetDescription returns CommonDataDataSource.Description, and is useful for accessing the field via an interface.
+func (v *CommonDataDataSource) GetDescription() string { return v.Description }
+
+// GetAccount returns CommonDataDataSource.Account, and is useful for accessing the field via an interface.
+func (v *CommonDataDataSource) GetAccount() CommonDataAccount { return v.Account }
+
+// GetEnvironment returns CommonDataDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *CommonDataDataSource) GetEnvironment() CommonDataEnvironment { return v.Environment }
+
+// GetCreatedAt returns CommonDataDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataDataSource) GetCreatedAt() time.Time { return v.CreatedAt }
+
+// GetModifiedAt returns CommonDataDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataDataSource) GetModifiedAt() time.Time { return v.ModifiedAt }
+
+// GetCreatedBy returns CommonDataDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataDataSource) GetCreatedBy() string { return v.CreatedBy }
+
+// GetModifiedBy returns CommonDataDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataDataSource) GetModifiedBy() string { return v.ModifiedBy }
+
+// CommonDataEnvironment includes the requested fields of the GraphQL type Environment.
+type CommonDataEnvironment struct {
+	Id string `json:"id"`
+}
+
+// GetId returns CommonDataEnvironment.Id, and is useful for accessing the field via an interface.
+func (v *CommonDataEnvironment) GetId() string { return v.Id }
+
+// CommonData includes the GraphQL fields of Metric requested by the fragment CommonData.
+type CommonDataMetric struct {
+	UniqueName  string                `json:"uniqueName"`
+	Description string                `json:"description"`
+	Account     CommonDataAccount     `json:"account"`
+	Environment CommonDataEnvironment `json:"environment"`
+	CreatedAt   time.Time             `json:"createdAt"`
+	ModifiedAt  time.Time             `json:"modifiedAt"`
+	CreatedBy   string                `json:"createdBy"`
+	ModifiedBy  string                `json:"modifiedBy"`
+}
+
+// GetUniqueName returns CommonDataMetric.UniqueName, and is useful for accessing the field via an interface.
+func (v *CommonDataMetric) GetUniqueName() string { return v.UniqueName }
+
+// GetDescription returns CommonDataMetric.Description, and is useful for accessing the field via an interface.
+func (v *CommonDataMetric) GetDescription() string { return v.Description }
+
+// GetAccount returns CommonDataMetric.Account, and is useful for accessing the field via an interface.
+func (v *CommonDataMetric) GetAccount() CommonDataAccount { return v.Account }
+
+// GetEnvironment returns CommonDataMetric.Environment, and is useful for accessing the field via an interface.
+func (v *CommonDataMetric) GetEnvironment() CommonDataEnvironment { return v.Environment }
+
+// GetCreatedAt returns CommonDataMetric.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataMetric) GetCreatedAt() time.Time { return v.CreatedAt }
+
+// GetModifiedAt returns CommonDataMetric.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataMetric) GetModifiedAt() time.Time { return v.ModifiedAt }
+
+// GetCreatedBy returns CommonDataMetric.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataMetric) GetCreatedBy() string { return v.CreatedBy }
+
+// GetModifiedBy returns CommonDataMetric.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataMetric) GetModifiedBy() string { return v.ModifiedBy }
+
 // CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
 type CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse struct {
 	Typename string                                                                 `json:"__typename"`
@@ -29,82 +352,82 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse) GetMe
 
 // CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
 type CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric struct {
-	metric `json:"-"`
+	MetricData `json:"-"`
 }
 
 // GetId returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetId() string {
-	return v.metric.Id
+	return v.MetricData.Id
 }
 
 // GetDataPool returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetDataPool() metricDataPool {
-	return v.metric.DataPool
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetDataPool() MetricDataDataPool {
+	return v.MetricData.DataPool
 }
 
 // GetDimensions returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetDimensions() []metricDimensionsDimension {
-	return v.metric.Dimensions
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetDimensions() []MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetTimestamp() metricTimestampDimension {
-	return v.metric.Timestamp
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetTimestamp() MetricDataTimestampDimension {
+	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetMeasure() metricMeasureDimension {
-	return v.metric.Measure
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetMeasure() MetricDataMeasureDimension {
+	return v.MetricData.Measure
 }
 
 // GetSettings returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetSettings() metricSettingsMetricSettings {
-	return v.metric.Settings
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
+	return v.MetricData.Settings
 }
 
 // GetType returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetType() MetricType {
-	return v.metric.Type
+	return v.MetricData.Type
 }
 
 // GetUniqueName returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetUniqueName() string {
-	return v.metric.commonMetric.UniqueName
+	return v.MetricData.CommonDataMetric.UniqueName
 }
 
 // GetDescription returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Description, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetDescription() string {
-	return v.metric.commonMetric.Description
+	return v.MetricData.CommonDataMetric.Description
 }
 
 // GetAccount returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetAccount() commonAccount {
-	return v.metric.commonMetric.Account
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetAccount() CommonDataAccount {
+	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetEnvironment() commonEnvironment {
-	return v.metric.commonMetric.Environment
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetEnvironment() CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
 }
 
 // GetCreatedAt returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.CreatedAt, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetCreatedAt() time.Time {
-	return v.metric.commonMetric.CreatedAt
+	return v.MetricData.CommonDataMetric.CreatedAt
 }
 
 // GetModifiedAt returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetModifiedAt() time.Time {
-	return v.metric.commonMetric.ModifiedAt
+	return v.MetricData.CommonDataMetric.ModifiedAt
 }
 
 // GetCreatedBy returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.CreatedBy, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetCreatedBy() string {
-	return v.metric.commonMetric.CreatedBy
+	return v.MetricData.CommonDataMetric.CreatedBy
 }
 
 // GetModifiedBy returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetModifiedBy() string {
-	return v.metric.commonMetric.ModifiedBy
+	return v.MetricData.CommonDataMetric.ModifiedBy
 }
 
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) UnmarshalJSON(b []byte) error {
@@ -125,7 +448,7 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 	}
 
 	err = json.Unmarshal(
-		b, &v.metric)
+		b, &v.MetricData)
 	if err != nil {
 		return err
 	}
@@ -135,13 +458,13 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 type __premarshalCreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
-	DataPool metricDataPool `json:"dataPool"`
+	DataPool MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []metricDimensionsDimension `json:"dimensions"`
+	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp metricTimestampDimension `json:"timestamp"`
+	Timestamp MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure metricMeasureDimension `json:"measure"`
+	Measure MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -151,9 +474,9 @@ type __premarshalCreateCountDistinctMetricCreateCountDistinctMetricMetricRespons
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -175,32 +498,32 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) __premarshalJSON() (*__premarshalCreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric, error) {
 	var retval __premarshalCreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric
 
-	retval.Id = v.metric.Id
-	retval.DataPool = v.metric.DataPool
-	retval.Dimensions = v.metric.Dimensions
-	retval.Timestamp = v.metric.Timestamp
-	retval.Measure = v.metric.Measure
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
 	{
 
 		dst := &retval.Settings
-		src := v.metric.Settings
+		src := v.MetricData.Settings
 		var err error
-		*dst, err = __marshalmetricSettingsMetricSettings(
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.metric.Settings: %w", err)
+				"Unable to marshal CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.metric.Type
-	retval.UniqueName = v.metric.commonMetric.UniqueName
-	retval.Description = v.metric.commonMetric.Description
-	retval.Account = v.metric.commonMetric.Account
-	retval.Environment = v.metric.commonMetric.Environment
-	retval.CreatedAt = v.metric.commonMetric.CreatedAt
-	retval.ModifiedAt = v.metric.commonMetric.ModifiedAt
-	retval.CreatedBy = v.metric.commonMetric.CreatedBy
-	retval.ModifiedBy = v.metric.commonMetric.ModifiedBy
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
 	return &retval, nil
 }
 
@@ -269,80 +592,82 @@ func (v *CreateCountMetricCreateCountMetricMetricResponse) GetMetric() CreateCou
 
 // CreateCountMetricCreateCountMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
 type CreateCountMetricCreateCountMetricMetricResponseMetric struct {
-	metric `json:"-"`
+	MetricData `json:"-"`
 }
 
 // GetId returns CreateCountMetricCreateCountMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetId() string { return v.metric.Id }
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetId() string {
+	return v.MetricData.Id
+}
 
 // GetDataPool returns CreateCountMetricCreateCountMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDataPool() metricDataPool {
-	return v.metric.DataPool
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDataPool() MetricDataDataPool {
+	return v.MetricData.DataPool
 }
 
 // GetDimensions returns CreateCountMetricCreateCountMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDimensions() []metricDimensionsDimension {
-	return v.metric.Dimensions
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDimensions() []MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns CreateCountMetricCreateCountMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetTimestamp() metricTimestampDimension {
-	return v.metric.Timestamp
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetTimestamp() MetricDataTimestampDimension {
+	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns CreateCountMetricCreateCountMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetMeasure() metricMeasureDimension {
-	return v.metric.Measure
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetMeasure() MetricDataMeasureDimension {
+	return v.MetricData.Measure
 }
 
 // GetSettings returns CreateCountMetricCreateCountMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetSettings() metricSettingsMetricSettings {
-	return v.metric.Settings
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
+	return v.MetricData.Settings
 }
 
 // GetType returns CreateCountMetricCreateCountMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetType() MetricType {
-	return v.metric.Type
+	return v.MetricData.Type
 }
 
 // GetUniqueName returns CreateCountMetricCreateCountMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetUniqueName() string {
-	return v.metric.commonMetric.UniqueName
+	return v.MetricData.CommonDataMetric.UniqueName
 }
 
 // GetDescription returns CreateCountMetricCreateCountMetricMetricResponseMetric.Description, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDescription() string {
-	return v.metric.commonMetric.Description
+	return v.MetricData.CommonDataMetric.Description
 }
 
 // GetAccount returns CreateCountMetricCreateCountMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetAccount() commonAccount {
-	return v.metric.commonMetric.Account
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetAccount() CommonDataAccount {
+	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns CreateCountMetricCreateCountMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetEnvironment() commonEnvironment {
-	return v.metric.commonMetric.Environment
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetEnvironment() CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
 }
 
 // GetCreatedAt returns CreateCountMetricCreateCountMetricMetricResponseMetric.CreatedAt, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetCreatedAt() time.Time {
-	return v.metric.commonMetric.CreatedAt
+	return v.MetricData.CommonDataMetric.CreatedAt
 }
 
 // GetModifiedAt returns CreateCountMetricCreateCountMetricMetricResponseMetric.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetModifiedAt() time.Time {
-	return v.metric.commonMetric.ModifiedAt
+	return v.MetricData.CommonDataMetric.ModifiedAt
 }
 
 // GetCreatedBy returns CreateCountMetricCreateCountMetricMetricResponseMetric.CreatedBy, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetCreatedBy() string {
-	return v.metric.commonMetric.CreatedBy
+	return v.MetricData.CommonDataMetric.CreatedBy
 }
 
 // GetModifiedBy returns CreateCountMetricCreateCountMetricMetricResponseMetric.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetModifiedBy() string {
-	return v.metric.commonMetric.ModifiedBy
+	return v.MetricData.CommonDataMetric.ModifiedBy
 }
 
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) UnmarshalJSON(b []byte) error {
@@ -363,7 +688,7 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) UnmarshalJSON(b
 	}
 
 	err = json.Unmarshal(
-		b, &v.metric)
+		b, &v.MetricData)
 	if err != nil {
 		return err
 	}
@@ -373,13 +698,13 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) UnmarshalJSON(b
 type __premarshalCreateCountMetricCreateCountMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
-	DataPool metricDataPool `json:"dataPool"`
+	DataPool MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []metricDimensionsDimension `json:"dimensions"`
+	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp metricTimestampDimension `json:"timestamp"`
+	Timestamp MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure metricMeasureDimension `json:"measure"`
+	Measure MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -389,9 +714,9 @@ type __premarshalCreateCountMetricCreateCountMetricMetricResponseMetric struct {
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -413,32 +738,32 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) MarshalJSON() (
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) __premarshalJSON() (*__premarshalCreateCountMetricCreateCountMetricMetricResponseMetric, error) {
 	var retval __premarshalCreateCountMetricCreateCountMetricMetricResponseMetric
 
-	retval.Id = v.metric.Id
-	retval.DataPool = v.metric.DataPool
-	retval.Dimensions = v.metric.Dimensions
-	retval.Timestamp = v.metric.Timestamp
-	retval.Measure = v.metric.Measure
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
 	{
 
 		dst := &retval.Settings
-		src := v.metric.Settings
+		src := v.MetricData.Settings
 		var err error
-		*dst, err = __marshalmetricSettingsMetricSettings(
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateCountMetricCreateCountMetricMetricResponseMetric.metric.Settings: %w", err)
+				"Unable to marshal CreateCountMetricCreateCountMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.metric.Type
-	retval.UniqueName = v.metric.commonMetric.UniqueName
-	retval.Description = v.metric.commonMetric.Description
-	retval.Account = v.metric.commonMetric.Account
-	retval.Environment = v.metric.commonMetric.Environment
-	retval.CreatedAt = v.metric.commonMetric.CreatedAt
-	retval.ModifiedAt = v.metric.commonMetric.ModifiedAt
-	retval.CreatedBy = v.metric.commonMetric.CreatedBy
-	retval.ModifiedBy = v.metric.commonMetric.ModifiedBy
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
 	return &retval, nil
 }
 
@@ -575,95 +900,97 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponse) GetDataPool() CreateDataP
 
 // CreateDataPoolCreateDataPoolDataPoolResponseDataPool includes the requested fields of the GraphQL type DataPool.
 type CreateDataPoolCreateDataPoolDataPoolResponseDataPool struct {
-	dataPool `json:"-"`
+	DataPoolData `json:"-"`
 }
 
 // GetId returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Id, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetId() string { return v.dataPool.Id }
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetId() string {
+	return v.DataPoolData.Id
+}
 
 // GetDataSource returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetDataSource() dataPoolDataSource {
-	return v.dataPool.DataSource
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetDataSource() DataPoolDataDataSource {
+	return v.DataPoolData.DataSource
 }
 
 // GetStatus returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Status, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetStatus() DataPoolStatus {
-	return v.dataPool.Status
+	return v.DataPoolData.Status
 }
 
 // GetError returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Error, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetError() dataPoolError {
-	return v.dataPool.Error
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetError() DataPoolDataError {
+	return v.DataPoolData.Error
 }
 
 // GetTable returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Table, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetTable() string {
-	return v.dataPool.Table
+	return v.DataPoolData.Table
 }
 
 // GetTimestamp returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetTimestamp() dataPoolTimestampDimension {
-	return v.dataPool.Timestamp
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+	return v.DataPoolData.Timestamp
 }
 
 // GetColumns returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetColumns() dataPoolColumnsColumnConnection {
-	return v.dataPool.Columns
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+	return v.DataPoolData.Columns
 }
 
 // GetAvailableMeasures returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetAvailableMeasures() dataPoolAvailableMeasuresColumnConnection {
-	return v.dataPool.AvailableMeasures
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetSetupTasks() []dataPoolSetupTasksDataPoolSetupTask {
-	return v.dataPool.SetupTasks
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetSyncs() dataPoolSyncsSyncConnection {
-	return v.dataPool.Syncs
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetSyncs() DataPoolDataSyncsSyncConnection {
+	return v.DataPoolData.Syncs
 }
 
 // GetUniqueName returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetUniqueName() string {
-	return v.dataPool.commonDataPool.UniqueName
+	return v.DataPoolData.CommonDataDataPool.UniqueName
 }
 
 // GetDescription returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Description, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetDescription() string {
-	return v.dataPool.commonDataPool.Description
+	return v.DataPoolData.CommonDataDataPool.Description
 }
 
 // GetAccount returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Account, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetAccount() commonAccount {
-	return v.dataPool.commonDataPool.Account
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetAccount() CommonDataAccount {
+	return v.DataPoolData.CommonDataDataPool.Account
 }
 
 // GetEnvironment returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetEnvironment() commonEnvironment {
-	return v.dataPool.commonDataPool.Environment
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetEnvironment() CommonDataEnvironment {
+	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
 // GetCreatedAt returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.CreatedAt, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetCreatedAt() time.Time {
-	return v.dataPool.commonDataPool.CreatedAt
+	return v.DataPoolData.CommonDataDataPool.CreatedAt
 }
 
 // GetModifiedAt returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetModifiedAt() time.Time {
-	return v.dataPool.commonDataPool.ModifiedAt
+	return v.DataPoolData.CommonDataDataPool.ModifiedAt
 }
 
 // GetCreatedBy returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.CreatedBy, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetCreatedBy() string {
-	return v.dataPool.commonDataPool.CreatedBy
+	return v.DataPoolData.CommonDataDataPool.CreatedBy
 }
 
 // GetModifiedBy returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetModifiedBy() string {
-	return v.dataPool.commonDataPool.ModifiedBy
+	return v.DataPoolData.CommonDataDataPool.ModifiedBy
 }
 
 func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) UnmarshalJSON(b []byte) error {
@@ -684,7 +1011,7 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) UnmarshalJSON(b [
 	}
 
 	err = json.Unmarshal(
-		b, &v.dataPool)
+		b, &v.DataPoolData)
 	if err != nil {
 		return err
 	}
@@ -694,31 +1021,31 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) UnmarshalJSON(b [
 type __premarshalCreateDataPoolCreateDataPoolDataPoolResponseDataPool struct {
 	Id string `json:"id"`
 
-	DataSource dataPoolDataSource `json:"dataSource"`
+	DataSource DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error dataPoolError `json:"error"`
+	Error DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp dataPoolTimestampDimension `json:"timestamp"`
+	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns dataPoolColumnsColumnConnection `json:"columns"`
+	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures dataPoolAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []dataPoolSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs dataPoolSyncsSyncConnection `json:"syncs"`
+	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -740,24 +1067,24 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) MarshalJSON() ([]
 func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) __premarshalJSON() (*__premarshalCreateDataPoolCreateDataPoolDataPoolResponseDataPool, error) {
 	var retval __premarshalCreateDataPoolCreateDataPoolDataPoolResponseDataPool
 
-	retval.Id = v.dataPool.Id
-	retval.DataSource = v.dataPool.DataSource
-	retval.Status = v.dataPool.Status
-	retval.Error = v.dataPool.Error
-	retval.Table = v.dataPool.Table
-	retval.Timestamp = v.dataPool.Timestamp
-	retval.Columns = v.dataPool.Columns
-	retval.AvailableMeasures = v.dataPool.AvailableMeasures
-	retval.SetupTasks = v.dataPool.SetupTasks
-	retval.Syncs = v.dataPool.Syncs
-	retval.UniqueName = v.dataPool.commonDataPool.UniqueName
-	retval.Description = v.dataPool.commonDataPool.Description
-	retval.Account = v.dataPool.commonDataPool.Account
-	retval.Environment = v.dataPool.commonDataPool.Environment
-	retval.CreatedAt = v.dataPool.commonDataPool.CreatedAt
-	retval.ModifiedAt = v.dataPool.commonDataPool.ModifiedAt
-	retval.CreatedBy = v.dataPool.commonDataPool.CreatedBy
-	retval.ModifiedBy = v.dataPool.commonDataPool.ModifiedBy
+	retval.Id = v.DataPoolData.Id
+	retval.DataSource = v.DataPoolData.DataSource
+	retval.Status = v.DataPoolData.Status
+	retval.Error = v.DataPoolData.Error
+	retval.Table = v.DataPoolData.Table
+	retval.Timestamp = v.DataPoolData.Timestamp
+	retval.Columns = v.DataPoolData.Columns
+	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
+	retval.SetupTasks = v.DataPoolData.SetupTasks
+	retval.Syncs = v.DataPoolData.Syncs
+	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
+	retval.Description = v.DataPoolData.CommonDataDataPool.Description
+	retval.Account = v.DataPoolData.CommonDataDataPool.Account
+	retval.Environment = v.DataPoolData.CommonDataDataPool.Environment
+	retval.CreatedAt = v.DataPoolData.CommonDataDataPool.CreatedAt
+	retval.ModifiedAt = v.DataPoolData.CommonDataDataPool.ModifiedAt
+	retval.CreatedBy = v.DataPoolData.CommonDataDataPool.CreatedBy
+	retval.ModifiedBy = v.DataPoolData.CommonDataDataPool.ModifiedBy
 	return &retval, nil
 }
 
@@ -777,15 +1104,15 @@ func (v *CreateDataPoolCreateDataPoolFailureResponse) GetError() CreateDataPoolC
 
 // CreateDataPoolCreateDataPoolFailureResponseError includes the requested fields of the GraphQL type Error.
 type CreateDataPoolCreateDataPoolFailureResponseError struct {
-	gqlError `json:"-"`
+	GqlError `json:"-"`
 }
 
 // GetCode returns CreateDataPoolCreateDataPoolFailureResponseError.Code, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolFailureResponseError) GetCode() int { return v.gqlError.Code }
+func (v *CreateDataPoolCreateDataPoolFailureResponseError) GetCode() int { return v.GqlError.Code }
 
 // GetMessage returns CreateDataPoolCreateDataPoolFailureResponseError.Message, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolFailureResponseError) GetMessage() string {
-	return v.gqlError.Message
+	return v.GqlError.Message
 }
 
 func (v *CreateDataPoolCreateDataPoolFailureResponseError) UnmarshalJSON(b []byte) error {
@@ -806,7 +1133,7 @@ func (v *CreateDataPoolCreateDataPoolFailureResponseError) UnmarshalJSON(b []byt
 	}
 
 	err = json.Unmarshal(
-		b, &v.gqlError)
+		b, &v.GqlError)
 	if err != nil {
 		return err
 	}
@@ -830,8 +1157,8 @@ func (v *CreateDataPoolCreateDataPoolFailureResponseError) MarshalJSON() ([]byte
 func (v *CreateDataPoolCreateDataPoolFailureResponseError) __premarshalJSON() (*__premarshalCreateDataPoolCreateDataPoolFailureResponseError, error) {
 	var retval __premarshalCreateDataPoolCreateDataPoolFailureResponseError
 
-	retval.Code = v.gqlError.Code
-	retval.Message = v.gqlError.Message
+	retval.Code = v.GqlError.Code
+	retval.Message = v.GqlError.Message
 	return &retval, nil
 }
 
@@ -1031,87 +1358,87 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse) G
 
 // CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource struct {
-	dataSource `json:"-"`
+	DataSourceData `json:"-"`
 }
 
 // GetId returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetId() string {
-	return v.dataSource.Id
+	return v.DataSourceData.Id
 }
 
 // GetType returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
-	return v.dataSource.Type
+	return v.DataSourceData.Type
 }
 
 // GetStatus returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
-	return v.dataSource.Status
+	return v.DataSourceData.Status
 }
 
 // GetError returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetError() dataSourceError {
-	return v.dataSource.Error
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetError() DataSourceDataError {
+	return v.DataSourceData.Error
 }
 
 // GetConnectionSettings returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetConnectionSettings() dataSourceConnectionSettings {
-	return v.dataSource.ConnectionSettings
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
 }
 
 // GetTables returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetTables() dataSourceTablesTableConnection {
-	return v.dataSource.Tables
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetTables() DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
 }
 
 // GetChecks returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetChecks() []dataSourceChecksDataSourceCheck {
-	return v.dataSource.Checks
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetTableIntrospections() dataSourceTableIntrospectionsTableIntrospectionConnection {
-	return v.dataSource.TableIntrospections
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
 }
 
 // GetUniqueName returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetUniqueName() string {
-	return v.dataSource.commonDataSource.UniqueName
+	return v.DataSourceData.CommonDataDataSource.UniqueName
 }
 
 // GetDescription returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetDescription() string {
-	return v.dataSource.commonDataSource.Description
+	return v.DataSourceData.CommonDataDataSource.Description
 }
 
 // GetAccount returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetAccount() commonAccount {
-	return v.dataSource.commonDataSource.Account
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetAccount() CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetEnvironment() commonEnvironment {
-	return v.dataSource.commonDataSource.Environment
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetEnvironment() CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
 // GetCreatedAt returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
-	return v.dataSource.commonDataSource.CreatedAt
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
 }
 
 // GetModifiedAt returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
-	return v.dataSource.commonDataSource.ModifiedAt
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
 }
 
 // GetCreatedBy returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
-	return v.dataSource.commonDataSource.CreatedBy
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
 }
 
 // GetModifiedBy returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
-	return v.dataSource.commonDataSource.ModifiedBy
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
 }
 
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
@@ -1132,7 +1459,7 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDat
 	}
 
 	err = json.Unmarshal(
-		b, &v.dataSource)
+		b, &v.DataSourceData)
 	if err != nil {
 		return err
 	}
@@ -1146,23 +1473,23 @@ type __premarshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceRes
 
 	Status DataSourceStatus `json:"status"`
 
-	Error dataSourceError `json:"error"`
+	Error DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables dataSourceTablesTableConnection `json:"tables"`
+	Tables DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []dataSourceChecksDataSourceCheck `json:"checks"`
+	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections dataSourceTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -1184,33 +1511,33 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDat
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource, error) {
 	var retval __premarshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource
 
-	retval.Id = v.dataSource.Id
-	retval.Type = v.dataSource.Type
-	retval.Status = v.dataSource.Status
-	retval.Error = v.dataSource.Error
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
 	{
 
 		dst := &retval.ConnectionSettings
-		src := v.dataSource.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
 		var err error
-		*dst, err = __marshaldataSourceConnectionSettings(
+		*dst, err = __marshalDataSourceDataConnectionSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.dataSource.ConnectionSettings: %w", err)
+				"Unable to marshal CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
-	retval.Tables = v.dataSource.Tables
-	retval.Checks = v.dataSource.Checks
-	retval.TableIntrospections = v.dataSource.TableIntrospections
-	retval.UniqueName = v.dataSource.commonDataSource.UniqueName
-	retval.Description = v.dataSource.commonDataSource.Description
-	retval.Account = v.dataSource.commonDataSource.Account
-	retval.Environment = v.dataSource.commonDataSource.Environment
-	retval.CreatedAt = v.dataSource.commonDataSource.CreatedAt
-	retval.ModifiedAt = v.dataSource.commonDataSource.ModifiedAt
-	retval.CreatedBy = v.dataSource.commonDataSource.CreatedBy
-	retval.ModifiedBy = v.dataSource.commonDataSource.ModifiedBy
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
 	return &retval, nil
 }
 
@@ -1232,17 +1559,17 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse) GetE
 
 // CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError includes the requested fields of the GraphQL type Error.
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError struct {
-	gqlError `json:"-"`
+	GqlError `json:"-"`
 }
 
 // GetCode returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError.Code, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError) GetCode() int {
-	return v.gqlError.Code
+	return v.GqlError.Code
 }
 
 // GetMessage returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError.Message, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError) GetMessage() string {
-	return v.gqlError.Message
+	return v.GqlError.Message
 }
 
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError) UnmarshalJSON(b []byte) error {
@@ -1263,7 +1590,7 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError)
 	}
 
 	err = json.Unmarshal(
-		b, &v.gqlError)
+		b, &v.GqlError)
 	if err != nil {
 		return err
 	}
@@ -1287,8 +1614,8 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError)
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError) __premarshalJSON() (*__premarshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError, error) {
 	var retval __premarshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError
 
-	retval.Code = v.gqlError.Code
-	retval.Message = v.gqlError.Message
+	retval.Code = v.GqlError.Code
+	retval.Message = v.GqlError.Message
 	return &retval, nil
 }
 
@@ -1398,80 +1725,80 @@ func (v *CreateSumMetricCreateSumMetricMetricResponse) GetMetric() CreateSumMetr
 
 // CreateSumMetricCreateSumMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
 type CreateSumMetricCreateSumMetricMetricResponseMetric struct {
-	metric `json:"-"`
+	MetricData `json:"-"`
 }
 
 // GetId returns CreateSumMetricCreateSumMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetId() string { return v.metric.Id }
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetId() string { return v.MetricData.Id }
 
 // GetDataPool returns CreateSumMetricCreateSumMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDataPool() metricDataPool {
-	return v.metric.DataPool
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDataPool() MetricDataDataPool {
+	return v.MetricData.DataPool
 }
 
 // GetDimensions returns CreateSumMetricCreateSumMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDimensions() []metricDimensionsDimension {
-	return v.metric.Dimensions
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDimensions() []MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns CreateSumMetricCreateSumMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetTimestamp() metricTimestampDimension {
-	return v.metric.Timestamp
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetTimestamp() MetricDataTimestampDimension {
+	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns CreateSumMetricCreateSumMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetMeasure() metricMeasureDimension {
-	return v.metric.Measure
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetMeasure() MetricDataMeasureDimension {
+	return v.MetricData.Measure
 }
 
 // GetSettings returns CreateSumMetricCreateSumMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetSettings() metricSettingsMetricSettings {
-	return v.metric.Settings
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
+	return v.MetricData.Settings
 }
 
 // GetType returns CreateSumMetricCreateSumMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetType() MetricType {
-	return v.metric.Type
+	return v.MetricData.Type
 }
 
 // GetUniqueName returns CreateSumMetricCreateSumMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetUniqueName() string {
-	return v.metric.commonMetric.UniqueName
+	return v.MetricData.CommonDataMetric.UniqueName
 }
 
 // GetDescription returns CreateSumMetricCreateSumMetricMetricResponseMetric.Description, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDescription() string {
-	return v.metric.commonMetric.Description
+	return v.MetricData.CommonDataMetric.Description
 }
 
 // GetAccount returns CreateSumMetricCreateSumMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetAccount() commonAccount {
-	return v.metric.commonMetric.Account
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetAccount() CommonDataAccount {
+	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns CreateSumMetricCreateSumMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetEnvironment() commonEnvironment {
-	return v.metric.commonMetric.Environment
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetEnvironment() CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
 }
 
 // GetCreatedAt returns CreateSumMetricCreateSumMetricMetricResponseMetric.CreatedAt, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetCreatedAt() time.Time {
-	return v.metric.commonMetric.CreatedAt
+	return v.MetricData.CommonDataMetric.CreatedAt
 }
 
 // GetModifiedAt returns CreateSumMetricCreateSumMetricMetricResponseMetric.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetModifiedAt() time.Time {
-	return v.metric.commonMetric.ModifiedAt
+	return v.MetricData.CommonDataMetric.ModifiedAt
 }
 
 // GetCreatedBy returns CreateSumMetricCreateSumMetricMetricResponseMetric.CreatedBy, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetCreatedBy() string {
-	return v.metric.commonMetric.CreatedBy
+	return v.MetricData.CommonDataMetric.CreatedBy
 }
 
 // GetModifiedBy returns CreateSumMetricCreateSumMetricMetricResponseMetric.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetModifiedBy() string {
-	return v.metric.commonMetric.ModifiedBy
+	return v.MetricData.CommonDataMetric.ModifiedBy
 }
 
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) UnmarshalJSON(b []byte) error {
@@ -1492,7 +1819,7 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) UnmarshalJSON(b []b
 	}
 
 	err = json.Unmarshal(
-		b, &v.metric)
+		b, &v.MetricData)
 	if err != nil {
 		return err
 	}
@@ -1502,13 +1829,13 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) UnmarshalJSON(b []b
 type __premarshalCreateSumMetricCreateSumMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
-	DataPool metricDataPool `json:"dataPool"`
+	DataPool MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []metricDimensionsDimension `json:"dimensions"`
+	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp metricTimestampDimension `json:"timestamp"`
+	Timestamp MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure metricMeasureDimension `json:"measure"`
+	Measure MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -1518,9 +1845,9 @@ type __premarshalCreateSumMetricCreateSumMetricMetricResponseMetric struct {
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -1542,32 +1869,32 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) MarshalJSON() ([]by
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) __premarshalJSON() (*__premarshalCreateSumMetricCreateSumMetricMetricResponseMetric, error) {
 	var retval __premarshalCreateSumMetricCreateSumMetricMetricResponseMetric
 
-	retval.Id = v.metric.Id
-	retval.DataPool = v.metric.DataPool
-	retval.Dimensions = v.metric.Dimensions
-	retval.Timestamp = v.metric.Timestamp
-	retval.Measure = v.metric.Measure
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
 	{
 
 		dst := &retval.Settings
-		src := v.metric.Settings
+		src := v.MetricData.Settings
 		var err error
-		*dst, err = __marshalmetricSettingsMetricSettings(
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateSumMetricCreateSumMetricMetricResponseMetric.metric.Settings: %w", err)
+				"Unable to marshal CreateSumMetricCreateSumMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.metric.Type
-	retval.UniqueName = v.metric.commonMetric.UniqueName
-	retval.Description = v.metric.commonMetric.Description
-	retval.Account = v.metric.commonMetric.Account
-	retval.Environment = v.metric.commonMetric.Environment
-	retval.CreatedAt = v.metric.commonMetric.CreatedAt
-	retval.ModifiedAt = v.metric.commonMetric.ModifiedAt
-	retval.CreatedBy = v.metric.commonMetric.CreatedBy
-	retval.ModifiedBy = v.metric.commonMetric.ModifiedBy
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
 	return &retval, nil
 }
 
@@ -1622,76 +1949,90 @@ func (v *CreateSumMetricResponse) GetCreateSumMetric() CreateSumMetricCreateSumM
 
 // DataPoolByNameDataPool includes the requested fields of the GraphQL type DataPool.
 type DataPoolByNameDataPool struct {
-	dataPool `json:"-"`
+	DataPoolData `json:"-"`
 }
 
 // GetId returns DataPoolByNameDataPool.Id, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetId() string { return v.dataPool.Id }
+func (v *DataPoolByNameDataPool) GetId() string { return v.DataPoolData.Id }
 
 // GetDataSource returns DataPoolByNameDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetDataSource() dataPoolDataSource { return v.dataPool.DataSource }
+func (v *DataPoolByNameDataPool) GetDataSource() DataPoolDataDataSource {
+	return v.DataPoolData.DataSource
+}
 
 // GetStatus returns DataPoolByNameDataPool.Status, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetStatus() DataPoolStatus { return v.dataPool.Status }
+func (v *DataPoolByNameDataPool) GetStatus() DataPoolStatus { return v.DataPoolData.Status }
 
 // GetError returns DataPoolByNameDataPool.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetError() dataPoolError { return v.dataPool.Error }
+func (v *DataPoolByNameDataPool) GetError() DataPoolDataError { return v.DataPoolData.Error }
 
 // GetTable returns DataPoolByNameDataPool.Table, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetTable() string { return v.dataPool.Table }
+func (v *DataPoolByNameDataPool) GetTable() string { return v.DataPoolData.Table }
 
 // GetTimestamp returns DataPoolByNameDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetTimestamp() dataPoolTimestampDimension {
-	return v.dataPool.Timestamp
+func (v *DataPoolByNameDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+	return v.DataPoolData.Timestamp
 }
 
 // GetColumns returns DataPoolByNameDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetColumns() dataPoolColumnsColumnConnection {
-	return v.dataPool.Columns
+func (v *DataPoolByNameDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+	return v.DataPoolData.Columns
 }
 
 // GetAvailableMeasures returns DataPoolByNameDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetAvailableMeasures() dataPoolAvailableMeasuresColumnConnection {
-	return v.dataPool.AvailableMeasures
+func (v *DataPoolByNameDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns DataPoolByNameDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetSetupTasks() []dataPoolSetupTasksDataPoolSetupTask {
-	return v.dataPool.SetupTasks
+func (v *DataPoolByNameDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns DataPoolByNameDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetSyncs() dataPoolSyncsSyncConnection { return v.dataPool.Syncs }
+func (v *DataPoolByNameDataPool) GetSyncs() DataPoolDataSyncsSyncConnection {
+	return v.DataPoolData.Syncs
+}
 
 // GetUniqueName returns DataPoolByNameDataPool.UniqueName, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetUniqueName() string { return v.dataPool.commonDataPool.UniqueName }
+func (v *DataPoolByNameDataPool) GetUniqueName() string {
+	return v.DataPoolData.CommonDataDataPool.UniqueName
+}
 
 // GetDescription returns DataPoolByNameDataPool.Description, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetDescription() string {
-	return v.dataPool.commonDataPool.Description
+	return v.DataPoolData.CommonDataDataPool.Description
 }
 
 // GetAccount returns DataPoolByNameDataPool.Account, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetAccount() commonAccount { return v.dataPool.commonDataPool.Account }
+func (v *DataPoolByNameDataPool) GetAccount() CommonDataAccount {
+	return v.DataPoolData.CommonDataDataPool.Account
+}
 
 // GetEnvironment returns DataPoolByNameDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetEnvironment() commonEnvironment {
-	return v.dataPool.commonDataPool.Environment
+func (v *DataPoolByNameDataPool) GetEnvironment() CommonDataEnvironment {
+	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
 // GetCreatedAt returns DataPoolByNameDataPool.CreatedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetCreatedAt() time.Time { return v.dataPool.commonDataPool.CreatedAt }
+func (v *DataPoolByNameDataPool) GetCreatedAt() time.Time {
+	return v.DataPoolData.CommonDataDataPool.CreatedAt
+}
 
 // GetModifiedAt returns DataPoolByNameDataPool.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetModifiedAt() time.Time {
-	return v.dataPool.commonDataPool.ModifiedAt
+	return v.DataPoolData.CommonDataDataPool.ModifiedAt
 }
 
 // GetCreatedBy returns DataPoolByNameDataPool.CreatedBy, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetCreatedBy() string { return v.dataPool.commonDataPool.CreatedBy }
+func (v *DataPoolByNameDataPool) GetCreatedBy() string {
+	return v.DataPoolData.CommonDataDataPool.CreatedBy
+}
 
 // GetModifiedBy returns DataPoolByNameDataPool.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetModifiedBy() string { return v.dataPool.commonDataPool.ModifiedBy }
+func (v *DataPoolByNameDataPool) GetModifiedBy() string {
+	return v.DataPoolData.CommonDataDataPool.ModifiedBy
+}
 
 func (v *DataPoolByNameDataPool) UnmarshalJSON(b []byte) error {
 
@@ -1711,7 +2052,7 @@ func (v *DataPoolByNameDataPool) UnmarshalJSON(b []byte) error {
 	}
 
 	err = json.Unmarshal(
-		b, &v.dataPool)
+		b, &v.DataPoolData)
 	if err != nil {
 		return err
 	}
@@ -1721,31 +2062,31 @@ func (v *DataPoolByNameDataPool) UnmarshalJSON(b []byte) error {
 type __premarshalDataPoolByNameDataPool struct {
 	Id string `json:"id"`
 
-	DataSource dataPoolDataSource `json:"dataSource"`
+	DataSource DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error dataPoolError `json:"error"`
+	Error DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp dataPoolTimestampDimension `json:"timestamp"`
+	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns dataPoolColumnsColumnConnection `json:"columns"`
+	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures dataPoolAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []dataPoolSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs dataPoolSyncsSyncConnection `json:"syncs"`
+	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -1767,24 +2108,24 @@ func (v *DataPoolByNameDataPool) MarshalJSON() ([]byte, error) {
 func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByNameDataPool, error) {
 	var retval __premarshalDataPoolByNameDataPool
 
-	retval.Id = v.dataPool.Id
-	retval.DataSource = v.dataPool.DataSource
-	retval.Status = v.dataPool.Status
-	retval.Error = v.dataPool.Error
-	retval.Table = v.dataPool.Table
-	retval.Timestamp = v.dataPool.Timestamp
-	retval.Columns = v.dataPool.Columns
-	retval.AvailableMeasures = v.dataPool.AvailableMeasures
-	retval.SetupTasks = v.dataPool.SetupTasks
-	retval.Syncs = v.dataPool.Syncs
-	retval.UniqueName = v.dataPool.commonDataPool.UniqueName
-	retval.Description = v.dataPool.commonDataPool.Description
-	retval.Account = v.dataPool.commonDataPool.Account
-	retval.Environment = v.dataPool.commonDataPool.Environment
-	retval.CreatedAt = v.dataPool.commonDataPool.CreatedAt
-	retval.ModifiedAt = v.dataPool.commonDataPool.ModifiedAt
-	retval.CreatedBy = v.dataPool.commonDataPool.CreatedBy
-	retval.ModifiedBy = v.dataPool.commonDataPool.ModifiedBy
+	retval.Id = v.DataPoolData.Id
+	retval.DataSource = v.DataPoolData.DataSource
+	retval.Status = v.DataPoolData.Status
+	retval.Error = v.DataPoolData.Error
+	retval.Table = v.DataPoolData.Table
+	retval.Timestamp = v.DataPoolData.Timestamp
+	retval.Columns = v.DataPoolData.Columns
+	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
+	retval.SetupTasks = v.DataPoolData.SetupTasks
+	retval.Syncs = v.DataPoolData.Syncs
+	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
+	retval.Description = v.DataPoolData.CommonDataDataPool.Description
+	retval.Account = v.DataPoolData.CommonDataDataPool.Account
+	retval.Environment = v.DataPoolData.CommonDataDataPool.Environment
+	retval.CreatedAt = v.DataPoolData.CommonDataDataPool.CreatedAt
+	retval.ModifiedAt = v.DataPoolData.CommonDataDataPool.ModifiedAt
+	retval.CreatedBy = v.DataPoolData.CommonDataDataPool.CreatedBy
+	retval.ModifiedBy = v.DataPoolData.CommonDataDataPool.ModifiedBy
 	return &retval, nil
 }
 
@@ -1796,70 +2137,738 @@ type DataPoolByNameResponse struct {
 // GetDataPool returns DataPoolByNameResponse.DataPool, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameResponse) GetDataPool() DataPoolByNameDataPool { return v.DataPool }
 
+// DataPoolData includes the GraphQL fields of DataPool requested by the fragment DataPoolData.
+type DataPoolData struct {
+	Id                 string `json:"id"`
+	CommonDataDataPool `json:"-"`
+	DataSource         DataPoolDataDataSource                        `json:"dataSource"`
+	Status             DataPoolStatus                                `json:"status"`
+	Error              DataPoolDataError                             `json:"error"`
+	Table              string                                        `json:"table"`
+	Timestamp          DataPoolDataTimestampDimension                `json:"timestamp"`
+	Columns            DataPoolDataColumnsColumnConnection           `json:"columns"`
+	AvailableMeasures  DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	// A list of setup tasks performed on the Data Pool during its most recent setup attempt.
+	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	Syncs      DataPoolDataSyncsSyncConnection           `json:"syncs"`
+}
+
+// GetId returns DataPoolData.Id, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetId() string { return v.Id }
+
+// GetDataSource returns DataPoolData.DataSource, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetDataSource() DataPoolDataDataSource { return v.DataSource }
+
+// GetStatus returns DataPoolData.Status, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetStatus() DataPoolStatus { return v.Status }
+
+// GetError returns DataPoolData.Error, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetError() DataPoolDataError { return v.Error }
+
+// GetTable returns DataPoolData.Table, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetTable() string { return v.Table }
+
+// GetTimestamp returns DataPoolData.Timestamp, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetTimestamp() DataPoolDataTimestampDimension { return v.Timestamp }
+
+// GetColumns returns DataPoolData.Columns, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetColumns() DataPoolDataColumnsColumnConnection { return v.Columns }
+
+// GetAvailableMeasures returns DataPoolData.AvailableMeasures, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+	return v.AvailableMeasures
+}
+
+// GetSetupTasks returns DataPoolData.SetupTasks, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask { return v.SetupTasks }
+
+// GetSyncs returns DataPoolData.Syncs, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetSyncs() DataPoolDataSyncsSyncConnection { return v.Syncs }
+
+// GetUniqueName returns DataPoolData.UniqueName, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetUniqueName() string { return v.CommonDataDataPool.UniqueName }
+
+// GetDescription returns DataPoolData.Description, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetDescription() string { return v.CommonDataDataPool.Description }
+
+// GetAccount returns DataPoolData.Account, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetAccount() CommonDataAccount { return v.CommonDataDataPool.Account }
+
+// GetEnvironment returns DataPoolData.Environment, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetEnvironment() CommonDataEnvironment {
+	return v.CommonDataDataPool.Environment
+}
+
+// GetCreatedAt returns DataPoolData.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetCreatedAt() time.Time { return v.CommonDataDataPool.CreatedAt }
+
+// GetModifiedAt returns DataPoolData.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetModifiedAt() time.Time { return v.CommonDataDataPool.ModifiedAt }
+
+// GetCreatedBy returns DataPoolData.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetCreatedBy() string { return v.CommonDataDataPool.CreatedBy }
+
+// GetModifiedBy returns DataPoolData.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetModifiedBy() string { return v.CommonDataDataPool.ModifiedBy }
+
+func (v *DataPoolData) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolData
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolData = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.CommonDataDataPool)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolData struct {
+	Id string `json:"id"`
+
+	DataSource DataPoolDataDataSource `json:"dataSource"`
+
+	Status DataPoolStatus `json:"status"`
+
+	Error DataPoolDataError `json:"error"`
+
+	Table string `json:"table"`
+
+	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+
+	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+
+	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+
+	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+
+	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account CommonDataAccount `json:"account"`
+
+	Environment CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *DataPoolData) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
+	var retval __premarshalDataPoolData
+
+	retval.Id = v.Id
+	retval.DataSource = v.DataSource
+	retval.Status = v.Status
+	retval.Error = v.Error
+	retval.Table = v.Table
+	retval.Timestamp = v.Timestamp
+	retval.Columns = v.Columns
+	retval.AvailableMeasures = v.AvailableMeasures
+	retval.SetupTasks = v.SetupTasks
+	retval.Syncs = v.Syncs
+	retval.UniqueName = v.CommonDataDataPool.UniqueName
+	retval.Description = v.CommonDataDataPool.Description
+	retval.Account = v.CommonDataDataPool.Account
+	retval.Environment = v.CommonDataDataPool.Environment
+	retval.CreatedAt = v.CommonDataDataPool.CreatedAt
+	retval.ModifiedAt = v.CommonDataDataPool.ModifiedAt
+	retval.CreatedBy = v.CommonDataDataPool.CreatedBy
+	retval.ModifiedBy = v.CommonDataDataPool.ModifiedBy
+	return &retval, nil
+}
+
+// DataPoolDataAvailableMeasuresColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
+type DataPoolDataAvailableMeasuresColumnConnection struct {
+	Nodes []DataPoolDataAvailableMeasuresColumnConnectionNodesColumn `json:"nodes"`
+}
+
+// GetNodes returns DataPoolDataAvailableMeasuresColumnConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnection) GetNodes() []DataPoolDataAvailableMeasuresColumnConnectionNodesColumn {
+	return v.Nodes
+}
+
+// DataPoolDataAvailableMeasuresColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
+type DataPoolDataAvailableMeasuresColumnConnectionNodesColumn struct {
+	ColumnData `json:"-"`
+}
+
+// GetName returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetName() string {
+	return v.ColumnData.Name
+}
+
+// GetType returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetType() string {
+	return v.ColumnData.Type
+}
+
+// GetKind returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetKind() string {
+	return v.ColumnData.Kind
+}
+
+// GetIsNullable returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetIsNullable() bool {
+	return v.ColumnData.IsNullable
+}
+
+// GetDefaultValue returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetDefaultValue() string {
+	return v.ColumnData.DefaultValue
+}
+
+// GetIsPrimaryKey returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
+	return v.ColumnData.IsPrimaryKey
+}
+
+// GetIsUniqueKey returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetIsUniqueKey() bool {
+	return v.ColumnData.IsUniqueKey
+}
+
+// GetComment returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetComment() string {
+	return v.ColumnData.Comment
+}
+
+// GetPolicyName returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetPolicyName() string {
+	return v.ColumnData.PolicyName
+}
+
+// GetCachedAt returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetCachedAt() time.Time {
+	return v.ColumnData.CachedAt
+}
+
+// GetCreatedAt returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetCreatedAt() time.Time {
+	return v.ColumnData.CreatedAt
+}
+
+// GetCreatedBy returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetCreatedBy() string {
+	return v.ColumnData.CreatedBy
+}
+
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolDataAvailableMeasuresColumnConnectionNodesColumn
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolDataAvailableMeasuresColumnConnectionNodesColumn = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.ColumnData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolDataAvailableMeasuresColumnConnectionNodesColumn struct {
+	Name string `json:"name"`
+
+	Type string `json:"type"`
+
+	Kind string `json:"kind"`
+
+	IsNullable bool `json:"isNullable"`
+
+	DefaultValue string `json:"defaultValue"`
+
+	IsPrimaryKey bool `json:"isPrimaryKey"`
+
+	IsUniqueKey bool `json:"isUniqueKey"`
+
+	Comment string `json:"comment"`
+
+	PolicyName string `json:"policyName"`
+
+	CachedAt time.Time `json:"cachedAt"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	CreatedBy string `json:"createdBy"`
+}
+
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) __premarshalJSON() (*__premarshalDataPoolDataAvailableMeasuresColumnConnectionNodesColumn, error) {
+	var retval __premarshalDataPoolDataAvailableMeasuresColumnConnectionNodesColumn
+
+	retval.Name = v.ColumnData.Name
+	retval.Type = v.ColumnData.Type
+	retval.Kind = v.ColumnData.Kind
+	retval.IsNullable = v.ColumnData.IsNullable
+	retval.DefaultValue = v.ColumnData.DefaultValue
+	retval.IsPrimaryKey = v.ColumnData.IsPrimaryKey
+	retval.IsUniqueKey = v.ColumnData.IsUniqueKey
+	retval.Comment = v.ColumnData.Comment
+	retval.PolicyName = v.ColumnData.PolicyName
+	retval.CachedAt = v.ColumnData.CachedAt
+	retval.CreatedAt = v.ColumnData.CreatedAt
+	retval.CreatedBy = v.ColumnData.CreatedBy
+	return &retval, nil
+}
+
+// DataPoolDataColumnsColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
+type DataPoolDataColumnsColumnConnection struct {
+	Nodes []DataPoolDataColumnsColumnConnectionNodesColumn `json:"nodes"`
+}
+
+// GetNodes returns DataPoolDataColumnsColumnConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnection) GetNodes() []DataPoolDataColumnsColumnConnectionNodesColumn {
+	return v.Nodes
+}
+
+// DataPoolDataColumnsColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
+type DataPoolDataColumnsColumnConnectionNodesColumn struct {
+	ColumnData `json:"-"`
+}
+
+// GetName returns DataPoolDataColumnsColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetName() string { return v.ColumnData.Name }
+
+// GetType returns DataPoolDataColumnsColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetType() string { return v.ColumnData.Type }
+
+// GetKind returns DataPoolDataColumnsColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetKind() string { return v.ColumnData.Kind }
+
+// GetIsNullable returns DataPoolDataColumnsColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetIsNullable() bool {
+	return v.ColumnData.IsNullable
+}
+
+// GetDefaultValue returns DataPoolDataColumnsColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetDefaultValue() string {
+	return v.ColumnData.DefaultValue
+}
+
+// GetIsPrimaryKey returns DataPoolDataColumnsColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
+	return v.ColumnData.IsPrimaryKey
+}
+
+// GetIsUniqueKey returns DataPoolDataColumnsColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetIsUniqueKey() bool {
+	return v.ColumnData.IsUniqueKey
+}
+
+// GetComment returns DataPoolDataColumnsColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetComment() string {
+	return v.ColumnData.Comment
+}
+
+// GetPolicyName returns DataPoolDataColumnsColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetPolicyName() string {
+	return v.ColumnData.PolicyName
+}
+
+// GetCachedAt returns DataPoolDataColumnsColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetCachedAt() time.Time {
+	return v.ColumnData.CachedAt
+}
+
+// GetCreatedAt returns DataPoolDataColumnsColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetCreatedAt() time.Time {
+	return v.ColumnData.CreatedAt
+}
+
+// GetCreatedBy returns DataPoolDataColumnsColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetCreatedBy() string {
+	return v.ColumnData.CreatedBy
+}
+
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolDataColumnsColumnConnectionNodesColumn
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolDataColumnsColumnConnectionNodesColumn = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.ColumnData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolDataColumnsColumnConnectionNodesColumn struct {
+	Name string `json:"name"`
+
+	Type string `json:"type"`
+
+	Kind string `json:"kind"`
+
+	IsNullable bool `json:"isNullable"`
+
+	DefaultValue string `json:"defaultValue"`
+
+	IsPrimaryKey bool `json:"isPrimaryKey"`
+
+	IsUniqueKey bool `json:"isUniqueKey"`
+
+	Comment string `json:"comment"`
+
+	PolicyName string `json:"policyName"`
+
+	CachedAt time.Time `json:"cachedAt"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	CreatedBy string `json:"createdBy"`
+}
+
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) __premarshalJSON() (*__premarshalDataPoolDataColumnsColumnConnectionNodesColumn, error) {
+	var retval __premarshalDataPoolDataColumnsColumnConnectionNodesColumn
+
+	retval.Name = v.ColumnData.Name
+	retval.Type = v.ColumnData.Type
+	retval.Kind = v.ColumnData.Kind
+	retval.IsNullable = v.ColumnData.IsNullable
+	retval.DefaultValue = v.ColumnData.DefaultValue
+	retval.IsPrimaryKey = v.ColumnData.IsPrimaryKey
+	retval.IsUniqueKey = v.ColumnData.IsUniqueKey
+	retval.Comment = v.ColumnData.Comment
+	retval.PolicyName = v.ColumnData.PolicyName
+	retval.CachedAt = v.ColumnData.CachedAt
+	retval.CreatedAt = v.ColumnData.CreatedAt
+	retval.CreatedBy = v.ColumnData.CreatedBy
+	return &retval, nil
+}
+
+// DataPoolDataDataSource includes the requested fields of the GraphQL type DataSource.
+type DataPoolDataDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns DataPoolDataDataSource.Id, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetId() string { return v.DataSourceData.Id }
+
+// GetType returns DataPoolDataDataSource.Type, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetType() DataSourceType { return v.DataSourceData.Type }
+
+// GetStatus returns DataPoolDataDataSource.Status, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetStatus() DataSourceStatus { return v.DataSourceData.Status }
+
+// GetError returns DataPoolDataDataSource.Error, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetError() DataSourceDataError { return v.DataSourceData.Error }
+
+// GetConnectionSettings returns DataPoolDataDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns DataPoolDataDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetTables() DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns DataPoolDataDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns DataPoolDataDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns DataPoolDataDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns DataPoolDataDataSource.Description, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns DataPoolDataDataSource.Account, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetAccount() CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns DataPoolDataDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetEnvironment() CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns DataPoolDataDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns DataPoolDataDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns DataPoolDataDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns DataPoolDataDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *DataPoolDataDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolDataDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolDataDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolDataDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error DataSourceDataError `json:"error"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account CommonDataAccount `json:"account"`
+
+	Environment CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *DataPoolDataDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolDataDataSource) __premarshalJSON() (*__premarshalDataPoolDataDataSource, error) {
+	var retval __premarshalDataPoolDataDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"Unable to marshal DataPoolDataDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// DataPoolDataError includes the requested fields of the GraphQL type Error.
+type DataPoolDataError struct {
+	Message string `json:"message"`
+}
+
+// GetMessage returns DataPoolDataError.Message, and is useful for accessing the field via an interface.
+func (v *DataPoolDataError) GetMessage() string { return v.Message }
+
 // DataPoolDataPool includes the requested fields of the GraphQL type DataPool.
 type DataPoolDataPool struct {
-	dataPool `json:"-"`
+	DataPoolData `json:"-"`
 }
 
 // GetId returns DataPoolDataPool.Id, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetId() string { return v.dataPool.Id }
+func (v *DataPoolDataPool) GetId() string { return v.DataPoolData.Id }
 
 // GetDataSource returns DataPoolDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetDataSource() dataPoolDataSource { return v.dataPool.DataSource }
+func (v *DataPoolDataPool) GetDataSource() DataPoolDataDataSource { return v.DataPoolData.DataSource }
 
 // GetStatus returns DataPoolDataPool.Status, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetStatus() DataPoolStatus { return v.dataPool.Status }
+func (v *DataPoolDataPool) GetStatus() DataPoolStatus { return v.DataPoolData.Status }
 
 // GetError returns DataPoolDataPool.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetError() dataPoolError { return v.dataPool.Error }
+func (v *DataPoolDataPool) GetError() DataPoolDataError { return v.DataPoolData.Error }
 
 // GetTable returns DataPoolDataPool.Table, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetTable() string { return v.dataPool.Table }
+func (v *DataPoolDataPool) GetTable() string { return v.DataPoolData.Table }
 
 // GetTimestamp returns DataPoolDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetTimestamp() dataPoolTimestampDimension { return v.dataPool.Timestamp }
+func (v *DataPoolDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+	return v.DataPoolData.Timestamp
+}
 
 // GetColumns returns DataPoolDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetColumns() dataPoolColumnsColumnConnection { return v.dataPool.Columns }
+func (v *DataPoolDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+	return v.DataPoolData.Columns
+}
 
 // GetAvailableMeasures returns DataPoolDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetAvailableMeasures() dataPoolAvailableMeasuresColumnConnection {
-	return v.dataPool.AvailableMeasures
+func (v *DataPoolDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns DataPoolDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetSetupTasks() []dataPoolSetupTasksDataPoolSetupTask {
-	return v.dataPool.SetupTasks
+func (v *DataPoolDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns DataPoolDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetSyncs() dataPoolSyncsSyncConnection { return v.dataPool.Syncs }
+func (v *DataPoolDataPool) GetSyncs() DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
 
 // GetUniqueName returns DataPoolDataPool.UniqueName, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetUniqueName() string { return v.dataPool.commonDataPool.UniqueName }
+func (v *DataPoolDataPool) GetUniqueName() string {
+	return v.DataPoolData.CommonDataDataPool.UniqueName
+}
 
 // GetDescription returns DataPoolDataPool.Description, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetDescription() string { return v.dataPool.commonDataPool.Description }
+func (v *DataPoolDataPool) GetDescription() string {
+	return v.DataPoolData.CommonDataDataPool.Description
+}
 
 // GetAccount returns DataPoolDataPool.Account, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetAccount() commonAccount { return v.dataPool.commonDataPool.Account }
+func (v *DataPoolDataPool) GetAccount() CommonDataAccount {
+	return v.DataPoolData.CommonDataDataPool.Account
+}
 
 // GetEnvironment returns DataPoolDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetEnvironment() commonEnvironment {
-	return v.dataPool.commonDataPool.Environment
+func (v *DataPoolDataPool) GetEnvironment() CommonDataEnvironment {
+	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
 // GetCreatedAt returns DataPoolDataPool.CreatedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetCreatedAt() time.Time { return v.dataPool.commonDataPool.CreatedAt }
+func (v *DataPoolDataPool) GetCreatedAt() time.Time {
+	return v.DataPoolData.CommonDataDataPool.CreatedAt
+}
 
 // GetModifiedAt returns DataPoolDataPool.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetModifiedAt() time.Time { return v.dataPool.commonDataPool.ModifiedAt }
+func (v *DataPoolDataPool) GetModifiedAt() time.Time {
+	return v.DataPoolData.CommonDataDataPool.ModifiedAt
+}
 
 // GetCreatedBy returns DataPoolDataPool.CreatedBy, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetCreatedBy() string { return v.dataPool.commonDataPool.CreatedBy }
+func (v *DataPoolDataPool) GetCreatedBy() string { return v.DataPoolData.CommonDataDataPool.CreatedBy }
 
 // GetModifiedBy returns DataPoolDataPool.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetModifiedBy() string { return v.dataPool.commonDataPool.ModifiedBy }
+func (v *DataPoolDataPool) GetModifiedBy() string {
+	return v.DataPoolData.CommonDataDataPool.ModifiedBy
+}
 
 func (v *DataPoolDataPool) UnmarshalJSON(b []byte) error {
 
@@ -1879,7 +2888,7 @@ func (v *DataPoolDataPool) UnmarshalJSON(b []byte) error {
 	}
 
 	err = json.Unmarshal(
-		b, &v.dataPool)
+		b, &v.DataPoolData)
 	if err != nil {
 		return err
 	}
@@ -1889,31 +2898,31 @@ func (v *DataPoolDataPool) UnmarshalJSON(b []byte) error {
 type __premarshalDataPoolDataPool struct {
 	Id string `json:"id"`
 
-	DataSource dataPoolDataSource `json:"dataSource"`
+	DataSource DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error dataPoolError `json:"error"`
+	Error DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp dataPoolTimestampDimension `json:"timestamp"`
+	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns dataPoolColumnsColumnConnection `json:"columns"`
+	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures dataPoolAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []dataPoolSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs dataPoolSyncsSyncConnection `json:"syncs"`
+	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -1935,24 +2944,308 @@ func (v *DataPoolDataPool) MarshalJSON() ([]byte, error) {
 func (v *DataPoolDataPool) __premarshalJSON() (*__premarshalDataPoolDataPool, error) {
 	var retval __premarshalDataPoolDataPool
 
-	retval.Id = v.dataPool.Id
-	retval.DataSource = v.dataPool.DataSource
-	retval.Status = v.dataPool.Status
-	retval.Error = v.dataPool.Error
-	retval.Table = v.dataPool.Table
-	retval.Timestamp = v.dataPool.Timestamp
-	retval.Columns = v.dataPool.Columns
-	retval.AvailableMeasures = v.dataPool.AvailableMeasures
-	retval.SetupTasks = v.dataPool.SetupTasks
-	retval.Syncs = v.dataPool.Syncs
-	retval.UniqueName = v.dataPool.commonDataPool.UniqueName
-	retval.Description = v.dataPool.commonDataPool.Description
-	retval.Account = v.dataPool.commonDataPool.Account
-	retval.Environment = v.dataPool.commonDataPool.Environment
-	retval.CreatedAt = v.dataPool.commonDataPool.CreatedAt
-	retval.ModifiedAt = v.dataPool.commonDataPool.ModifiedAt
-	retval.CreatedBy = v.dataPool.commonDataPool.CreatedBy
-	retval.ModifiedBy = v.dataPool.commonDataPool.ModifiedBy
+	retval.Id = v.DataPoolData.Id
+	retval.DataSource = v.DataPoolData.DataSource
+	retval.Status = v.DataPoolData.Status
+	retval.Error = v.DataPoolData.Error
+	retval.Table = v.DataPoolData.Table
+	retval.Timestamp = v.DataPoolData.Timestamp
+	retval.Columns = v.DataPoolData.Columns
+	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
+	retval.SetupTasks = v.DataPoolData.SetupTasks
+	retval.Syncs = v.DataPoolData.Syncs
+	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
+	retval.Description = v.DataPoolData.CommonDataDataPool.Description
+	retval.Account = v.DataPoolData.CommonDataDataPool.Account
+	retval.Environment = v.DataPoolData.CommonDataDataPool.Environment
+	retval.CreatedAt = v.DataPoolData.CommonDataDataPool.CreatedAt
+	retval.ModifiedAt = v.DataPoolData.CommonDataDataPool.ModifiedAt
+	retval.CreatedBy = v.DataPoolData.CommonDataDataPool.CreatedBy
+	retval.ModifiedBy = v.DataPoolData.CommonDataDataPool.ModifiedBy
+	return &retval, nil
+}
+
+// DataPoolDataSetupTasksDataPoolSetupTask includes the requested fields of the GraphQL type DataPoolSetupTask.
+type DataPoolDataSetupTasksDataPoolSetupTask struct {
+	// The name of the Data Pool setup task to be performed.
+	Name string `json:"name"`
+	// A description of the Data Pool setup task to be performed.
+	Description string `json:"description"`
+	// The status of the Data Pool setup task (all setup tasks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED).
+	Status DataPoolSetupTaskStatus `json:"status"`
+	// If the Data Pool setup task failed, this field includes a descriptive error message.
+	Error DataPoolDataSetupTasksDataPoolSetupTaskError `json:"error"`
+	// The time at which the Data Pool setup task was completed.
+	CompletedAt time.Time `json:"completedAt"`
+}
+
+// GetName returns DataPoolDataSetupTasksDataPoolSetupTask.Name, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetName() string { return v.Name }
+
+// GetDescription returns DataPoolDataSetupTasksDataPoolSetupTask.Description, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetDescription() string { return v.Description }
+
+// GetStatus returns DataPoolDataSetupTasksDataPoolSetupTask.Status, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetStatus() DataPoolSetupTaskStatus {
+	return v.Status
+}
+
+// GetError returns DataPoolDataSetupTasksDataPoolSetupTask.Error, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetError() DataPoolDataSetupTasksDataPoolSetupTaskError {
+	return v.Error
+}
+
+// GetCompletedAt returns DataPoolDataSetupTasksDataPoolSetupTask.CompletedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetCompletedAt() time.Time { return v.CompletedAt }
+
+// DataPoolDataSetupTasksDataPoolSetupTaskError includes the requested fields of the GraphQL type Error.
+type DataPoolDataSetupTasksDataPoolSetupTaskError struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
+// GetCode returns DataPoolDataSetupTasksDataPoolSetupTaskError.Code, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSetupTasksDataPoolSetupTaskError) GetCode() int { return v.Code }
+
+// GetMessage returns DataPoolDataSetupTasksDataPoolSetupTaskError.Message, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSetupTasksDataPoolSetupTaskError) GetMessage() string { return v.Message }
+
+// DataPoolDataSyncsSyncConnection includes the requested fields of the GraphQL type SyncConnection.
+type DataPoolDataSyncsSyncConnection struct {
+	Nodes []DataPoolDataSyncsSyncConnectionNodesSync `json:"nodes"`
+}
+
+// GetNodes returns DataPoolDataSyncsSyncConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnection) GetNodes() []DataPoolDataSyncsSyncConnectionNodesSync {
+	return v.Nodes
+}
+
+// DataPoolDataSyncsSyncConnectionNodesSync includes the requested fields of the GraphQL type Sync.
+type DataPoolDataSyncsSyncConnectionNodesSync struct {
+	SyncData `json:"-"`
+}
+
+// GetId returns DataPoolDataSyncsSyncConnectionNodesSync.Id, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetId() string { return v.SyncData.Id }
+
+// GetQueryId returns DataPoolDataSyncsSyncConnectionNodesSync.QueryId, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetQueryId() string { return v.SyncData.QueryId }
+
+// GetStatus returns DataPoolDataSyncsSyncConnectionNodesSync.Status, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetStatus() SyncStatus { return v.SyncData.Status }
+
+// GetNewRecords returns DataPoolDataSyncsSyncConnectionNodesSync.NewRecords, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetNewRecords() string {
+	return v.SyncData.NewRecords
+}
+
+// GetUpdatedRecords returns DataPoolDataSyncsSyncConnectionNodesSync.UpdatedRecords, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetUpdatedRecords() string {
+	return v.SyncData.UpdatedRecords
+}
+
+// GetDeletedRecords returns DataPoolDataSyncsSyncConnectionNodesSync.DeletedRecords, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetDeletedRecords() string {
+	return v.SyncData.DeletedRecords
+}
+
+// GetInvalidRecords returns DataPoolDataSyncsSyncConnectionNodesSync.InvalidRecords, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetInvalidRecords() string {
+	return v.SyncData.InvalidRecords
+}
+
+// GetStartedAt returns DataPoolDataSyncsSyncConnectionNodesSync.StartedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetStartedAt() time.Time {
+	return v.SyncData.StartedAt
+}
+
+// GetSucceededAt returns DataPoolDataSyncsSyncConnectionNodesSync.SucceededAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetSucceededAt() time.Time {
+	return v.SyncData.SucceededAt
+}
+
+// GetFailedAt returns DataPoolDataSyncsSyncConnectionNodesSync.FailedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetFailedAt() time.Time {
+	return v.SyncData.FailedAt
+}
+
+// GetError returns DataPoolDataSyncsSyncConnectionNodesSync.Error, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetError() SyncDataError { return v.SyncData.Error }
+
+// GetCreatedAt returns DataPoolDataSyncsSyncConnectionNodesSync.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetCreatedAt() time.Time {
+	return v.SyncData.CreatedAt
+}
+
+// GetCreatedBy returns DataPoolDataSyncsSyncConnectionNodesSync.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetCreatedBy() string { return v.SyncData.CreatedBy }
+
+// GetModifiedAt returns DataPoolDataSyncsSyncConnectionNodesSync.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetModifiedAt() time.Time {
+	return v.SyncData.ModifiedAt
+}
+
+// GetModifiedBy returns DataPoolDataSyncsSyncConnectionNodesSync.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetModifiedBy() string {
+	return v.SyncData.ModifiedBy
+}
+
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolDataSyncsSyncConnectionNodesSync
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolDataSyncsSyncConnectionNodesSync = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.SyncData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolDataSyncsSyncConnectionNodesSync struct {
+	Id string `json:"id"`
+
+	QueryId string `json:"queryId"`
+
+	Status SyncStatus `json:"status"`
+
+	NewRecords string `json:"newRecords"`
+
+	UpdatedRecords string `json:"updatedRecords"`
+
+	DeletedRecords string `json:"deletedRecords"`
+
+	InvalidRecords string `json:"invalidRecords"`
+
+	StartedAt time.Time `json:"startedAt"`
+
+	SucceededAt time.Time `json:"succeededAt"`
+
+	FailedAt time.Time `json:"failedAt"`
+
+	Error SyncDataError `json:"error"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) __premarshalJSON() (*__premarshalDataPoolDataSyncsSyncConnectionNodesSync, error) {
+	var retval __premarshalDataPoolDataSyncsSyncConnectionNodesSync
+
+	retval.Id = v.SyncData.Id
+	retval.QueryId = v.SyncData.QueryId
+	retval.Status = v.SyncData.Status
+	retval.NewRecords = v.SyncData.NewRecords
+	retval.UpdatedRecords = v.SyncData.UpdatedRecords
+	retval.DeletedRecords = v.SyncData.DeletedRecords
+	retval.InvalidRecords = v.SyncData.InvalidRecords
+	retval.StartedAt = v.SyncData.StartedAt
+	retval.SucceededAt = v.SyncData.SucceededAt
+	retval.FailedAt = v.SyncData.FailedAt
+	retval.Error = v.SyncData.Error
+	retval.CreatedAt = v.SyncData.CreatedAt
+	retval.CreatedBy = v.SyncData.CreatedBy
+	retval.ModifiedAt = v.SyncData.ModifiedAt
+	retval.ModifiedBy = v.SyncData.ModifiedBy
+	return &retval, nil
+}
+
+// DataPoolDataTimestampDimension includes the requested fields of the GraphQL type Dimension.
+// The GraphQL type's documentation follows.
+//
+// The Dimension object that represents a column in a table.
+type DataPoolDataTimestampDimension struct {
+	DimensionData `json:"-"`
+}
+
+// GetColumnName returns DataPoolDataTimestampDimension.ColumnName, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTimestampDimension) GetColumnName() string { return v.DimensionData.ColumnName }
+
+// GetType returns DataPoolDataTimestampDimension.Type, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTimestampDimension) GetType() string { return v.DimensionData.Type }
+
+// GetIsNullable returns DataPoolDataTimestampDimension.IsNullable, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTimestampDimension) GetIsNullable() bool { return v.DimensionData.IsNullable }
+
+// GetIsUniqueKey returns DataPoolDataTimestampDimension.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTimestampDimension) GetIsUniqueKey() bool { return v.DimensionData.IsUniqueKey }
+
+func (v *DataPoolDataTimestampDimension) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolDataTimestampDimension
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolDataTimestampDimension = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DimensionData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolDataTimestampDimension struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+
+	IsNullable bool `json:"isNullable"`
+
+	IsUniqueKey bool `json:"isUniqueKey"`
+}
+
+func (v *DataPoolDataTimestampDimension) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolDataTimestampDimension) __premarshalJSON() (*__premarshalDataPoolDataTimestampDimension, error) {
+	var retval __premarshalDataPoolDataTimestampDimension
+
+	retval.ColumnName = v.DimensionData.ColumnName
+	retval.Type = v.DimensionData.Type
+	retval.IsNullable = v.DimensionData.IsNullable
+	retval.IsUniqueKey = v.DimensionData.IsUniqueKey
 	return &retval, nil
 }
 
@@ -2020,97 +3313,97 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge) GetNode() DataPo
 
 // DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool includes the requested fields of the GraphQL type DataPool.
 type DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool struct {
-	dataPool `json:"-"`
+	DataPoolData `json:"-"`
 }
 
 // GetId returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Id, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetId() string {
-	return v.dataPool.Id
+	return v.DataPoolData.Id
 }
 
 // GetDataSource returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetDataSource() dataPoolDataSource {
-	return v.dataPool.DataSource
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetDataSource() DataPoolDataDataSource {
+	return v.DataPoolData.DataSource
 }
 
 // GetStatus returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Status, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetStatus() DataPoolStatus {
-	return v.dataPool.Status
+	return v.DataPoolData.Status
 }
 
 // GetError returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetError() dataPoolError {
-	return v.dataPool.Error
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetError() DataPoolDataError {
+	return v.DataPoolData.Error
 }
 
 // GetTable returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Table, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetTable() string {
-	return v.dataPool.Table
+	return v.DataPoolData.Table
 }
 
 // GetTimestamp returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetTimestamp() dataPoolTimestampDimension {
-	return v.dataPool.Timestamp
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+	return v.DataPoolData.Timestamp
 }
 
 // GetColumns returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetColumns() dataPoolColumnsColumnConnection {
-	return v.dataPool.Columns
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+	return v.DataPoolData.Columns
 }
 
 // GetAvailableMeasures returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetAvailableMeasures() dataPoolAvailableMeasuresColumnConnection {
-	return v.dataPool.AvailableMeasures
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSetupTasks() []dataPoolSetupTasksDataPoolSetupTask {
-	return v.dataPool.SetupTasks
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSyncs() dataPoolSyncsSyncConnection {
-	return v.dataPool.Syncs
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSyncs() DataPoolDataSyncsSyncConnection {
+	return v.DataPoolData.Syncs
 }
 
 // GetUniqueName returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetUniqueName() string {
-	return v.dataPool.commonDataPool.UniqueName
+	return v.DataPoolData.CommonDataDataPool.UniqueName
 }
 
 // GetDescription returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Description, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetDescription() string {
-	return v.dataPool.commonDataPool.Description
+	return v.DataPoolData.CommonDataDataPool.Description
 }
 
 // GetAccount returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Account, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetAccount() commonAccount {
-	return v.dataPool.commonDataPool.Account
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetAccount() CommonDataAccount {
+	return v.DataPoolData.CommonDataDataPool.Account
 }
 
 // GetEnvironment returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetEnvironment() commonEnvironment {
-	return v.dataPool.commonDataPool.Environment
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetEnvironment() CommonDataEnvironment {
+	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
 // GetCreatedAt returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.CreatedAt, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetCreatedAt() time.Time {
-	return v.dataPool.commonDataPool.CreatedAt
+	return v.DataPoolData.CommonDataDataPool.CreatedAt
 }
 
 // GetModifiedAt returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetModifiedAt() time.Time {
-	return v.dataPool.commonDataPool.ModifiedAt
+	return v.DataPoolData.CommonDataDataPool.ModifiedAt
 }
 
 // GetCreatedBy returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.CreatedBy, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetCreatedBy() string {
-	return v.dataPool.commonDataPool.CreatedBy
+	return v.DataPoolData.CommonDataDataPool.CreatedBy
 }
 
 // GetModifiedBy returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetModifiedBy() string {
-	return v.dataPool.commonDataPool.ModifiedBy
+	return v.DataPoolData.CommonDataDataPool.ModifiedBy
 }
 
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) UnmarshalJSON(b []byte) error {
@@ -2131,7 +3424,7 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) Unma
 	}
 
 	err = json.Unmarshal(
-		b, &v.dataPool)
+		b, &v.DataPoolData)
 	if err != nil {
 		return err
 	}
@@ -2141,31 +3434,31 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) Unma
 type __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool struct {
 	Id string `json:"id"`
 
-	DataSource dataPoolDataSource `json:"dataSource"`
+	DataSource DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error dataPoolError `json:"error"`
+	Error DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp dataPoolTimestampDimension `json:"timestamp"`
+	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns dataPoolColumnsColumnConnection `json:"columns"`
+	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures dataPoolAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []dataPoolSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs dataPoolSyncsSyncConnection `json:"syncs"`
+	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -2187,50 +3480,50 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) Mars
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) __premarshalJSON() (*__premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool, error) {
 	var retval __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool
 
-	retval.Id = v.dataPool.Id
-	retval.DataSource = v.dataPool.DataSource
-	retval.Status = v.dataPool.Status
-	retval.Error = v.dataPool.Error
-	retval.Table = v.dataPool.Table
-	retval.Timestamp = v.dataPool.Timestamp
-	retval.Columns = v.dataPool.Columns
-	retval.AvailableMeasures = v.dataPool.AvailableMeasures
-	retval.SetupTasks = v.dataPool.SetupTasks
-	retval.Syncs = v.dataPool.Syncs
-	retval.UniqueName = v.dataPool.commonDataPool.UniqueName
-	retval.Description = v.dataPool.commonDataPool.Description
-	retval.Account = v.dataPool.commonDataPool.Account
-	retval.Environment = v.dataPool.commonDataPool.Environment
-	retval.CreatedAt = v.dataPool.commonDataPool.CreatedAt
-	retval.ModifiedAt = v.dataPool.commonDataPool.ModifiedAt
-	retval.CreatedBy = v.dataPool.commonDataPool.CreatedBy
-	retval.ModifiedBy = v.dataPool.commonDataPool.ModifiedBy
+	retval.Id = v.DataPoolData.Id
+	retval.DataSource = v.DataPoolData.DataSource
+	retval.Status = v.DataPoolData.Status
+	retval.Error = v.DataPoolData.Error
+	retval.Table = v.DataPoolData.Table
+	retval.Timestamp = v.DataPoolData.Timestamp
+	retval.Columns = v.DataPoolData.Columns
+	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
+	retval.SetupTasks = v.DataPoolData.SetupTasks
+	retval.Syncs = v.DataPoolData.Syncs
+	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
+	retval.Description = v.DataPoolData.CommonDataDataPool.Description
+	retval.Account = v.DataPoolData.CommonDataDataPool.Account
+	retval.Environment = v.DataPoolData.CommonDataDataPool.Environment
+	retval.CreatedAt = v.DataPoolData.CommonDataDataPool.CreatedAt
+	retval.ModifiedAt = v.DataPoolData.CommonDataDataPool.ModifiedAt
+	retval.CreatedBy = v.DataPoolData.CommonDataDataPool.CreatedBy
+	retval.ModifiedBy = v.DataPoolData.CommonDataDataPool.ModifiedBy
 	return &retval, nil
 }
 
 // DataPoolsDataPoolsDataPoolConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 type DataPoolsDataPoolsDataPoolConnectionPageInfo struct {
-	pageInfo `json:"-"`
+	PageInfoData `json:"-"`
 }
 
 // GetStartCursor returns DataPoolsDataPoolsDataPoolConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) GetStartCursor() string {
-	return v.pageInfo.StartCursor
+	return v.PageInfoData.StartCursor
 }
 
 // GetEndCursor returns DataPoolsDataPoolsDataPoolConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) GetEndCursor() string {
-	return v.pageInfo.EndCursor
+	return v.PageInfoData.EndCursor
 }
 
 // GetHasNextPage returns DataPoolsDataPoolsDataPoolConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) GetHasNextPage() bool {
-	return v.pageInfo.HasNextPage
+	return v.PageInfoData.HasNextPage
 }
 
 // GetHasPreviousPage returns DataPoolsDataPoolsDataPoolConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) GetHasPreviousPage() bool {
-	return v.pageInfo.HasPreviousPage
+	return v.PageInfoData.HasPreviousPage
 }
 
 func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) UnmarshalJSON(b []byte) error {
@@ -2251,7 +3544,7 @@ func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) UnmarshalJSON(b []byte) e
 	}
 
 	err = json.Unmarshal(
-		b, &v.pageInfo)
+		b, &v.PageInfoData)
 	if err != nil {
 		return err
 	}
@@ -2279,10 +3572,10 @@ func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) MarshalJSON() ([]byte, er
 func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) __premarshalJSON() (*__premarshalDataPoolsDataPoolsDataPoolConnectionPageInfo, error) {
 	var retval __premarshalDataPoolsDataPoolsDataPoolConnectionPageInfo
 
-	retval.StartCursor = v.pageInfo.StartCursor
-	retval.EndCursor = v.pageInfo.EndCursor
-	retval.HasNextPage = v.pageInfo.HasNextPage
-	retval.HasPreviousPage = v.pageInfo.HasPreviousPage
+	retval.StartCursor = v.PageInfoData.StartCursor
+	retval.EndCursor = v.PageInfoData.EndCursor
+	retval.HasNextPage = v.PageInfoData.HasNextPage
+	retval.HasPreviousPage = v.PageInfoData.HasPreviousPage
 	return &retval, nil
 }
 
@@ -2296,79 +3589,79 @@ func (v *DataPoolsResponse) GetDataPools() DataPoolsDataPoolsDataPoolConnection 
 
 // DataSourceByNameDataSource includes the requested fields of the GraphQL type DataSource.
 type DataSourceByNameDataSource struct {
-	dataSource `json:"-"`
+	DataSourceData `json:"-"`
 }
 
 // GetId returns DataSourceByNameDataSource.Id, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetId() string { return v.dataSource.Id }
+func (v *DataSourceByNameDataSource) GetId() string { return v.DataSourceData.Id }
 
 // GetType returns DataSourceByNameDataSource.Type, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetType() DataSourceType { return v.dataSource.Type }
+func (v *DataSourceByNameDataSource) GetType() DataSourceType { return v.DataSourceData.Type }
 
 // GetStatus returns DataSourceByNameDataSource.Status, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetStatus() DataSourceStatus { return v.dataSource.Status }
+func (v *DataSourceByNameDataSource) GetStatus() DataSourceStatus { return v.DataSourceData.Status }
 
 // GetError returns DataSourceByNameDataSource.Error, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetError() dataSourceError { return v.dataSource.Error }
+func (v *DataSourceByNameDataSource) GetError() DataSourceDataError { return v.DataSourceData.Error }
 
 // GetConnectionSettings returns DataSourceByNameDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetConnectionSettings() dataSourceConnectionSettings {
-	return v.dataSource.ConnectionSettings
+func (v *DataSourceByNameDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
 }
 
 // GetTables returns DataSourceByNameDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetTables() dataSourceTablesTableConnection {
-	return v.dataSource.Tables
+func (v *DataSourceByNameDataSource) GetTables() DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
 }
 
 // GetChecks returns DataSourceByNameDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetChecks() []dataSourceChecksDataSourceCheck {
-	return v.dataSource.Checks
+func (v *DataSourceByNameDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns DataSourceByNameDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetTableIntrospections() dataSourceTableIntrospectionsTableIntrospectionConnection {
-	return v.dataSource.TableIntrospections
+func (v *DataSourceByNameDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
 }
 
 // GetUniqueName returns DataSourceByNameDataSource.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataSourceByNameDataSource) GetUniqueName() string {
-	return v.dataSource.commonDataSource.UniqueName
+	return v.DataSourceData.CommonDataDataSource.UniqueName
 }
 
 // GetDescription returns DataSourceByNameDataSource.Description, and is useful for accessing the field via an interface.
 func (v *DataSourceByNameDataSource) GetDescription() string {
-	return v.dataSource.commonDataSource.Description
+	return v.DataSourceData.CommonDataDataSource.Description
 }
 
 // GetAccount returns DataSourceByNameDataSource.Account, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetAccount() commonAccount {
-	return v.dataSource.commonDataSource.Account
+func (v *DataSourceByNameDataSource) GetAccount() CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns DataSourceByNameDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetEnvironment() commonEnvironment {
-	return v.dataSource.commonDataSource.Environment
+func (v *DataSourceByNameDataSource) GetEnvironment() CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
 // GetCreatedAt returns DataSourceByNameDataSource.CreatedAt, and is useful for accessing the field via an interface.
 func (v *DataSourceByNameDataSource) GetCreatedAt() time.Time {
-	return v.dataSource.commonDataSource.CreatedAt
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
 }
 
 // GetModifiedAt returns DataSourceByNameDataSource.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *DataSourceByNameDataSource) GetModifiedAt() time.Time {
-	return v.dataSource.commonDataSource.ModifiedAt
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
 }
 
 // GetCreatedBy returns DataSourceByNameDataSource.CreatedBy, and is useful for accessing the field via an interface.
 func (v *DataSourceByNameDataSource) GetCreatedBy() string {
-	return v.dataSource.commonDataSource.CreatedBy
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
 }
 
 // GetModifiedBy returns DataSourceByNameDataSource.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *DataSourceByNameDataSource) GetModifiedBy() string {
-	return v.dataSource.commonDataSource.ModifiedBy
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
 }
 
 func (v *DataSourceByNameDataSource) UnmarshalJSON(b []byte) error {
@@ -2389,7 +3682,7 @@ func (v *DataSourceByNameDataSource) UnmarshalJSON(b []byte) error {
 	}
 
 	err = json.Unmarshal(
-		b, &v.dataSource)
+		b, &v.DataSourceData)
 	if err != nil {
 		return err
 	}
@@ -2403,23 +3696,23 @@ type __premarshalDataSourceByNameDataSource struct {
 
 	Status DataSourceStatus `json:"status"`
 
-	Error dataSourceError `json:"error"`
+	Error DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables dataSourceTablesTableConnection `json:"tables"`
+	Tables DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []dataSourceChecksDataSourceCheck `json:"checks"`
+	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections dataSourceTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -2441,33 +3734,33 @@ func (v *DataSourceByNameDataSource) MarshalJSON() ([]byte, error) {
 func (v *DataSourceByNameDataSource) __premarshalJSON() (*__premarshalDataSourceByNameDataSource, error) {
 	var retval __premarshalDataSourceByNameDataSource
 
-	retval.Id = v.dataSource.Id
-	retval.Type = v.dataSource.Type
-	retval.Status = v.dataSource.Status
-	retval.Error = v.dataSource.Error
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
 	{
 
 		dst := &retval.ConnectionSettings
-		src := v.dataSource.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
 		var err error
-		*dst, err = __marshaldataSourceConnectionSettings(
+		*dst, err = __marshalDataSourceDataConnectionSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal DataSourceByNameDataSource.dataSource.ConnectionSettings: %w", err)
+				"Unable to marshal DataSourceByNameDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
-	retval.Tables = v.dataSource.Tables
-	retval.Checks = v.dataSource.Checks
-	retval.TableIntrospections = v.dataSource.TableIntrospections
-	retval.UniqueName = v.dataSource.commonDataSource.UniqueName
-	retval.Description = v.dataSource.commonDataSource.Description
-	retval.Account = v.dataSource.commonDataSource.Account
-	retval.Environment = v.dataSource.commonDataSource.Environment
-	retval.CreatedAt = v.dataSource.commonDataSource.CreatedAt
-	retval.ModifiedAt = v.dataSource.commonDataSource.ModifiedAt
-	retval.CreatedBy = v.dataSource.commonDataSource.CreatedBy
-	retval.ModifiedBy = v.dataSource.commonDataSource.ModifiedBy
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
 	return &retval, nil
 }
 
@@ -2487,79 +3780,417 @@ const (
 	DataSourceCheckStatusFailed     DataSourceCheckStatus = "FAILED"
 )
 
+// DataSourceData includes the GraphQL fields of DataSource requested by the fragment DataSourceData.
+type DataSourceData struct {
+	Id                   string `json:"id"`
+	CommonDataDataSource `json:"-"`
+	Type                 DataSourceType                      `json:"type"`
+	Status               DataSourceStatus                    `json:"status"`
+	Error                DataSourceDataError                 `json:"error"`
+	ConnectionSettings   DataSourceDataConnectionSettings    `json:"-"`
+	Tables               DataSourceDataTablesTableConnection `json:"tables"`
+	// A list of checks performed on the Data Source during its most recent connection attempt.
+	Checks              []DataSourceDataChecksDataSourceCheck                         `json:"checks"`
+	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+}
+
+// GetId returns DataSourceData.Id, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetId() string { return v.Id }
+
+// GetType returns DataSourceData.Type, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetType() DataSourceType { return v.Type }
+
+// GetStatus returns DataSourceData.Status, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetStatus() DataSourceStatus { return v.Status }
+
+// GetError returns DataSourceData.Error, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetError() DataSourceDataError { return v.Error }
+
+// GetConnectionSettings returns DataSourceData.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.ConnectionSettings
+}
+
+// GetTables returns DataSourceData.Tables, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetTables() DataSourceDataTablesTableConnection { return v.Tables }
+
+// GetChecks returns DataSourceData.Checks, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetChecks() []DataSourceDataChecksDataSourceCheck { return v.Checks }
+
+// GetTableIntrospections returns DataSourceData.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.TableIntrospections
+}
+
+// GetUniqueName returns DataSourceData.UniqueName, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetUniqueName() string { return v.CommonDataDataSource.UniqueName }
+
+// GetDescription returns DataSourceData.Description, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetDescription() string { return v.CommonDataDataSource.Description }
+
+// GetAccount returns DataSourceData.Account, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetAccount() CommonDataAccount { return v.CommonDataDataSource.Account }
+
+// GetEnvironment returns DataSourceData.Environment, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetEnvironment() CommonDataEnvironment {
+	return v.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns DataSourceData.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetCreatedAt() time.Time { return v.CommonDataDataSource.CreatedAt }
+
+// GetModifiedAt returns DataSourceData.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetModifiedAt() time.Time { return v.CommonDataDataSource.ModifiedAt }
+
+// GetCreatedBy returns DataSourceData.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetCreatedBy() string { return v.CommonDataDataSource.CreatedBy }
+
+// GetModifiedBy returns DataSourceData.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetModifiedBy() string { return v.CommonDataDataSource.ModifiedBy }
+
+func (v *DataSourceData) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataSourceData
+		ConnectionSettings json.RawMessage `json:"connectionSettings"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataSourceData = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.CommonDataDataSource)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.ConnectionSettings
+		src := firstPass.ConnectionSettings
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalDataSourceDataConnectionSettings(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"Unable to unmarshal DataSourceData.ConnectionSettings: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalDataSourceData struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error DataSourceDataError `json:"error"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account CommonDataAccount `json:"account"`
+
+	Environment CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *DataSourceData) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataSourceData) __premarshalJSON() (*__premarshalDataSourceData, error) {
+	var retval __premarshalDataSourceData
+
+	retval.Id = v.Id
+	retval.Type = v.Type
+	retval.Status = v.Status
+	retval.Error = v.Error
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"Unable to marshal DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.Tables
+	retval.Checks = v.Checks
+	retval.TableIntrospections = v.TableIntrospections
+	retval.UniqueName = v.CommonDataDataSource.UniqueName
+	retval.Description = v.CommonDataDataSource.Description
+	retval.Account = v.CommonDataDataSource.Account
+	retval.Environment = v.CommonDataDataSource.Environment
+	retval.CreatedAt = v.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// DataSourceDataChecksDataSourceCheck includes the requested fields of the GraphQL type DataSourceCheck.
+type DataSourceDataChecksDataSourceCheck struct {
+	// The name of the Data Source check to be performed.
+	Name string `json:"name"`
+	// A description of the Data Source check to be performed.
+	Description string `json:"description"`
+	// The status of the Data Source check (all checks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED).
+	Status DataSourceCheckStatus `json:"status"`
+	// If the Data Source check failed, this field includes a descriptive error message.
+	Error DataSourceDataChecksDataSourceCheckError `json:"error"`
+	// The time at which the Data Source check was performed.
+	CheckedAt time.Time `json:"checkedAt"`
+}
+
+// GetName returns DataSourceDataChecksDataSourceCheck.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataChecksDataSourceCheck) GetName() string { return v.Name }
+
+// GetDescription returns DataSourceDataChecksDataSourceCheck.Description, and is useful for accessing the field via an interface.
+func (v *DataSourceDataChecksDataSourceCheck) GetDescription() string { return v.Description }
+
+// GetStatus returns DataSourceDataChecksDataSourceCheck.Status, and is useful for accessing the field via an interface.
+func (v *DataSourceDataChecksDataSourceCheck) GetStatus() DataSourceCheckStatus { return v.Status }
+
+// GetError returns DataSourceDataChecksDataSourceCheck.Error, and is useful for accessing the field via an interface.
+func (v *DataSourceDataChecksDataSourceCheck) GetError() DataSourceDataChecksDataSourceCheckError {
+	return v.Error
+}
+
+// GetCheckedAt returns DataSourceDataChecksDataSourceCheck.CheckedAt, and is useful for accessing the field via an interface.
+func (v *DataSourceDataChecksDataSourceCheck) GetCheckedAt() time.Time { return v.CheckedAt }
+
+// DataSourceDataChecksDataSourceCheckError includes the requested fields of the GraphQL type Error.
+type DataSourceDataChecksDataSourceCheckError struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
+// GetCode returns DataSourceDataChecksDataSourceCheckError.Code, and is useful for accessing the field via an interface.
+func (v *DataSourceDataChecksDataSourceCheckError) GetCode() int { return v.Code }
+
+// GetMessage returns DataSourceDataChecksDataSourceCheckError.Message, and is useful for accessing the field via an interface.
+func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return v.Message }
+
+// DataSourceDataConnectionSettings includes the requested fields of the GraphQL interface ConnectionSettings.
+//
+// DataSourceDataConnectionSettings is implemented by the following types:
+// DataSourceDataConnectionSettingsSnowflakeConnectionSettings
+type DataSourceDataConnectionSettings interface {
+	implementsGraphQLInterfaceDataSourceDataConnectionSettings()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() string
+}
+
+func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
+}
+
+func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConnectionSettings) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "SnowflakeConnectionSettings":
+		*v = new(DataSourceDataConnectionSettingsSnowflakeConnectionSettings)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing ConnectionSettings.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for DataSourceDataConnectionSettings: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettings) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *DataSourceDataConnectionSettingsSnowflakeConnectionSettings:
+		typename = "SnowflakeConnectionSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DataSourceDataConnectionSettingsSnowflakeConnectionSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for DataSourceDataConnectionSettings: "%T"`, v)
+	}
+}
+
+// DataSourceDataConnectionSettingsSnowflakeConnectionSettings includes the requested fields of the GraphQL type SnowflakeConnectionSettings.
+type DataSourceDataConnectionSettingsSnowflakeConnectionSettings struct {
+	Typename  string `json:"__typename"`
+	Account   string `json:"account"`
+	Database  string `json:"database"`
+	Warehouse string `json:"warehouse"`
+	Schema    string `json:"schema"`
+	Username  string `json:"username"`
+	Role      string `json:"role"`
+}
+
+// GetTypename returns DataSourceDataConnectionSettingsSnowflakeConnectionSettings.Typename, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetTypename() string {
+	return v.Typename
+}
+
+// GetAccount returns DataSourceDataConnectionSettingsSnowflakeConnectionSettings.Account, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetAccount() string {
+	return v.Account
+}
+
+// GetDatabase returns DataSourceDataConnectionSettingsSnowflakeConnectionSettings.Database, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetDatabase() string {
+	return v.Database
+}
+
+// GetWarehouse returns DataSourceDataConnectionSettingsSnowflakeConnectionSettings.Warehouse, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetWarehouse() string {
+	return v.Warehouse
+}
+
+// GetSchema returns DataSourceDataConnectionSettingsSnowflakeConnectionSettings.Schema, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetSchema() string {
+	return v.Schema
+}
+
+// GetUsername returns DataSourceDataConnectionSettingsSnowflakeConnectionSettings.Username, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetUsername() string {
+	return v.Username
+}
+
+// GetRole returns DataSourceDataConnectionSettingsSnowflakeConnectionSettings.Role, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetRole() string { return v.Role }
+
+// DataSourceDataError includes the requested fields of the GraphQL type Error.
+type DataSourceDataError struct {
+	Message string `json:"message"`
+}
+
+// GetMessage returns DataSourceDataError.Message, and is useful for accessing the field via an interface.
+func (v *DataSourceDataError) GetMessage() string { return v.Message }
+
 // DataSourceDataSource includes the requested fields of the GraphQL type DataSource.
 type DataSourceDataSource struct {
-	dataSource `json:"-"`
+	DataSourceData `json:"-"`
 }
 
 // GetId returns DataSourceDataSource.Id, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetId() string { return v.dataSource.Id }
+func (v *DataSourceDataSource) GetId() string { return v.DataSourceData.Id }
 
 // GetType returns DataSourceDataSource.Type, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetType() DataSourceType { return v.dataSource.Type }
+func (v *DataSourceDataSource) GetType() DataSourceType { return v.DataSourceData.Type }
 
 // GetStatus returns DataSourceDataSource.Status, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetStatus() DataSourceStatus { return v.dataSource.Status }
+func (v *DataSourceDataSource) GetStatus() DataSourceStatus { return v.DataSourceData.Status }
 
 // GetError returns DataSourceDataSource.Error, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetError() dataSourceError { return v.dataSource.Error }
+func (v *DataSourceDataSource) GetError() DataSourceDataError { return v.DataSourceData.Error }
 
 // GetConnectionSettings returns DataSourceDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetConnectionSettings() dataSourceConnectionSettings {
-	return v.dataSource.ConnectionSettings
+func (v *DataSourceDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
 }
 
 // GetTables returns DataSourceDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetTables() dataSourceTablesTableConnection {
-	return v.dataSource.Tables
+func (v *DataSourceDataSource) GetTables() DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
 }
 
 // GetChecks returns DataSourceDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetChecks() []dataSourceChecksDataSourceCheck {
-	return v.dataSource.Checks
+func (v *DataSourceDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns DataSourceDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetTableIntrospections() dataSourceTableIntrospectionsTableIntrospectionConnection {
-	return v.dataSource.TableIntrospections
+func (v *DataSourceDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
 }
 
 // GetUniqueName returns DataSourceDataSource.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataSourceDataSource) GetUniqueName() string {
-	return v.dataSource.commonDataSource.UniqueName
+	return v.DataSourceData.CommonDataDataSource.UniqueName
 }
 
 // GetDescription returns DataSourceDataSource.Description, and is useful for accessing the field via an interface.
 func (v *DataSourceDataSource) GetDescription() string {
-	return v.dataSource.commonDataSource.Description
+	return v.DataSourceData.CommonDataDataSource.Description
 }
 
 // GetAccount returns DataSourceDataSource.Account, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetAccount() commonAccount {
-	return v.dataSource.commonDataSource.Account
+func (v *DataSourceDataSource) GetAccount() CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns DataSourceDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetEnvironment() commonEnvironment {
-	return v.dataSource.commonDataSource.Environment
+func (v *DataSourceDataSource) GetEnvironment() CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
 // GetCreatedAt returns DataSourceDataSource.CreatedAt, and is useful for accessing the field via an interface.
 func (v *DataSourceDataSource) GetCreatedAt() time.Time {
-	return v.dataSource.commonDataSource.CreatedAt
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
 }
 
 // GetModifiedAt returns DataSourceDataSource.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *DataSourceDataSource) GetModifiedAt() time.Time {
-	return v.dataSource.commonDataSource.ModifiedAt
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
 }
 
 // GetCreatedBy returns DataSourceDataSource.CreatedBy, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetCreatedBy() string { return v.dataSource.commonDataSource.CreatedBy }
+func (v *DataSourceDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
 
 // GetModifiedBy returns DataSourceDataSource.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *DataSourceDataSource) GetModifiedBy() string {
-	return v.dataSource.commonDataSource.ModifiedBy
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
 }
 
 func (v *DataSourceDataSource) UnmarshalJSON(b []byte) error {
@@ -2580,7 +4211,7 @@ func (v *DataSourceDataSource) UnmarshalJSON(b []byte) error {
 	}
 
 	err = json.Unmarshal(
-		b, &v.dataSource)
+		b, &v.DataSourceData)
 	if err != nil {
 		return err
 	}
@@ -2594,23 +4225,23 @@ type __premarshalDataSourceDataSource struct {
 
 	Status DataSourceStatus `json:"status"`
 
-	Error dataSourceError `json:"error"`
+	Error DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables dataSourceTablesTableConnection `json:"tables"`
+	Tables DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []dataSourceChecksDataSourceCheck `json:"checks"`
+	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections dataSourceTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -2632,33 +4263,479 @@ func (v *DataSourceDataSource) MarshalJSON() ([]byte, error) {
 func (v *DataSourceDataSource) __premarshalJSON() (*__premarshalDataSourceDataSource, error) {
 	var retval __premarshalDataSourceDataSource
 
-	retval.Id = v.dataSource.Id
-	retval.Type = v.dataSource.Type
-	retval.Status = v.dataSource.Status
-	retval.Error = v.dataSource.Error
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
 	{
 
 		dst := &retval.ConnectionSettings
-		src := v.dataSource.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
 		var err error
-		*dst, err = __marshaldataSourceConnectionSettings(
+		*dst, err = __marshalDataSourceDataConnectionSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal DataSourceDataSource.dataSource.ConnectionSettings: %w", err)
+				"Unable to marshal DataSourceDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
-	retval.Tables = v.dataSource.Tables
-	retval.Checks = v.dataSource.Checks
-	retval.TableIntrospections = v.dataSource.TableIntrospections
-	retval.UniqueName = v.dataSource.commonDataSource.UniqueName
-	retval.Description = v.dataSource.commonDataSource.Description
-	retval.Account = v.dataSource.commonDataSource.Account
-	retval.Environment = v.dataSource.commonDataSource.Environment
-	retval.CreatedAt = v.dataSource.commonDataSource.CreatedAt
-	retval.ModifiedAt = v.dataSource.commonDataSource.ModifiedAt
-	retval.CreatedBy = v.dataSource.commonDataSource.CreatedBy
-	retval.ModifiedBy = v.dataSource.commonDataSource.ModifiedBy
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// DataSourceDataTableIntrospectionsTableIntrospectionConnection includes the requested fields of the GraphQL type TableIntrospectionConnection.
+type DataSourceDataTableIntrospectionsTableIntrospectionConnection struct {
+	Nodes []DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection `json:"nodes"`
+}
+
+// GetNodes returns DataSourceDataTableIntrospectionsTableIntrospectionConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnection) GetNodes() []DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection {
+	return v.Nodes
+}
+
+// DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection includes the requested fields of the GraphQL type TableIntrospection.
+type DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection struct {
+	TableIntrospectionData `json:"-"`
+}
+
+// GetDataSource returns DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.DataSource, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetDataSource() TableIntrospectionDataDataSource {
+	return v.TableIntrospectionData.DataSource
+}
+
+// GetStatus returns DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.Status, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetStatus() TableIntrospectionStatus {
+	return v.TableIntrospectionData.Status
+}
+
+// GetCreatedAt returns DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetCreatedAt() time.Time {
+	return v.TableIntrospectionData.CreatedAt
+}
+
+// GetCreatedBy returns DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetCreatedBy() string {
+	return v.TableIntrospectionData.CreatedBy
+}
+
+// GetModifiedAt returns DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetModifiedAt() time.Time {
+	return v.TableIntrospectionData.ModifiedAt
+}
+
+// GetModifiedBy returns DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetModifiedBy() string {
+	return v.TableIntrospectionData.ModifiedBy
+}
+
+// GetNumTables returns DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.NumTables, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetNumTables() int {
+	return v.TableIntrospectionData.NumTables
+}
+
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.TableIntrospectionData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection struct {
+	DataSource TableIntrospectionDataDataSource `json:"dataSource"`
+
+	Status TableIntrospectionStatus `json:"status"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	ModifiedBy string `json:"modifiedBy"`
+
+	NumTables int `json:"numTables"`
+}
+
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) __premarshalJSON() (*__premarshalDataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection, error) {
+	var retval __premarshalDataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection
+
+	retval.DataSource = v.TableIntrospectionData.DataSource
+	retval.Status = v.TableIntrospectionData.Status
+	retval.CreatedAt = v.TableIntrospectionData.CreatedAt
+	retval.CreatedBy = v.TableIntrospectionData.CreatedBy
+	retval.ModifiedAt = v.TableIntrospectionData.ModifiedAt
+	retval.ModifiedBy = v.TableIntrospectionData.ModifiedBy
+	retval.NumTables = v.TableIntrospectionData.NumTables
+	return &retval, nil
+}
+
+// DataSourceDataTablesTableConnection includes the requested fields of the GraphQL type TableConnection.
+type DataSourceDataTablesTableConnection struct {
+	Nodes []DataSourceDataTablesTableConnectionNodesTable `json:"nodes"`
+}
+
+// GetNodes returns DataSourceDataTablesTableConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnection) GetNodes() []DataSourceDataTablesTableConnectionNodesTable {
+	return v.Nodes
+}
+
+// DataSourceDataTablesTableConnectionNodesTable includes the requested fields of the GraphQL type Table.
+type DataSourceDataTablesTableConnectionNodesTable struct {
+	Name                string                                                                           `json:"name"`
+	AvailableTimestamps DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection `json:"availableTimestamps"`
+	AvailableMeasures   DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection   `json:"availableMeasures"`
+}
+
+// GetName returns DataSourceDataTablesTableConnectionNodesTable.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTable) GetName() string { return v.Name }
+
+// GetAvailableTimestamps returns DataSourceDataTablesTableConnectionNodesTable.AvailableTimestamps, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTable) GetAvailableTimestamps() DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection {
+	return v.AvailableTimestamps
+}
+
+// GetAvailableMeasures returns DataSourceDataTablesTableConnectionNodesTable.AvailableMeasures, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTable) GetAvailableMeasures() DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection {
+	return v.AvailableMeasures
+}
+
+// DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
+type DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection struct {
+	Nodes []DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn `json:"nodes"`
+}
+
+// GetNodes returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection) GetNodes() []DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn {
+	return v.Nodes
+}
+
+// DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
+type DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn struct {
+	ColumnData `json:"-"`
+}
+
+// GetName returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetName() string {
+	return v.ColumnData.Name
+}
+
+// GetType returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetType() string {
+	return v.ColumnData.Type
+}
+
+// GetKind returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetKind() string {
+	return v.ColumnData.Kind
+}
+
+// GetIsNullable returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetIsNullable() bool {
+	return v.ColumnData.IsNullable
+}
+
+// GetDefaultValue returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetDefaultValue() string {
+	return v.ColumnData.DefaultValue
+}
+
+// GetIsPrimaryKey returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
+	return v.ColumnData.IsPrimaryKey
+}
+
+// GetIsUniqueKey returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetIsUniqueKey() bool {
+	return v.ColumnData.IsUniqueKey
+}
+
+// GetComment returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetComment() string {
+	return v.ColumnData.Comment
+}
+
+// GetPolicyName returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetPolicyName() string {
+	return v.ColumnData.PolicyName
+}
+
+// GetCachedAt returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetCachedAt() time.Time {
+	return v.ColumnData.CachedAt
+}
+
+// GetCreatedAt returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetCreatedAt() time.Time {
+	return v.ColumnData.CreatedAt
+}
+
+// GetCreatedBy returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetCreatedBy() string {
+	return v.ColumnData.CreatedBy
+}
+
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.ColumnData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn struct {
+	Name string `json:"name"`
+
+	Type string `json:"type"`
+
+	Kind string `json:"kind"`
+
+	IsNullable bool `json:"isNullable"`
+
+	DefaultValue string `json:"defaultValue"`
+
+	IsPrimaryKey bool `json:"isPrimaryKey"`
+
+	IsUniqueKey bool `json:"isUniqueKey"`
+
+	Comment string `json:"comment"`
+
+	PolicyName string `json:"policyName"`
+
+	CachedAt time.Time `json:"cachedAt"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	CreatedBy string `json:"createdBy"`
+}
+
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) __premarshalJSON() (*__premarshalDataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn, error) {
+	var retval __premarshalDataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn
+
+	retval.Name = v.ColumnData.Name
+	retval.Type = v.ColumnData.Type
+	retval.Kind = v.ColumnData.Kind
+	retval.IsNullable = v.ColumnData.IsNullable
+	retval.DefaultValue = v.ColumnData.DefaultValue
+	retval.IsPrimaryKey = v.ColumnData.IsPrimaryKey
+	retval.IsUniqueKey = v.ColumnData.IsUniqueKey
+	retval.Comment = v.ColumnData.Comment
+	retval.PolicyName = v.ColumnData.PolicyName
+	retval.CachedAt = v.ColumnData.CachedAt
+	retval.CreatedAt = v.ColumnData.CreatedAt
+	retval.CreatedBy = v.ColumnData.CreatedBy
+	return &retval, nil
+}
+
+// DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
+type DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection struct {
+	Nodes []DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn `json:"nodes"`
+}
+
+// GetNodes returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection) GetNodes() []DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn {
+	return v.Nodes
+}
+
+// DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
+type DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn struct {
+	ColumnData `json:"-"`
+}
+
+// GetName returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetName() string {
+	return v.ColumnData.Name
+}
+
+// GetType returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetType() string {
+	return v.ColumnData.Type
+}
+
+// GetKind returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetKind() string {
+	return v.ColumnData.Kind
+}
+
+// GetIsNullable returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetIsNullable() bool {
+	return v.ColumnData.IsNullable
+}
+
+// GetDefaultValue returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetDefaultValue() string {
+	return v.ColumnData.DefaultValue
+}
+
+// GetIsPrimaryKey returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
+	return v.ColumnData.IsPrimaryKey
+}
+
+// GetIsUniqueKey returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetIsUniqueKey() bool {
+	return v.ColumnData.IsUniqueKey
+}
+
+// GetComment returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetComment() string {
+	return v.ColumnData.Comment
+}
+
+// GetPolicyName returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetPolicyName() string {
+	return v.ColumnData.PolicyName
+}
+
+// GetCachedAt returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetCachedAt() time.Time {
+	return v.ColumnData.CachedAt
+}
+
+// GetCreatedAt returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetCreatedAt() time.Time {
+	return v.ColumnData.CreatedAt
+}
+
+// GetCreatedBy returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetCreatedBy() string {
+	return v.ColumnData.CreatedBy
+}
+
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.ColumnData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn struct {
+	Name string `json:"name"`
+
+	Type string `json:"type"`
+
+	Kind string `json:"kind"`
+
+	IsNullable bool `json:"isNullable"`
+
+	DefaultValue string `json:"defaultValue"`
+
+	IsPrimaryKey bool `json:"isPrimaryKey"`
+
+	IsUniqueKey bool `json:"isUniqueKey"`
+
+	Comment string `json:"comment"`
+
+	PolicyName string `json:"policyName"`
+
+	CachedAt time.Time `json:"cachedAt"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	CreatedBy string `json:"createdBy"`
+}
+
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) __premarshalJSON() (*__premarshalDataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn, error) {
+	var retval __premarshalDataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn
+
+	retval.Name = v.ColumnData.Name
+	retval.Type = v.ColumnData.Type
+	retval.Kind = v.ColumnData.Kind
+	retval.IsNullable = v.ColumnData.IsNullable
+	retval.DefaultValue = v.ColumnData.DefaultValue
+	retval.IsPrimaryKey = v.ColumnData.IsPrimaryKey
+	retval.IsUniqueKey = v.ColumnData.IsUniqueKey
+	retval.Comment = v.ColumnData.Comment
+	retval.PolicyName = v.ColumnData.PolicyName
+	retval.CachedAt = v.ColumnData.CachedAt
+	retval.CreatedAt = v.ColumnData.CreatedAt
+	retval.CreatedBy = v.ColumnData.CreatedBy
 	return &retval, nil
 }
 
@@ -2714,87 +4791,87 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge) GetNode(
 
 // DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource includes the requested fields of the GraphQL type DataSource.
 type DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource struct {
-	dataSource `json:"-"`
+	DataSourceData `json:"-"`
 }
 
 // GetId returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Id, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetId() string {
-	return v.dataSource.Id
+	return v.DataSourceData.Id
 }
 
 // GetType returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Type, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetType() DataSourceType {
-	return v.dataSource.Type
+	return v.DataSourceData.Type
 }
 
 // GetStatus returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Status, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetStatus() DataSourceStatus {
-	return v.dataSource.Status
+	return v.DataSourceData.Status
 }
 
 // GetError returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Error, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetError() dataSourceError {
-	return v.dataSource.Error
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetError() DataSourceDataError {
+	return v.DataSourceData.Error
 }
 
 // GetConnectionSettings returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetConnectionSettings() dataSourceConnectionSettings {
-	return v.dataSource.ConnectionSettings
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
 }
 
 // GetTables returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetTables() dataSourceTablesTableConnection {
-	return v.dataSource.Tables
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetTables() DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
 }
 
 // GetChecks returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetChecks() []dataSourceChecksDataSourceCheck {
-	return v.dataSource.Checks
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetTableIntrospections() dataSourceTableIntrospectionsTableIntrospectionConnection {
-	return v.dataSource.TableIntrospections
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
 }
 
 // GetUniqueName returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetUniqueName() string {
-	return v.dataSource.commonDataSource.UniqueName
+	return v.DataSourceData.CommonDataDataSource.UniqueName
 }
 
 // GetDescription returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Description, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetDescription() string {
-	return v.dataSource.commonDataSource.Description
+	return v.DataSourceData.CommonDataDataSource.Description
 }
 
 // GetAccount returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Account, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetAccount() commonAccount {
-	return v.dataSource.commonDataSource.Account
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetAccount() CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetEnvironment() commonEnvironment {
-	return v.dataSource.commonDataSource.Environment
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetEnvironment() CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
 // GetCreatedAt returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.CreatedAt, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetCreatedAt() time.Time {
-	return v.dataSource.commonDataSource.CreatedAt
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
 }
 
 // GetModifiedAt returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetModifiedAt() time.Time {
-	return v.dataSource.commonDataSource.ModifiedAt
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
 }
 
 // GetCreatedBy returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.CreatedBy, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetCreatedBy() string {
-	return v.dataSource.commonDataSource.CreatedBy
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
 }
 
 // GetModifiedBy returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetModifiedBy() string {
-	return v.dataSource.commonDataSource.ModifiedBy
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
 }
 
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) UnmarshalJSON(b []byte) error {
@@ -2815,7 +4892,7 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSo
 	}
 
 	err = json.Unmarshal(
-		b, &v.dataSource)
+		b, &v.DataSourceData)
 	if err != nil {
 		return err
 	}
@@ -2829,23 +4906,23 @@ type __premarshalDataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNo
 
 	Status DataSourceStatus `json:"status"`
 
-	Error dataSourceError `json:"error"`
+	Error DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables dataSourceTablesTableConnection `json:"tables"`
+	Tables DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []dataSourceChecksDataSourceCheck `json:"checks"`
+	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections dataSourceTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -2867,59 +4944,59 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSo
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) __premarshalJSON() (*__premarshalDataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource, error) {
 	var retval __premarshalDataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource
 
-	retval.Id = v.dataSource.Id
-	retval.Type = v.dataSource.Type
-	retval.Status = v.dataSource.Status
-	retval.Error = v.dataSource.Error
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
 	{
 
 		dst := &retval.ConnectionSettings
-		src := v.dataSource.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
 		var err error
-		*dst, err = __marshaldataSourceConnectionSettings(
+		*dst, err = __marshalDataSourceDataConnectionSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.dataSource.ConnectionSettings: %w", err)
+				"Unable to marshal DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
-	retval.Tables = v.dataSource.Tables
-	retval.Checks = v.dataSource.Checks
-	retval.TableIntrospections = v.dataSource.TableIntrospections
-	retval.UniqueName = v.dataSource.commonDataSource.UniqueName
-	retval.Description = v.dataSource.commonDataSource.Description
-	retval.Account = v.dataSource.commonDataSource.Account
-	retval.Environment = v.dataSource.commonDataSource.Environment
-	retval.CreatedAt = v.dataSource.commonDataSource.CreatedAt
-	retval.ModifiedAt = v.dataSource.commonDataSource.ModifiedAt
-	retval.CreatedBy = v.dataSource.commonDataSource.CreatedBy
-	retval.ModifiedBy = v.dataSource.commonDataSource.ModifiedBy
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
 	return &retval, nil
 }
 
 // DataSourcesDataSourcesDataSourceConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 type DataSourcesDataSourcesDataSourceConnectionPageInfo struct {
-	pageInfo `json:"-"`
+	PageInfoData `json:"-"`
 }
 
 // GetStartCursor returns DataSourcesDataSourcesDataSourceConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) GetStartCursor() string {
-	return v.pageInfo.StartCursor
+	return v.PageInfoData.StartCursor
 }
 
 // GetEndCursor returns DataSourcesDataSourcesDataSourceConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) GetEndCursor() string {
-	return v.pageInfo.EndCursor
+	return v.PageInfoData.EndCursor
 }
 
 // GetHasNextPage returns DataSourcesDataSourcesDataSourceConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) GetHasNextPage() bool {
-	return v.pageInfo.HasNextPage
+	return v.PageInfoData.HasNextPage
 }
 
 // GetHasPreviousPage returns DataSourcesDataSourcesDataSourceConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) GetHasPreviousPage() bool {
-	return v.pageInfo.HasPreviousPage
+	return v.PageInfoData.HasPreviousPage
 }
 
 func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) UnmarshalJSON(b []byte) error {
@@ -2940,7 +5017,7 @@ func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) UnmarshalJSON(b []b
 	}
 
 	err = json.Unmarshal(
-		b, &v.pageInfo)
+		b, &v.PageInfoData)
 	if err != nil {
 		return err
 	}
@@ -2968,10 +5045,10 @@ func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) MarshalJSON() ([]by
 func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) __premarshalJSON() (*__premarshalDataSourcesDataSourcesDataSourceConnectionPageInfo, error) {
 	var retval __premarshalDataSourcesDataSourcesDataSourceConnectionPageInfo
 
-	retval.StartCursor = v.pageInfo.StartCursor
-	retval.EndCursor = v.pageInfo.EndCursor
-	retval.HasNextPage = v.pageInfo.HasNextPage
-	retval.HasPreviousPage = v.pageInfo.HasPreviousPage
+	retval.StartCursor = v.PageInfoData.StartCursor
+	retval.EndCursor = v.PageInfoData.EndCursor
+	retval.HasNextPage = v.PageInfoData.HasNextPage
+	retval.HasPreviousPage = v.PageInfoData.HasPreviousPage
 	return &retval, nil
 }
 
@@ -3037,12 +5114,55 @@ type DeleteMetricResponse struct {
 // GetDeleteMetric returns DeleteMetricResponse.DeleteMetric, and is useful for accessing the field via an interface.
 func (v *DeleteMetricResponse) GetDeleteMetric() string { return v.DeleteMetric }
 
+// DimensionData includes the GraphQL fields of Dimension requested by the fragment DimensionData.
+// The GraphQL type's documentation follows.
+//
+// The Dimension object that represents a column in a table.
+type DimensionData struct {
+	// The column name it represents.
+	ColumnName string `json:"columnName"`
+	// The column data type.
+	Type string `json:"type"`
+	// Whether the column is nullable.
+	IsNullable bool `json:"isNullable"`
+	// Whether the column is a unique key.
+	IsUniqueKey bool `json:"isUniqueKey"`
+}
+
+// GetColumnName returns DimensionData.ColumnName, and is useful for accessing the field via an interface.
+func (v *DimensionData) GetColumnName() string { return v.ColumnName }
+
+// GetType returns DimensionData.Type, and is useful for accessing the field via an interface.
+func (v *DimensionData) GetType() string { return v.Type }
+
+// GetIsNullable returns DimensionData.IsNullable, and is useful for accessing the field via an interface.
+func (v *DimensionData) GetIsNullable() bool { return v.IsNullable }
+
+// GetIsUniqueKey returns DimensionData.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *DimensionData) GetIsUniqueKey() bool { return v.IsUniqueKey }
+
 type DimensionInput struct {
 	ColumnName string `json:"columnName"`
 }
 
 // GetColumnName returns DimensionInput.ColumnName, and is useful for accessing the field via an interface.
 func (v *DimensionInput) GetColumnName() string { return v.ColumnName }
+
+// FilterData includes the GraphQL fields of Filter requested by the fragment FilterData.
+type FilterData struct {
+	Column   string         `json:"column"`
+	Operator FilterOperator `json:"operator"`
+	Value    string         `json:"value"`
+}
+
+// GetColumn returns FilterData.Column, and is useful for accessing the field via an interface.
+func (v *FilterData) GetColumn() string { return v.Column }
+
+// GetOperator returns FilterData.Operator, and is useful for accessing the field via an interface.
+func (v *FilterData) GetOperator() FilterOperator { return v.Operator }
+
+// GetValue returns FilterData.Value, and is useful for accessing the field via an interface.
+func (v *FilterData) GetValue() string { return v.Value }
 
 type FilterInput struct {
 	Column   string         `json:"column"`
@@ -3070,6 +5190,18 @@ const (
 	FilterOperatorLessThanOrEqualTo    FilterOperator = "LESS_THAN_OR_EQUAL_TO"
 )
 
+// GqlError includes the GraphQL fields of Error requested by the fragment GqlError.
+type GqlError struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
+// GetCode returns GqlError.Code, and is useful for accessing the field via an interface.
+func (v *GqlError) GetCode() int { return v.Code }
+
+// GetMessage returns GqlError.Message, and is useful for accessing the field via an interface.
+func (v *GqlError) GetMessage() string { return v.Message }
+
 type IdOrUniqueName struct {
 	Id         string `json:"id"`
 	UniqueName string `json:"uniqueName"`
@@ -3083,55 +5215,67 @@ func (v *IdOrUniqueName) GetUniqueName() string { return v.UniqueName }
 
 // MetricByNameMetric includes the requested fields of the GraphQL type Metric.
 type MetricByNameMetric struct {
-	metric `json:"-"`
+	MetricData `json:"-"`
 }
 
 // GetId returns MetricByNameMetric.Id, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetId() string { return v.metric.Id }
+func (v *MetricByNameMetric) GetId() string { return v.MetricData.Id }
 
 // GetDataPool returns MetricByNameMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetDataPool() metricDataPool { return v.metric.DataPool }
+func (v *MetricByNameMetric) GetDataPool() MetricDataDataPool { return v.MetricData.DataPool }
 
 // GetDimensions returns MetricByNameMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetDimensions() []metricDimensionsDimension { return v.metric.Dimensions }
+func (v *MetricByNameMetric) GetDimensions() []MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
+}
 
 // GetTimestamp returns MetricByNameMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetTimestamp() metricTimestampDimension { return v.metric.Timestamp }
+func (v *MetricByNameMetric) GetTimestamp() MetricDataTimestampDimension {
+	return v.MetricData.Timestamp
+}
 
 // GetMeasure returns MetricByNameMetric.Measure, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetMeasure() metricMeasureDimension { return v.metric.Measure }
+func (v *MetricByNameMetric) GetMeasure() MetricDataMeasureDimension { return v.MetricData.Measure }
 
 // GetSettings returns MetricByNameMetric.Settings, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetSettings() metricSettingsMetricSettings { return v.metric.Settings }
+func (v *MetricByNameMetric) GetSettings() MetricDataSettingsMetricSettings {
+	return v.MetricData.Settings
+}
 
 // GetType returns MetricByNameMetric.Type, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetType() MetricType { return v.metric.Type }
+func (v *MetricByNameMetric) GetType() MetricType { return v.MetricData.Type }
 
 // GetUniqueName returns MetricByNameMetric.UniqueName, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetUniqueName() string { return v.metric.commonMetric.UniqueName }
+func (v *MetricByNameMetric) GetUniqueName() string { return v.MetricData.CommonDataMetric.UniqueName }
 
 // GetDescription returns MetricByNameMetric.Description, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetDescription() string { return v.metric.commonMetric.Description }
+func (v *MetricByNameMetric) GetDescription() string {
+	return v.MetricData.CommonDataMetric.Description
+}
 
 // GetAccount returns MetricByNameMetric.Account, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetAccount() commonAccount { return v.metric.commonMetric.Account }
+func (v *MetricByNameMetric) GetAccount() CommonDataAccount {
+	return v.MetricData.CommonDataMetric.Account
+}
 
 // GetEnvironment returns MetricByNameMetric.Environment, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetEnvironment() commonEnvironment {
-	return v.metric.commonMetric.Environment
+func (v *MetricByNameMetric) GetEnvironment() CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
 }
 
 // GetCreatedAt returns MetricByNameMetric.CreatedAt, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetCreatedAt() time.Time { return v.metric.commonMetric.CreatedAt }
+func (v *MetricByNameMetric) GetCreatedAt() time.Time { return v.MetricData.CommonDataMetric.CreatedAt }
 
 // GetModifiedAt returns MetricByNameMetric.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetModifiedAt() time.Time { return v.metric.commonMetric.ModifiedAt }
+func (v *MetricByNameMetric) GetModifiedAt() time.Time {
+	return v.MetricData.CommonDataMetric.ModifiedAt
+}
 
 // GetCreatedBy returns MetricByNameMetric.CreatedBy, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetCreatedBy() string { return v.metric.commonMetric.CreatedBy }
+func (v *MetricByNameMetric) GetCreatedBy() string { return v.MetricData.CommonDataMetric.CreatedBy }
 
 // GetModifiedBy returns MetricByNameMetric.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetModifiedBy() string { return v.metric.commonMetric.ModifiedBy }
+func (v *MetricByNameMetric) GetModifiedBy() string { return v.MetricData.CommonDataMetric.ModifiedBy }
 
 func (v *MetricByNameMetric) UnmarshalJSON(b []byte) error {
 
@@ -3151,7 +5295,7 @@ func (v *MetricByNameMetric) UnmarshalJSON(b []byte) error {
 	}
 
 	err = json.Unmarshal(
-		b, &v.metric)
+		b, &v.MetricData)
 	if err != nil {
 		return err
 	}
@@ -3161,13 +5305,13 @@ func (v *MetricByNameMetric) UnmarshalJSON(b []byte) error {
 type __premarshalMetricByNameMetric struct {
 	Id string `json:"id"`
 
-	DataPool metricDataPool `json:"dataPool"`
+	DataPool MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []metricDimensionsDimension `json:"dimensions"`
+	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp metricTimestampDimension `json:"timestamp"`
+	Timestamp MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure metricMeasureDimension `json:"measure"`
+	Measure MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -3177,9 +5321,9 @@ type __premarshalMetricByNameMetric struct {
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -3201,32 +5345,32 @@ func (v *MetricByNameMetric) MarshalJSON() ([]byte, error) {
 func (v *MetricByNameMetric) __premarshalJSON() (*__premarshalMetricByNameMetric, error) {
 	var retval __premarshalMetricByNameMetric
 
-	retval.Id = v.metric.Id
-	retval.DataPool = v.metric.DataPool
-	retval.Dimensions = v.metric.Dimensions
-	retval.Timestamp = v.metric.Timestamp
-	retval.Measure = v.metric.Measure
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
 	{
 
 		dst := &retval.Settings
-		src := v.metric.Settings
+		src := v.MetricData.Settings
 		var err error
-		*dst, err = __marshalmetricSettingsMetricSettings(
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal MetricByNameMetric.metric.Settings: %w", err)
+				"Unable to marshal MetricByNameMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.metric.Type
-	retval.UniqueName = v.metric.commonMetric.UniqueName
-	retval.Description = v.metric.commonMetric.Description
-	retval.Account = v.metric.commonMetric.Account
-	retval.Environment = v.metric.commonMetric.Environment
-	retval.CreatedAt = v.metric.commonMetric.CreatedAt
-	retval.ModifiedAt = v.metric.commonMetric.ModifiedAt
-	retval.CreatedBy = v.metric.commonMetric.CreatedBy
-	retval.ModifiedBy = v.metric.commonMetric.ModifiedBy
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
 	return &retval, nil
 }
 
@@ -3238,55 +5382,1157 @@ type MetricByNameResponse struct {
 // GetMetric returns MetricByNameResponse.Metric, and is useful for accessing the field via an interface.
 func (v *MetricByNameResponse) GetMetric() MetricByNameMetric { return v.Metric }
 
+// MetricData includes the GraphQL fields of Metric requested by the fragment MetricData.
+type MetricData struct {
+	CommonDataMetric `json:"-"`
+	Id               string `json:"id"`
+	// The Data Pool that powers this Metric.
+	DataPool   MetricDataDataPool              `json:"dataPool"`
+	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Timestamp  MetricDataTimestampDimension    `json:"timestamp"`
+	Measure    MetricDataMeasureDimension      `json:"measure"`
+	// The settings for the Metric. The settings are specific to the Metric's type.
+	Settings MetricDataSettingsMetricSettings `json:"-"`
+	// The Metric's type. The different Metric types determine how the values are calculated.
+	Type MetricType `json:"type"`
+}
+
+// GetId returns MetricData.Id, and is useful for accessing the field via an interface.
+func (v *MetricData) GetId() string { return v.Id }
+
+// GetDataPool returns MetricData.DataPool, and is useful for accessing the field via an interface.
+func (v *MetricData) GetDataPool() MetricDataDataPool { return v.DataPool }
+
+// GetDimensions returns MetricData.Dimensions, and is useful for accessing the field via an interface.
+func (v *MetricData) GetDimensions() []MetricDataDimensionsDimension { return v.Dimensions }
+
+// GetTimestamp returns MetricData.Timestamp, and is useful for accessing the field via an interface.
+func (v *MetricData) GetTimestamp() MetricDataTimestampDimension { return v.Timestamp }
+
+// GetMeasure returns MetricData.Measure, and is useful for accessing the field via an interface.
+func (v *MetricData) GetMeasure() MetricDataMeasureDimension { return v.Measure }
+
+// GetSettings returns MetricData.Settings, and is useful for accessing the field via an interface.
+func (v *MetricData) GetSettings() MetricDataSettingsMetricSettings { return v.Settings }
+
+// GetType returns MetricData.Type, and is useful for accessing the field via an interface.
+func (v *MetricData) GetType() MetricType { return v.Type }
+
+// GetUniqueName returns MetricData.UniqueName, and is useful for accessing the field via an interface.
+func (v *MetricData) GetUniqueName() string { return v.CommonDataMetric.UniqueName }
+
+// GetDescription returns MetricData.Description, and is useful for accessing the field via an interface.
+func (v *MetricData) GetDescription() string { return v.CommonDataMetric.Description }
+
+// GetAccount returns MetricData.Account, and is useful for accessing the field via an interface.
+func (v *MetricData) GetAccount() CommonDataAccount { return v.CommonDataMetric.Account }
+
+// GetEnvironment returns MetricData.Environment, and is useful for accessing the field via an interface.
+func (v *MetricData) GetEnvironment() CommonDataEnvironment { return v.CommonDataMetric.Environment }
+
+// GetCreatedAt returns MetricData.CreatedAt, and is useful for accessing the field via an interface.
+func (v *MetricData) GetCreatedAt() time.Time { return v.CommonDataMetric.CreatedAt }
+
+// GetModifiedAt returns MetricData.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *MetricData) GetModifiedAt() time.Time { return v.CommonDataMetric.ModifiedAt }
+
+// GetCreatedBy returns MetricData.CreatedBy, and is useful for accessing the field via an interface.
+func (v *MetricData) GetCreatedBy() string { return v.CommonDataMetric.CreatedBy }
+
+// GetModifiedBy returns MetricData.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *MetricData) GetModifiedBy() string { return v.CommonDataMetric.ModifiedBy }
+
+func (v *MetricData) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricData
+		Settings json.RawMessage `json:"settings"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricData = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.CommonDataMetric)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.Settings
+		src := firstPass.Settings
+		if len(src) != 0 && string(src) != "null" {
+			err = __unmarshalMetricDataSettingsMetricSettings(
+				src, dst)
+			if err != nil {
+				return fmt.Errorf(
+					"Unable to unmarshal MetricData.Settings: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalMetricData struct {
+	Id string `json:"id"`
+
+	DataPool MetricDataDataPool `json:"dataPool"`
+
+	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+
+	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+
+	Measure MetricDataMeasureDimension `json:"measure"`
+
+	Settings json.RawMessage `json:"settings"`
+
+	Type MetricType `json:"type"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account CommonDataAccount `json:"account"`
+
+	Environment CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *MetricData) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricData) __premarshalJSON() (*__premarshalMetricData, error) {
+	var retval __premarshalMetricData
+
+	retval.Id = v.Id
+	retval.DataPool = v.DataPool
+	retval.Dimensions = v.Dimensions
+	retval.Timestamp = v.Timestamp
+	retval.Measure = v.Measure
+	{
+
+		dst := &retval.Settings
+		src := v.Settings
+		var err error
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"Unable to marshal MetricData.Settings: %w", err)
+		}
+	}
+	retval.Type = v.Type
+	retval.UniqueName = v.CommonDataMetric.UniqueName
+	retval.Description = v.CommonDataMetric.Description
+	retval.Account = v.CommonDataMetric.Account
+	retval.Environment = v.CommonDataMetric.Environment
+	retval.CreatedAt = v.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.CommonDataMetric.ModifiedBy
+	return &retval, nil
+}
+
+// MetricDataDataPool includes the requested fields of the GraphQL type DataPool.
+type MetricDataDataPool struct {
+	DataPoolData `json:"-"`
+}
+
+// GetId returns MetricDataDataPool.Id, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetId() string { return v.DataPoolData.Id }
+
+// GetDataSource returns MetricDataDataPool.DataSource, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetDataSource() DataPoolDataDataSource { return v.DataPoolData.DataSource }
+
+// GetStatus returns MetricDataDataPool.Status, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetStatus() DataPoolStatus { return v.DataPoolData.Status }
+
+// GetError returns MetricDataDataPool.Error, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetError() DataPoolDataError { return v.DataPoolData.Error }
+
+// GetTable returns MetricDataDataPool.Table, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetTable() string { return v.DataPoolData.Table }
+
+// GetTimestamp returns MetricDataDataPool.Timestamp, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+	return v.DataPoolData.Timestamp
+}
+
+// GetColumns returns MetricDataDataPool.Columns, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+	return v.DataPoolData.Columns
+}
+
+// GetAvailableMeasures returns MetricDataDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+	return v.DataPoolData.AvailableMeasures
+}
+
+// GetSetupTasks returns MetricDataDataPool.SetupTasks, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+	return v.DataPoolData.SetupTasks
+}
+
+// GetSyncs returns MetricDataDataPool.Syncs, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetSyncs() DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
+
+// GetUniqueName returns MetricDataDataPool.UniqueName, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetUniqueName() string {
+	return v.DataPoolData.CommonDataDataPool.UniqueName
+}
+
+// GetDescription returns MetricDataDataPool.Description, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetDescription() string {
+	return v.DataPoolData.CommonDataDataPool.Description
+}
+
+// GetAccount returns MetricDataDataPool.Account, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetAccount() CommonDataAccount {
+	return v.DataPoolData.CommonDataDataPool.Account
+}
+
+// GetEnvironment returns MetricDataDataPool.Environment, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetEnvironment() CommonDataEnvironment {
+	return v.DataPoolData.CommonDataDataPool.Environment
+}
+
+// GetCreatedAt returns MetricDataDataPool.CreatedAt, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetCreatedAt() time.Time {
+	return v.DataPoolData.CommonDataDataPool.CreatedAt
+}
+
+// GetModifiedAt returns MetricDataDataPool.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetModifiedAt() time.Time {
+	return v.DataPoolData.CommonDataDataPool.ModifiedAt
+}
+
+// GetCreatedBy returns MetricDataDataPool.CreatedBy, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetCreatedBy() string {
+	return v.DataPoolData.CommonDataDataPool.CreatedBy
+}
+
+// GetModifiedBy returns MetricDataDataPool.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetModifiedBy() string {
+	return v.DataPoolData.CommonDataDataPool.ModifiedBy
+}
+
+func (v *MetricDataDataPool) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataDataPool
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataDataPool = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataPoolData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataDataPool struct {
+	Id string `json:"id"`
+
+	DataSource DataPoolDataDataSource `json:"dataSource"`
+
+	Status DataPoolStatus `json:"status"`
+
+	Error DataPoolDataError `json:"error"`
+
+	Table string `json:"table"`
+
+	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+
+	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+
+	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+
+	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+
+	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account CommonDataAccount `json:"account"`
+
+	Environment CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *MetricDataDataPool) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataDataPool) __premarshalJSON() (*__premarshalMetricDataDataPool, error) {
+	var retval __premarshalMetricDataDataPool
+
+	retval.Id = v.DataPoolData.Id
+	retval.DataSource = v.DataPoolData.DataSource
+	retval.Status = v.DataPoolData.Status
+	retval.Error = v.DataPoolData.Error
+	retval.Table = v.DataPoolData.Table
+	retval.Timestamp = v.DataPoolData.Timestamp
+	retval.Columns = v.DataPoolData.Columns
+	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
+	retval.SetupTasks = v.DataPoolData.SetupTasks
+	retval.Syncs = v.DataPoolData.Syncs
+	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
+	retval.Description = v.DataPoolData.CommonDataDataPool.Description
+	retval.Account = v.DataPoolData.CommonDataDataPool.Account
+	retval.Environment = v.DataPoolData.CommonDataDataPool.Environment
+	retval.CreatedAt = v.DataPoolData.CommonDataDataPool.CreatedAt
+	retval.ModifiedAt = v.DataPoolData.CommonDataDataPool.ModifiedAt
+	retval.CreatedBy = v.DataPoolData.CommonDataDataPool.CreatedBy
+	retval.ModifiedBy = v.DataPoolData.CommonDataDataPool.ModifiedBy
+	return &retval, nil
+}
+
+// MetricDataDimensionsDimension includes the requested fields of the GraphQL type Dimension.
+// The GraphQL type's documentation follows.
+//
+// The Dimension object that represents a column in a table.
+type MetricDataDimensionsDimension struct {
+	DimensionData `json:"-"`
+}
+
+// GetColumnName returns MetricDataDimensionsDimension.ColumnName, and is useful for accessing the field via an interface.
+func (v *MetricDataDimensionsDimension) GetColumnName() string { return v.DimensionData.ColumnName }
+
+// GetType returns MetricDataDimensionsDimension.Type, and is useful for accessing the field via an interface.
+func (v *MetricDataDimensionsDimension) GetType() string { return v.DimensionData.Type }
+
+// GetIsNullable returns MetricDataDimensionsDimension.IsNullable, and is useful for accessing the field via an interface.
+func (v *MetricDataDimensionsDimension) GetIsNullable() bool { return v.DimensionData.IsNullable }
+
+// GetIsUniqueKey returns MetricDataDimensionsDimension.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *MetricDataDimensionsDimension) GetIsUniqueKey() bool { return v.DimensionData.IsUniqueKey }
+
+func (v *MetricDataDimensionsDimension) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataDimensionsDimension
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataDimensionsDimension = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DimensionData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataDimensionsDimension struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+
+	IsNullable bool `json:"isNullable"`
+
+	IsUniqueKey bool `json:"isUniqueKey"`
+}
+
+func (v *MetricDataDimensionsDimension) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataDimensionsDimension) __premarshalJSON() (*__premarshalMetricDataDimensionsDimension, error) {
+	var retval __premarshalMetricDataDimensionsDimension
+
+	retval.ColumnName = v.DimensionData.ColumnName
+	retval.Type = v.DimensionData.Type
+	retval.IsNullable = v.DimensionData.IsNullable
+	retval.IsUniqueKey = v.DimensionData.IsUniqueKey
+	return &retval, nil
+}
+
+// MetricDataMeasureDimension includes the requested fields of the GraphQL type Dimension.
+// The GraphQL type's documentation follows.
+//
+// The Dimension object that represents a column in a table.
+type MetricDataMeasureDimension struct {
+	DimensionData `json:"-"`
+}
+
+// GetColumnName returns MetricDataMeasureDimension.ColumnName, and is useful for accessing the field via an interface.
+func (v *MetricDataMeasureDimension) GetColumnName() string { return v.DimensionData.ColumnName }
+
+// GetType returns MetricDataMeasureDimension.Type, and is useful for accessing the field via an interface.
+func (v *MetricDataMeasureDimension) GetType() string { return v.DimensionData.Type }
+
+// GetIsNullable returns MetricDataMeasureDimension.IsNullable, and is useful for accessing the field via an interface.
+func (v *MetricDataMeasureDimension) GetIsNullable() bool { return v.DimensionData.IsNullable }
+
+// GetIsUniqueKey returns MetricDataMeasureDimension.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *MetricDataMeasureDimension) GetIsUniqueKey() bool { return v.DimensionData.IsUniqueKey }
+
+func (v *MetricDataMeasureDimension) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataMeasureDimension
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataMeasureDimension = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DimensionData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataMeasureDimension struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+
+	IsNullable bool `json:"isNullable"`
+
+	IsUniqueKey bool `json:"isUniqueKey"`
+}
+
+func (v *MetricDataMeasureDimension) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataMeasureDimension) __premarshalJSON() (*__premarshalMetricDataMeasureDimension, error) {
+	var retval __premarshalMetricDataMeasureDimension
+
+	retval.ColumnName = v.DimensionData.ColumnName
+	retval.Type = v.DimensionData.Type
+	retval.IsNullable = v.DimensionData.IsNullable
+	retval.IsUniqueKey = v.DimensionData.IsUniqueKey
+	return &retval, nil
+}
+
+// MetricDataSettingsCountDistinctMetricSettings includes the requested fields of the GraphQL type CountDistinctMetricSettings.
+// The GraphQL type's documentation follows.
+//
+// Settings for count distinct Metrics.
+type MetricDataSettingsCountDistinctMetricSettings struct {
+	Typename string `json:"__typename"`
+	// Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
+	Filters []MetricDataSettingsCountDistinctMetricSettingsFiltersFilter `json:"filters"`
+	// The dimension where the count distinct is going to be performed.
+	Dimension MetricDataSettingsCountDistinctMetricSettingsDimension `json:"dimension"`
+}
+
+// GetTypename returns MetricDataSettingsCountDistinctMetricSettings.Typename, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettings) GetTypename() string { return v.Typename }
+
+// GetFilters returns MetricDataSettingsCountDistinctMetricSettings.Filters, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettings) GetFilters() []MetricDataSettingsCountDistinctMetricSettingsFiltersFilter {
+	return v.Filters
+}
+
+// GetDimension returns MetricDataSettingsCountDistinctMetricSettings.Dimension, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettings) GetDimension() MetricDataSettingsCountDistinctMetricSettingsDimension {
+	return v.Dimension
+}
+
+// MetricDataSettingsCountDistinctMetricSettingsDimension includes the requested fields of the GraphQL type Dimension.
+// The GraphQL type's documentation follows.
+//
+// The Dimension object that represents a column in a table.
+type MetricDataSettingsCountDistinctMetricSettingsDimension struct {
+	DimensionData `json:"-"`
+}
+
+// GetColumnName returns MetricDataSettingsCountDistinctMetricSettingsDimension.ColumnName, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) GetColumnName() string {
+	return v.DimensionData.ColumnName
+}
+
+// GetType returns MetricDataSettingsCountDistinctMetricSettingsDimension.Type, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) GetType() string {
+	return v.DimensionData.Type
+}
+
+// GetIsNullable returns MetricDataSettingsCountDistinctMetricSettingsDimension.IsNullable, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) GetIsNullable() bool {
+	return v.DimensionData.IsNullable
+}
+
+// GetIsUniqueKey returns MetricDataSettingsCountDistinctMetricSettingsDimension.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) GetIsUniqueKey() bool {
+	return v.DimensionData.IsUniqueKey
+}
+
+func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsCountDistinctMetricSettingsDimension
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsCountDistinctMetricSettingsDimension = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DimensionData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsCountDistinctMetricSettingsDimension struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+
+	IsNullable bool `json:"isNullable"`
+
+	IsUniqueKey bool `json:"isUniqueKey"`
+}
+
+func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) __premarshalJSON() (*__premarshalMetricDataSettingsCountDistinctMetricSettingsDimension, error) {
+	var retval __premarshalMetricDataSettingsCountDistinctMetricSettingsDimension
+
+	retval.ColumnName = v.DimensionData.ColumnName
+	retval.Type = v.DimensionData.Type
+	retval.IsNullable = v.DimensionData.IsNullable
+	retval.IsUniqueKey = v.DimensionData.IsUniqueKey
+	return &retval, nil
+}
+
+// MetricDataSettingsCountDistinctMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
+type MetricDataSettingsCountDistinctMetricSettingsFiltersFilter struct {
+	FilterData `json:"-"`
+}
+
+// GetColumn returns MetricDataSettingsCountDistinctMetricSettingsFiltersFilter.Column, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) GetColumn() string {
+	return v.FilterData.Column
+}
+
+// GetOperator returns MetricDataSettingsCountDistinctMetricSettingsFiltersFilter.Operator, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) GetOperator() FilterOperator {
+	return v.FilterData.Operator
+}
+
+// GetValue returns MetricDataSettingsCountDistinctMetricSettingsFiltersFilter.Value, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) GetValue() string {
+	return v.FilterData.Value
+}
+
+func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsCountDistinctMetricSettingsFiltersFilter
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsCountDistinctMetricSettingsFiltersFilter = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.FilterData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsCountDistinctMetricSettingsFiltersFilter struct {
+	Column string `json:"column"`
+
+	Operator FilterOperator `json:"operator"`
+
+	Value string `json:"value"`
+}
+
+func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) __premarshalJSON() (*__premarshalMetricDataSettingsCountDistinctMetricSettingsFiltersFilter, error) {
+	var retval __premarshalMetricDataSettingsCountDistinctMetricSettingsFiltersFilter
+
+	retval.Column = v.FilterData.Column
+	retval.Operator = v.FilterData.Operator
+	retval.Value = v.FilterData.Value
+	return &retval, nil
+}
+
+// MetricDataSettingsCountMetricSettings includes the requested fields of the GraphQL type CountMetricSettings.
+// The GraphQL type's documentation follows.
+//
+// Settings for count Metrics.
+type MetricDataSettingsCountMetricSettings struct {
+	Typename string `json:"__typename"`
+	// Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
+	Filters []MetricDataSettingsCountMetricSettingsFiltersFilter `json:"filters"`
+}
+
+// GetTypename returns MetricDataSettingsCountMetricSettings.Typename, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountMetricSettings) GetTypename() string { return v.Typename }
+
+// GetFilters returns MetricDataSettingsCountMetricSettings.Filters, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountMetricSettings) GetFilters() []MetricDataSettingsCountMetricSettingsFiltersFilter {
+	return v.Filters
+}
+
+// MetricDataSettingsCountMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
+type MetricDataSettingsCountMetricSettingsFiltersFilter struct {
+	FilterData `json:"-"`
+}
+
+// GetColumn returns MetricDataSettingsCountMetricSettingsFiltersFilter.Column, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) GetColumn() string {
+	return v.FilterData.Column
+}
+
+// GetOperator returns MetricDataSettingsCountMetricSettingsFiltersFilter.Operator, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) GetOperator() FilterOperator {
+	return v.FilterData.Operator
+}
+
+// GetValue returns MetricDataSettingsCountMetricSettingsFiltersFilter.Value, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) GetValue() string {
+	return v.FilterData.Value
+}
+
+func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsCountMetricSettingsFiltersFilter
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsCountMetricSettingsFiltersFilter = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.FilterData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsCountMetricSettingsFiltersFilter struct {
+	Column string `json:"column"`
+
+	Operator FilterOperator `json:"operator"`
+
+	Value string `json:"value"`
+}
+
+func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) __premarshalJSON() (*__premarshalMetricDataSettingsCountMetricSettingsFiltersFilter, error) {
+	var retval __premarshalMetricDataSettingsCountMetricSettingsFiltersFilter
+
+	retval.Column = v.FilterData.Column
+	retval.Operator = v.FilterData.Operator
+	retval.Value = v.FilterData.Value
+	return &retval, nil
+}
+
+// MetricDataSettingsMetricSettings includes the requested fields of the GraphQL interface MetricSettings.
+//
+// MetricDataSettingsMetricSettings is implemented by the following types:
+// MetricDataSettingsCountMetricSettings
+// MetricDataSettingsSumMetricSettings
+// MetricDataSettingsCountDistinctMetricSettings
+// The GraphQL type's documentation follows.
+//
+// A Metric's settings, depending on its type.
+type MetricDataSettingsMetricSettings interface {
+	implementsGraphQLInterfaceMetricDataSettingsMetricSettings()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() string
+}
+
+func (v *MetricDataSettingsCountMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+}
+func (v *MetricDataSettingsSumMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+}
+func (v *MetricDataSettingsCountDistinctMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+}
+
+func __unmarshalMetricDataSettingsMetricSettings(b []byte, v *MetricDataSettingsMetricSettings) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "CountMetricSettings":
+		*v = new(MetricDataSettingsCountMetricSettings)
+		return json.Unmarshal(b, *v)
+	case "SumMetricSettings":
+		*v = new(MetricDataSettingsSumMetricSettings)
+		return json.Unmarshal(b, *v)
+	case "CountDistinctMetricSettings":
+		*v = new(MetricDataSettingsCountDistinctMetricSettings)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing MetricSettings.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for MetricDataSettingsMetricSettings: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalMetricDataSettingsMetricSettings(v *MetricDataSettingsMetricSettings) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *MetricDataSettingsCountMetricSettings:
+		typename = "CountMetricSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*MetricDataSettingsCountMetricSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case *MetricDataSettingsSumMetricSettings:
+		typename = "SumMetricSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*MetricDataSettingsSumMetricSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case *MetricDataSettingsCountDistinctMetricSettings:
+		typename = "CountDistinctMetricSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*MetricDataSettingsCountDistinctMetricSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for MetricDataSettingsMetricSettings: "%T"`, v)
+	}
+}
+
+// MetricDataSettingsSumMetricSettings includes the requested fields of the GraphQL type SumMetricSettings.
+// The GraphQL type's documentation follows.
+//
+// Settings for sum Metrics.
+type MetricDataSettingsSumMetricSettings struct {
+	Typename string `json:"__typename"`
+	// Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
+	Filters []MetricDataSettingsSumMetricSettingsFiltersFilter `json:"filters"`
+	// The dimension to be summed.
+	Measure MetricDataSettingsSumMetricSettingsMeasureDimension `json:"measure"`
+}
+
+// GetTypename returns MetricDataSettingsSumMetricSettings.Typename, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettings) GetTypename() string { return v.Typename }
+
+// GetFilters returns MetricDataSettingsSumMetricSettings.Filters, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettings) GetFilters() []MetricDataSettingsSumMetricSettingsFiltersFilter {
+	return v.Filters
+}
+
+// GetMeasure returns MetricDataSettingsSumMetricSettings.Measure, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettings) GetMeasure() MetricDataSettingsSumMetricSettingsMeasureDimension {
+	return v.Measure
+}
+
+// MetricDataSettingsSumMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
+type MetricDataSettingsSumMetricSettingsFiltersFilter struct {
+	FilterData `json:"-"`
+}
+
+// GetColumn returns MetricDataSettingsSumMetricSettingsFiltersFilter.Column, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) GetColumn() string {
+	return v.FilterData.Column
+}
+
+// GetOperator returns MetricDataSettingsSumMetricSettingsFiltersFilter.Operator, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) GetOperator() FilterOperator {
+	return v.FilterData.Operator
+}
+
+// GetValue returns MetricDataSettingsSumMetricSettingsFiltersFilter.Value, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) GetValue() string {
+	return v.FilterData.Value
+}
+
+func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsSumMetricSettingsFiltersFilter
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsSumMetricSettingsFiltersFilter = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.FilterData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsSumMetricSettingsFiltersFilter struct {
+	Column string `json:"column"`
+
+	Operator FilterOperator `json:"operator"`
+
+	Value string `json:"value"`
+}
+
+func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) __premarshalJSON() (*__premarshalMetricDataSettingsSumMetricSettingsFiltersFilter, error) {
+	var retval __premarshalMetricDataSettingsSumMetricSettingsFiltersFilter
+
+	retval.Column = v.FilterData.Column
+	retval.Operator = v.FilterData.Operator
+	retval.Value = v.FilterData.Value
+	return &retval, nil
+}
+
+// MetricDataSettingsSumMetricSettingsMeasureDimension includes the requested fields of the GraphQL type Dimension.
+// The GraphQL type's documentation follows.
+//
+// The Dimension object that represents a column in a table.
+type MetricDataSettingsSumMetricSettingsMeasureDimension struct {
+	DimensionData `json:"-"`
+}
+
+// GetColumnName returns MetricDataSettingsSumMetricSettingsMeasureDimension.ColumnName, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) GetColumnName() string {
+	return v.DimensionData.ColumnName
+}
+
+// GetType returns MetricDataSettingsSumMetricSettingsMeasureDimension.Type, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) GetType() string {
+	return v.DimensionData.Type
+}
+
+// GetIsNullable returns MetricDataSettingsSumMetricSettingsMeasureDimension.IsNullable, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) GetIsNullable() bool {
+	return v.DimensionData.IsNullable
+}
+
+// GetIsUniqueKey returns MetricDataSettingsSumMetricSettingsMeasureDimension.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) GetIsUniqueKey() bool {
+	return v.DimensionData.IsUniqueKey
+}
+
+func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsSumMetricSettingsMeasureDimension
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsSumMetricSettingsMeasureDimension = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DimensionData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsSumMetricSettingsMeasureDimension struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+
+	IsNullable bool `json:"isNullable"`
+
+	IsUniqueKey bool `json:"isUniqueKey"`
+}
+
+func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) __premarshalJSON() (*__premarshalMetricDataSettingsSumMetricSettingsMeasureDimension, error) {
+	var retval __premarshalMetricDataSettingsSumMetricSettingsMeasureDimension
+
+	retval.ColumnName = v.DimensionData.ColumnName
+	retval.Type = v.DimensionData.Type
+	retval.IsNullable = v.DimensionData.IsNullable
+	retval.IsUniqueKey = v.DimensionData.IsUniqueKey
+	return &retval, nil
+}
+
+// MetricDataTimestampDimension includes the requested fields of the GraphQL type Dimension.
+// The GraphQL type's documentation follows.
+//
+// The Dimension object that represents a column in a table.
+type MetricDataTimestampDimension struct {
+	DimensionData `json:"-"`
+}
+
+// GetColumnName returns MetricDataTimestampDimension.ColumnName, and is useful for accessing the field via an interface.
+func (v *MetricDataTimestampDimension) GetColumnName() string { return v.DimensionData.ColumnName }
+
+// GetType returns MetricDataTimestampDimension.Type, and is useful for accessing the field via an interface.
+func (v *MetricDataTimestampDimension) GetType() string { return v.DimensionData.Type }
+
+// GetIsNullable returns MetricDataTimestampDimension.IsNullable, and is useful for accessing the field via an interface.
+func (v *MetricDataTimestampDimension) GetIsNullable() bool { return v.DimensionData.IsNullable }
+
+// GetIsUniqueKey returns MetricDataTimestampDimension.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *MetricDataTimestampDimension) GetIsUniqueKey() bool { return v.DimensionData.IsUniqueKey }
+
+func (v *MetricDataTimestampDimension) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataTimestampDimension
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataTimestampDimension = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DimensionData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataTimestampDimension struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+
+	IsNullable bool `json:"isNullable"`
+
+	IsUniqueKey bool `json:"isUniqueKey"`
+}
+
+func (v *MetricDataTimestampDimension) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataTimestampDimension) __premarshalJSON() (*__premarshalMetricDataTimestampDimension, error) {
+	var retval __premarshalMetricDataTimestampDimension
+
+	retval.ColumnName = v.DimensionData.ColumnName
+	retval.Type = v.DimensionData.Type
+	retval.IsNullable = v.DimensionData.IsNullable
+	retval.IsUniqueKey = v.DimensionData.IsUniqueKey
+	return &retval, nil
+}
+
 // MetricMetric includes the requested fields of the GraphQL type Metric.
 type MetricMetric struct {
-	metric `json:"-"`
+	MetricData `json:"-"`
 }
 
 // GetId returns MetricMetric.Id, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetId() string { return v.metric.Id }
+func (v *MetricMetric) GetId() string { return v.MetricData.Id }
 
 // GetDataPool returns MetricMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetDataPool() metricDataPool { return v.metric.DataPool }
+func (v *MetricMetric) GetDataPool() MetricDataDataPool { return v.MetricData.DataPool }
 
 // GetDimensions returns MetricMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetDimensions() []metricDimensionsDimension { return v.metric.Dimensions }
+func (v *MetricMetric) GetDimensions() []MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
+}
 
 // GetTimestamp returns MetricMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetTimestamp() metricTimestampDimension { return v.metric.Timestamp }
+func (v *MetricMetric) GetTimestamp() MetricDataTimestampDimension { return v.MetricData.Timestamp }
 
 // GetMeasure returns MetricMetric.Measure, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetMeasure() metricMeasureDimension { return v.metric.Measure }
+func (v *MetricMetric) GetMeasure() MetricDataMeasureDimension { return v.MetricData.Measure }
 
 // GetSettings returns MetricMetric.Settings, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetSettings() metricSettingsMetricSettings { return v.metric.Settings }
+func (v *MetricMetric) GetSettings() MetricDataSettingsMetricSettings { return v.MetricData.Settings }
 
 // GetType returns MetricMetric.Type, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetType() MetricType { return v.metric.Type }
+func (v *MetricMetric) GetType() MetricType { return v.MetricData.Type }
 
 // GetUniqueName returns MetricMetric.UniqueName, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetUniqueName() string { return v.metric.commonMetric.UniqueName }
+func (v *MetricMetric) GetUniqueName() string { return v.MetricData.CommonDataMetric.UniqueName }
 
 // GetDescription returns MetricMetric.Description, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetDescription() string { return v.metric.commonMetric.Description }
+func (v *MetricMetric) GetDescription() string { return v.MetricData.CommonDataMetric.Description }
 
 // GetAccount returns MetricMetric.Account, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetAccount() commonAccount { return v.metric.commonMetric.Account }
+func (v *MetricMetric) GetAccount() CommonDataAccount { return v.MetricData.CommonDataMetric.Account }
 
 // GetEnvironment returns MetricMetric.Environment, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetEnvironment() commonEnvironment { return v.metric.commonMetric.Environment }
+func (v *MetricMetric) GetEnvironment() CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
+}
 
 // GetCreatedAt returns MetricMetric.CreatedAt, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetCreatedAt() time.Time { return v.metric.commonMetric.CreatedAt }
+func (v *MetricMetric) GetCreatedAt() time.Time { return v.MetricData.CommonDataMetric.CreatedAt }
 
 // GetModifiedAt returns MetricMetric.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetModifiedAt() time.Time { return v.metric.commonMetric.ModifiedAt }
+func (v *MetricMetric) GetModifiedAt() time.Time { return v.MetricData.CommonDataMetric.ModifiedAt }
 
 // GetCreatedBy returns MetricMetric.CreatedBy, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetCreatedBy() string { return v.metric.commonMetric.CreatedBy }
+func (v *MetricMetric) GetCreatedBy() string { return v.MetricData.CommonDataMetric.CreatedBy }
 
 // GetModifiedBy returns MetricMetric.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetModifiedBy() string { return v.metric.commonMetric.ModifiedBy }
+func (v *MetricMetric) GetModifiedBy() string { return v.MetricData.CommonDataMetric.ModifiedBy }
 
 func (v *MetricMetric) UnmarshalJSON(b []byte) error {
 
@@ -3306,7 +6552,7 @@ func (v *MetricMetric) UnmarshalJSON(b []byte) error {
 	}
 
 	err = json.Unmarshal(
-		b, &v.metric)
+		b, &v.MetricData)
 	if err != nil {
 		return err
 	}
@@ -3316,13 +6562,13 @@ func (v *MetricMetric) UnmarshalJSON(b []byte) error {
 type __premarshalMetricMetric struct {
 	Id string `json:"id"`
 
-	DataPool metricDataPool `json:"dataPool"`
+	DataPool MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []metricDimensionsDimension `json:"dimensions"`
+	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp metricTimestampDimension `json:"timestamp"`
+	Timestamp MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure metricMeasureDimension `json:"measure"`
+	Measure MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -3332,9 +6578,9 @@ type __premarshalMetricMetric struct {
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -3356,32 +6602,32 @@ func (v *MetricMetric) MarshalJSON() ([]byte, error) {
 func (v *MetricMetric) __premarshalJSON() (*__premarshalMetricMetric, error) {
 	var retval __premarshalMetricMetric
 
-	retval.Id = v.metric.Id
-	retval.DataPool = v.metric.DataPool
-	retval.Dimensions = v.metric.Dimensions
-	retval.Timestamp = v.metric.Timestamp
-	retval.Measure = v.metric.Measure
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
 	{
 
 		dst := &retval.Settings
-		src := v.metric.Settings
+		src := v.MetricData.Settings
 		var err error
-		*dst, err = __marshalmetricSettingsMetricSettings(
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal MetricMetric.metric.Settings: %w", err)
+				"Unable to marshal MetricMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.metric.Type
-	retval.UniqueName = v.metric.commonMetric.UniqueName
-	retval.Description = v.metric.commonMetric.Description
-	retval.Account = v.metric.commonMetric.Account
-	retval.Environment = v.metric.commonMetric.Environment
-	retval.CreatedAt = v.metric.commonMetric.CreatedAt
-	retval.ModifiedAt = v.metric.commonMetric.ModifiedAt
-	retval.CreatedBy = v.metric.commonMetric.CreatedBy
-	retval.ModifiedBy = v.metric.commonMetric.ModifiedBy
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
 	return &retval, nil
 }
 
@@ -3442,80 +6688,82 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdge) GetNode() MetricsMetrics
 
 // MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric includes the requested fields of the GraphQL type Metric.
 type MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric struct {
-	metric `json:"-"`
+	MetricData `json:"-"`
 }
 
 // GetId returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Id, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetId() string { return v.metric.Id }
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetId() string {
+	return v.MetricData.Id
+}
 
 // GetDataPool returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDataPool() metricDataPool {
-	return v.metric.DataPool
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDataPool() MetricDataDataPool {
+	return v.MetricData.DataPool
 }
 
 // GetDimensions returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDimensions() []metricDimensionsDimension {
-	return v.metric.Dimensions
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDimensions() []MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetTimestamp() metricTimestampDimension {
-	return v.metric.Timestamp
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetTimestamp() MetricDataTimestampDimension {
+	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Measure, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetMeasure() metricMeasureDimension {
-	return v.metric.Measure
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetMeasure() MetricDataMeasureDimension {
+	return v.MetricData.Measure
 }
 
 // GetSettings returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Settings, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetSettings() metricSettingsMetricSettings {
-	return v.metric.Settings
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetSettings() MetricDataSettingsMetricSettings {
+	return v.MetricData.Settings
 }
 
 // GetType returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Type, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetType() MetricType {
-	return v.metric.Type
+	return v.MetricData.Type
 }
 
 // GetUniqueName returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.UniqueName, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetUniqueName() string {
-	return v.metric.commonMetric.UniqueName
+	return v.MetricData.CommonDataMetric.UniqueName
 }
 
 // GetDescription returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Description, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDescription() string {
-	return v.metric.commonMetric.Description
+	return v.MetricData.CommonDataMetric.Description
 }
 
 // GetAccount returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Account, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetAccount() commonAccount {
-	return v.metric.commonMetric.Account
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetAccount() CommonDataAccount {
+	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Environment, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetEnvironment() commonEnvironment {
-	return v.metric.commonMetric.Environment
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetEnvironment() CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
 }
 
 // GetCreatedAt returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.CreatedAt, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetCreatedAt() time.Time {
-	return v.metric.commonMetric.CreatedAt
+	return v.MetricData.CommonDataMetric.CreatedAt
 }
 
 // GetModifiedAt returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetModifiedAt() time.Time {
-	return v.metric.commonMetric.ModifiedAt
+	return v.MetricData.CommonDataMetric.ModifiedAt
 }
 
 // GetCreatedBy returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.CreatedBy, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetCreatedBy() string {
-	return v.metric.commonMetric.CreatedBy
+	return v.MetricData.CommonDataMetric.CreatedBy
 }
 
 // GetModifiedBy returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetModifiedBy() string {
-	return v.metric.commonMetric.ModifiedBy
+	return v.MetricData.CommonDataMetric.ModifiedBy
 }
 
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) UnmarshalJSON(b []byte) error {
@@ -3536,7 +6784,7 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) UnmarshalJSON(
 	}
 
 	err = json.Unmarshal(
-		b, &v.metric)
+		b, &v.MetricData)
 	if err != nil {
 		return err
 	}
@@ -3546,13 +6794,13 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) UnmarshalJSON(
 type __premarshalMetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric struct {
 	Id string `json:"id"`
 
-	DataPool metricDataPool `json:"dataPool"`
+	DataPool MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []metricDimensionsDimension `json:"dimensions"`
+	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp metricTimestampDimension `json:"timestamp"`
+	Timestamp MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure metricMeasureDimension `json:"measure"`
+	Measure MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -3562,9 +6810,9 @@ type __premarshalMetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric struct 
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -3586,109 +6834,109 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) MarshalJSON() 
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) __premarshalJSON() (*__premarshalMetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric, error) {
 	var retval __premarshalMetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric
 
-	retval.Id = v.metric.Id
-	retval.DataPool = v.metric.DataPool
-	retval.Dimensions = v.metric.Dimensions
-	retval.Timestamp = v.metric.Timestamp
-	retval.Measure = v.metric.Measure
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
 	{
 
 		dst := &retval.Settings
-		src := v.metric.Settings
+		src := v.MetricData.Settings
 		var err error
-		*dst, err = __marshalmetricSettingsMetricSettings(
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.metric.Settings: %w", err)
+				"Unable to marshal MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.metric.Type
-	retval.UniqueName = v.metric.commonMetric.UniqueName
-	retval.Description = v.metric.commonMetric.Description
-	retval.Account = v.metric.commonMetric.Account
-	retval.Environment = v.metric.commonMetric.Environment
-	retval.CreatedAt = v.metric.commonMetric.CreatedAt
-	retval.ModifiedAt = v.metric.commonMetric.ModifiedAt
-	retval.CreatedBy = v.metric.commonMetric.CreatedBy
-	retval.ModifiedBy = v.metric.commonMetric.ModifiedBy
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
 	return &retval, nil
 }
 
 // MetricsMetricsMetricConnectionNodesMetric includes the requested fields of the GraphQL type Metric.
 type MetricsMetricsMetricConnectionNodesMetric struct {
-	metric `json:"-"`
+	MetricData `json:"-"`
 }
 
 // GetId returns MetricsMetricsMetricConnectionNodesMetric.Id, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetId() string { return v.metric.Id }
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetId() string { return v.MetricData.Id }
 
 // GetDataPool returns MetricsMetricsMetricConnectionNodesMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetDataPool() metricDataPool {
-	return v.metric.DataPool
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetDataPool() MetricDataDataPool {
+	return v.MetricData.DataPool
 }
 
 // GetDimensions returns MetricsMetricsMetricConnectionNodesMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetDimensions() []metricDimensionsDimension {
-	return v.metric.Dimensions
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetDimensions() []MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns MetricsMetricsMetricConnectionNodesMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetTimestamp() metricTimestampDimension {
-	return v.metric.Timestamp
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetTimestamp() MetricDataTimestampDimension {
+	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns MetricsMetricsMetricConnectionNodesMetric.Measure, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetMeasure() metricMeasureDimension {
-	return v.metric.Measure
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetMeasure() MetricDataMeasureDimension {
+	return v.MetricData.Measure
 }
 
 // GetSettings returns MetricsMetricsMetricConnectionNodesMetric.Settings, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetSettings() metricSettingsMetricSettings {
-	return v.metric.Settings
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetSettings() MetricDataSettingsMetricSettings {
+	return v.MetricData.Settings
 }
 
 // GetType returns MetricsMetricsMetricConnectionNodesMetric.Type, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetType() MetricType { return v.metric.Type }
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetType() MetricType { return v.MetricData.Type }
 
 // GetUniqueName returns MetricsMetricsMetricConnectionNodesMetric.UniqueName, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetUniqueName() string {
-	return v.metric.commonMetric.UniqueName
+	return v.MetricData.CommonDataMetric.UniqueName
 }
 
 // GetDescription returns MetricsMetricsMetricConnectionNodesMetric.Description, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetDescription() string {
-	return v.metric.commonMetric.Description
+	return v.MetricData.CommonDataMetric.Description
 }
 
 // GetAccount returns MetricsMetricsMetricConnectionNodesMetric.Account, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetAccount() commonAccount {
-	return v.metric.commonMetric.Account
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetAccount() CommonDataAccount {
+	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns MetricsMetricsMetricConnectionNodesMetric.Environment, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetEnvironment() commonEnvironment {
-	return v.metric.commonMetric.Environment
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetEnvironment() CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
 }
 
 // GetCreatedAt returns MetricsMetricsMetricConnectionNodesMetric.CreatedAt, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetCreatedAt() time.Time {
-	return v.metric.commonMetric.CreatedAt
+	return v.MetricData.CommonDataMetric.CreatedAt
 }
 
 // GetModifiedAt returns MetricsMetricsMetricConnectionNodesMetric.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetModifiedAt() time.Time {
-	return v.metric.commonMetric.ModifiedAt
+	return v.MetricData.CommonDataMetric.ModifiedAt
 }
 
 // GetCreatedBy returns MetricsMetricsMetricConnectionNodesMetric.CreatedBy, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetCreatedBy() string {
-	return v.metric.commonMetric.CreatedBy
+	return v.MetricData.CommonDataMetric.CreatedBy
 }
 
 // GetModifiedBy returns MetricsMetricsMetricConnectionNodesMetric.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetModifiedBy() string {
-	return v.metric.commonMetric.ModifiedBy
+	return v.MetricData.CommonDataMetric.ModifiedBy
 }
 
 func (v *MetricsMetricsMetricConnectionNodesMetric) UnmarshalJSON(b []byte) error {
@@ -3709,7 +6957,7 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) UnmarshalJSON(b []byte) erro
 	}
 
 	err = json.Unmarshal(
-		b, &v.metric)
+		b, &v.MetricData)
 	if err != nil {
 		return err
 	}
@@ -3719,13 +6967,13 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) UnmarshalJSON(b []byte) erro
 type __premarshalMetricsMetricsMetricConnectionNodesMetric struct {
 	Id string `json:"id"`
 
-	DataPool metricDataPool `json:"dataPool"`
+	DataPool MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []metricDimensionsDimension `json:"dimensions"`
+	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp metricTimestampDimension `json:"timestamp"`
+	Timestamp MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure metricMeasureDimension `json:"measure"`
+	Measure MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -3735,9 +6983,9 @@ type __premarshalMetricsMetricsMetricConnectionNodesMetric struct {
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -3759,54 +7007,58 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) MarshalJSON() ([]byte, error
 func (v *MetricsMetricsMetricConnectionNodesMetric) __premarshalJSON() (*__premarshalMetricsMetricsMetricConnectionNodesMetric, error) {
 	var retval __premarshalMetricsMetricsMetricConnectionNodesMetric
 
-	retval.Id = v.metric.Id
-	retval.DataPool = v.metric.DataPool
-	retval.Dimensions = v.metric.Dimensions
-	retval.Timestamp = v.metric.Timestamp
-	retval.Measure = v.metric.Measure
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
 	{
 
 		dst := &retval.Settings
-		src := v.metric.Settings
+		src := v.MetricData.Settings
 		var err error
-		*dst, err = __marshalmetricSettingsMetricSettings(
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal MetricsMetricsMetricConnectionNodesMetric.metric.Settings: %w", err)
+				"Unable to marshal MetricsMetricsMetricConnectionNodesMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.metric.Type
-	retval.UniqueName = v.metric.commonMetric.UniqueName
-	retval.Description = v.metric.commonMetric.Description
-	retval.Account = v.metric.commonMetric.Account
-	retval.Environment = v.metric.commonMetric.Environment
-	retval.CreatedAt = v.metric.commonMetric.CreatedAt
-	retval.ModifiedAt = v.metric.commonMetric.ModifiedAt
-	retval.CreatedBy = v.metric.commonMetric.CreatedBy
-	retval.ModifiedBy = v.metric.commonMetric.ModifiedBy
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
 	return &retval, nil
 }
 
 // MetricsMetricsMetricConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
 type MetricsMetricsMetricConnectionPageInfo struct {
-	pageInfo `json:"-"`
+	PageInfoData `json:"-"`
 }
 
 // GetStartCursor returns MetricsMetricsMetricConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionPageInfo) GetStartCursor() string {
-	return v.pageInfo.StartCursor
+	return v.PageInfoData.StartCursor
 }
 
 // GetEndCursor returns MetricsMetricsMetricConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionPageInfo) GetEndCursor() string { return v.pageInfo.EndCursor }
+func (v *MetricsMetricsMetricConnectionPageInfo) GetEndCursor() string {
+	return v.PageInfoData.EndCursor
+}
 
 // GetHasNextPage returns MetricsMetricsMetricConnectionPageInfo.HasNextPage, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionPageInfo) GetHasNextPage() bool { return v.pageInfo.HasNextPage }
+func (v *MetricsMetricsMetricConnectionPageInfo) GetHasNextPage() bool {
+	return v.PageInfoData.HasNextPage
+}
 
 // GetHasPreviousPage returns MetricsMetricsMetricConnectionPageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionPageInfo) GetHasPreviousPage() bool {
-	return v.pageInfo.HasPreviousPage
+	return v.PageInfoData.HasPreviousPage
 }
 
 func (v *MetricsMetricsMetricConnectionPageInfo) UnmarshalJSON(b []byte) error {
@@ -3827,7 +7079,7 @@ func (v *MetricsMetricsMetricConnectionPageInfo) UnmarshalJSON(b []byte) error {
 	}
 
 	err = json.Unmarshal(
-		b, &v.pageInfo)
+		b, &v.PageInfoData)
 	if err != nil {
 		return err
 	}
@@ -3855,10 +7107,10 @@ func (v *MetricsMetricsMetricConnectionPageInfo) MarshalJSON() ([]byte, error) {
 func (v *MetricsMetricsMetricConnectionPageInfo) __premarshalJSON() (*__premarshalMetricsMetricsMetricConnectionPageInfo, error) {
 	var retval __premarshalMetricsMetricsMetricConnectionPageInfo
 
-	retval.StartCursor = v.pageInfo.StartCursor
-	retval.EndCursor = v.pageInfo.EndCursor
-	retval.HasNextPage = v.pageInfo.HasNextPage
-	retval.HasPreviousPage = v.pageInfo.HasPreviousPage
+	retval.StartCursor = v.PageInfoData.StartCursor
+	retval.EndCursor = v.PageInfoData.EndCursor
+	retval.HasNextPage = v.PageInfoData.HasNextPage
+	retval.HasPreviousPage = v.PageInfoData.HasPreviousPage
 	return &retval, nil
 }
 
@@ -3984,95 +7236,97 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponse) GetDataPool() ModifyDataP
 
 // ModifyDataPoolModifyDataPoolDataPoolResponseDataPool includes the requested fields of the GraphQL type DataPool.
 type ModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
-	dataPool `json:"-"`
+	DataPoolData `json:"-"`
 }
 
 // GetId returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Id, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetId() string { return v.dataPool.Id }
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetId() string {
+	return v.DataPoolData.Id
+}
 
 // GetDataSource returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDataSource() dataPoolDataSource {
-	return v.dataPool.DataSource
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDataSource() DataPoolDataDataSource {
+	return v.DataPoolData.DataSource
 }
 
 // GetStatus returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Status, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetStatus() DataPoolStatus {
-	return v.dataPool.Status
+	return v.DataPoolData.Status
 }
 
 // GetError returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Error, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetError() dataPoolError {
-	return v.dataPool.Error
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetError() DataPoolDataError {
+	return v.DataPoolData.Error
 }
 
 // GetTable returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Table, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTable() string {
-	return v.dataPool.Table
+	return v.DataPoolData.Table
 }
 
 // GetTimestamp returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTimestamp() dataPoolTimestampDimension {
-	return v.dataPool.Timestamp
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+	return v.DataPoolData.Timestamp
 }
 
 // GetColumns returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetColumns() dataPoolColumnsColumnConnection {
-	return v.dataPool.Columns
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+	return v.DataPoolData.Columns
 }
 
 // GetAvailableMeasures returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAvailableMeasures() dataPoolAvailableMeasuresColumnConnection {
-	return v.dataPool.AvailableMeasures
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSetupTasks() []dataPoolSetupTasksDataPoolSetupTask {
-	return v.dataPool.SetupTasks
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSyncs() dataPoolSyncsSyncConnection {
-	return v.dataPool.Syncs
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSyncs() DataPoolDataSyncsSyncConnection {
+	return v.DataPoolData.Syncs
 }
 
 // GetUniqueName returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetUniqueName() string {
-	return v.dataPool.commonDataPool.UniqueName
+	return v.DataPoolData.CommonDataDataPool.UniqueName
 }
 
 // GetDescription returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Description, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDescription() string {
-	return v.dataPool.commonDataPool.Description
+	return v.DataPoolData.CommonDataDataPool.Description
 }
 
 // GetAccount returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Account, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAccount() commonAccount {
-	return v.dataPool.commonDataPool.Account
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAccount() CommonDataAccount {
+	return v.DataPoolData.CommonDataDataPool.Account
 }
 
 // GetEnvironment returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetEnvironment() commonEnvironment {
-	return v.dataPool.commonDataPool.Environment
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetEnvironment() CommonDataEnvironment {
+	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
 // GetCreatedAt returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.CreatedAt, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetCreatedAt() time.Time {
-	return v.dataPool.commonDataPool.CreatedAt
+	return v.DataPoolData.CommonDataDataPool.CreatedAt
 }
 
 // GetModifiedAt returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetModifiedAt() time.Time {
-	return v.dataPool.commonDataPool.ModifiedAt
+	return v.DataPoolData.CommonDataDataPool.ModifiedAt
 }
 
 // GetCreatedBy returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.CreatedBy, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetCreatedBy() string {
-	return v.dataPool.commonDataPool.CreatedBy
+	return v.DataPoolData.CommonDataDataPool.CreatedBy
 }
 
 // GetModifiedBy returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetModifiedBy() string {
-	return v.dataPool.commonDataPool.ModifiedBy
+	return v.DataPoolData.CommonDataDataPool.ModifiedBy
 }
 
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) UnmarshalJSON(b []byte) error {
@@ -4093,7 +7347,7 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) UnmarshalJSON(b [
 	}
 
 	err = json.Unmarshal(
-		b, &v.dataPool)
+		b, &v.DataPoolData)
 	if err != nil {
 		return err
 	}
@@ -4103,31 +7357,31 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) UnmarshalJSON(b [
 type __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 	Id string `json:"id"`
 
-	DataSource dataPoolDataSource `json:"dataSource"`
+	DataSource DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error dataPoolError `json:"error"`
+	Error DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp dataPoolTimestampDimension `json:"timestamp"`
+	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns dataPoolColumnsColumnConnection `json:"columns"`
+	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures dataPoolAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []dataPoolSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs dataPoolSyncsSyncConnection `json:"syncs"`
+	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -4149,24 +7403,24 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) MarshalJSON() ([]
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON() (*__premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool, error) {
 	var retval __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool
 
-	retval.Id = v.dataPool.Id
-	retval.DataSource = v.dataPool.DataSource
-	retval.Status = v.dataPool.Status
-	retval.Error = v.dataPool.Error
-	retval.Table = v.dataPool.Table
-	retval.Timestamp = v.dataPool.Timestamp
-	retval.Columns = v.dataPool.Columns
-	retval.AvailableMeasures = v.dataPool.AvailableMeasures
-	retval.SetupTasks = v.dataPool.SetupTasks
-	retval.Syncs = v.dataPool.Syncs
-	retval.UniqueName = v.dataPool.commonDataPool.UniqueName
-	retval.Description = v.dataPool.commonDataPool.Description
-	retval.Account = v.dataPool.commonDataPool.Account
-	retval.Environment = v.dataPool.commonDataPool.Environment
-	retval.CreatedAt = v.dataPool.commonDataPool.CreatedAt
-	retval.ModifiedAt = v.dataPool.commonDataPool.ModifiedAt
-	retval.CreatedBy = v.dataPool.commonDataPool.CreatedBy
-	retval.ModifiedBy = v.dataPool.commonDataPool.ModifiedBy
+	retval.Id = v.DataPoolData.Id
+	retval.DataSource = v.DataPoolData.DataSource
+	retval.Status = v.DataPoolData.Status
+	retval.Error = v.DataPoolData.Error
+	retval.Table = v.DataPoolData.Table
+	retval.Timestamp = v.DataPoolData.Timestamp
+	retval.Columns = v.DataPoolData.Columns
+	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
+	retval.SetupTasks = v.DataPoolData.SetupTasks
+	retval.Syncs = v.DataPoolData.Syncs
+	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
+	retval.Description = v.DataPoolData.CommonDataDataPool.Description
+	retval.Account = v.DataPoolData.CommonDataDataPool.Account
+	retval.Environment = v.DataPoolData.CommonDataDataPool.Environment
+	retval.CreatedAt = v.DataPoolData.CommonDataDataPool.CreatedAt
+	retval.ModifiedAt = v.DataPoolData.CommonDataDataPool.ModifiedAt
+	retval.CreatedBy = v.DataPoolData.CommonDataDataPool.CreatedBy
+	retval.ModifiedBy = v.DataPoolData.CommonDataDataPool.ModifiedBy
 	return &retval, nil
 }
 
@@ -4186,15 +7440,15 @@ func (v *ModifyDataPoolModifyDataPoolFailureResponse) GetError() ModifyDataPoolM
 
 // ModifyDataPoolModifyDataPoolFailureResponseError includes the requested fields of the GraphQL type Error.
 type ModifyDataPoolModifyDataPoolFailureResponseError struct {
-	gqlError `json:"-"`
+	GqlError `json:"-"`
 }
 
 // GetCode returns ModifyDataPoolModifyDataPoolFailureResponseError.Code, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolFailureResponseError) GetCode() int { return v.gqlError.Code }
+func (v *ModifyDataPoolModifyDataPoolFailureResponseError) GetCode() int { return v.GqlError.Code }
 
 // GetMessage returns ModifyDataPoolModifyDataPoolFailureResponseError.Message, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolFailureResponseError) GetMessage() string {
-	return v.gqlError.Message
+	return v.GqlError.Message
 }
 
 func (v *ModifyDataPoolModifyDataPoolFailureResponseError) UnmarshalJSON(b []byte) error {
@@ -4215,7 +7469,7 @@ func (v *ModifyDataPoolModifyDataPoolFailureResponseError) UnmarshalJSON(b []byt
 	}
 
 	err = json.Unmarshal(
-		b, &v.gqlError)
+		b, &v.GqlError)
 	if err != nil {
 		return err
 	}
@@ -4239,8 +7493,8 @@ func (v *ModifyDataPoolModifyDataPoolFailureResponseError) MarshalJSON() ([]byte
 func (v *ModifyDataPoolModifyDataPoolFailureResponseError) __premarshalJSON() (*__premarshalModifyDataPoolModifyDataPoolFailureResponseError, error) {
 	var retval __premarshalModifyDataPoolModifyDataPoolFailureResponseError
 
-	retval.Code = v.gqlError.Code
-	retval.Message = v.gqlError.Message
+	retval.Code = v.GqlError.Code
+	retval.Message = v.GqlError.Message
 	return &retval, nil
 }
 
@@ -4353,78 +7607,78 @@ func (v *ModifyMetricModifyMetricMetricResponse) GetMetric() ModifyMetricModifyM
 
 // ModifyMetricModifyMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
 type ModifyMetricModifyMetricMetricResponseMetric struct {
-	metric `json:"-"`
+	MetricData `json:"-"`
 }
 
 // GetId returns ModifyMetricModifyMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetId() string { return v.metric.Id }
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetId() string { return v.MetricData.Id }
 
 // GetDataPool returns ModifyMetricModifyMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDataPool() metricDataPool {
-	return v.metric.DataPool
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDataPool() MetricDataDataPool {
+	return v.MetricData.DataPool
 }
 
 // GetDimensions returns ModifyMetricModifyMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDimensions() []metricDimensionsDimension {
-	return v.metric.Dimensions
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDimensions() []MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns ModifyMetricModifyMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetTimestamp() metricTimestampDimension {
-	return v.metric.Timestamp
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetTimestamp() MetricDataTimestampDimension {
+	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns ModifyMetricModifyMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetMeasure() metricMeasureDimension {
-	return v.metric.Measure
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetMeasure() MetricDataMeasureDimension {
+	return v.MetricData.Measure
 }
 
 // GetSettings returns ModifyMetricModifyMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetSettings() metricSettingsMetricSettings {
-	return v.metric.Settings
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
+	return v.MetricData.Settings
 }
 
 // GetType returns ModifyMetricModifyMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetType() MetricType { return v.metric.Type }
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetType() MetricType { return v.MetricData.Type }
 
 // GetUniqueName returns ModifyMetricModifyMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetUniqueName() string {
-	return v.metric.commonMetric.UniqueName
+	return v.MetricData.CommonDataMetric.UniqueName
 }
 
 // GetDescription returns ModifyMetricModifyMetricMetricResponseMetric.Description, and is useful for accessing the field via an interface.
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDescription() string {
-	return v.metric.commonMetric.Description
+	return v.MetricData.CommonDataMetric.Description
 }
 
 // GetAccount returns ModifyMetricModifyMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetAccount() commonAccount {
-	return v.metric.commonMetric.Account
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetAccount() CommonDataAccount {
+	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns ModifyMetricModifyMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetEnvironment() commonEnvironment {
-	return v.metric.commonMetric.Environment
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetEnvironment() CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
 }
 
 // GetCreatedAt returns ModifyMetricModifyMetricMetricResponseMetric.CreatedAt, and is useful for accessing the field via an interface.
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetCreatedAt() time.Time {
-	return v.metric.commonMetric.CreatedAt
+	return v.MetricData.CommonDataMetric.CreatedAt
 }
 
 // GetModifiedAt returns ModifyMetricModifyMetricMetricResponseMetric.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetModifiedAt() time.Time {
-	return v.metric.commonMetric.ModifiedAt
+	return v.MetricData.CommonDataMetric.ModifiedAt
 }
 
 // GetCreatedBy returns ModifyMetricModifyMetricMetricResponseMetric.CreatedBy, and is useful for accessing the field via an interface.
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetCreatedBy() string {
-	return v.metric.commonMetric.CreatedBy
+	return v.MetricData.CommonDataMetric.CreatedBy
 }
 
 // GetModifiedBy returns ModifyMetricModifyMetricMetricResponseMetric.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetModifiedBy() string {
-	return v.metric.commonMetric.ModifiedBy
+	return v.MetricData.CommonDataMetric.ModifiedBy
 }
 
 func (v *ModifyMetricModifyMetricMetricResponseMetric) UnmarshalJSON(b []byte) error {
@@ -4445,7 +7699,7 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) UnmarshalJSON(b []byte) e
 	}
 
 	err = json.Unmarshal(
-		b, &v.metric)
+		b, &v.MetricData)
 	if err != nil {
 		return err
 	}
@@ -4455,13 +7709,13 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) UnmarshalJSON(b []byte) e
 type __premarshalModifyMetricModifyMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
-	DataPool metricDataPool `json:"dataPool"`
+	DataPool MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []metricDimensionsDimension `json:"dimensions"`
+	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp metricTimestampDimension `json:"timestamp"`
+	Timestamp MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure metricMeasureDimension `json:"measure"`
+	Measure MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -4471,9 +7725,9 @@ type __premarshalModifyMetricModifyMetricMetricResponseMetric struct {
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -4495,32 +7749,32 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) MarshalJSON() ([]byte, er
 func (v *ModifyMetricModifyMetricMetricResponseMetric) __premarshalJSON() (*__premarshalModifyMetricModifyMetricMetricResponseMetric, error) {
 	var retval __premarshalModifyMetricModifyMetricMetricResponseMetric
 
-	retval.Id = v.metric.Id
-	retval.DataPool = v.metric.DataPool
-	retval.Dimensions = v.metric.Dimensions
-	retval.Timestamp = v.metric.Timestamp
-	retval.Measure = v.metric.Measure
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
 	{
 
 		dst := &retval.Settings
-		src := v.metric.Settings
+		src := v.MetricData.Settings
 		var err error
-		*dst, err = __marshalmetricSettingsMetricSettings(
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal ModifyMetricModifyMetricMetricResponseMetric.metric.Settings: %w", err)
+				"Unable to marshal ModifyMetricModifyMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.metric.Type
-	retval.UniqueName = v.metric.commonMetric.UniqueName
-	retval.Description = v.metric.commonMetric.Description
-	retval.Account = v.metric.commonMetric.Account
-	retval.Environment = v.metric.commonMetric.Environment
-	retval.CreatedAt = v.metric.commonMetric.CreatedAt
-	retval.ModifiedAt = v.metric.commonMetric.ModifiedAt
-	retval.CreatedBy = v.metric.commonMetric.CreatedBy
-	retval.ModifiedBy = v.metric.commonMetric.ModifiedBy
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
 	return &retval, nil
 }
 
@@ -4646,87 +7900,87 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse) G
 
 // ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource struct {
-	dataSource `json:"-"`
+	DataSourceData `json:"-"`
 }
 
 // GetId returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetId() string {
-	return v.dataSource.Id
+	return v.DataSourceData.Id
 }
 
 // GetType returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
-	return v.dataSource.Type
+	return v.DataSourceData.Type
 }
 
 // GetStatus returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
-	return v.dataSource.Status
+	return v.DataSourceData.Status
 }
 
 // GetError returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetError() dataSourceError {
-	return v.dataSource.Error
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetError() DataSourceDataError {
+	return v.DataSourceData.Error
 }
 
 // GetConnectionSettings returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetConnectionSettings() dataSourceConnectionSettings {
-	return v.dataSource.ConnectionSettings
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
 }
 
 // GetTables returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetTables() dataSourceTablesTableConnection {
-	return v.dataSource.Tables
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetTables() DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
 }
 
 // GetChecks returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetChecks() []dataSourceChecksDataSourceCheck {
-	return v.dataSource.Checks
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetTableIntrospections() dataSourceTableIntrospectionsTableIntrospectionConnection {
-	return v.dataSource.TableIntrospections
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
 }
 
 // GetUniqueName returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetUniqueName() string {
-	return v.dataSource.commonDataSource.UniqueName
+	return v.DataSourceData.CommonDataDataSource.UniqueName
 }
 
 // GetDescription returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetDescription() string {
-	return v.dataSource.commonDataSource.Description
+	return v.DataSourceData.CommonDataDataSource.Description
 }
 
 // GetAccount returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetAccount() commonAccount {
-	return v.dataSource.commonDataSource.Account
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetAccount() CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetEnvironment() commonEnvironment {
-	return v.dataSource.commonDataSource.Environment
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetEnvironment() CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
 // GetCreatedAt returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
-	return v.dataSource.commonDataSource.CreatedAt
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
 }
 
 // GetModifiedAt returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
-	return v.dataSource.commonDataSource.ModifiedAt
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
 }
 
 // GetCreatedBy returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
-	return v.dataSource.commonDataSource.CreatedBy
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
 }
 
 // GetModifiedBy returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
-	return v.dataSource.commonDataSource.ModifiedBy
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
 }
 
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
@@ -4747,7 +8001,7 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDat
 	}
 
 	err = json.Unmarshal(
-		b, &v.dataSource)
+		b, &v.DataSourceData)
 	if err != nil {
 		return err
 	}
@@ -4761,23 +8015,23 @@ type __premarshalModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceRes
 
 	Status DataSourceStatus `json:"status"`
 
-	Error dataSourceError `json:"error"`
+	Error DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables dataSourceTablesTableConnection `json:"tables"`
+	Tables DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []dataSourceChecksDataSourceCheck `json:"checks"`
+	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections dataSourceTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account commonAccount `json:"account"`
+	Account CommonDataAccount `json:"account"`
 
-	Environment commonEnvironment `json:"environment"`
+	Environment CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -4799,33 +8053,33 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDat
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource, error) {
 	var retval __premarshalModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource
 
-	retval.Id = v.dataSource.Id
-	retval.Type = v.dataSource.Type
-	retval.Status = v.dataSource.Status
-	retval.Error = v.dataSource.Error
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
 	{
 
 		dst := &retval.ConnectionSettings
-		src := v.dataSource.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
 		var err error
-		*dst, err = __marshaldataSourceConnectionSettings(
+		*dst, err = __marshalDataSourceDataConnectionSettings(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.dataSource.ConnectionSettings: %w", err)
+				"Unable to marshal ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
-	retval.Tables = v.dataSource.Tables
-	retval.Checks = v.dataSource.Checks
-	retval.TableIntrospections = v.dataSource.TableIntrospections
-	retval.UniqueName = v.dataSource.commonDataSource.UniqueName
-	retval.Description = v.dataSource.commonDataSource.Description
-	retval.Account = v.dataSource.commonDataSource.Account
-	retval.Environment = v.dataSource.commonDataSource.Environment
-	retval.CreatedAt = v.dataSource.commonDataSource.CreatedAt
-	retval.ModifiedAt = v.dataSource.commonDataSource.ModifiedAt
-	retval.CreatedBy = v.dataSource.commonDataSource.CreatedBy
-	retval.ModifiedBy = v.dataSource.commonDataSource.ModifiedBy
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
 	return &retval, nil
 }
 
@@ -4847,17 +8101,17 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse) GetE
 
 // ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError includes the requested fields of the GraphQL type Error.
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError struct {
-	gqlError `json:"-"`
+	GqlError `json:"-"`
 }
 
 // GetCode returns ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError.Code, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError) GetCode() int {
-	return v.gqlError.Code
+	return v.GqlError.Code
 }
 
 // GetMessage returns ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError.Message, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError) GetMessage() string {
-	return v.gqlError.Message
+	return v.GqlError.Message
 }
 
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError) UnmarshalJSON(b []byte) error {
@@ -4878,7 +8132,7 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError)
 	}
 
 	err = json.Unmarshal(
-		b, &v.gqlError)
+		b, &v.GqlError)
 	if err != nil {
 		return err
 	}
@@ -4902,8 +8156,8 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError)
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError) __premarshalJSON() (*__premarshalModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError, error) {
 	var retval __premarshalModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError
 
-	retval.Code = v.gqlError.Code
-	retval.Message = v.gqlError.Message
+	retval.Code = v.GqlError.Code
+	retval.Message = v.GqlError.Message
 	return &retval, nil
 }
 
@@ -4980,6 +8234,26 @@ func (v *ModifySnowflakeDataSourceResponse) __premarshalJSON() (*__premarshalMod
 	return &retval, nil
 }
 
+// PageInfoData includes the GraphQL fields of PageInfo requested by the fragment PageInfoData.
+type PageInfoData struct {
+	StartCursor     string `json:"startCursor"`
+	EndCursor       string `json:"endCursor"`
+	HasNextPage     bool   `json:"hasNextPage"`
+	HasPreviousPage bool   `json:"hasPreviousPage"`
+}
+
+// GetStartCursor returns PageInfoData.StartCursor, and is useful for accessing the field via an interface.
+func (v *PageInfoData) GetStartCursor() string { return v.StartCursor }
+
+// GetEndCursor returns PageInfoData.EndCursor, and is useful for accessing the field via an interface.
+func (v *PageInfoData) GetEndCursor() string { return v.EndCursor }
+
+// GetHasNextPage returns PageInfoData.HasNextPage, and is useful for accessing the field via an interface.
+func (v *PageInfoData) GetHasNextPage() bool { return v.HasNextPage }
+
+// GetHasPreviousPage returns PageInfoData.HasPreviousPage, and is useful for accessing the field via an interface.
+func (v *PageInfoData) GetHasPreviousPage() bool { return v.HasPreviousPage }
+
 type PartialSnowflakeConnectionSettingsInput struct {
 	Account   string `json:"account"`
 	Database  string `json:"database"`
@@ -5042,6 +8316,90 @@ func (v *SnowflakeConnectionSettingsInput) GetPassword() string { return v.Passw
 // GetRole returns SnowflakeConnectionSettingsInput.Role, and is useful for accessing the field via an interface.
 func (v *SnowflakeConnectionSettingsInput) GetRole() string { return v.Role }
 
+// SyncData includes the GraphQL fields of Sync requested by the fragment SyncData.
+type SyncData struct {
+	// The ID of the Sync resource.
+	Id string `json:"id"`
+	// This is the ID of the query which generated the Sync in Snowflake. In the future, this will become private.
+	QueryId string `json:"queryId"`
+	// The status of the Sync (all Syncs begin as SYNCING before transitioning to SUCCEEDED or FAILED).
+	Status SyncStatus `json:"status"`
+	// The number of new records contained within the Sync, if known. This excludes filtered records.
+	NewRecords string `json:"newRecords"`
+	// The number of updated records contained within the Sync, if known. This excludes filtered records.
+	UpdatedRecords string `json:"updatedRecords"`
+	// The number of deleted records contained within the Sync, if known. This excludes filtered records.
+	DeletedRecords string `json:"deletedRecords"`
+	// The number of filtered records contained within the Sync, due to issues such as missing time dimension, if
+	// known.
+	InvalidRecords string `json:"invalidRecords"`
+	// The time at which the Sync started.
+	StartedAt time.Time `json:"startedAt"`
+	// The time at which the Sync succeeded.
+	SucceededAt time.Time `json:"succeededAt"`
+	// The time at which the Sync failed.
+	FailedAt time.Time `json:"failedAt"`
+	// If the Sync failed, this represents the reason the Sync failed.
+	Error      SyncDataError `json:"error"`
+	CreatedAt  time.Time     `json:"createdAt"`
+	CreatedBy  string        `json:"createdBy"`
+	ModifiedAt time.Time     `json:"modifiedAt"`
+	ModifiedBy string        `json:"modifiedBy"`
+}
+
+// GetId returns SyncData.Id, and is useful for accessing the field via an interface.
+func (v *SyncData) GetId() string { return v.Id }
+
+// GetQueryId returns SyncData.QueryId, and is useful for accessing the field via an interface.
+func (v *SyncData) GetQueryId() string { return v.QueryId }
+
+// GetStatus returns SyncData.Status, and is useful for accessing the field via an interface.
+func (v *SyncData) GetStatus() SyncStatus { return v.Status }
+
+// GetNewRecords returns SyncData.NewRecords, and is useful for accessing the field via an interface.
+func (v *SyncData) GetNewRecords() string { return v.NewRecords }
+
+// GetUpdatedRecords returns SyncData.UpdatedRecords, and is useful for accessing the field via an interface.
+func (v *SyncData) GetUpdatedRecords() string { return v.UpdatedRecords }
+
+// GetDeletedRecords returns SyncData.DeletedRecords, and is useful for accessing the field via an interface.
+func (v *SyncData) GetDeletedRecords() string { return v.DeletedRecords }
+
+// GetInvalidRecords returns SyncData.InvalidRecords, and is useful for accessing the field via an interface.
+func (v *SyncData) GetInvalidRecords() string { return v.InvalidRecords }
+
+// GetStartedAt returns SyncData.StartedAt, and is useful for accessing the field via an interface.
+func (v *SyncData) GetStartedAt() time.Time { return v.StartedAt }
+
+// GetSucceededAt returns SyncData.SucceededAt, and is useful for accessing the field via an interface.
+func (v *SyncData) GetSucceededAt() time.Time { return v.SucceededAt }
+
+// GetFailedAt returns SyncData.FailedAt, and is useful for accessing the field via an interface.
+func (v *SyncData) GetFailedAt() time.Time { return v.FailedAt }
+
+// GetError returns SyncData.Error, and is useful for accessing the field via an interface.
+func (v *SyncData) GetError() SyncDataError { return v.Error }
+
+// GetCreatedAt returns SyncData.CreatedAt, and is useful for accessing the field via an interface.
+func (v *SyncData) GetCreatedAt() time.Time { return v.CreatedAt }
+
+// GetCreatedBy returns SyncData.CreatedBy, and is useful for accessing the field via an interface.
+func (v *SyncData) GetCreatedBy() string { return v.CreatedBy }
+
+// GetModifiedAt returns SyncData.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *SyncData) GetModifiedAt() time.Time { return v.ModifiedAt }
+
+// GetModifiedBy returns SyncData.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *SyncData) GetModifiedBy() string { return v.ModifiedBy }
+
+// SyncDataError includes the requested fields of the GraphQL type Error.
+type SyncDataError struct {
+	Message string `json:"message"`
+}
+
+// GetMessage returns SyncDataError.Message, and is useful for accessing the field via an interface.
+func (v *SyncDataError) GetMessage() string { return v.Message }
+
 type SyncStatus string
 
 const (
@@ -5054,6 +8412,48 @@ const (
 	// We are deleting the Sync.
 	SyncStatusDeleting SyncStatus = "DELETING"
 )
+
+// TableIntrospectionData includes the GraphQL fields of TableIntrospection requested by the fragment TableIntrospectionData.
+type TableIntrospectionData struct {
+	DataSource TableIntrospectionDataDataSource `json:"dataSource"`
+	Status     TableIntrospectionStatus         `json:"status"`
+	CreatedAt  time.Time                        `json:"createdAt"`
+	CreatedBy  string                           `json:"createdBy"`
+	ModifiedAt time.Time                        `json:"modifiedAt"`
+	ModifiedBy string                           `json:"modifiedBy"`
+	NumTables  int                              `json:"numTables"`
+}
+
+// GetDataSource returns TableIntrospectionData.DataSource, and is useful for accessing the field via an interface.
+func (v *TableIntrospectionData) GetDataSource() TableIntrospectionDataDataSource {
+	return v.DataSource
+}
+
+// GetStatus returns TableIntrospectionData.Status, and is useful for accessing the field via an interface.
+func (v *TableIntrospectionData) GetStatus() TableIntrospectionStatus { return v.Status }
+
+// GetCreatedAt returns TableIntrospectionData.CreatedAt, and is useful for accessing the field via an interface.
+func (v *TableIntrospectionData) GetCreatedAt() time.Time { return v.CreatedAt }
+
+// GetCreatedBy returns TableIntrospectionData.CreatedBy, and is useful for accessing the field via an interface.
+func (v *TableIntrospectionData) GetCreatedBy() string { return v.CreatedBy }
+
+// GetModifiedAt returns TableIntrospectionData.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *TableIntrospectionData) GetModifiedAt() time.Time { return v.ModifiedAt }
+
+// GetModifiedBy returns TableIntrospectionData.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *TableIntrospectionData) GetModifiedBy() string { return v.ModifiedBy }
+
+// GetNumTables returns TableIntrospectionData.NumTables, and is useful for accessing the field via an interface.
+func (v *TableIntrospectionData) GetNumTables() int { return v.NumTables }
+
+// TableIntrospectionDataDataSource includes the requested fields of the GraphQL type DataSource.
+type TableIntrospectionDataDataSource struct {
+	Id string `json:"id"`
+}
+
+// GetId returns TableIntrospectionDataDataSource.Id, and is useful for accessing the field via an interface.
+func (v *TableIntrospectionDataDataSource) GetId() string { return v.Id }
 
 type TableIntrospectionStatus string
 
@@ -5293,3269 +8693,6 @@ type __ModifySnowflakeDataSourceInput struct {
 // GetInput returns __ModifySnowflakeDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifySnowflakeDataSourceInput) GetInput() ModifySnowflakeDataSourceInput { return v.Input }
 
-// column includes the GraphQL fields of Column requested by the fragment column.
-type column struct {
-	Name         string    `json:"name"`
-	Type         string    `json:"type"`
-	Kind         string    `json:"kind"`
-	IsNullable   bool      `json:"isNullable"`
-	DefaultValue string    `json:"defaultValue"`
-	IsPrimaryKey bool      `json:"isPrimaryKey"`
-	IsUniqueKey  bool      `json:"isUniqueKey"`
-	Comment      string    `json:"comment"`
-	PolicyName   string    `json:"policyName"`
-	CachedAt     time.Time `json:"cachedAt"`
-	CreatedAt    time.Time `json:"createdAt"`
-	CreatedBy    string    `json:"createdBy"`
-}
-
-// GetName returns column.Name, and is useful for accessing the field via an interface.
-func (v *column) GetName() string { return v.Name }
-
-// GetType returns column.Type, and is useful for accessing the field via an interface.
-func (v *column) GetType() string { return v.Type }
-
-// GetKind returns column.Kind, and is useful for accessing the field via an interface.
-func (v *column) GetKind() string { return v.Kind }
-
-// GetIsNullable returns column.IsNullable, and is useful for accessing the field via an interface.
-func (v *column) GetIsNullable() bool { return v.IsNullable }
-
-// GetDefaultValue returns column.DefaultValue, and is useful for accessing the field via an interface.
-func (v *column) GetDefaultValue() string { return v.DefaultValue }
-
-// GetIsPrimaryKey returns column.IsPrimaryKey, and is useful for accessing the field via an interface.
-func (v *column) GetIsPrimaryKey() bool { return v.IsPrimaryKey }
-
-// GetIsUniqueKey returns column.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *column) GetIsUniqueKey() bool { return v.IsUniqueKey }
-
-// GetComment returns column.Comment, and is useful for accessing the field via an interface.
-func (v *column) GetComment() string { return v.Comment }
-
-// GetPolicyName returns column.PolicyName, and is useful for accessing the field via an interface.
-func (v *column) GetPolicyName() string { return v.PolicyName }
-
-// GetCachedAt returns column.CachedAt, and is useful for accessing the field via an interface.
-func (v *column) GetCachedAt() time.Time { return v.CachedAt }
-
-// GetCreatedAt returns column.CreatedAt, and is useful for accessing the field via an interface.
-func (v *column) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetCreatedBy returns column.CreatedBy, and is useful for accessing the field via an interface.
-func (v *column) GetCreatedBy() string { return v.CreatedBy }
-
-// common includes the GraphQL fields of Common requested by the fragment common.
-//
-// common is implemented by the following types:
-// commonApplication
-// commonDataSource
-// commonDataPool
-// commonMetric
-type common interface {
-	implementsGraphQLInterfacecommon()
-	// GetUniqueName returns the interface-field "uniqueName" from its implementation.
-	GetUniqueName() string
-	// GetDescription returns the interface-field "description" from its implementation.
-	GetDescription() string
-	// GetAccount returns the interface-field "account" from its implementation.
-	GetAccount() commonAccount
-	// GetEnvironment returns the interface-field "environment" from its implementation.
-	GetEnvironment() commonEnvironment
-	// GetCreatedAt returns the interface-field "createdAt" from its implementation.
-	GetCreatedAt() time.Time
-	// GetModifiedAt returns the interface-field "modifiedAt" from its implementation.
-	GetModifiedAt() time.Time
-	// GetCreatedBy returns the interface-field "createdBy" from its implementation.
-	GetCreatedBy() string
-	// GetModifiedBy returns the interface-field "modifiedBy" from its implementation.
-	GetModifiedBy() string
-}
-
-func (v *commonApplication) implementsGraphQLInterfacecommon() {}
-func (v *commonDataSource) implementsGraphQLInterfacecommon()  {}
-func (v *commonDataPool) implementsGraphQLInterfacecommon()    {}
-func (v *commonMetric) implementsGraphQLInterfacecommon()      {}
-
-func __unmarshalcommon(b []byte, v *common) error {
-	if string(b) == "null" {
-		return nil
-	}
-
-	var tn struct {
-		TypeName string `json:"__typename"`
-	}
-	err := json.Unmarshal(b, &tn)
-	if err != nil {
-		return err
-	}
-
-	switch tn.TypeName {
-	case "Application":
-		*v = new(commonApplication)
-		return json.Unmarshal(b, *v)
-	case "DataSource":
-		*v = new(commonDataSource)
-		return json.Unmarshal(b, *v)
-	case "DataPool":
-		*v = new(commonDataPool)
-		return json.Unmarshal(b, *v)
-	case "Metric":
-		*v = new(commonMetric)
-		return json.Unmarshal(b, *v)
-	case "":
-		return fmt.Errorf(
-			"response was missing Common.__typename")
-	default:
-		return fmt.Errorf(
-			`unexpected concrete type for common: "%v"`, tn.TypeName)
-	}
-}
-
-func __marshalcommon(v *common) ([]byte, error) {
-
-	var typename string
-	switch v := (*v).(type) {
-	case *commonApplication:
-		typename = "Application"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*commonApplication
-		}{typename, v}
-		return json.Marshal(result)
-	case *commonDataSource:
-		typename = "DataSource"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*commonDataSource
-		}{typename, v}
-		return json.Marshal(result)
-	case *commonDataPool:
-		typename = "DataPool"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*commonDataPool
-		}{typename, v}
-		return json.Marshal(result)
-	case *commonMetric:
-		typename = "Metric"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*commonMetric
-		}{typename, v}
-		return json.Marshal(result)
-	case nil:
-		return []byte("null"), nil
-	default:
-		return nil, fmt.Errorf(
-			`unexpected concrete type for common: "%T"`, v)
-	}
-}
-
-// commonAccount includes the requested fields of the GraphQL type Account.
-type commonAccount struct {
-	Id string `json:"id"`
-}
-
-// GetId returns commonAccount.Id, and is useful for accessing the field via an interface.
-func (v *commonAccount) GetId() string { return v.Id }
-
-// common includes the GraphQL fields of Application requested by the fragment common.
-type commonApplication struct {
-	UniqueName  string            `json:"uniqueName"`
-	Description string            `json:"description"`
-	Account     commonAccount     `json:"account"`
-	Environment commonEnvironment `json:"environment"`
-	CreatedAt   time.Time         `json:"createdAt"`
-	ModifiedAt  time.Time         `json:"modifiedAt"`
-	CreatedBy   string            `json:"createdBy"`
-	ModifiedBy  string            `json:"modifiedBy"`
-}
-
-// GetUniqueName returns commonApplication.UniqueName, and is useful for accessing the field via an interface.
-func (v *commonApplication) GetUniqueName() string { return v.UniqueName }
-
-// GetDescription returns commonApplication.Description, and is useful for accessing the field via an interface.
-func (v *commonApplication) GetDescription() string { return v.Description }
-
-// GetAccount returns commonApplication.Account, and is useful for accessing the field via an interface.
-func (v *commonApplication) GetAccount() commonAccount { return v.Account }
-
-// GetEnvironment returns commonApplication.Environment, and is useful for accessing the field via an interface.
-func (v *commonApplication) GetEnvironment() commonEnvironment { return v.Environment }
-
-// GetCreatedAt returns commonApplication.CreatedAt, and is useful for accessing the field via an interface.
-func (v *commonApplication) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetModifiedAt returns commonApplication.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *commonApplication) GetModifiedAt() time.Time { return v.ModifiedAt }
-
-// GetCreatedBy returns commonApplication.CreatedBy, and is useful for accessing the field via an interface.
-func (v *commonApplication) GetCreatedBy() string { return v.CreatedBy }
-
-// GetModifiedBy returns commonApplication.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *commonApplication) GetModifiedBy() string { return v.ModifiedBy }
-
-// common includes the GraphQL fields of DataPool requested by the fragment common.
-type commonDataPool struct {
-	UniqueName  string            `json:"uniqueName"`
-	Description string            `json:"description"`
-	Account     commonAccount     `json:"account"`
-	Environment commonEnvironment `json:"environment"`
-	CreatedAt   time.Time         `json:"createdAt"`
-	ModifiedAt  time.Time         `json:"modifiedAt"`
-	CreatedBy   string            `json:"createdBy"`
-	ModifiedBy  string            `json:"modifiedBy"`
-}
-
-// GetUniqueName returns commonDataPool.UniqueName, and is useful for accessing the field via an interface.
-func (v *commonDataPool) GetUniqueName() string { return v.UniqueName }
-
-// GetDescription returns commonDataPool.Description, and is useful for accessing the field via an interface.
-func (v *commonDataPool) GetDescription() string { return v.Description }
-
-// GetAccount returns commonDataPool.Account, and is useful for accessing the field via an interface.
-func (v *commonDataPool) GetAccount() commonAccount { return v.Account }
-
-// GetEnvironment returns commonDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *commonDataPool) GetEnvironment() commonEnvironment { return v.Environment }
-
-// GetCreatedAt returns commonDataPool.CreatedAt, and is useful for accessing the field via an interface.
-func (v *commonDataPool) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetModifiedAt returns commonDataPool.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *commonDataPool) GetModifiedAt() time.Time { return v.ModifiedAt }
-
-// GetCreatedBy returns commonDataPool.CreatedBy, and is useful for accessing the field via an interface.
-func (v *commonDataPool) GetCreatedBy() string { return v.CreatedBy }
-
-// GetModifiedBy returns commonDataPool.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *commonDataPool) GetModifiedBy() string { return v.ModifiedBy }
-
-// common includes the GraphQL fields of DataSource requested by the fragment common.
-type commonDataSource struct {
-	UniqueName  string            `json:"uniqueName"`
-	Description string            `json:"description"`
-	Account     commonAccount     `json:"account"`
-	Environment commonEnvironment `json:"environment"`
-	CreatedAt   time.Time         `json:"createdAt"`
-	ModifiedAt  time.Time         `json:"modifiedAt"`
-	CreatedBy   string            `json:"createdBy"`
-	ModifiedBy  string            `json:"modifiedBy"`
-}
-
-// GetUniqueName returns commonDataSource.UniqueName, and is useful for accessing the field via an interface.
-func (v *commonDataSource) GetUniqueName() string { return v.UniqueName }
-
-// GetDescription returns commonDataSource.Description, and is useful for accessing the field via an interface.
-func (v *commonDataSource) GetDescription() string { return v.Description }
-
-// GetAccount returns commonDataSource.Account, and is useful for accessing the field via an interface.
-func (v *commonDataSource) GetAccount() commonAccount { return v.Account }
-
-// GetEnvironment returns commonDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *commonDataSource) GetEnvironment() commonEnvironment { return v.Environment }
-
-// GetCreatedAt returns commonDataSource.CreatedAt, and is useful for accessing the field via an interface.
-func (v *commonDataSource) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetModifiedAt returns commonDataSource.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *commonDataSource) GetModifiedAt() time.Time { return v.ModifiedAt }
-
-// GetCreatedBy returns commonDataSource.CreatedBy, and is useful for accessing the field via an interface.
-func (v *commonDataSource) GetCreatedBy() string { return v.CreatedBy }
-
-// GetModifiedBy returns commonDataSource.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *commonDataSource) GetModifiedBy() string { return v.ModifiedBy }
-
-// commonEnvironment includes the requested fields of the GraphQL type Environment.
-type commonEnvironment struct {
-	Id string `json:"id"`
-}
-
-// GetId returns commonEnvironment.Id, and is useful for accessing the field via an interface.
-func (v *commonEnvironment) GetId() string { return v.Id }
-
-// common includes the GraphQL fields of Metric requested by the fragment common.
-type commonMetric struct {
-	UniqueName  string            `json:"uniqueName"`
-	Description string            `json:"description"`
-	Account     commonAccount     `json:"account"`
-	Environment commonEnvironment `json:"environment"`
-	CreatedAt   time.Time         `json:"createdAt"`
-	ModifiedAt  time.Time         `json:"modifiedAt"`
-	CreatedBy   string            `json:"createdBy"`
-	ModifiedBy  string            `json:"modifiedBy"`
-}
-
-// GetUniqueName returns commonMetric.UniqueName, and is useful for accessing the field via an interface.
-func (v *commonMetric) GetUniqueName() string { return v.UniqueName }
-
-// GetDescription returns commonMetric.Description, and is useful for accessing the field via an interface.
-func (v *commonMetric) GetDescription() string { return v.Description }
-
-// GetAccount returns commonMetric.Account, and is useful for accessing the field via an interface.
-func (v *commonMetric) GetAccount() commonAccount { return v.Account }
-
-// GetEnvironment returns commonMetric.Environment, and is useful for accessing the field via an interface.
-func (v *commonMetric) GetEnvironment() commonEnvironment { return v.Environment }
-
-// GetCreatedAt returns commonMetric.CreatedAt, and is useful for accessing the field via an interface.
-func (v *commonMetric) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetModifiedAt returns commonMetric.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *commonMetric) GetModifiedAt() time.Time { return v.ModifiedAt }
-
-// GetCreatedBy returns commonMetric.CreatedBy, and is useful for accessing the field via an interface.
-func (v *commonMetric) GetCreatedBy() string { return v.CreatedBy }
-
-// GetModifiedBy returns commonMetric.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *commonMetric) GetModifiedBy() string { return v.ModifiedBy }
-
-// dataPool includes the GraphQL fields of DataPool requested by the fragment dataPool.
-type dataPool struct {
-	Id                string `json:"id"`
-	commonDataPool    `json:"-"`
-	DataSource        dataPoolDataSource                        `json:"dataSource"`
-	Status            DataPoolStatus                            `json:"status"`
-	Error             dataPoolError                             `json:"error"`
-	Table             string                                    `json:"table"`
-	Timestamp         dataPoolTimestampDimension                `json:"timestamp"`
-	Columns           dataPoolColumnsColumnConnection           `json:"columns"`
-	AvailableMeasures dataPoolAvailableMeasuresColumnConnection `json:"availableMeasures"`
-	// A list of setup tasks performed on the Data Pool during its most recent setup attempt.
-	SetupTasks []dataPoolSetupTasksDataPoolSetupTask `json:"setupTasks"`
-	Syncs      dataPoolSyncsSyncConnection           `json:"syncs"`
-}
-
-// GetId returns dataPool.Id, and is useful for accessing the field via an interface.
-func (v *dataPool) GetId() string { return v.Id }
-
-// GetDataSource returns dataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *dataPool) GetDataSource() dataPoolDataSource { return v.DataSource }
-
-// GetStatus returns dataPool.Status, and is useful for accessing the field via an interface.
-func (v *dataPool) GetStatus() DataPoolStatus { return v.Status }
-
-// GetError returns dataPool.Error, and is useful for accessing the field via an interface.
-func (v *dataPool) GetError() dataPoolError { return v.Error }
-
-// GetTable returns dataPool.Table, and is useful for accessing the field via an interface.
-func (v *dataPool) GetTable() string { return v.Table }
-
-// GetTimestamp returns dataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *dataPool) GetTimestamp() dataPoolTimestampDimension { return v.Timestamp }
-
-// GetColumns returns dataPool.Columns, and is useful for accessing the field via an interface.
-func (v *dataPool) GetColumns() dataPoolColumnsColumnConnection { return v.Columns }
-
-// GetAvailableMeasures returns dataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *dataPool) GetAvailableMeasures() dataPoolAvailableMeasuresColumnConnection {
-	return v.AvailableMeasures
-}
-
-// GetSetupTasks returns dataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *dataPool) GetSetupTasks() []dataPoolSetupTasksDataPoolSetupTask { return v.SetupTasks }
-
-// GetSyncs returns dataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *dataPool) GetSyncs() dataPoolSyncsSyncConnection { return v.Syncs }
-
-// GetUniqueName returns dataPool.UniqueName, and is useful for accessing the field via an interface.
-func (v *dataPool) GetUniqueName() string { return v.commonDataPool.UniqueName }
-
-// GetDescription returns dataPool.Description, and is useful for accessing the field via an interface.
-func (v *dataPool) GetDescription() string { return v.commonDataPool.Description }
-
-// GetAccount returns dataPool.Account, and is useful for accessing the field via an interface.
-func (v *dataPool) GetAccount() commonAccount { return v.commonDataPool.Account }
-
-// GetEnvironment returns dataPool.Environment, and is useful for accessing the field via an interface.
-func (v *dataPool) GetEnvironment() commonEnvironment { return v.commonDataPool.Environment }
-
-// GetCreatedAt returns dataPool.CreatedAt, and is useful for accessing the field via an interface.
-func (v *dataPool) GetCreatedAt() time.Time { return v.commonDataPool.CreatedAt }
-
-// GetModifiedAt returns dataPool.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *dataPool) GetModifiedAt() time.Time { return v.commonDataPool.ModifiedAt }
-
-// GetCreatedBy returns dataPool.CreatedBy, and is useful for accessing the field via an interface.
-func (v *dataPool) GetCreatedBy() string { return v.commonDataPool.CreatedBy }
-
-// GetModifiedBy returns dataPool.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *dataPool) GetModifiedBy() string { return v.commonDataPool.ModifiedBy }
-
-func (v *dataPool) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*dataPool
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.dataPool = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.commonDataPool)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshaldataPool struct {
-	Id string `json:"id"`
-
-	DataSource dataPoolDataSource `json:"dataSource"`
-
-	Status DataPoolStatus `json:"status"`
-
-	Error dataPoolError `json:"error"`
-
-	Table string `json:"table"`
-
-	Timestamp dataPoolTimestampDimension `json:"timestamp"`
-
-	Columns dataPoolColumnsColumnConnection `json:"columns"`
-
-	AvailableMeasures dataPoolAvailableMeasuresColumnConnection `json:"availableMeasures"`
-
-	SetupTasks []dataPoolSetupTasksDataPoolSetupTask `json:"setupTasks"`
-
-	Syncs dataPoolSyncsSyncConnection `json:"syncs"`
-
-	UniqueName string `json:"uniqueName"`
-
-	Description string `json:"description"`
-
-	Account commonAccount `json:"account"`
-
-	Environment commonEnvironment `json:"environment"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedBy string `json:"modifiedBy"`
-}
-
-func (v *dataPool) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *dataPool) __premarshalJSON() (*__premarshaldataPool, error) {
-	var retval __premarshaldataPool
-
-	retval.Id = v.Id
-	retval.DataSource = v.DataSource
-	retval.Status = v.Status
-	retval.Error = v.Error
-	retval.Table = v.Table
-	retval.Timestamp = v.Timestamp
-	retval.Columns = v.Columns
-	retval.AvailableMeasures = v.AvailableMeasures
-	retval.SetupTasks = v.SetupTasks
-	retval.Syncs = v.Syncs
-	retval.UniqueName = v.commonDataPool.UniqueName
-	retval.Description = v.commonDataPool.Description
-	retval.Account = v.commonDataPool.Account
-	retval.Environment = v.commonDataPool.Environment
-	retval.CreatedAt = v.commonDataPool.CreatedAt
-	retval.ModifiedAt = v.commonDataPool.ModifiedAt
-	retval.CreatedBy = v.commonDataPool.CreatedBy
-	retval.ModifiedBy = v.commonDataPool.ModifiedBy
-	return &retval, nil
-}
-
-// dataPoolAvailableMeasuresColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
-type dataPoolAvailableMeasuresColumnConnection struct {
-	Nodes []dataPoolAvailableMeasuresColumnConnectionNodesColumn `json:"nodes"`
-}
-
-// GetNodes returns dataPoolAvailableMeasuresColumnConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnection) GetNodes() []dataPoolAvailableMeasuresColumnConnectionNodesColumn {
-	return v.Nodes
-}
-
-// dataPoolAvailableMeasuresColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
-type dataPoolAvailableMeasuresColumnConnectionNodesColumn struct {
-	column `json:"-"`
-}
-
-// GetName returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetName() string { return v.column.Name }
-
-// GetType returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetType() string { return v.column.Type }
-
-// GetKind returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetKind() string { return v.column.Kind }
-
-// GetIsNullable returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetIsNullable() bool {
-	return v.column.IsNullable
-}
-
-// GetDefaultValue returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetDefaultValue() string {
-	return v.column.DefaultValue
-}
-
-// GetIsPrimaryKey returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
-	return v.column.IsPrimaryKey
-}
-
-// GetIsUniqueKey returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetIsUniqueKey() bool {
-	return v.column.IsUniqueKey
-}
-
-// GetComment returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetComment() string {
-	return v.column.Comment
-}
-
-// GetPolicyName returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetPolicyName() string {
-	return v.column.PolicyName
-}
-
-// GetCachedAt returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetCachedAt() time.Time {
-	return v.column.CachedAt
-}
-
-// GetCreatedAt returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetCreatedAt() time.Time {
-	return v.column.CreatedAt
-}
-
-// GetCreatedBy returns dataPoolAvailableMeasuresColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) GetCreatedBy() string {
-	return v.column.CreatedBy
-}
-
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*dataPoolAvailableMeasuresColumnConnectionNodesColumn
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.dataPoolAvailableMeasuresColumnConnectionNodesColumn = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.column)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshaldataPoolAvailableMeasuresColumnConnectionNodesColumn struct {
-	Name string `json:"name"`
-
-	Type string `json:"type"`
-
-	Kind string `json:"kind"`
-
-	IsNullable bool `json:"isNullable"`
-
-	DefaultValue string `json:"defaultValue"`
-
-	IsPrimaryKey bool `json:"isPrimaryKey"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-
-	Comment string `json:"comment"`
-
-	PolicyName string `json:"policyName"`
-
-	CachedAt time.Time `json:"cachedAt"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-}
-
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *dataPoolAvailableMeasuresColumnConnectionNodesColumn) __premarshalJSON() (*__premarshaldataPoolAvailableMeasuresColumnConnectionNodesColumn, error) {
-	var retval __premarshaldataPoolAvailableMeasuresColumnConnectionNodesColumn
-
-	retval.Name = v.column.Name
-	retval.Type = v.column.Type
-	retval.Kind = v.column.Kind
-	retval.IsNullable = v.column.IsNullable
-	retval.DefaultValue = v.column.DefaultValue
-	retval.IsPrimaryKey = v.column.IsPrimaryKey
-	retval.IsUniqueKey = v.column.IsUniqueKey
-	retval.Comment = v.column.Comment
-	retval.PolicyName = v.column.PolicyName
-	retval.CachedAt = v.column.CachedAt
-	retval.CreatedAt = v.column.CreatedAt
-	retval.CreatedBy = v.column.CreatedBy
-	return &retval, nil
-}
-
-// dataPoolColumnsColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
-type dataPoolColumnsColumnConnection struct {
-	Nodes []dataPoolColumnsColumnConnectionNodesColumn `json:"nodes"`
-}
-
-// GetNodes returns dataPoolColumnsColumnConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnection) GetNodes() []dataPoolColumnsColumnConnectionNodesColumn {
-	return v.Nodes
-}
-
-// dataPoolColumnsColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
-type dataPoolColumnsColumnConnectionNodesColumn struct {
-	column `json:"-"`
-}
-
-// GetName returns dataPoolColumnsColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetName() string { return v.column.Name }
-
-// GetType returns dataPoolColumnsColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetType() string { return v.column.Type }
-
-// GetKind returns dataPoolColumnsColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetKind() string { return v.column.Kind }
-
-// GetIsNullable returns dataPoolColumnsColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetIsNullable() bool { return v.column.IsNullable }
-
-// GetDefaultValue returns dataPoolColumnsColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetDefaultValue() string {
-	return v.column.DefaultValue
-}
-
-// GetIsPrimaryKey returns dataPoolColumnsColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
-	return v.column.IsPrimaryKey
-}
-
-// GetIsUniqueKey returns dataPoolColumnsColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetIsUniqueKey() bool {
-	return v.column.IsUniqueKey
-}
-
-// GetComment returns dataPoolColumnsColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetComment() string { return v.column.Comment }
-
-// GetPolicyName returns dataPoolColumnsColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetPolicyName() string {
-	return v.column.PolicyName
-}
-
-// GetCachedAt returns dataPoolColumnsColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetCachedAt() time.Time {
-	return v.column.CachedAt
-}
-
-// GetCreatedAt returns dataPoolColumnsColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetCreatedAt() time.Time {
-	return v.column.CreatedAt
-}
-
-// GetCreatedBy returns dataPoolColumnsColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
-func (v *dataPoolColumnsColumnConnectionNodesColumn) GetCreatedBy() string { return v.column.CreatedBy }
-
-func (v *dataPoolColumnsColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*dataPoolColumnsColumnConnectionNodesColumn
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.dataPoolColumnsColumnConnectionNodesColumn = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.column)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshaldataPoolColumnsColumnConnectionNodesColumn struct {
-	Name string `json:"name"`
-
-	Type string `json:"type"`
-
-	Kind string `json:"kind"`
-
-	IsNullable bool `json:"isNullable"`
-
-	DefaultValue string `json:"defaultValue"`
-
-	IsPrimaryKey bool `json:"isPrimaryKey"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-
-	Comment string `json:"comment"`
-
-	PolicyName string `json:"policyName"`
-
-	CachedAt time.Time `json:"cachedAt"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-}
-
-func (v *dataPoolColumnsColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *dataPoolColumnsColumnConnectionNodesColumn) __premarshalJSON() (*__premarshaldataPoolColumnsColumnConnectionNodesColumn, error) {
-	var retval __premarshaldataPoolColumnsColumnConnectionNodesColumn
-
-	retval.Name = v.column.Name
-	retval.Type = v.column.Type
-	retval.Kind = v.column.Kind
-	retval.IsNullable = v.column.IsNullable
-	retval.DefaultValue = v.column.DefaultValue
-	retval.IsPrimaryKey = v.column.IsPrimaryKey
-	retval.IsUniqueKey = v.column.IsUniqueKey
-	retval.Comment = v.column.Comment
-	retval.PolicyName = v.column.PolicyName
-	retval.CachedAt = v.column.CachedAt
-	retval.CreatedAt = v.column.CreatedAt
-	retval.CreatedBy = v.column.CreatedBy
-	return &retval, nil
-}
-
-// dataPoolDataSource includes the requested fields of the GraphQL type DataSource.
-type dataPoolDataSource struct {
-	dataSource `json:"-"`
-}
-
-// GetId returns dataPoolDataSource.Id, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetId() string { return v.dataSource.Id }
-
-// GetType returns dataPoolDataSource.Type, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetType() DataSourceType { return v.dataSource.Type }
-
-// GetStatus returns dataPoolDataSource.Status, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetStatus() DataSourceStatus { return v.dataSource.Status }
-
-// GetError returns dataPoolDataSource.Error, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetError() dataSourceError { return v.dataSource.Error }
-
-// GetConnectionSettings returns dataPoolDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetConnectionSettings() dataSourceConnectionSettings {
-	return v.dataSource.ConnectionSettings
-}
-
-// GetTables returns dataPoolDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetTables() dataSourceTablesTableConnection { return v.dataSource.Tables }
-
-// GetChecks returns dataPoolDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetChecks() []dataSourceChecksDataSourceCheck {
-	return v.dataSource.Checks
-}
-
-// GetTableIntrospections returns dataPoolDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetTableIntrospections() dataSourceTableIntrospectionsTableIntrospectionConnection {
-	return v.dataSource.TableIntrospections
-}
-
-// GetUniqueName returns dataPoolDataSource.UniqueName, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetUniqueName() string { return v.dataSource.commonDataSource.UniqueName }
-
-// GetDescription returns dataPoolDataSource.Description, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetDescription() string {
-	return v.dataSource.commonDataSource.Description
-}
-
-// GetAccount returns dataPoolDataSource.Account, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetAccount() commonAccount { return v.dataSource.commonDataSource.Account }
-
-// GetEnvironment returns dataPoolDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetEnvironment() commonEnvironment {
-	return v.dataSource.commonDataSource.Environment
-}
-
-// GetCreatedAt returns dataPoolDataSource.CreatedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetCreatedAt() time.Time { return v.dataSource.commonDataSource.CreatedAt }
-
-// GetModifiedAt returns dataPoolDataSource.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetModifiedAt() time.Time {
-	return v.dataSource.commonDataSource.ModifiedAt
-}
-
-// GetCreatedBy returns dataPoolDataSource.CreatedBy, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetCreatedBy() string { return v.dataSource.commonDataSource.CreatedBy }
-
-// GetModifiedBy returns dataPoolDataSource.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *dataPoolDataSource) GetModifiedBy() string { return v.dataSource.commonDataSource.ModifiedBy }
-
-func (v *dataPoolDataSource) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*dataPoolDataSource
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.dataPoolDataSource = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.dataSource)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshaldataPoolDataSource struct {
-	Id string `json:"id"`
-
-	Type DataSourceType `json:"type"`
-
-	Status DataSourceStatus `json:"status"`
-
-	Error dataSourceError `json:"error"`
-
-	ConnectionSettings json.RawMessage `json:"connectionSettings"`
-
-	Tables dataSourceTablesTableConnection `json:"tables"`
-
-	Checks []dataSourceChecksDataSourceCheck `json:"checks"`
-
-	TableIntrospections dataSourceTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
-
-	UniqueName string `json:"uniqueName"`
-
-	Description string `json:"description"`
-
-	Account commonAccount `json:"account"`
-
-	Environment commonEnvironment `json:"environment"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedBy string `json:"modifiedBy"`
-}
-
-func (v *dataPoolDataSource) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *dataPoolDataSource) __premarshalJSON() (*__premarshaldataPoolDataSource, error) {
-	var retval __premarshaldataPoolDataSource
-
-	retval.Id = v.dataSource.Id
-	retval.Type = v.dataSource.Type
-	retval.Status = v.dataSource.Status
-	retval.Error = v.dataSource.Error
-	{
-
-		dst := &retval.ConnectionSettings
-		src := v.dataSource.ConnectionSettings
-		var err error
-		*dst, err = __marshaldataSourceConnectionSettings(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"Unable to marshal dataPoolDataSource.dataSource.ConnectionSettings: %w", err)
-		}
-	}
-	retval.Tables = v.dataSource.Tables
-	retval.Checks = v.dataSource.Checks
-	retval.TableIntrospections = v.dataSource.TableIntrospections
-	retval.UniqueName = v.dataSource.commonDataSource.UniqueName
-	retval.Description = v.dataSource.commonDataSource.Description
-	retval.Account = v.dataSource.commonDataSource.Account
-	retval.Environment = v.dataSource.commonDataSource.Environment
-	retval.CreatedAt = v.dataSource.commonDataSource.CreatedAt
-	retval.ModifiedAt = v.dataSource.commonDataSource.ModifiedAt
-	retval.CreatedBy = v.dataSource.commonDataSource.CreatedBy
-	retval.ModifiedBy = v.dataSource.commonDataSource.ModifiedBy
-	return &retval, nil
-}
-
-// dataPoolError includes the requested fields of the GraphQL type Error.
-type dataPoolError struct {
-	Message string `json:"message"`
-}
-
-// GetMessage returns dataPoolError.Message, and is useful for accessing the field via an interface.
-func (v *dataPoolError) GetMessage() string { return v.Message }
-
-// dataPoolSetupTasksDataPoolSetupTask includes the requested fields of the GraphQL type DataPoolSetupTask.
-type dataPoolSetupTasksDataPoolSetupTask struct {
-	// The name of the Data Pool setup task to be performed.
-	Name string `json:"name"`
-	// A description of the Data Pool setup task to be performed.
-	Description string `json:"description"`
-	// The status of the Data Pool setup task (all setup tasks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED).
-	Status DataPoolSetupTaskStatus `json:"status"`
-	// If the Data Pool setup task failed, this field includes a descriptive error message.
-	Error dataPoolSetupTasksDataPoolSetupTaskError `json:"error"`
-	// The time at which the Data Pool setup task was completed.
-	CompletedAt time.Time `json:"completedAt"`
-}
-
-// GetName returns dataPoolSetupTasksDataPoolSetupTask.Name, and is useful for accessing the field via an interface.
-func (v *dataPoolSetupTasksDataPoolSetupTask) GetName() string { return v.Name }
-
-// GetDescription returns dataPoolSetupTasksDataPoolSetupTask.Description, and is useful for accessing the field via an interface.
-func (v *dataPoolSetupTasksDataPoolSetupTask) GetDescription() string { return v.Description }
-
-// GetStatus returns dataPoolSetupTasksDataPoolSetupTask.Status, and is useful for accessing the field via an interface.
-func (v *dataPoolSetupTasksDataPoolSetupTask) GetStatus() DataPoolSetupTaskStatus { return v.Status }
-
-// GetError returns dataPoolSetupTasksDataPoolSetupTask.Error, and is useful for accessing the field via an interface.
-func (v *dataPoolSetupTasksDataPoolSetupTask) GetError() dataPoolSetupTasksDataPoolSetupTaskError {
-	return v.Error
-}
-
-// GetCompletedAt returns dataPoolSetupTasksDataPoolSetupTask.CompletedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolSetupTasksDataPoolSetupTask) GetCompletedAt() time.Time { return v.CompletedAt }
-
-// dataPoolSetupTasksDataPoolSetupTaskError includes the requested fields of the GraphQL type Error.
-type dataPoolSetupTasksDataPoolSetupTaskError struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
-
-// GetCode returns dataPoolSetupTasksDataPoolSetupTaskError.Code, and is useful for accessing the field via an interface.
-func (v *dataPoolSetupTasksDataPoolSetupTaskError) GetCode() int { return v.Code }
-
-// GetMessage returns dataPoolSetupTasksDataPoolSetupTaskError.Message, and is useful for accessing the field via an interface.
-func (v *dataPoolSetupTasksDataPoolSetupTaskError) GetMessage() string { return v.Message }
-
-// dataPoolSyncsSyncConnection includes the requested fields of the GraphQL type SyncConnection.
-type dataPoolSyncsSyncConnection struct {
-	Nodes []dataPoolSyncsSyncConnectionNodesSync `json:"nodes"`
-}
-
-// GetNodes returns dataPoolSyncsSyncConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnection) GetNodes() []dataPoolSyncsSyncConnectionNodesSync {
-	return v.Nodes
-}
-
-// dataPoolSyncsSyncConnectionNodesSync includes the requested fields of the GraphQL type Sync.
-type dataPoolSyncsSyncConnectionNodesSync struct {
-	sync `json:"-"`
-}
-
-// GetId returns dataPoolSyncsSyncConnectionNodesSync.Id, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetId() string { return v.sync.Id }
-
-// GetQueryId returns dataPoolSyncsSyncConnectionNodesSync.QueryId, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetQueryId() string { return v.sync.QueryId }
-
-// GetStatus returns dataPoolSyncsSyncConnectionNodesSync.Status, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetStatus() SyncStatus { return v.sync.Status }
-
-// GetNewRecords returns dataPoolSyncsSyncConnectionNodesSync.NewRecords, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetNewRecords() string { return v.sync.NewRecords }
-
-// GetUpdatedRecords returns dataPoolSyncsSyncConnectionNodesSync.UpdatedRecords, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetUpdatedRecords() string {
-	return v.sync.UpdatedRecords
-}
-
-// GetDeletedRecords returns dataPoolSyncsSyncConnectionNodesSync.DeletedRecords, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetDeletedRecords() string {
-	return v.sync.DeletedRecords
-}
-
-// GetInvalidRecords returns dataPoolSyncsSyncConnectionNodesSync.InvalidRecords, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetInvalidRecords() string {
-	return v.sync.InvalidRecords
-}
-
-// GetStartedAt returns dataPoolSyncsSyncConnectionNodesSync.StartedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetStartedAt() time.Time { return v.sync.StartedAt }
-
-// GetSucceededAt returns dataPoolSyncsSyncConnectionNodesSync.SucceededAt, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetSucceededAt() time.Time { return v.sync.SucceededAt }
-
-// GetFailedAt returns dataPoolSyncsSyncConnectionNodesSync.FailedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetFailedAt() time.Time { return v.sync.FailedAt }
-
-// GetError returns dataPoolSyncsSyncConnectionNodesSync.Error, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetError() syncError { return v.sync.Error }
-
-// GetCreatedAt returns dataPoolSyncsSyncConnectionNodesSync.CreatedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetCreatedAt() time.Time { return v.sync.CreatedAt }
-
-// GetCreatedBy returns dataPoolSyncsSyncConnectionNodesSync.CreatedBy, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetCreatedBy() string { return v.sync.CreatedBy }
-
-// GetModifiedAt returns dataPoolSyncsSyncConnectionNodesSync.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetModifiedAt() time.Time { return v.sync.ModifiedAt }
-
-// GetModifiedBy returns dataPoolSyncsSyncConnectionNodesSync.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *dataPoolSyncsSyncConnectionNodesSync) GetModifiedBy() string { return v.sync.ModifiedBy }
-
-func (v *dataPoolSyncsSyncConnectionNodesSync) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*dataPoolSyncsSyncConnectionNodesSync
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.dataPoolSyncsSyncConnectionNodesSync = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.sync)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshaldataPoolSyncsSyncConnectionNodesSync struct {
-	Id string `json:"id"`
-
-	QueryId string `json:"queryId"`
-
-	Status SyncStatus `json:"status"`
-
-	NewRecords string `json:"newRecords"`
-
-	UpdatedRecords string `json:"updatedRecords"`
-
-	DeletedRecords string `json:"deletedRecords"`
-
-	InvalidRecords string `json:"invalidRecords"`
-
-	StartedAt time.Time `json:"startedAt"`
-
-	SucceededAt time.Time `json:"succeededAt"`
-
-	FailedAt time.Time `json:"failedAt"`
-
-	Error syncError `json:"error"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	ModifiedBy string `json:"modifiedBy"`
-}
-
-func (v *dataPoolSyncsSyncConnectionNodesSync) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *dataPoolSyncsSyncConnectionNodesSync) __premarshalJSON() (*__premarshaldataPoolSyncsSyncConnectionNodesSync, error) {
-	var retval __premarshaldataPoolSyncsSyncConnectionNodesSync
-
-	retval.Id = v.sync.Id
-	retval.QueryId = v.sync.QueryId
-	retval.Status = v.sync.Status
-	retval.NewRecords = v.sync.NewRecords
-	retval.UpdatedRecords = v.sync.UpdatedRecords
-	retval.DeletedRecords = v.sync.DeletedRecords
-	retval.InvalidRecords = v.sync.InvalidRecords
-	retval.StartedAt = v.sync.StartedAt
-	retval.SucceededAt = v.sync.SucceededAt
-	retval.FailedAt = v.sync.FailedAt
-	retval.Error = v.sync.Error
-	retval.CreatedAt = v.sync.CreatedAt
-	retval.CreatedBy = v.sync.CreatedBy
-	retval.ModifiedAt = v.sync.ModifiedAt
-	retval.ModifiedBy = v.sync.ModifiedBy
-	return &retval, nil
-}
-
-// dataPoolTimestampDimension includes the requested fields of the GraphQL type Dimension.
-// The GraphQL type's documentation follows.
-//
-// The Dimension object that represents a column in a table.
-type dataPoolTimestampDimension struct {
-	dimension `json:"-"`
-}
-
-// GetColumnName returns dataPoolTimestampDimension.ColumnName, and is useful for accessing the field via an interface.
-func (v *dataPoolTimestampDimension) GetColumnName() string { return v.dimension.ColumnName }
-
-// GetType returns dataPoolTimestampDimension.Type, and is useful for accessing the field via an interface.
-func (v *dataPoolTimestampDimension) GetType() string { return v.dimension.Type }
-
-// GetIsNullable returns dataPoolTimestampDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *dataPoolTimestampDimension) GetIsNullable() bool { return v.dimension.IsNullable }
-
-// GetIsUniqueKey returns dataPoolTimestampDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *dataPoolTimestampDimension) GetIsUniqueKey() bool { return v.dimension.IsUniqueKey }
-
-func (v *dataPoolTimestampDimension) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*dataPoolTimestampDimension
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.dataPoolTimestampDimension = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.dimension)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshaldataPoolTimestampDimension struct {
-	ColumnName string `json:"columnName"`
-
-	Type string `json:"type"`
-
-	IsNullable bool `json:"isNullable"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-}
-
-func (v *dataPoolTimestampDimension) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *dataPoolTimestampDimension) __premarshalJSON() (*__premarshaldataPoolTimestampDimension, error) {
-	var retval __premarshaldataPoolTimestampDimension
-
-	retval.ColumnName = v.dimension.ColumnName
-	retval.Type = v.dimension.Type
-	retval.IsNullable = v.dimension.IsNullable
-	retval.IsUniqueKey = v.dimension.IsUniqueKey
-	return &retval, nil
-}
-
-// dataSource includes the GraphQL fields of DataSource requested by the fragment dataSource.
-type dataSource struct {
-	Id                 string `json:"id"`
-	commonDataSource   `json:"-"`
-	Type               DataSourceType                  `json:"type"`
-	Status             DataSourceStatus                `json:"status"`
-	Error              dataSourceError                 `json:"error"`
-	ConnectionSettings dataSourceConnectionSettings    `json:"-"`
-	Tables             dataSourceTablesTableConnection `json:"tables"`
-	// A list of checks performed on the Data Source during its most recent connection attempt.
-	Checks              []dataSourceChecksDataSourceCheck                         `json:"checks"`
-	TableIntrospections dataSourceTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
-}
-
-// GetId returns dataSource.Id, and is useful for accessing the field via an interface.
-func (v *dataSource) GetId() string { return v.Id }
-
-// GetType returns dataSource.Type, and is useful for accessing the field via an interface.
-func (v *dataSource) GetType() DataSourceType { return v.Type }
-
-// GetStatus returns dataSource.Status, and is useful for accessing the field via an interface.
-func (v *dataSource) GetStatus() DataSourceStatus { return v.Status }
-
-// GetError returns dataSource.Error, and is useful for accessing the field via an interface.
-func (v *dataSource) GetError() dataSourceError { return v.Error }
-
-// GetConnectionSettings returns dataSource.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *dataSource) GetConnectionSettings() dataSourceConnectionSettings {
-	return v.ConnectionSettings
-}
-
-// GetTables returns dataSource.Tables, and is useful for accessing the field via an interface.
-func (v *dataSource) GetTables() dataSourceTablesTableConnection { return v.Tables }
-
-// GetChecks returns dataSource.Checks, and is useful for accessing the field via an interface.
-func (v *dataSource) GetChecks() []dataSourceChecksDataSourceCheck { return v.Checks }
-
-// GetTableIntrospections returns dataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *dataSource) GetTableIntrospections() dataSourceTableIntrospectionsTableIntrospectionConnection {
-	return v.TableIntrospections
-}
-
-// GetUniqueName returns dataSource.UniqueName, and is useful for accessing the field via an interface.
-func (v *dataSource) GetUniqueName() string { return v.commonDataSource.UniqueName }
-
-// GetDescription returns dataSource.Description, and is useful for accessing the field via an interface.
-func (v *dataSource) GetDescription() string { return v.commonDataSource.Description }
-
-// GetAccount returns dataSource.Account, and is useful for accessing the field via an interface.
-func (v *dataSource) GetAccount() commonAccount { return v.commonDataSource.Account }
-
-// GetEnvironment returns dataSource.Environment, and is useful for accessing the field via an interface.
-func (v *dataSource) GetEnvironment() commonEnvironment { return v.commonDataSource.Environment }
-
-// GetCreatedAt returns dataSource.CreatedAt, and is useful for accessing the field via an interface.
-func (v *dataSource) GetCreatedAt() time.Time { return v.commonDataSource.CreatedAt }
-
-// GetModifiedAt returns dataSource.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *dataSource) GetModifiedAt() time.Time { return v.commonDataSource.ModifiedAt }
-
-// GetCreatedBy returns dataSource.CreatedBy, and is useful for accessing the field via an interface.
-func (v *dataSource) GetCreatedBy() string { return v.commonDataSource.CreatedBy }
-
-// GetModifiedBy returns dataSource.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *dataSource) GetModifiedBy() string { return v.commonDataSource.ModifiedBy }
-
-func (v *dataSource) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*dataSource
-		ConnectionSettings json.RawMessage `json:"connectionSettings"`
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.dataSource = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.commonDataSource)
-	if err != nil {
-		return err
-	}
-
-	{
-		dst := &v.ConnectionSettings
-		src := firstPass.ConnectionSettings
-		if len(src) != 0 && string(src) != "null" {
-			err = __unmarshaldataSourceConnectionSettings(
-				src, dst)
-			if err != nil {
-				return fmt.Errorf(
-					"Unable to unmarshal dataSource.ConnectionSettings: %w", err)
-			}
-		}
-	}
-	return nil
-}
-
-type __premarshaldataSource struct {
-	Id string `json:"id"`
-
-	Type DataSourceType `json:"type"`
-
-	Status DataSourceStatus `json:"status"`
-
-	Error dataSourceError `json:"error"`
-
-	ConnectionSettings json.RawMessage `json:"connectionSettings"`
-
-	Tables dataSourceTablesTableConnection `json:"tables"`
-
-	Checks []dataSourceChecksDataSourceCheck `json:"checks"`
-
-	TableIntrospections dataSourceTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
-
-	UniqueName string `json:"uniqueName"`
-
-	Description string `json:"description"`
-
-	Account commonAccount `json:"account"`
-
-	Environment commonEnvironment `json:"environment"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedBy string `json:"modifiedBy"`
-}
-
-func (v *dataSource) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *dataSource) __premarshalJSON() (*__premarshaldataSource, error) {
-	var retval __premarshaldataSource
-
-	retval.Id = v.Id
-	retval.Type = v.Type
-	retval.Status = v.Status
-	retval.Error = v.Error
-	{
-
-		dst := &retval.ConnectionSettings
-		src := v.ConnectionSettings
-		var err error
-		*dst, err = __marshaldataSourceConnectionSettings(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"Unable to marshal dataSource.ConnectionSettings: %w", err)
-		}
-	}
-	retval.Tables = v.Tables
-	retval.Checks = v.Checks
-	retval.TableIntrospections = v.TableIntrospections
-	retval.UniqueName = v.commonDataSource.UniqueName
-	retval.Description = v.commonDataSource.Description
-	retval.Account = v.commonDataSource.Account
-	retval.Environment = v.commonDataSource.Environment
-	retval.CreatedAt = v.commonDataSource.CreatedAt
-	retval.ModifiedAt = v.commonDataSource.ModifiedAt
-	retval.CreatedBy = v.commonDataSource.CreatedBy
-	retval.ModifiedBy = v.commonDataSource.ModifiedBy
-	return &retval, nil
-}
-
-// dataSourceChecksDataSourceCheck includes the requested fields of the GraphQL type DataSourceCheck.
-type dataSourceChecksDataSourceCheck struct {
-	// The name of the Data Source check to be performed.
-	Name string `json:"name"`
-	// A description of the Data Source check to be performed.
-	Description string `json:"description"`
-	// The status of the Data Source check (all checks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED).
-	Status DataSourceCheckStatus `json:"status"`
-	// If the Data Source check failed, this field includes a descriptive error message.
-	Error dataSourceChecksDataSourceCheckError `json:"error"`
-	// The time at which the Data Source check was performed.
-	CheckedAt time.Time `json:"checkedAt"`
-}
-
-// GetName returns dataSourceChecksDataSourceCheck.Name, and is useful for accessing the field via an interface.
-func (v *dataSourceChecksDataSourceCheck) GetName() string { return v.Name }
-
-// GetDescription returns dataSourceChecksDataSourceCheck.Description, and is useful for accessing the field via an interface.
-func (v *dataSourceChecksDataSourceCheck) GetDescription() string { return v.Description }
-
-// GetStatus returns dataSourceChecksDataSourceCheck.Status, and is useful for accessing the field via an interface.
-func (v *dataSourceChecksDataSourceCheck) GetStatus() DataSourceCheckStatus { return v.Status }
-
-// GetError returns dataSourceChecksDataSourceCheck.Error, and is useful for accessing the field via an interface.
-func (v *dataSourceChecksDataSourceCheck) GetError() dataSourceChecksDataSourceCheckError {
-	return v.Error
-}
-
-// GetCheckedAt returns dataSourceChecksDataSourceCheck.CheckedAt, and is useful for accessing the field via an interface.
-func (v *dataSourceChecksDataSourceCheck) GetCheckedAt() time.Time { return v.CheckedAt }
-
-// dataSourceChecksDataSourceCheckError includes the requested fields of the GraphQL type Error.
-type dataSourceChecksDataSourceCheckError struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
-
-// GetCode returns dataSourceChecksDataSourceCheckError.Code, and is useful for accessing the field via an interface.
-func (v *dataSourceChecksDataSourceCheckError) GetCode() int { return v.Code }
-
-// GetMessage returns dataSourceChecksDataSourceCheckError.Message, and is useful for accessing the field via an interface.
-func (v *dataSourceChecksDataSourceCheckError) GetMessage() string { return v.Message }
-
-// dataSourceConnectionSettings includes the requested fields of the GraphQL interface ConnectionSettings.
-//
-// dataSourceConnectionSettings is implemented by the following types:
-// dataSourceConnectionSettingsSnowflakeConnectionSettings
-type dataSourceConnectionSettings interface {
-	implementsGraphQLInterfacedataSourceConnectionSettings()
-	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
-}
-
-func (v *dataSourceConnectionSettingsSnowflakeConnectionSettings) implementsGraphQLInterfacedataSourceConnectionSettings() {
-}
-
-func __unmarshaldataSourceConnectionSettings(b []byte, v *dataSourceConnectionSettings) error {
-	if string(b) == "null" {
-		return nil
-	}
-
-	var tn struct {
-		TypeName string `json:"__typename"`
-	}
-	err := json.Unmarshal(b, &tn)
-	if err != nil {
-		return err
-	}
-
-	switch tn.TypeName {
-	case "SnowflakeConnectionSettings":
-		*v = new(dataSourceConnectionSettingsSnowflakeConnectionSettings)
-		return json.Unmarshal(b, *v)
-	case "":
-		return fmt.Errorf(
-			"response was missing ConnectionSettings.__typename")
-	default:
-		return fmt.Errorf(
-			`unexpected concrete type for dataSourceConnectionSettings: "%v"`, tn.TypeName)
-	}
-}
-
-func __marshaldataSourceConnectionSettings(v *dataSourceConnectionSettings) ([]byte, error) {
-
-	var typename string
-	switch v := (*v).(type) {
-	case *dataSourceConnectionSettingsSnowflakeConnectionSettings:
-		typename = "SnowflakeConnectionSettings"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*dataSourceConnectionSettingsSnowflakeConnectionSettings
-		}{typename, v}
-		return json.Marshal(result)
-	case nil:
-		return []byte("null"), nil
-	default:
-		return nil, fmt.Errorf(
-			`unexpected concrete type for dataSourceConnectionSettings: "%T"`, v)
-	}
-}
-
-// dataSourceConnectionSettingsSnowflakeConnectionSettings includes the requested fields of the GraphQL type SnowflakeConnectionSettings.
-type dataSourceConnectionSettingsSnowflakeConnectionSettings struct {
-	Typename  string `json:"__typename"`
-	Account   string `json:"account"`
-	Database  string `json:"database"`
-	Warehouse string `json:"warehouse"`
-	Schema    string `json:"schema"`
-	Username  string `json:"username"`
-	Role      string `json:"role"`
-}
-
-// GetTypename returns dataSourceConnectionSettingsSnowflakeConnectionSettings.Typename, and is useful for accessing the field via an interface.
-func (v *dataSourceConnectionSettingsSnowflakeConnectionSettings) GetTypename() string {
-	return v.Typename
-}
-
-// GetAccount returns dataSourceConnectionSettingsSnowflakeConnectionSettings.Account, and is useful for accessing the field via an interface.
-func (v *dataSourceConnectionSettingsSnowflakeConnectionSettings) GetAccount() string {
-	return v.Account
-}
-
-// GetDatabase returns dataSourceConnectionSettingsSnowflakeConnectionSettings.Database, and is useful for accessing the field via an interface.
-func (v *dataSourceConnectionSettingsSnowflakeConnectionSettings) GetDatabase() string {
-	return v.Database
-}
-
-// GetWarehouse returns dataSourceConnectionSettingsSnowflakeConnectionSettings.Warehouse, and is useful for accessing the field via an interface.
-func (v *dataSourceConnectionSettingsSnowflakeConnectionSettings) GetWarehouse() string {
-	return v.Warehouse
-}
-
-// GetSchema returns dataSourceConnectionSettingsSnowflakeConnectionSettings.Schema, and is useful for accessing the field via an interface.
-func (v *dataSourceConnectionSettingsSnowflakeConnectionSettings) GetSchema() string { return v.Schema }
-
-// GetUsername returns dataSourceConnectionSettingsSnowflakeConnectionSettings.Username, and is useful for accessing the field via an interface.
-func (v *dataSourceConnectionSettingsSnowflakeConnectionSettings) GetUsername() string {
-	return v.Username
-}
-
-// GetRole returns dataSourceConnectionSettingsSnowflakeConnectionSettings.Role, and is useful for accessing the field via an interface.
-func (v *dataSourceConnectionSettingsSnowflakeConnectionSettings) GetRole() string { return v.Role }
-
-// dataSourceError includes the requested fields of the GraphQL type Error.
-type dataSourceError struct {
-	Message string `json:"message"`
-}
-
-// GetMessage returns dataSourceError.Message, and is useful for accessing the field via an interface.
-func (v *dataSourceError) GetMessage() string { return v.Message }
-
-// dataSourceTableIntrospectionsTableIntrospectionConnection includes the requested fields of the GraphQL type TableIntrospectionConnection.
-type dataSourceTableIntrospectionsTableIntrospectionConnection struct {
-	Nodes []dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection `json:"nodes"`
-}
-
-// GetNodes returns dataSourceTableIntrospectionsTableIntrospectionConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnection) GetNodes() []dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection {
-	return v.Nodes
-}
-
-// dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection includes the requested fields of the GraphQL type TableIntrospection.
-type dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection struct {
-	tableIntrospection `json:"-"`
-}
-
-// GetDataSource returns dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.DataSource, and is useful for accessing the field via an interface.
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetDataSource() tableIntrospectionDataSource {
-	return v.tableIntrospection.DataSource
-}
-
-// GetStatus returns dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.Status, and is useful for accessing the field via an interface.
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetStatus() TableIntrospectionStatus {
-	return v.tableIntrospection.Status
-}
-
-// GetCreatedAt returns dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.CreatedAt, and is useful for accessing the field via an interface.
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetCreatedAt() time.Time {
-	return v.tableIntrospection.CreatedAt
-}
-
-// GetCreatedBy returns dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.CreatedBy, and is useful for accessing the field via an interface.
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetCreatedBy() string {
-	return v.tableIntrospection.CreatedBy
-}
-
-// GetModifiedAt returns dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetModifiedAt() time.Time {
-	return v.tableIntrospection.ModifiedAt
-}
-
-// GetModifiedBy returns dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetModifiedBy() string {
-	return v.tableIntrospection.ModifiedBy
-}
-
-// GetNumTables returns dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.NumTables, and is useful for accessing the field via an interface.
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetNumTables() int {
-	return v.tableIntrospection.NumTables
-}
-
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.tableIntrospection)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshaldataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection struct {
-	DataSource tableIntrospectionDataSource `json:"dataSource"`
-
-	Status TableIntrospectionStatus `json:"status"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	ModifiedBy string `json:"modifiedBy"`
-
-	NumTables int `json:"numTables"`
-}
-
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *dataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) __premarshalJSON() (*__premarshaldataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection, error) {
-	var retval __premarshaldataSourceTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection
-
-	retval.DataSource = v.tableIntrospection.DataSource
-	retval.Status = v.tableIntrospection.Status
-	retval.CreatedAt = v.tableIntrospection.CreatedAt
-	retval.CreatedBy = v.tableIntrospection.CreatedBy
-	retval.ModifiedAt = v.tableIntrospection.ModifiedAt
-	retval.ModifiedBy = v.tableIntrospection.ModifiedBy
-	retval.NumTables = v.tableIntrospection.NumTables
-	return &retval, nil
-}
-
-// dataSourceTablesTableConnection includes the requested fields of the GraphQL type TableConnection.
-type dataSourceTablesTableConnection struct {
-	Nodes []dataSourceTablesTableConnectionNodesTable `json:"nodes"`
-}
-
-// GetNodes returns dataSourceTablesTableConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnection) GetNodes() []dataSourceTablesTableConnectionNodesTable {
-	return v.Nodes
-}
-
-// dataSourceTablesTableConnectionNodesTable includes the requested fields of the GraphQL type Table.
-type dataSourceTablesTableConnectionNodesTable struct {
-	Name                string                                                                       `json:"name"`
-	AvailableTimestamps dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnection `json:"availableTimestamps"`
-	AvailableMeasures   dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnection   `json:"availableMeasures"`
-}
-
-// GetName returns dataSourceTablesTableConnectionNodesTable.Name, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTable) GetName() string { return v.Name }
-
-// GetAvailableTimestamps returns dataSourceTablesTableConnectionNodesTable.AvailableTimestamps, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTable) GetAvailableTimestamps() dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnection {
-	return v.AvailableTimestamps
-}
-
-// GetAvailableMeasures returns dataSourceTablesTableConnectionNodesTable.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTable) GetAvailableMeasures() dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnection {
-	return v.AvailableMeasures
-}
-
-// dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
-type dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnection struct {
-	Nodes []dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn `json:"nodes"`
-}
-
-// GetNodes returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnection) GetNodes() []dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn {
-	return v.Nodes
-}
-
-// dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
-type dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn struct {
-	column `json:"-"`
-}
-
-// GetName returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetName() string {
-	return v.column.Name
-}
-
-// GetType returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetType() string {
-	return v.column.Type
-}
-
-// GetKind returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetKind() string {
-	return v.column.Kind
-}
-
-// GetIsNullable returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetIsNullable() bool {
-	return v.column.IsNullable
-}
-
-// GetDefaultValue returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetDefaultValue() string {
-	return v.column.DefaultValue
-}
-
-// GetIsPrimaryKey returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
-	return v.column.IsPrimaryKey
-}
-
-// GetIsUniqueKey returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetIsUniqueKey() bool {
-	return v.column.IsUniqueKey
-}
-
-// GetComment returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetComment() string {
-	return v.column.Comment
-}
-
-// GetPolicyName returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetPolicyName() string {
-	return v.column.PolicyName
-}
-
-// GetCachedAt returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetCachedAt() time.Time {
-	return v.column.CachedAt
-}
-
-// GetCreatedAt returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetCreatedAt() time.Time {
-	return v.column.CreatedAt
-}
-
-// GetCreatedBy returns dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetCreatedBy() string {
-	return v.column.CreatedBy
-}
-
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.column)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshaldataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn struct {
-	Name string `json:"name"`
-
-	Type string `json:"type"`
-
-	Kind string `json:"kind"`
-
-	IsNullable bool `json:"isNullable"`
-
-	DefaultValue string `json:"defaultValue"`
-
-	IsPrimaryKey bool `json:"isPrimaryKey"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-
-	Comment string `json:"comment"`
-
-	PolicyName string `json:"policyName"`
-
-	CachedAt time.Time `json:"cachedAt"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-}
-
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *dataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) __premarshalJSON() (*__premarshaldataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn, error) {
-	var retval __premarshaldataSourceTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn
-
-	retval.Name = v.column.Name
-	retval.Type = v.column.Type
-	retval.Kind = v.column.Kind
-	retval.IsNullable = v.column.IsNullable
-	retval.DefaultValue = v.column.DefaultValue
-	retval.IsPrimaryKey = v.column.IsPrimaryKey
-	retval.IsUniqueKey = v.column.IsUniqueKey
-	retval.Comment = v.column.Comment
-	retval.PolicyName = v.column.PolicyName
-	retval.CachedAt = v.column.CachedAt
-	retval.CreatedAt = v.column.CreatedAt
-	retval.CreatedBy = v.column.CreatedBy
-	return &retval, nil
-}
-
-// dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
-type dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnection struct {
-	Nodes []dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn `json:"nodes"`
-}
-
-// GetNodes returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnection) GetNodes() []dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn {
-	return v.Nodes
-}
-
-// dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
-type dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn struct {
-	column `json:"-"`
-}
-
-// GetName returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetName() string {
-	return v.column.Name
-}
-
-// GetType returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetType() string {
-	return v.column.Type
-}
-
-// GetKind returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetKind() string {
-	return v.column.Kind
-}
-
-// GetIsNullable returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetIsNullable() bool {
-	return v.column.IsNullable
-}
-
-// GetDefaultValue returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetDefaultValue() string {
-	return v.column.DefaultValue
-}
-
-// GetIsPrimaryKey returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
-	return v.column.IsPrimaryKey
-}
-
-// GetIsUniqueKey returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetIsUniqueKey() bool {
-	return v.column.IsUniqueKey
-}
-
-// GetComment returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetComment() string {
-	return v.column.Comment
-}
-
-// GetPolicyName returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetPolicyName() string {
-	return v.column.PolicyName
-}
-
-// GetCachedAt returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetCachedAt() time.Time {
-	return v.column.CachedAt
-}
-
-// GetCreatedAt returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetCreatedAt() time.Time {
-	return v.column.CreatedAt
-}
-
-// GetCreatedBy returns dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetCreatedBy() string {
-	return v.column.CreatedBy
-}
-
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.column)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshaldataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn struct {
-	Name string `json:"name"`
-
-	Type string `json:"type"`
-
-	Kind string `json:"kind"`
-
-	IsNullable bool `json:"isNullable"`
-
-	DefaultValue string `json:"defaultValue"`
-
-	IsPrimaryKey bool `json:"isPrimaryKey"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-
-	Comment string `json:"comment"`
-
-	PolicyName string `json:"policyName"`
-
-	CachedAt time.Time `json:"cachedAt"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-}
-
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *dataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) __premarshalJSON() (*__premarshaldataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn, error) {
-	var retval __premarshaldataSourceTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn
-
-	retval.Name = v.column.Name
-	retval.Type = v.column.Type
-	retval.Kind = v.column.Kind
-	retval.IsNullable = v.column.IsNullable
-	retval.DefaultValue = v.column.DefaultValue
-	retval.IsPrimaryKey = v.column.IsPrimaryKey
-	retval.IsUniqueKey = v.column.IsUniqueKey
-	retval.Comment = v.column.Comment
-	retval.PolicyName = v.column.PolicyName
-	retval.CachedAt = v.column.CachedAt
-	retval.CreatedAt = v.column.CreatedAt
-	retval.CreatedBy = v.column.CreatedBy
-	return &retval, nil
-}
-
-// dimension includes the GraphQL fields of Dimension requested by the fragment dimension.
-// The GraphQL type's documentation follows.
-//
-// The Dimension object that represents a column in a table.
-type dimension struct {
-	// The column name it represents.
-	ColumnName string `json:"columnName"`
-	// The column data type.
-	Type string `json:"type"`
-	// Whether the column is nullable.
-	IsNullable bool `json:"isNullable"`
-	// Whether the column is a unique key.
-	IsUniqueKey bool `json:"isUniqueKey"`
-}
-
-// GetColumnName returns dimension.ColumnName, and is useful for accessing the field via an interface.
-func (v *dimension) GetColumnName() string { return v.ColumnName }
-
-// GetType returns dimension.Type, and is useful for accessing the field via an interface.
-func (v *dimension) GetType() string { return v.Type }
-
-// GetIsNullable returns dimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *dimension) GetIsNullable() bool { return v.IsNullable }
-
-// GetIsUniqueKey returns dimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *dimension) GetIsUniqueKey() bool { return v.IsUniqueKey }
-
-// filter includes the GraphQL fields of Filter requested by the fragment filter.
-type filter struct {
-	Column   string         `json:"column"`
-	Operator FilterOperator `json:"operator"`
-	Value    string         `json:"value"`
-}
-
-// GetColumn returns filter.Column, and is useful for accessing the field via an interface.
-func (v *filter) GetColumn() string { return v.Column }
-
-// GetOperator returns filter.Operator, and is useful for accessing the field via an interface.
-func (v *filter) GetOperator() FilterOperator { return v.Operator }
-
-// GetValue returns filter.Value, and is useful for accessing the field via an interface.
-func (v *filter) GetValue() string { return v.Value }
-
-// gqlError includes the GraphQL fields of Error requested by the fragment gqlError.
-type gqlError struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
-
-// GetCode returns gqlError.Code, and is useful for accessing the field via an interface.
-func (v *gqlError) GetCode() int { return v.Code }
-
-// GetMessage returns gqlError.Message, and is useful for accessing the field via an interface.
-func (v *gqlError) GetMessage() string { return v.Message }
-
-// metric includes the GraphQL fields of Metric requested by the fragment metric.
-type metric struct {
-	commonMetric `json:"-"`
-	Id           string `json:"id"`
-	// The Data Pool that powers this Metric.
-	DataPool   metricDataPool              `json:"dataPool"`
-	Dimensions []metricDimensionsDimension `json:"dimensions"`
-	Timestamp  metricTimestampDimension    `json:"timestamp"`
-	Measure    metricMeasureDimension      `json:"measure"`
-	// The settings for the Metric. The settings are specific to the Metric's type.
-	Settings metricSettingsMetricSettings `json:"-"`
-	// The Metric's type. The different Metric types determine how the values are calculated.
-	Type MetricType `json:"type"`
-}
-
-// GetId returns metric.Id, and is useful for accessing the field via an interface.
-func (v *metric) GetId() string { return v.Id }
-
-// GetDataPool returns metric.DataPool, and is useful for accessing the field via an interface.
-func (v *metric) GetDataPool() metricDataPool { return v.DataPool }
-
-// GetDimensions returns metric.Dimensions, and is useful for accessing the field via an interface.
-func (v *metric) GetDimensions() []metricDimensionsDimension { return v.Dimensions }
-
-// GetTimestamp returns metric.Timestamp, and is useful for accessing the field via an interface.
-func (v *metric) GetTimestamp() metricTimestampDimension { return v.Timestamp }
-
-// GetMeasure returns metric.Measure, and is useful for accessing the field via an interface.
-func (v *metric) GetMeasure() metricMeasureDimension { return v.Measure }
-
-// GetSettings returns metric.Settings, and is useful for accessing the field via an interface.
-func (v *metric) GetSettings() metricSettingsMetricSettings { return v.Settings }
-
-// GetType returns metric.Type, and is useful for accessing the field via an interface.
-func (v *metric) GetType() MetricType { return v.Type }
-
-// GetUniqueName returns metric.UniqueName, and is useful for accessing the field via an interface.
-func (v *metric) GetUniqueName() string { return v.commonMetric.UniqueName }
-
-// GetDescription returns metric.Description, and is useful for accessing the field via an interface.
-func (v *metric) GetDescription() string { return v.commonMetric.Description }
-
-// GetAccount returns metric.Account, and is useful for accessing the field via an interface.
-func (v *metric) GetAccount() commonAccount { return v.commonMetric.Account }
-
-// GetEnvironment returns metric.Environment, and is useful for accessing the field via an interface.
-func (v *metric) GetEnvironment() commonEnvironment { return v.commonMetric.Environment }
-
-// GetCreatedAt returns metric.CreatedAt, and is useful for accessing the field via an interface.
-func (v *metric) GetCreatedAt() time.Time { return v.commonMetric.CreatedAt }
-
-// GetModifiedAt returns metric.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *metric) GetModifiedAt() time.Time { return v.commonMetric.ModifiedAt }
-
-// GetCreatedBy returns metric.CreatedBy, and is useful for accessing the field via an interface.
-func (v *metric) GetCreatedBy() string { return v.commonMetric.CreatedBy }
-
-// GetModifiedBy returns metric.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *metric) GetModifiedBy() string { return v.commonMetric.ModifiedBy }
-
-func (v *metric) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*metric
-		Settings json.RawMessage `json:"settings"`
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.metric = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.commonMetric)
-	if err != nil {
-		return err
-	}
-
-	{
-		dst := &v.Settings
-		src := firstPass.Settings
-		if len(src) != 0 && string(src) != "null" {
-			err = __unmarshalmetricSettingsMetricSettings(
-				src, dst)
-			if err != nil {
-				return fmt.Errorf(
-					"Unable to unmarshal metric.Settings: %w", err)
-			}
-		}
-	}
-	return nil
-}
-
-type __premarshalmetric struct {
-	Id string `json:"id"`
-
-	DataPool metricDataPool `json:"dataPool"`
-
-	Dimensions []metricDimensionsDimension `json:"dimensions"`
-
-	Timestamp metricTimestampDimension `json:"timestamp"`
-
-	Measure metricMeasureDimension `json:"measure"`
-
-	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
-
-	UniqueName string `json:"uniqueName"`
-
-	Description string `json:"description"`
-
-	Account commonAccount `json:"account"`
-
-	Environment commonEnvironment `json:"environment"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedBy string `json:"modifiedBy"`
-}
-
-func (v *metric) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *metric) __premarshalJSON() (*__premarshalmetric, error) {
-	var retval __premarshalmetric
-
-	retval.Id = v.Id
-	retval.DataPool = v.DataPool
-	retval.Dimensions = v.Dimensions
-	retval.Timestamp = v.Timestamp
-	retval.Measure = v.Measure
-	{
-
-		dst := &retval.Settings
-		src := v.Settings
-		var err error
-		*dst, err = __marshalmetricSettingsMetricSettings(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"Unable to marshal metric.Settings: %w", err)
-		}
-	}
-	retval.Type = v.Type
-	retval.UniqueName = v.commonMetric.UniqueName
-	retval.Description = v.commonMetric.Description
-	retval.Account = v.commonMetric.Account
-	retval.Environment = v.commonMetric.Environment
-	retval.CreatedAt = v.commonMetric.CreatedAt
-	retval.ModifiedAt = v.commonMetric.ModifiedAt
-	retval.CreatedBy = v.commonMetric.CreatedBy
-	retval.ModifiedBy = v.commonMetric.ModifiedBy
-	return &retval, nil
-}
-
-// metricDataPool includes the requested fields of the GraphQL type DataPool.
-type metricDataPool struct {
-	dataPool `json:"-"`
-}
-
-// GetId returns metricDataPool.Id, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetId() string { return v.dataPool.Id }
-
-// GetDataSource returns metricDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetDataSource() dataPoolDataSource { return v.dataPool.DataSource }
-
-// GetStatus returns metricDataPool.Status, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetStatus() DataPoolStatus { return v.dataPool.Status }
-
-// GetError returns metricDataPool.Error, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetError() dataPoolError { return v.dataPool.Error }
-
-// GetTable returns metricDataPool.Table, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetTable() string { return v.dataPool.Table }
-
-// GetTimestamp returns metricDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetTimestamp() dataPoolTimestampDimension { return v.dataPool.Timestamp }
-
-// GetColumns returns metricDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetColumns() dataPoolColumnsColumnConnection { return v.dataPool.Columns }
-
-// GetAvailableMeasures returns metricDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetAvailableMeasures() dataPoolAvailableMeasuresColumnConnection {
-	return v.dataPool.AvailableMeasures
-}
-
-// GetSetupTasks returns metricDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetSetupTasks() []dataPoolSetupTasksDataPoolSetupTask {
-	return v.dataPool.SetupTasks
-}
-
-// GetSyncs returns metricDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetSyncs() dataPoolSyncsSyncConnection { return v.dataPool.Syncs }
-
-// GetUniqueName returns metricDataPool.UniqueName, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetUniqueName() string { return v.dataPool.commonDataPool.UniqueName }
-
-// GetDescription returns metricDataPool.Description, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetDescription() string { return v.dataPool.commonDataPool.Description }
-
-// GetAccount returns metricDataPool.Account, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetAccount() commonAccount { return v.dataPool.commonDataPool.Account }
-
-// GetEnvironment returns metricDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetEnvironment() commonEnvironment {
-	return v.dataPool.commonDataPool.Environment
-}
-
-// GetCreatedAt returns metricDataPool.CreatedAt, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetCreatedAt() time.Time { return v.dataPool.commonDataPool.CreatedAt }
-
-// GetModifiedAt returns metricDataPool.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetModifiedAt() time.Time { return v.dataPool.commonDataPool.ModifiedAt }
-
-// GetCreatedBy returns metricDataPool.CreatedBy, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetCreatedBy() string { return v.dataPool.commonDataPool.CreatedBy }
-
-// GetModifiedBy returns metricDataPool.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *metricDataPool) GetModifiedBy() string { return v.dataPool.commonDataPool.ModifiedBy }
-
-func (v *metricDataPool) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*metricDataPool
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.metricDataPool = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.dataPool)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalmetricDataPool struct {
-	Id string `json:"id"`
-
-	DataSource dataPoolDataSource `json:"dataSource"`
-
-	Status DataPoolStatus `json:"status"`
-
-	Error dataPoolError `json:"error"`
-
-	Table string `json:"table"`
-
-	Timestamp dataPoolTimestampDimension `json:"timestamp"`
-
-	Columns dataPoolColumnsColumnConnection `json:"columns"`
-
-	AvailableMeasures dataPoolAvailableMeasuresColumnConnection `json:"availableMeasures"`
-
-	SetupTasks []dataPoolSetupTasksDataPoolSetupTask `json:"setupTasks"`
-
-	Syncs dataPoolSyncsSyncConnection `json:"syncs"`
-
-	UniqueName string `json:"uniqueName"`
-
-	Description string `json:"description"`
-
-	Account commonAccount `json:"account"`
-
-	Environment commonEnvironment `json:"environment"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedBy string `json:"modifiedBy"`
-}
-
-func (v *metricDataPool) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *metricDataPool) __premarshalJSON() (*__premarshalmetricDataPool, error) {
-	var retval __premarshalmetricDataPool
-
-	retval.Id = v.dataPool.Id
-	retval.DataSource = v.dataPool.DataSource
-	retval.Status = v.dataPool.Status
-	retval.Error = v.dataPool.Error
-	retval.Table = v.dataPool.Table
-	retval.Timestamp = v.dataPool.Timestamp
-	retval.Columns = v.dataPool.Columns
-	retval.AvailableMeasures = v.dataPool.AvailableMeasures
-	retval.SetupTasks = v.dataPool.SetupTasks
-	retval.Syncs = v.dataPool.Syncs
-	retval.UniqueName = v.dataPool.commonDataPool.UniqueName
-	retval.Description = v.dataPool.commonDataPool.Description
-	retval.Account = v.dataPool.commonDataPool.Account
-	retval.Environment = v.dataPool.commonDataPool.Environment
-	retval.CreatedAt = v.dataPool.commonDataPool.CreatedAt
-	retval.ModifiedAt = v.dataPool.commonDataPool.ModifiedAt
-	retval.CreatedBy = v.dataPool.commonDataPool.CreatedBy
-	retval.ModifiedBy = v.dataPool.commonDataPool.ModifiedBy
-	return &retval, nil
-}
-
-// metricDimensionsDimension includes the requested fields of the GraphQL type Dimension.
-// The GraphQL type's documentation follows.
-//
-// The Dimension object that represents a column in a table.
-type metricDimensionsDimension struct {
-	dimension `json:"-"`
-}
-
-// GetColumnName returns metricDimensionsDimension.ColumnName, and is useful for accessing the field via an interface.
-func (v *metricDimensionsDimension) GetColumnName() string { return v.dimension.ColumnName }
-
-// GetType returns metricDimensionsDimension.Type, and is useful for accessing the field via an interface.
-func (v *metricDimensionsDimension) GetType() string { return v.dimension.Type }
-
-// GetIsNullable returns metricDimensionsDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *metricDimensionsDimension) GetIsNullable() bool { return v.dimension.IsNullable }
-
-// GetIsUniqueKey returns metricDimensionsDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *metricDimensionsDimension) GetIsUniqueKey() bool { return v.dimension.IsUniqueKey }
-
-func (v *metricDimensionsDimension) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*metricDimensionsDimension
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.metricDimensionsDimension = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.dimension)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalmetricDimensionsDimension struct {
-	ColumnName string `json:"columnName"`
-
-	Type string `json:"type"`
-
-	IsNullable bool `json:"isNullable"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-}
-
-func (v *metricDimensionsDimension) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *metricDimensionsDimension) __premarshalJSON() (*__premarshalmetricDimensionsDimension, error) {
-	var retval __premarshalmetricDimensionsDimension
-
-	retval.ColumnName = v.dimension.ColumnName
-	retval.Type = v.dimension.Type
-	retval.IsNullable = v.dimension.IsNullable
-	retval.IsUniqueKey = v.dimension.IsUniqueKey
-	return &retval, nil
-}
-
-// metricMeasureDimension includes the requested fields of the GraphQL type Dimension.
-// The GraphQL type's documentation follows.
-//
-// The Dimension object that represents a column in a table.
-type metricMeasureDimension struct {
-	dimension `json:"-"`
-}
-
-// GetColumnName returns metricMeasureDimension.ColumnName, and is useful for accessing the field via an interface.
-func (v *metricMeasureDimension) GetColumnName() string { return v.dimension.ColumnName }
-
-// GetType returns metricMeasureDimension.Type, and is useful for accessing the field via an interface.
-func (v *metricMeasureDimension) GetType() string { return v.dimension.Type }
-
-// GetIsNullable returns metricMeasureDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *metricMeasureDimension) GetIsNullable() bool { return v.dimension.IsNullable }
-
-// GetIsUniqueKey returns metricMeasureDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *metricMeasureDimension) GetIsUniqueKey() bool { return v.dimension.IsUniqueKey }
-
-func (v *metricMeasureDimension) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*metricMeasureDimension
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.metricMeasureDimension = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.dimension)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalmetricMeasureDimension struct {
-	ColumnName string `json:"columnName"`
-
-	Type string `json:"type"`
-
-	IsNullable bool `json:"isNullable"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-}
-
-func (v *metricMeasureDimension) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *metricMeasureDimension) __premarshalJSON() (*__premarshalmetricMeasureDimension, error) {
-	var retval __premarshalmetricMeasureDimension
-
-	retval.ColumnName = v.dimension.ColumnName
-	retval.Type = v.dimension.Type
-	retval.IsNullable = v.dimension.IsNullable
-	retval.IsUniqueKey = v.dimension.IsUniqueKey
-	return &retval, nil
-}
-
-// metricSettingsCountDistinctMetricSettings includes the requested fields of the GraphQL type CountDistinctMetricSettings.
-// The GraphQL type's documentation follows.
-//
-// Settings for count distinct Metrics.
-type metricSettingsCountDistinctMetricSettings struct {
-	Typename string `json:"__typename"`
-	// Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
-	Filters []metricSettingsCountDistinctMetricSettingsFiltersFilter `json:"filters"`
-	// The dimension where the count distinct is going to be performed.
-	Dimension metricSettingsCountDistinctMetricSettingsDimension `json:"dimension"`
-}
-
-// GetTypename returns metricSettingsCountDistinctMetricSettings.Typename, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountDistinctMetricSettings) GetTypename() string { return v.Typename }
-
-// GetFilters returns metricSettingsCountDistinctMetricSettings.Filters, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountDistinctMetricSettings) GetFilters() []metricSettingsCountDistinctMetricSettingsFiltersFilter {
-	return v.Filters
-}
-
-// GetDimension returns metricSettingsCountDistinctMetricSettings.Dimension, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountDistinctMetricSettings) GetDimension() metricSettingsCountDistinctMetricSettingsDimension {
-	return v.Dimension
-}
-
-// metricSettingsCountDistinctMetricSettingsDimension includes the requested fields of the GraphQL type Dimension.
-// The GraphQL type's documentation follows.
-//
-// The Dimension object that represents a column in a table.
-type metricSettingsCountDistinctMetricSettingsDimension struct {
-	dimension `json:"-"`
-}
-
-// GetColumnName returns metricSettingsCountDistinctMetricSettingsDimension.ColumnName, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountDistinctMetricSettingsDimension) GetColumnName() string {
-	return v.dimension.ColumnName
-}
-
-// GetType returns metricSettingsCountDistinctMetricSettingsDimension.Type, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountDistinctMetricSettingsDimension) GetType() string {
-	return v.dimension.Type
-}
-
-// GetIsNullable returns metricSettingsCountDistinctMetricSettingsDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountDistinctMetricSettingsDimension) GetIsNullable() bool {
-	return v.dimension.IsNullable
-}
-
-// GetIsUniqueKey returns metricSettingsCountDistinctMetricSettingsDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountDistinctMetricSettingsDimension) GetIsUniqueKey() bool {
-	return v.dimension.IsUniqueKey
-}
-
-func (v *metricSettingsCountDistinctMetricSettingsDimension) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*metricSettingsCountDistinctMetricSettingsDimension
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.metricSettingsCountDistinctMetricSettingsDimension = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.dimension)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalmetricSettingsCountDistinctMetricSettingsDimension struct {
-	ColumnName string `json:"columnName"`
-
-	Type string `json:"type"`
-
-	IsNullable bool `json:"isNullable"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-}
-
-func (v *metricSettingsCountDistinctMetricSettingsDimension) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *metricSettingsCountDistinctMetricSettingsDimension) __premarshalJSON() (*__premarshalmetricSettingsCountDistinctMetricSettingsDimension, error) {
-	var retval __premarshalmetricSettingsCountDistinctMetricSettingsDimension
-
-	retval.ColumnName = v.dimension.ColumnName
-	retval.Type = v.dimension.Type
-	retval.IsNullable = v.dimension.IsNullable
-	retval.IsUniqueKey = v.dimension.IsUniqueKey
-	return &retval, nil
-}
-
-// metricSettingsCountDistinctMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
-type metricSettingsCountDistinctMetricSettingsFiltersFilter struct {
-	filter `json:"-"`
-}
-
-// GetColumn returns metricSettingsCountDistinctMetricSettingsFiltersFilter.Column, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountDistinctMetricSettingsFiltersFilter) GetColumn() string {
-	return v.filter.Column
-}
-
-// GetOperator returns metricSettingsCountDistinctMetricSettingsFiltersFilter.Operator, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountDistinctMetricSettingsFiltersFilter) GetOperator() FilterOperator {
-	return v.filter.Operator
-}
-
-// GetValue returns metricSettingsCountDistinctMetricSettingsFiltersFilter.Value, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountDistinctMetricSettingsFiltersFilter) GetValue() string {
-	return v.filter.Value
-}
-
-func (v *metricSettingsCountDistinctMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*metricSettingsCountDistinctMetricSettingsFiltersFilter
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.metricSettingsCountDistinctMetricSettingsFiltersFilter = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.filter)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalmetricSettingsCountDistinctMetricSettingsFiltersFilter struct {
-	Column string `json:"column"`
-
-	Operator FilterOperator `json:"operator"`
-
-	Value string `json:"value"`
-}
-
-func (v *metricSettingsCountDistinctMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *metricSettingsCountDistinctMetricSettingsFiltersFilter) __premarshalJSON() (*__premarshalmetricSettingsCountDistinctMetricSettingsFiltersFilter, error) {
-	var retval __premarshalmetricSettingsCountDistinctMetricSettingsFiltersFilter
-
-	retval.Column = v.filter.Column
-	retval.Operator = v.filter.Operator
-	retval.Value = v.filter.Value
-	return &retval, nil
-}
-
-// metricSettingsCountMetricSettings includes the requested fields of the GraphQL type CountMetricSettings.
-// The GraphQL type's documentation follows.
-//
-// Settings for count Metrics.
-type metricSettingsCountMetricSettings struct {
-	Typename string `json:"__typename"`
-	// Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
-	Filters []metricSettingsCountMetricSettingsFiltersFilter `json:"filters"`
-}
-
-// GetTypename returns metricSettingsCountMetricSettings.Typename, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountMetricSettings) GetTypename() string { return v.Typename }
-
-// GetFilters returns metricSettingsCountMetricSettings.Filters, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountMetricSettings) GetFilters() []metricSettingsCountMetricSettingsFiltersFilter {
-	return v.Filters
-}
-
-// metricSettingsCountMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
-type metricSettingsCountMetricSettingsFiltersFilter struct {
-	filter `json:"-"`
-}
-
-// GetColumn returns metricSettingsCountMetricSettingsFiltersFilter.Column, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountMetricSettingsFiltersFilter) GetColumn() string { return v.filter.Column }
-
-// GetOperator returns metricSettingsCountMetricSettingsFiltersFilter.Operator, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountMetricSettingsFiltersFilter) GetOperator() FilterOperator {
-	return v.filter.Operator
-}
-
-// GetValue returns metricSettingsCountMetricSettingsFiltersFilter.Value, and is useful for accessing the field via an interface.
-func (v *metricSettingsCountMetricSettingsFiltersFilter) GetValue() string { return v.filter.Value }
-
-func (v *metricSettingsCountMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*metricSettingsCountMetricSettingsFiltersFilter
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.metricSettingsCountMetricSettingsFiltersFilter = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.filter)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalmetricSettingsCountMetricSettingsFiltersFilter struct {
-	Column string `json:"column"`
-
-	Operator FilterOperator `json:"operator"`
-
-	Value string `json:"value"`
-}
-
-func (v *metricSettingsCountMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *metricSettingsCountMetricSettingsFiltersFilter) __premarshalJSON() (*__premarshalmetricSettingsCountMetricSettingsFiltersFilter, error) {
-	var retval __premarshalmetricSettingsCountMetricSettingsFiltersFilter
-
-	retval.Column = v.filter.Column
-	retval.Operator = v.filter.Operator
-	retval.Value = v.filter.Value
-	return &retval, nil
-}
-
-// metricSettingsMetricSettings includes the requested fields of the GraphQL interface MetricSettings.
-//
-// metricSettingsMetricSettings is implemented by the following types:
-// metricSettingsCountMetricSettings
-// metricSettingsSumMetricSettings
-// metricSettingsCountDistinctMetricSettings
-// The GraphQL type's documentation follows.
-//
-// A Metric's settings, depending on its type.
-type metricSettingsMetricSettings interface {
-	implementsGraphQLInterfacemetricSettingsMetricSettings()
-	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
-}
-
-func (v *metricSettingsCountMetricSettings) implementsGraphQLInterfacemetricSettingsMetricSettings() {
-}
-func (v *metricSettingsSumMetricSettings) implementsGraphQLInterfacemetricSettingsMetricSettings() {}
-func (v *metricSettingsCountDistinctMetricSettings) implementsGraphQLInterfacemetricSettingsMetricSettings() {
-}
-
-func __unmarshalmetricSettingsMetricSettings(b []byte, v *metricSettingsMetricSettings) error {
-	if string(b) == "null" {
-		return nil
-	}
-
-	var tn struct {
-		TypeName string `json:"__typename"`
-	}
-	err := json.Unmarshal(b, &tn)
-	if err != nil {
-		return err
-	}
-
-	switch tn.TypeName {
-	case "CountMetricSettings":
-		*v = new(metricSettingsCountMetricSettings)
-		return json.Unmarshal(b, *v)
-	case "SumMetricSettings":
-		*v = new(metricSettingsSumMetricSettings)
-		return json.Unmarshal(b, *v)
-	case "CountDistinctMetricSettings":
-		*v = new(metricSettingsCountDistinctMetricSettings)
-		return json.Unmarshal(b, *v)
-	case "":
-		return fmt.Errorf(
-			"response was missing MetricSettings.__typename")
-	default:
-		return fmt.Errorf(
-			`unexpected concrete type for metricSettingsMetricSettings: "%v"`, tn.TypeName)
-	}
-}
-
-func __marshalmetricSettingsMetricSettings(v *metricSettingsMetricSettings) ([]byte, error) {
-
-	var typename string
-	switch v := (*v).(type) {
-	case *metricSettingsCountMetricSettings:
-		typename = "CountMetricSettings"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*metricSettingsCountMetricSettings
-		}{typename, v}
-		return json.Marshal(result)
-	case *metricSettingsSumMetricSettings:
-		typename = "SumMetricSettings"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*metricSettingsSumMetricSettings
-		}{typename, v}
-		return json.Marshal(result)
-	case *metricSettingsCountDistinctMetricSettings:
-		typename = "CountDistinctMetricSettings"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*metricSettingsCountDistinctMetricSettings
-		}{typename, v}
-		return json.Marshal(result)
-	case nil:
-		return []byte("null"), nil
-	default:
-		return nil, fmt.Errorf(
-			`unexpected concrete type for metricSettingsMetricSettings: "%T"`, v)
-	}
-}
-
-// metricSettingsSumMetricSettings includes the requested fields of the GraphQL type SumMetricSettings.
-// The GraphQL type's documentation follows.
-//
-// Settings for sum Metrics.
-type metricSettingsSumMetricSettings struct {
-	Typename string `json:"__typename"`
-	// Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
-	Filters []metricSettingsSumMetricSettingsFiltersFilter `json:"filters"`
-	// The dimension to be summed.
-	Measure metricSettingsSumMetricSettingsMeasureDimension `json:"measure"`
-}
-
-// GetTypename returns metricSettingsSumMetricSettings.Typename, and is useful for accessing the field via an interface.
-func (v *metricSettingsSumMetricSettings) GetTypename() string { return v.Typename }
-
-// GetFilters returns metricSettingsSumMetricSettings.Filters, and is useful for accessing the field via an interface.
-func (v *metricSettingsSumMetricSettings) GetFilters() []metricSettingsSumMetricSettingsFiltersFilter {
-	return v.Filters
-}
-
-// GetMeasure returns metricSettingsSumMetricSettings.Measure, and is useful for accessing the field via an interface.
-func (v *metricSettingsSumMetricSettings) GetMeasure() metricSettingsSumMetricSettingsMeasureDimension {
-	return v.Measure
-}
-
-// metricSettingsSumMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
-type metricSettingsSumMetricSettingsFiltersFilter struct {
-	filter `json:"-"`
-}
-
-// GetColumn returns metricSettingsSumMetricSettingsFiltersFilter.Column, and is useful for accessing the field via an interface.
-func (v *metricSettingsSumMetricSettingsFiltersFilter) GetColumn() string { return v.filter.Column }
-
-// GetOperator returns metricSettingsSumMetricSettingsFiltersFilter.Operator, and is useful for accessing the field via an interface.
-func (v *metricSettingsSumMetricSettingsFiltersFilter) GetOperator() FilterOperator {
-	return v.filter.Operator
-}
-
-// GetValue returns metricSettingsSumMetricSettingsFiltersFilter.Value, and is useful for accessing the field via an interface.
-func (v *metricSettingsSumMetricSettingsFiltersFilter) GetValue() string { return v.filter.Value }
-
-func (v *metricSettingsSumMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*metricSettingsSumMetricSettingsFiltersFilter
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.metricSettingsSumMetricSettingsFiltersFilter = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.filter)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalmetricSettingsSumMetricSettingsFiltersFilter struct {
-	Column string `json:"column"`
-
-	Operator FilterOperator `json:"operator"`
-
-	Value string `json:"value"`
-}
-
-func (v *metricSettingsSumMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *metricSettingsSumMetricSettingsFiltersFilter) __premarshalJSON() (*__premarshalmetricSettingsSumMetricSettingsFiltersFilter, error) {
-	var retval __premarshalmetricSettingsSumMetricSettingsFiltersFilter
-
-	retval.Column = v.filter.Column
-	retval.Operator = v.filter.Operator
-	retval.Value = v.filter.Value
-	return &retval, nil
-}
-
-// metricSettingsSumMetricSettingsMeasureDimension includes the requested fields of the GraphQL type Dimension.
-// The GraphQL type's documentation follows.
-//
-// The Dimension object that represents a column in a table.
-type metricSettingsSumMetricSettingsMeasureDimension struct {
-	dimension `json:"-"`
-}
-
-// GetColumnName returns metricSettingsSumMetricSettingsMeasureDimension.ColumnName, and is useful for accessing the field via an interface.
-func (v *metricSettingsSumMetricSettingsMeasureDimension) GetColumnName() string {
-	return v.dimension.ColumnName
-}
-
-// GetType returns metricSettingsSumMetricSettingsMeasureDimension.Type, and is useful for accessing the field via an interface.
-func (v *metricSettingsSumMetricSettingsMeasureDimension) GetType() string { return v.dimension.Type }
-
-// GetIsNullable returns metricSettingsSumMetricSettingsMeasureDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *metricSettingsSumMetricSettingsMeasureDimension) GetIsNullable() bool {
-	return v.dimension.IsNullable
-}
-
-// GetIsUniqueKey returns metricSettingsSumMetricSettingsMeasureDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *metricSettingsSumMetricSettingsMeasureDimension) GetIsUniqueKey() bool {
-	return v.dimension.IsUniqueKey
-}
-
-func (v *metricSettingsSumMetricSettingsMeasureDimension) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*metricSettingsSumMetricSettingsMeasureDimension
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.metricSettingsSumMetricSettingsMeasureDimension = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.dimension)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalmetricSettingsSumMetricSettingsMeasureDimension struct {
-	ColumnName string `json:"columnName"`
-
-	Type string `json:"type"`
-
-	IsNullable bool `json:"isNullable"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-}
-
-func (v *metricSettingsSumMetricSettingsMeasureDimension) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *metricSettingsSumMetricSettingsMeasureDimension) __premarshalJSON() (*__premarshalmetricSettingsSumMetricSettingsMeasureDimension, error) {
-	var retval __premarshalmetricSettingsSumMetricSettingsMeasureDimension
-
-	retval.ColumnName = v.dimension.ColumnName
-	retval.Type = v.dimension.Type
-	retval.IsNullable = v.dimension.IsNullable
-	retval.IsUniqueKey = v.dimension.IsUniqueKey
-	return &retval, nil
-}
-
-// metricTimestampDimension includes the requested fields of the GraphQL type Dimension.
-// The GraphQL type's documentation follows.
-//
-// The Dimension object that represents a column in a table.
-type metricTimestampDimension struct {
-	dimension `json:"-"`
-}
-
-// GetColumnName returns metricTimestampDimension.ColumnName, and is useful for accessing the field via an interface.
-func (v *metricTimestampDimension) GetColumnName() string { return v.dimension.ColumnName }
-
-// GetType returns metricTimestampDimension.Type, and is useful for accessing the field via an interface.
-func (v *metricTimestampDimension) GetType() string { return v.dimension.Type }
-
-// GetIsNullable returns metricTimestampDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *metricTimestampDimension) GetIsNullable() bool { return v.dimension.IsNullable }
-
-// GetIsUniqueKey returns metricTimestampDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *metricTimestampDimension) GetIsUniqueKey() bool { return v.dimension.IsUniqueKey }
-
-func (v *metricTimestampDimension) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*metricTimestampDimension
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.metricTimestampDimension = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.dimension)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalmetricTimestampDimension struct {
-	ColumnName string `json:"columnName"`
-
-	Type string `json:"type"`
-
-	IsNullable bool `json:"isNullable"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-}
-
-func (v *metricTimestampDimension) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *metricTimestampDimension) __premarshalJSON() (*__premarshalmetricTimestampDimension, error) {
-	var retval __premarshalmetricTimestampDimension
-
-	retval.ColumnName = v.dimension.ColumnName
-	retval.Type = v.dimension.Type
-	retval.IsNullable = v.dimension.IsNullable
-	retval.IsUniqueKey = v.dimension.IsUniqueKey
-	return &retval, nil
-}
-
-// pageInfo includes the GraphQL fields of PageInfo requested by the fragment pageInfo.
-type pageInfo struct {
-	StartCursor     string `json:"startCursor"`
-	EndCursor       string `json:"endCursor"`
-	HasNextPage     bool   `json:"hasNextPage"`
-	HasPreviousPage bool   `json:"hasPreviousPage"`
-}
-
-// GetStartCursor returns pageInfo.StartCursor, and is useful for accessing the field via an interface.
-func (v *pageInfo) GetStartCursor() string { return v.StartCursor }
-
-// GetEndCursor returns pageInfo.EndCursor, and is useful for accessing the field via an interface.
-func (v *pageInfo) GetEndCursor() string { return v.EndCursor }
-
-// GetHasNextPage returns pageInfo.HasNextPage, and is useful for accessing the field via an interface.
-func (v *pageInfo) GetHasNextPage() bool { return v.HasNextPage }
-
-// GetHasPreviousPage returns pageInfo.HasPreviousPage, and is useful for accessing the field via an interface.
-func (v *pageInfo) GetHasPreviousPage() bool { return v.HasPreviousPage }
-
-// sync includes the GraphQL fields of Sync requested by the fragment sync.
-type sync struct {
-	// The ID of the Sync resource.
-	Id string `json:"id"`
-	// This is the ID of the query which generated the Sync in Snowflake. In the future, this will become private.
-	QueryId string `json:"queryId"`
-	// The status of the Sync (all Syncs begin as SYNCING before transitioning to SUCCEEDED or FAILED).
-	Status SyncStatus `json:"status"`
-	// The number of new records contained within the Sync, if known. This excludes filtered records.
-	NewRecords string `json:"newRecords"`
-	// The number of updated records contained within the Sync, if known. This excludes filtered records.
-	UpdatedRecords string `json:"updatedRecords"`
-	// The number of deleted records contained within the Sync, if known. This excludes filtered records.
-	DeletedRecords string `json:"deletedRecords"`
-	// The number of filtered records contained within the Sync, due to issues such as missing time dimension, if
-	// known.
-	InvalidRecords string `json:"invalidRecords"`
-	// The time at which the Sync started.
-	StartedAt time.Time `json:"startedAt"`
-	// The time at which the Sync succeeded.
-	SucceededAt time.Time `json:"succeededAt"`
-	// The time at which the Sync failed.
-	FailedAt time.Time `json:"failedAt"`
-	// If the Sync failed, this represents the reason the Sync failed.
-	Error      syncError `json:"error"`
-	CreatedAt  time.Time `json:"createdAt"`
-	CreatedBy  string    `json:"createdBy"`
-	ModifiedAt time.Time `json:"modifiedAt"`
-	ModifiedBy string    `json:"modifiedBy"`
-}
-
-// GetId returns sync.Id, and is useful for accessing the field via an interface.
-func (v *sync) GetId() string { return v.Id }
-
-// GetQueryId returns sync.QueryId, and is useful for accessing the field via an interface.
-func (v *sync) GetQueryId() string { return v.QueryId }
-
-// GetStatus returns sync.Status, and is useful for accessing the field via an interface.
-func (v *sync) GetStatus() SyncStatus { return v.Status }
-
-// GetNewRecords returns sync.NewRecords, and is useful for accessing the field via an interface.
-func (v *sync) GetNewRecords() string { return v.NewRecords }
-
-// GetUpdatedRecords returns sync.UpdatedRecords, and is useful for accessing the field via an interface.
-func (v *sync) GetUpdatedRecords() string { return v.UpdatedRecords }
-
-// GetDeletedRecords returns sync.DeletedRecords, and is useful for accessing the field via an interface.
-func (v *sync) GetDeletedRecords() string { return v.DeletedRecords }
-
-// GetInvalidRecords returns sync.InvalidRecords, and is useful for accessing the field via an interface.
-func (v *sync) GetInvalidRecords() string { return v.InvalidRecords }
-
-// GetStartedAt returns sync.StartedAt, and is useful for accessing the field via an interface.
-func (v *sync) GetStartedAt() time.Time { return v.StartedAt }
-
-// GetSucceededAt returns sync.SucceededAt, and is useful for accessing the field via an interface.
-func (v *sync) GetSucceededAt() time.Time { return v.SucceededAt }
-
-// GetFailedAt returns sync.FailedAt, and is useful for accessing the field via an interface.
-func (v *sync) GetFailedAt() time.Time { return v.FailedAt }
-
-// GetError returns sync.Error, and is useful for accessing the field via an interface.
-func (v *sync) GetError() syncError { return v.Error }
-
-// GetCreatedAt returns sync.CreatedAt, and is useful for accessing the field via an interface.
-func (v *sync) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetCreatedBy returns sync.CreatedBy, and is useful for accessing the field via an interface.
-func (v *sync) GetCreatedBy() string { return v.CreatedBy }
-
-// GetModifiedAt returns sync.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *sync) GetModifiedAt() time.Time { return v.ModifiedAt }
-
-// GetModifiedBy returns sync.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *sync) GetModifiedBy() string { return v.ModifiedBy }
-
-// syncError includes the requested fields of the GraphQL type Error.
-type syncError struct {
-	Message string `json:"message"`
-}
-
-// GetMessage returns syncError.Message, and is useful for accessing the field via an interface.
-func (v *syncError) GetMessage() string { return v.Message }
-
-// tableIntrospection includes the GraphQL fields of TableIntrospection requested by the fragment tableIntrospection.
-type tableIntrospection struct {
-	DataSource tableIntrospectionDataSource `json:"dataSource"`
-	Status     TableIntrospectionStatus     `json:"status"`
-	CreatedAt  time.Time                    `json:"createdAt"`
-	CreatedBy  string                       `json:"createdBy"`
-	ModifiedAt time.Time                    `json:"modifiedAt"`
-	ModifiedBy string                       `json:"modifiedBy"`
-	NumTables  int                          `json:"numTables"`
-}
-
-// GetDataSource returns tableIntrospection.DataSource, and is useful for accessing the field via an interface.
-func (v *tableIntrospection) GetDataSource() tableIntrospectionDataSource { return v.DataSource }
-
-// GetStatus returns tableIntrospection.Status, and is useful for accessing the field via an interface.
-func (v *tableIntrospection) GetStatus() TableIntrospectionStatus { return v.Status }
-
-// GetCreatedAt returns tableIntrospection.CreatedAt, and is useful for accessing the field via an interface.
-func (v *tableIntrospection) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetCreatedBy returns tableIntrospection.CreatedBy, and is useful for accessing the field via an interface.
-func (v *tableIntrospection) GetCreatedBy() string { return v.CreatedBy }
-
-// GetModifiedAt returns tableIntrospection.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *tableIntrospection) GetModifiedAt() time.Time { return v.ModifiedAt }
-
-// GetModifiedBy returns tableIntrospection.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *tableIntrospection) GetModifiedBy() string { return v.ModifiedBy }
-
-// GetNumTables returns tableIntrospection.NumTables, and is useful for accessing the field via an interface.
-func (v *tableIntrospection) GetNumTables() int { return v.NumTables }
-
-// tableIntrospectionDataSource includes the requested fields of the GraphQL type DataSource.
-type tableIntrospectionDataSource struct {
-	Id string `json:"id"`
-}
-
-// GetId returns tableIntrospectionDataSource.Id, and is useful for accessing the field via an interface.
-func (v *tableIntrospectionDataSource) GetId() string { return v.Id }
-
 func CreateCountDistinctMetric(
 	ctx context.Context,
 	client graphql.Client,
@@ -8575,55 +8712,55 @@ mutation CreateCountDistinctMetric ($input: CreateCountDistinctMetricInput) {
 	createCountDistinctMetric(input: $input) {
 		__typename
 		metric {
-			... metric
+			... MetricData
 		}
 	}
 }
-fragment metric on Metric {
-	... common
+fragment MetricData on Metric {
+	... CommonData
 	id
 	dataPool {
-		... dataPool
+		... DataPoolData
 	}
 	dimensions {
-		... dimension
+		... DimensionData
 	}
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	measure {
-		... dimension
+		... DimensionData
 	}
 	settings {
 		__typename
 		... on CountMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 		}
 		... on SumMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			measure {
-				... dimension
+				... DimensionData
 			}
 		}
 		... on CountDistinctMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			dimension {
-				... dimension
+				... DimensionData
 			}
 		}
 	}
 	type
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -8637,11 +8774,11 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -8649,16 +8786,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -8673,24 +8810,24 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment filter on Filter {
+fragment FilterData on Filter {
 	column
 	operator
 	value
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -8712,12 +8849,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -8734,11 +8871,11 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -8752,7 +8889,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -8771,7 +8908,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -8808,55 +8945,55 @@ mutation CreateCountMetric ($input: CreateCountMetricInput) {
 	createCountMetric(input: $input) {
 		__typename
 		metric {
-			... metric
+			... MetricData
 		}
 	}
 }
-fragment metric on Metric {
-	... common
+fragment MetricData on Metric {
+	... CommonData
 	id
 	dataPool {
-		... dataPool
+		... DataPoolData
 	}
 	dimensions {
-		... dimension
+		... DimensionData
 	}
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	measure {
-		... dimension
+		... DimensionData
 	}
 	settings {
 		__typename
 		... on CountMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 		}
 		... on SumMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			measure {
-				... dimension
+				... DimensionData
 			}
 		}
 		... on CountDistinctMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			dimension {
-				... dimension
+				... DimensionData
 			}
 		}
 	}
 	type
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -8870,11 +9007,11 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -8882,16 +9019,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -8906,24 +9043,24 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment filter on Filter {
+fragment FilterData on Filter {
 	column
 	operator
 	value
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -8945,12 +9082,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -8967,11 +9104,11 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -8985,7 +9122,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -9004,7 +9141,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -9042,21 +9179,21 @@ mutation CreateDataPool ($input: createDataPoolInput!) {
 		__typename
 		... on DataPoolResponse {
 			dataPool {
-				... dataPool
+				... DataPoolData
 			}
 		}
 		... on FailureResponse {
 			error {
-				... gqlError
+				... GqlError
 			}
 		}
 	}
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -9064,16 +9201,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -9088,15 +9225,15 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment gqlError on Error {
+fragment GqlError on Error {
 	code
 	message
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -9110,9 +9247,9 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -9134,12 +9271,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -9156,17 +9293,17 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -9180,7 +9317,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -9199,7 +9336,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -9237,19 +9374,19 @@ mutation CreateSnowflakeDataSource ($input: createSnowflakeDataSourceInput!) {
 		__typename
 		... on DataSourceResponse {
 			dataSource {
-				... dataSource
+				... DataSourceData
 			}
 		}
 		... on FailureResponse {
 			error {
-				... gqlError
+				... GqlError
 			}
 		}
 	}
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -9271,12 +9408,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -9293,15 +9430,15 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment gqlError on Error {
+fragment GqlError on Error {
 	code
 	message
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -9315,7 +9452,7 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -9329,7 +9466,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -9366,55 +9503,55 @@ mutation CreateSumMetric ($input: CreateSumMetricInput) {
 	createSumMetric(input: $input) {
 		__typename
 		metric {
-			... metric
+			... MetricData
 		}
 	}
 }
-fragment metric on Metric {
-	... common
+fragment MetricData on Metric {
+	... CommonData
 	id
 	dataPool {
-		... dataPool
+		... DataPoolData
 	}
 	dimensions {
-		... dimension
+		... DimensionData
 	}
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	measure {
-		... dimension
+		... DimensionData
 	}
 	settings {
 		__typename
 		... on CountMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 		}
 		... on SumMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			measure {
-				... dimension
+				... DimensionData
 			}
 		}
 		... on CountDistinctMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			dimension {
-				... dimension
+				... DimensionData
 			}
 		}
 	}
 	type
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -9428,11 +9565,11 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -9440,16 +9577,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -9464,24 +9601,24 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment filter on Filter {
+fragment FilterData on Filter {
 	column
 	operator
 	value
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -9503,12 +9640,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -9525,11 +9662,11 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -9543,7 +9680,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -9562,7 +9699,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -9597,14 +9734,14 @@ func DataPool(
 		`
 query DataPool ($id: ID!) {
 	dataPool(id: $id) {
-		... dataPool
+		... DataPoolData
 	}
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -9612,16 +9749,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -9636,11 +9773,11 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -9654,9 +9791,9 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -9678,12 +9815,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -9700,17 +9837,17 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -9724,7 +9861,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -9743,7 +9880,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -9778,14 +9915,14 @@ func DataPoolByName(
 		`
 query DataPoolByName ($uniqueName: String!) {
 	dataPool: dataPoolByName(uniqueName: $uniqueName) {
-		... dataPool
+		... DataPoolData
 	}
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -9793,16 +9930,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -9817,11 +9954,11 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -9835,9 +9972,9 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -9859,12 +9996,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -9881,17 +10018,17 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -9905,7 +10042,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -9924,7 +10061,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -9966,26 +10103,26 @@ func DataPools(
 query DataPools ($first: Int, $last: Int, $after: String, $before: String) {
 	dataPools(first: $first, last: $last, after: $after, before: $before) {
 		pageInfo {
-			... pageInfo
+			... PageInfoData
 		}
 		edges {
 			node {
-				... dataPool
+				... DataPoolData
 			}
 		}
 	}
 }
-fragment pageInfo on PageInfo {
+fragment PageInfoData on PageInfo {
 	startCursor
 	endCursor
 	hasNextPage
 	hasPreviousPage
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -9993,16 +10130,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -10017,11 +10154,11 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -10035,9 +10172,9 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -10059,12 +10196,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -10081,17 +10218,17 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -10105,7 +10242,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -10124,7 +10261,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -10159,12 +10296,12 @@ func DataSource(
 		`
 query DataSource ($id: ID!) {
 	dataSource(id: $id) {
-		... dataSource
+		... DataSourceData
 	}
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -10186,12 +10323,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -10208,11 +10345,11 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -10226,7 +10363,7 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -10240,7 +10377,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -10275,12 +10412,12 @@ func DataSourceByName(
 		`
 query DataSourceByName ($uniqueName: String!) {
 	dataSource: dataSourceByName(uniqueName: $uniqueName) {
-		... dataSource
+		... DataSourceData
 	}
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -10302,12 +10439,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -10324,11 +10461,11 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -10342,7 +10479,7 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -10356,7 +10493,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -10398,24 +10535,24 @@ func DataSources(
 query DataSources ($first: Int, $last: Int, $after: String, $before: String) {
 	dataSources(first: $first, last: $last, after: $after, before: $before) {
 		pageInfo {
-			... pageInfo
+			... PageInfoData
 		}
 		edges {
 			node {
-				... dataSource
+				... DataSourceData
 			}
 		}
 	}
 }
-fragment pageInfo on PageInfo {
+fragment PageInfoData on PageInfo {
 	startCursor
 	endCursor
 	hasNextPage
 	hasPreviousPage
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -10437,12 +10574,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -10459,11 +10596,11 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -10477,7 +10614,7 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -10491,7 +10628,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -10676,54 +10813,54 @@ func Metric(
 		`
 query Metric ($id: ID!) {
 	metric(id: $id) {
-		... metric
+		... MetricData
 	}
 }
-fragment metric on Metric {
-	... common
+fragment MetricData on Metric {
+	... CommonData
 	id
 	dataPool {
-		... dataPool
+		... DataPoolData
 	}
 	dimensions {
-		... dimension
+		... DimensionData
 	}
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	measure {
-		... dimension
+		... DimensionData
 	}
 	settings {
 		__typename
 		... on CountMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 		}
 		... on SumMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			measure {
-				... dimension
+				... DimensionData
 			}
 		}
 		... on CountDistinctMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			dimension {
-				... dimension
+				... DimensionData
 			}
 		}
 	}
 	type
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -10737,11 +10874,11 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -10749,16 +10886,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -10773,24 +10910,24 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment filter on Filter {
+fragment FilterData on Filter {
 	column
 	operator
 	value
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -10812,12 +10949,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -10834,11 +10971,11 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -10852,7 +10989,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -10871,7 +11008,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -10906,54 +11043,54 @@ func MetricByName(
 		`
 query MetricByName ($uniqueName: String!) {
 	metric: metricByName(uniqueName: $uniqueName) {
-		... metric
+		... MetricData
 	}
 }
-fragment metric on Metric {
-	... common
+fragment MetricData on Metric {
+	... CommonData
 	id
 	dataPool {
-		... dataPool
+		... DataPoolData
 	}
 	dimensions {
-		... dimension
+		... DimensionData
 	}
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	measure {
-		... dimension
+		... DimensionData
 	}
 	settings {
 		__typename
 		... on CountMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 		}
 		... on SumMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			measure {
-				... dimension
+				... DimensionData
 			}
 		}
 		... on CountDistinctMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			dimension {
-				... dimension
+				... DimensionData
 			}
 		}
 	}
 	type
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -10967,11 +11104,11 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -10979,16 +11116,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -11003,24 +11140,24 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment filter on Filter {
+fragment FilterData on Filter {
 	column
 	operator
 	value
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -11042,12 +11179,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -11064,11 +11201,11 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -11082,7 +11219,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -11101,7 +11238,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -11143,70 +11280,70 @@ func Metrics(
 query Metrics ($first: Int, $last: Int, $after: String, $before: String) {
 	metrics(first: $first, last: $last, after: $after, before: $before) {
 		pageInfo {
-			... pageInfo
+			... PageInfoData
 		}
 		nodes {
-			... metric
+			... MetricData
 		}
 		edges {
 			cursor
 			node {
-				... metric
+				... MetricData
 			}
 		}
 	}
 }
-fragment pageInfo on PageInfo {
+fragment PageInfoData on PageInfo {
 	startCursor
 	endCursor
 	hasNextPage
 	hasPreviousPage
 }
-fragment metric on Metric {
-	... common
+fragment MetricData on Metric {
+	... CommonData
 	id
 	dataPool {
-		... dataPool
+		... DataPoolData
 	}
 	dimensions {
-		... dimension
+		... DimensionData
 	}
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	measure {
-		... dimension
+		... DimensionData
 	}
 	settings {
 		__typename
 		... on CountMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 		}
 		... on SumMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			measure {
-				... dimension
+				... DimensionData
 			}
 		}
 		... on CountDistinctMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			dimension {
-				... dimension
+				... DimensionData
 			}
 		}
 	}
 	type
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -11220,11 +11357,11 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -11232,16 +11369,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -11256,24 +11393,24 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment filter on Filter {
+fragment FilterData on Filter {
 	column
 	operator
 	value
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -11295,12 +11432,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -11317,11 +11454,11 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -11335,7 +11472,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -11354,7 +11491,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -11392,21 +11529,21 @@ mutation ModifyDataPool ($input: modifyDataPoolInput!) {
 		__typename
 		... on DataPoolResponse {
 			dataPool {
-				... dataPool
+				... DataPoolData
 			}
 		}
 		... on FailureResponse {
 			error {
-				... gqlError
+				... GqlError
 			}
 		}
 	}
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -11414,16 +11551,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -11438,15 +11575,15 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment gqlError on Error {
+fragment GqlError on Error {
 	code
 	message
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -11460,9 +11597,9 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -11484,12 +11621,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -11506,17 +11643,17 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -11530,7 +11667,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -11549,7 +11686,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -11586,55 +11723,55 @@ mutation ModifyMetric ($input: ModifyMetricInput) {
 	modifyMetric(input: $input) {
 		__typename
 		metric {
-			... metric
+			... MetricData
 		}
 	}
 }
-fragment metric on Metric {
-	... common
+fragment MetricData on Metric {
+	... CommonData
 	id
 	dataPool {
-		... dataPool
+		... DataPoolData
 	}
 	dimensions {
-		... dimension
+		... DimensionData
 	}
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	measure {
-		... dimension
+		... DimensionData
 	}
 	settings {
 		__typename
 		... on CountMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 		}
 		... on SumMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			measure {
-				... dimension
+				... DimensionData
 			}
 		}
 		... on CountDistinctMetricSettings {
 			__typename
 			filters {
-				... filter
+				... FilterData
 			}
 			dimension {
-				... dimension
+				... DimensionData
 			}
 		}
 	}
 	type
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -11648,11 +11785,11 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
 	id
-	... common
+	... CommonData
 	dataSource {
-		... dataSource
+		... DataSourceData
 	}
 	status
 	error {
@@ -11660,16 +11797,16 @@ fragment dataPool on DataPool {
 	}
 	table
 	timestamp {
-		... dimension
+		... DimensionData
 	}
 	columns {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	availableMeasures {
 		nodes {
-			... column
+			... ColumnData
 		}
 	}
 	setupTasks {
@@ -11684,24 +11821,24 @@ fragment dataPool on DataPool {
 	}
 	syncs {
 		nodes {
-			... sync
+			... SyncData
 		}
 	}
 }
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
 	columnName
 	type
 	isNullable
 	isUniqueKey
 }
-fragment filter on Filter {
+fragment FilterData on Filter {
 	column
 	operator
 	value
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -11723,12 +11860,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -11745,11 +11882,11 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -11763,7 +11900,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment sync on Sync {
+fragment SyncData on Sync {
 	id
 	queryId
 	status
@@ -11782,7 +11919,7 @@ fragment sync on Sync {
 	modifiedAt
 	modifiedBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}
@@ -11820,19 +11957,19 @@ mutation ModifySnowflakeDataSource ($input: modifySnowflakeDataSourceInput!) {
 		__typename
 		... on DataSourceResponse {
 			dataSource {
-				... dataSource
+				... DataSourceData
 			}
 		}
 		... on FailureResponse {
 			error {
-				... gqlError
+				... GqlError
 			}
 		}
 	}
 }
-fragment dataSource on DataSource {
+fragment DataSourceData on DataSource {
 	id
-	... common
+	... CommonData
 	type
 	status
 	error {
@@ -11854,12 +11991,12 @@ fragment dataSource on DataSource {
 			name
 			availableTimestamps(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 			availableMeasures(first: 100) {
 				nodes {
-					... column
+					... ColumnData
 				}
 			}
 		}
@@ -11876,15 +12013,15 @@ fragment dataSource on DataSource {
 	}
 	tableIntrospections(first: 100) {
 		nodes {
-			... tableIntrospection
+			... TableIntrospectionData
 		}
 	}
 }
-fragment gqlError on Error {
+fragment GqlError on Error {
 	code
 	message
 }
-fragment common on Common {
+fragment CommonData on Common {
 	uniqueName
 	description
 	account {
@@ -11898,7 +12035,7 @@ fragment common on Common {
 	createdBy
 	modifiedBy
 }
-fragment column on Column {
+fragment ColumnData on Column {
 	name
 	type
 	kind
@@ -11912,7 +12049,7 @@ fragment column on Column {
 	createdAt
 	createdBy
 }
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
 		id
 	}

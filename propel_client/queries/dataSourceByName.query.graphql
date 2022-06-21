@@ -1,5 +1,5 @@
 query DataSourceByName($uniqueName: String!) {
     dataSource: dataSourceByName(uniqueName: $uniqueName) {
-        ...dataSource
+        ...DataSourceData
     }
 }

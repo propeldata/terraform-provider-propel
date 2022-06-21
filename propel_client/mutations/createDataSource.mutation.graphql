@@ -3,12 +3,12 @@ mutation CreateSnowflakeDataSource($input: createSnowflakeDataSourceInput!) {
         __typename
         ... on DataSourceResponse {
             dataSource {
-                ...dataSource
+                ...DataSourceData
             }
         }
         ... on FailureResponse {
             error {
-                ...gqlError
+                ...GqlError
             }
         }
     }

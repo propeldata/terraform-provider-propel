@@ -3,12 +3,12 @@ mutation ModifyDataPool($input: modifyDataPoolInput!) {
         __typename
         ... on DataPoolResponse {
             dataPool {
-                ...dataPool
+                ...DataPoolData
             }
         }
         ... on FailureResponse {
             error {
-                ...gqlError
+                ...GqlError
             }
         }
     }

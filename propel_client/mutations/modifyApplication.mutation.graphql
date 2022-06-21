@@ -3,12 +3,12 @@ mutation ModifyApplication($input: modifyApplicationInput!) {
         __typename
         ... on ApplicationResponse {
             application {
-                ...application
+                ...ApplicationData
             }
         }
         ... on FailureResponse {
             error {
-                ...gqlError
+                ...GqlError
             }
         }
     }

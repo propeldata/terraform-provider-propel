@@ -1,5 +1,5 @@
 mutation ReconnectDataSource($input: idOrUniqueName!) {
     reconnectDataSource(input: $input) {
-        ...dataSource
+        ...DataSourceData
     }
 }

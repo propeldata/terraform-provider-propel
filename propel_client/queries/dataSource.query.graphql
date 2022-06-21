@@ -1,5 +1,5 @@
 query DataSource($id: ID!) {
     dataSource(id: $id) {
-        ...dataSource
+        ...DataSourceData
     }
 }

@@ -1,8 +1,8 @@
-fragment dataPool on DataPool {
+fragment DataPoolData on DataPool {
     id
-    ...common
+    ...CommonData
     dataSource {
-        ...dataSource
+        ...DataSourceData
     }
     status
     error {
@@ -10,16 +10,16 @@ fragment dataPool on DataPool {
     }
     table
     timestamp {
-      ...dimension
+      ...DimensionData
     }
     columns {
         nodes {
-            ...column
+            ...ColumnData
         }
     }
     availableMeasures {
         nodes {
-            ...column
+            ...ColumnData
         }
     }
     setupTasks {
@@ -34,7 +34,7 @@ fragment dataPool on DataPool {
     }
     syncs {
         nodes {
-            ...sync
+            ...SyncData
         }
     }
 }

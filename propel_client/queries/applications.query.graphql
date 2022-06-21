@@ -1,11 +1,11 @@
 query Applications($first: Int, $last: Int, $after: String, $before: String) {
     applications(first: $first, last: $last, after: $after, before: $before) {
         pageInfo {
-            ...pageInfo
+            ...PageInfoData
         }
         edges {
             node {
-                ...application
+                ...ApplicationData
             }
         }
     }

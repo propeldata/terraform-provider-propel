@@ -1,5 +1,5 @@
 query ApplicationByName($uniqueName: String!) {
     application: applicationByName(uniqueName: $uniqueName) {
-        ...application
+        ...ApplicationData
     }
 }

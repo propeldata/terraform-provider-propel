@@ -1,4 +1,4 @@
-fragment tableIntrospection on TableIntrospection {
+fragment TableIntrospectionData on TableIntrospection {
     dataSource {
         id
     }

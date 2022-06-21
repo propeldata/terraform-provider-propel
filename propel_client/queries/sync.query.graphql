@@ -1,5 +1,5 @@
 query Sync($id: ID!) {
     sync(id: $id) {
-        ...sync
+        ...SyncData
     }
 }

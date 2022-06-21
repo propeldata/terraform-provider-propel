@@ -1,4 +1,4 @@
-fragment common on Common {
+fragment CommonData on Common {
     uniqueName
     description
     account {

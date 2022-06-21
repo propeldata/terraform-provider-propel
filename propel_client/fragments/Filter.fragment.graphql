@@ -1,4 +1,4 @@
-fragment filter on Filter {
+fragment FilterData on Filter {
     column
     operator
     value

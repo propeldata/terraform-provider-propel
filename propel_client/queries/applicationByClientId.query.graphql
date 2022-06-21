@@ -1,5 +1,5 @@
 query ApplicationByClientId($clientId: String!) {
     application: applicationByClientId(clientId: $clientId) {
-        ...application
+        ...ApplicationData
     }
 }

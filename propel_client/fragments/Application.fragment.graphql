@@ -1,6 +1,6 @@
-fragment application on Application {
+fragment ApplicationData on Application {
     id
-    ...common
+    ...CommonData
     clientId
     secret
 }

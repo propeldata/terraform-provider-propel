@@ -1,15 +1,15 @@
 query Metrics($first: Int, $last: Int, $after: String, $before: String) {
     metrics(first: $first, last: $last, after: $after, before: $before) {
         pageInfo {
-            ...pageInfo
+            ...PageInfoData
         }
         nodes {
-            ...metric
+            ...MetricData
         }
         edges {
             cursor
             node {
-                ...metric
+                ...MetricData
             }
         }
     }

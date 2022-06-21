@@ -1,4 +1,4 @@
-fragment dimension on Dimension {
+fragment DimensionData on Dimension {
     columnName
     type
     isNullable

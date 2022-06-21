@@ -1,4 +1,4 @@
-fragment sync on Sync {
+fragment SyncData on Sync {
     id
     queryId
     status
