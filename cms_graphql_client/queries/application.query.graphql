@@ -1,5 +1,0 @@
-query Application($id: ID!) {
-    application(id: $id) {
-        ...application
-    }
-}

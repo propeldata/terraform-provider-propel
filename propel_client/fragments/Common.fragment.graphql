@@ -1,0 +1,14 @@
+fragment CommonData on Common {
+    uniqueName
+    description
+    account {
+        id
+    }
+    environment {
+        id
+    }
+    createdAt
+    modifiedAt
+    createdBy
+    modifiedBy
+}

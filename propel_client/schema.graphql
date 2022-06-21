@@ -1,0 +1,1389 @@
+directive @tag(name: String!) repeatable on FIELD_DEFINITION | INTERFACE | OBJECT | UNION | INPUT_FIELD_DEFINITION
+
+scalar DateTime
+
+interface Node {
+  id: ID!
+}
+
+input idOrUniqueName {
+  id: String
+  uniqueName: String
+}
+
+type FailureResponse {
+  error: Error!
+}
+
+type Error {
+  # Common properties
+  code: Int
+  message: String!
+}
+
+type DeleteResponse {
+  outcome: DeleteOutcome!
+  error: Error
+}
+
+enum DeleteOutcome {
+  Succeded
+  Failed
+}
+
+type Account {
+  id: ID!
+}
+
+type Environment {
+  id: ID!
+}
+
+interface Common {
+  # Common Properties
+  uniqueName: String!
+  description: String!
+  account: Account!
+  environment: Environment!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  createdBy: String!
+  modifiedBy: String!
+}
+
+enum Region {
+  us_east_2
+}
+
+type PageInfo {
+  startCursor: String
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+
+"""
+The Application
+"""
+type Application implements Node & Common {
+  # Common Properties
+  id: ID!
+  uniqueName: String!
+  description: String!
+  account: Account!
+  environment: Environment!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  createdBy: String!
+  modifiedBy: String!
+
+  # Object-specific Properties
+  clientId: String!
+  secret: String
+}
+
+type ApplicationConnection {
+  pageInfo: PageInfo!
+  edges: [ApplicationEdge!]!
+  nodes: [Application!]!
+}
+
+type ApplicationEdge {
+  cursor: String!
+  node: Application!
+}
+
+input createApplicationInput {
+  # Unique Names are optional. When no unique name is provided we put the id.
+  uniqueName: String
+  description: String
+}
+
+input modifyApplicationInput {
+  idOrUniqueName: idOrUniqueName!
+  uniqueName: String
+  description: String
+}
+
+union ApplicationOrFailureResponse = ApplicationResponse | FailureResponse
+
+type ApplicationResponse {
+  application: Application
+}
+
+input idOrUniqueNameOrClientId {
+  id: String
+  uniqueName: String
+  clientId: String
+}
+
+type DataSource implements Node & Common {
+  # Common Properties
+  id: ID!
+  uniqueName: String!
+  description: String!
+  account: Account!
+  environment: Environment!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  createdBy: String!
+  modifiedBy: String!
+
+  # Object-specific Properties
+  type: DataSourceType!
+  status: DataSourceStatus!
+  error: Error @deprecated(reason: "Refer to checks instead")
+  connectionSettings: ConnectionSettings!
+
+  tables (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): TableConnection
+
+  tableIntrospections (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): TableIntrospectionConnection
+
+  """ A list of checks performed on the Data Source during its most recent connection attempt. """
+  checks: [DataSourceCheck!]
+
+  dataPools (first: Int, after: String, last: Int, before: String): DataPoolConnection
+}
+
+type DataSourceCheck {
+  """ The name of the Data Source check to be performed. """
+  name: String!
+
+  """ A description of the Data Source check to be performed. """
+  description: String
+
+  """ The status of the Data Source check (all checks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED). """
+  status: DataSourceCheckStatus!
+
+  """ If the Data Source check failed, this field includes a descriptive error message. """
+  error: Error
+
+  """ The time at which the Data Source check was performed. """
+  checkedAt: DateTime
+}
+
+enum DataSourceCheckStatus {
+  NOT_STARTED
+  SUCCEEDED
+  FAILED
+}
+
+type TableIntrospectionConnection {
+  pageInfo: PageInfo!
+  edges: [TableIntrospectionEdge!]!
+  nodes: [TableIntrospection!]!
+}
+
+type TableIntrospectionEdge {
+  cursor: String!
+  node: TableIntrospection!
+}
+
+type TableIntrospection {
+  dataSource: DataSource!
+  status: TableIntrospectionStatus!
+  createdAt: DateTime!
+  createdBy: String!
+  modifiedAt: DateTime!
+  modifiedBy: String!
+
+  numTables: Int
+  tables (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): TableConnection
+}
+
+enum TableIntrospectionStatus {
+  NOT_STARTED
+  STARTED
+  SUCCEEDED
+  FAILED
+}
+
+type TableConnection {
+  edges: [TableEdge!]!
+  nodes: [Table!]!
+  cachedAt: DateTime!
+}
+
+type TableEdge {
+  cursor: String!
+  node: Table!
+}
+
+type Table {
+  name: String!
+  kind: String!
+  comment: String!
+  clusterBy: String
+  rows: Int
+  size: Int
+  owner: String!
+  timeTravelRetentionInDays: Int
+  isAutomaticClusteringEnabled: Boolean
+  isChangeTrackingEnabled: Boolean
+  isSearchOptimizationEnabled: Boolean
+  isExternal: Boolean!
+  cachedAt: DateTime!
+  createdAt: DateTime!
+  createdBy: String!
+
+  columns (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): ColumnConnection
+
+  availableTimestamps (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): ColumnConnection
+
+  availableMeasures (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): ColumnConnection
+}
+
+type ColumnConnection {
+  edges: [ColumnEdge!]!
+  nodes: [Column!]!
+  cachedAt: DateTime!
+}
+
+type ColumnEdge {
+  cursor: String!
+  node: Column!
+}
+
+type Column {
+  name: String!
+  type: String!
+  kind: String!
+  isNullable: Boolean
+  defaultValue: String
+  isPrimaryKey: Boolean
+  isUniqueKey: Boolean
+  comment: String
+  policyName: String
+  cachedAt: DateTime!
+  createdAt: DateTime!
+  createdBy: String!
+}
+
+type DataSourceConnection {
+  pageInfo: PageInfo!
+  edges: [DataSourceEdge!]
+  nodes: [DataSource!]
+}
+
+type DataSourceEdge {
+  cursor: String!
+  node: DataSource!
+}
+
+enum DataSourceType {
+  Snowflake
+}
+
+enum DataSourceStatus {
+  CREATED
+  CONNECTING
+  CONNECTED
+  BROKEN
+  DELETING
+}
+
+union ConnectionSettings = SnowflakeConnectionSettings
+
+type SnowflakeConnectionSettings {
+  account: String!
+  database: String!
+  warehouse: String!
+  schema: String!
+  username: String!
+  role: String!
+}
+
+input createSnowflakeDataSourceInput {
+  uniqueName: String
+  description: String
+  connectionSettings: SnowflakeConnectionSettingsInput!
+}
+
+input modifySnowflakeDataSourceInput {
+  idOrUniqueName: idOrUniqueName!
+  uniqueName: String
+  description: String
+  connectionSettings: PartialSnowflakeConnectionSettingsInput
+}
+
+input SnowflakeConnectionSettingsInput {
+  account: String!
+  database: String!
+  warehouse: String!
+  schema: String!
+  username: String!
+  password: String!
+  role: String!
+}
+
+input PartialSnowflakeConnectionSettingsInput {
+  account: String
+  database: String
+  warehouse: String
+  schema: String
+  username: String
+  password: String
+  role: String
+}
+
+union DataSourceOrFailureResponse = DataSourceResponse | FailureResponse
+
+type DataSourceResponse {
+  dataSource: DataSource
+}
+
+""" TableLocation represents the destination to sync a Data Pool to, or, alternatively, the source to query its Metrics from. """
+type TableLocation {
+  """ The name of the cluster. """
+  cluster: String!
+
+  """ The name of the database. """
+  database: String!
+
+  """ The name of the table. """
+  table: String!
+}
+
+""" Override the TableLocation to sync a Data Pool to. Optional fields have sensible defaults. """
+input TableLocationInput {
+  """ The name of the table. """
+  table: String
+}
+
+input UpdateMetricsQuerySourcesInput {
+  """ The Data Pool whose Metrics we will update. """
+  dataPool: ID!
+
+  """ The TableLocation to set as the querySources. If omitted, defaults are taken from the Data Pool. In this way,
+  you can "refresh" the querySources by omitting this entirely. """
+  querySource: TableLocationInput
+}
+
+type DataPool implements Node & Common {
+  # Common Properties
+  id: ID!
+  uniqueName: String!
+  description: String!
+  account: Account!
+  environment: Environment!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  createdBy: String!
+  modifiedBy: String!
+
+  # Object-specific Properties
+  dataSource: DataSource!
+  status: DataPoolStatus!
+  error: Error @deprecated(reason: "Refer to setupTasks instead")
+  dataRetentionInDays: Int!
+  table: String!
+  timestamp: Dimension!
+
+  columns (first: Int, after: String, last: Int, before: String): ColumnConnection
+  availableMeasures (first: Int, after: String, last: Int, before: String): ColumnConnection
+
+  """ A list of setup tasks performed on the Data Pool during its most recent setup attempt. """
+  setupTasks: [DataPoolSetupTask!]
+
+  """ Indicates whether or not syncing records is enabled for the Data Pool. """
+  syncing: DataPoolSyncStatus
+  syncs (first: Int, after: String, last: Int, before: String): SyncConnection
+
+  metrics (first: Int, after: String, last: Int, before: String): MetricConnection
+
+  """ The destination that the Data Pool will be synced to. """
+  syncDestination: TableLocation! @tag(name: "internal")
+}
+
+type DataPoolSetupTask {
+  """ The name of the Data Pool setup task to be performed. """
+  name: String!
+
+  """ A description of the Data Pool setup task to be performed. """
+  description: String
+
+  """ The status of the Data Pool setup task (all setup tasks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED). """
+  status: DataPoolSetupTaskStatus!
+
+  """ If the Data Pool setup task failed, this field includes a descriptive error message. """
+  error: Error
+
+  """ The time at which the Data Pool setup task was completed. """
+  completedAt: DateTime
+}
+
+enum DataPoolSetupTaskStatus {
+  NOT_STARTED
+  SUCCEEDED
+  FAILED
+}
+
+# At present, this is just a subset of fields from Column. We won't support
+# fields like `createdAt`, `modifiedAt`, etc., until perhaps we introduce a
+# `displayName`.
+"""
+The Dimension object that represents a column in a table.
+"""
+type Dimension {
+
+  """ The column name it represents. """
+  columnName: String!
+
+  """ The column data type. """
+  type: String!
+
+  """ Whether the column is nullable. """
+  isNullable: Boolean
+
+  """ Whether the column is a unique key. """
+  isUniqueKey: Boolean
+
+  """ The statistics for the dimension values. Fetching statistics incurs query costs."""
+  stats: DimensionStatistics
+}
+
+"""
+Statistics about a particular dimension. Statistics are only available for numeric dimensions.
+"""
+type DimensionStatistics {
+  """ The count of unique values. Fetching cardinality values incurs query costs. """
+  cardinality: String
+
+  """ An array of unique values. If cardinality is greater than 1,000, the most common 1,000 values will be returned. Fetching unique values incurs query costs."""
+  uniqueValues (limit: Int): [String!]
+
+  """ The minimum value of the dimension."""
+  min: String
+
+  """ The maximum value of the dimension."""
+  max: String
+
+  """ The average value of the dimension. Empty for non-numeric dimensions."""
+  average: String
+}
+
+type Filter {
+  column: String!
+  operator: FilterOperator!
+  value: String!
+}
+
+input DimensionInput {
+  columnName: String!
+}
+
+type DataPoolConnection {
+  pageInfo: PageInfo!
+  edges: [DataPoolEdge!]
+  nodes: [DataPool!]
+}
+
+type DataPoolEdge {
+  cursor: String!
+  node: DataPool!
+}
+
+type DataPoolTable {
+  name: String!
+  schema: [DataPoolTableColumn]!
+}
+
+type DataPoolTableColumn {
+  name: String!
+  dataType: String!
+}
+
+
+enum DataPoolStatus {
+  """ The Data Pool has been created. We will attempt to set it up soon. """
+  CREATED
+
+  """ We are attempting to setup the Data Pool """
+  PENDING
+
+  """ The Data Pool is setup and serving data. Check its Syncs to monitor data ingestion. """
+  LIVE
+
+  """ We could not setup the Data Pool. Check its setup tasks before re-attempting setup. """
+  SETUP_FAILED
+
+  CONNECTING @deprecated(reason: "Start using PENDING instead")
+
+  CONNECTED @deprecated(reason: "Start using LIVE instead")
+
+  BROKEN @deprecated(reason: "Start using SETUP_FAILED instead")
+
+  PAUSING @deprecated(reason: "The ability to pause will move to a new field")
+
+  PAUSED @deprecated(reason: "The ability to pause will move to a new field")
+
+  """ We are deleting the Data Pool and all of its associated data. """
+  DELETING
+}
+
+input createDataPoolInput {
+  dataSource: idOrUniqueName!
+  table: String!
+  timestamp: DimensionInput!
+  uniqueName: String
+  description: String
+  dataRetentionInDays: Int
+
+  """ Employee-only API for overriding a Data Pool's syncDestination. """
+  syncDestination: TableLocationInput @tag(name: "internal")
+}
+
+input modifyDataPoolInput {
+  idOrUniqueName: idOrUniqueName!
+  uniqueName: String
+  description: String
+  dataRetentionInDays: Int
+
+  """ Employee-only API for updating a Data Pool's syncDestination. If you change this, you need to take care to migrate
+  historical data to the new syncDestination yourself. You will also need to update the Data Pool's Metrics. """
+  syncDestination: TableLocationInput @tag(name: "internal")
+}
+
+union DataPoolOrFailureResponse = DataPoolResponse | FailureResponse
+
+type DataPoolResponse {
+  dataPool: DataPool
+}
+
+enum DataPoolSyncStatus {
+  """ Syncing is enabled for the Data Pool. """
+  ENABLED
+
+  """ We are disabling syncing for the Data Pool. """
+  DISABLING
+
+  """ Syncing is disabled for the Data Pool. """
+  DISABLED
+
+  """ We are re-enabling syncing for the Data Pool. """
+  ENABLING
+}
+
+type Sync implements Node {
+  """ The ID of the Sync resource. """
+  id: ID!
+
+  """ The Account to which the Sync belongs. """
+  account: Account
+
+  """ The Environment to which the Sync belongs. """
+  environment: Environment
+
+  """ The Data Source to which the Sync belongs. """
+  dataSource: DataSource
+
+  """ The Data Pool to which the Sync belongs. """
+  dataPool: DataPool
+
+  """ This is the ID of the query which generated the Sync in Snowflake. In the future, this will become private. """
+  queryId: String! @tag(name: "internal")
+
+  """ The number of files contained within the Sync, if known. In the future, this will become private. """
+  numFiles: Int @tag(name: "internal")
+
+  """ The number of row groups contained within the Sync, if known. In the future, this will become private. """
+  numRowGroups: Int @tag(name: "internal") @deprecated(reason: "If you want to know this, you can go down to the File-level")
+
+  """ The number of blocks contained within the Sync, if known. In the future, this will become private. """
+  numBlocks: Int @tag(name: "internal") @deprecated(reason: "If you want to know this, you can go down to the Row Group-level")
+
+  """ The number of records processed within the Sync, if known. This number may be larger than the actual number of
+  records synced, due to filtering. """
+  totalRecords: String @tag(name: "internal") @deprecated(reason: "We will split this out into multiple fields")
+
+  """ The number of new records contained within the Sync, if known. This excludes filtered records. """
+  newRecords: String
+
+  """ The number of updated records contained within the Sync, if known. This excludes filtered records. """
+  updatedRecords: String
+
+  """ The number of deleted records contained within the Sync, if known. This excludes filtered records. """
+  deletedRecords: String
+
+  """ The number of filtered records contained within the Sync, due to issues such as missing time dimension, if
+  known. """
+  invalidRecords: String
+
+  """ The (compressed) size of the Sync, in bytes, if known. """
+  size: String
+
+  """ The status of the Sync (all Syncs begin as SYNCING before transitioning to SUCCEEDED or FAILED). """
+  status: SyncStatus!
+
+  """ The time at which the Sync started. """
+  startedAt: DateTime
+
+  """ The time at which the Sync succeeded. """
+  succeededAt: DateTime
+
+  """ The time at which the Sync failed. """
+  failedAt: DateTime
+
+  """ If the Sync failed, this represents the reason the Sync failed. """
+  error: Error
+
+  createdAt: DateTime!
+
+  createdBy: String!
+
+  modifiedAt: DateTime!
+
+  modifiedBy: String!
+
+  files (
+    status: FileStatus
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): FileConnection @tag(name: "internal")
+}
+
+enum SyncStatus {
+  """ We are actively syncing records contained within the Sync. """
+  SYNCING
+
+  """ We successfully synced all records contained within the Sync. """
+  SUCCEEDED
+
+  """ We failed to sync some or all records contained within the Sync. """
+  FAILED
+
+  """ We are deleting the Sync. """
+  DELETING
+}
+
+type SyncConnection {
+  pageInfo: PageInfo!
+  edges: [SyncEdge!]
+  nodes: [Sync!]
+}
+
+type SyncEdge {
+  cursor: String!
+  node: Sync!
+}
+
+type Metric implements Node & Common {
+  # Common Properties
+  id: ID!
+  uniqueName: String!
+  description: String!
+  account: Account!
+  environment: Environment!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  createdBy: String!
+  modifiedBy: String!
+
+  # Object-specific Properties
+  """
+  The Data Pool that powers this Metric.
+  """
+  dataPool: DataPool!
+  dimensions: [Dimension!]!
+
+  timestamp: Dimension!
+
+  measure: Dimension @deprecated(reason: "Use the Metric settings object instead.")
+
+  """
+  The Metric's type. The different Metric types determine how the values are calculated.
+  """
+  type: MetricType!
+  """
+  The settings for the Metric. The settings are specific to the Metric's type.
+  """
+  settings: MetricSettings!
+
+  """
+  The Metric data in counter format. A single metric value for the givem time range and filters.
+  """
+  counter (input: CounterInput!): CounterResponse
+  """
+  The Metric data in time series format. Arrays of timestamps and metric values for the given time range and filters.
+  """
+  timeSeries (input: TimeSeriesInput!): TimeSeriesResponse
+  """
+  The Metric data in leaderboard format. A table (array of rows) with the selected dimensions and corresponding metric values for the given time range and filters.
+  """
+  leaderboard (input: LeaderboardInput!): LeaderboardResponse
+
+  """ The source that the Metric will be queried from. May differ from the Data Pool's syncDestination. """
+  querySource: TableLocation! @tag(name: "internal")
+}
+
+"""
+A Metric's settings, depending on its type.
+"""
+union MetricSettings = CountMetricSettings | SumMetricSettings | CountDistinctMetricSettings
+
+enum MetricType {
+  """
+  Counts the number of records that meet the filter criteria.
+  """
+  COUNT
+
+  """
+  Sums a specified column for every row that meets the filter criteria.
+  """
+  SUM
+
+  """
+  Counts the number of different records in the provided column.
+  """
+  COUNT_DISTINCT
+}
+
+"""
+Settings for count Metrics.
+"""
+type CountMetricSettings {
+  """
+  Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
+  """
+  filters: [Filter!]
+}
+
+"""
+Settings for sum Metrics.
+"""
+type SumMetricSettings {
+  """
+  Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
+  """
+  filters: [Filter!]
+
+  """
+  The dimension to be summed.
+  """
+  measure: Dimension!
+}
+
+"""
+Settings for count distinct Metrics.
+"""
+type CountDistinctMetricSettings {
+  """
+  Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
+  """
+  filters: [Filter!]
+
+  """
+  The dimension where the count distinct is going to be performed.
+  """
+  dimension: Dimension!
+}
+
+type MetricConnection {
+  pageInfo: PageInfo!
+  edges: [MetricEdge!]
+  nodes: [Metric!]
+}
+
+type MetricEdge {
+  cursor: String!
+  node: Metric!
+}
+
+type MetricResponse {
+  metric: Metric
+}
+
+"""
+Settings to create a new count Metric.
+"""
+input CreateCountMetricInput {
+
+  """ The Data Pool that powers this Metric. """
+  dataPool: ID!
+
+  """ The Metric's unique name. """
+  uniqueName: String
+
+  """ The Metric's description. """
+  description: String
+
+  """ The Metric's filters. Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. """
+  filters: [FilterInput!]
+
+  """ The Metric's dimensions. Dimensions define the columns that will be available to filter the Metric at query time. """
+  dimensions: [DimensionInput!]
+
+  """ Employee-only API for overriding a Metric's querySource. """
+  querySource: TableLocationInput @tag(name: "internal")
+}
+
+"""
+Settings to create a new sum Metric.
+"""
+input CreateSumMetricInput {
+
+  """ The Data Pool that powers this Metric. """
+  dataPool: ID!
+
+  """ The Metric's unique name. """
+  uniqueName: String
+
+  """ The Metric's description. """
+  description: String
+
+  """ The Metric's filters. Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. """
+  filters: [FilterInput!]
+
+  """ The Metric's dimensions. Dimensions define the columns that will be available to filter the Metric at query time. """
+  dimensions: [DimensionInput!]
+
+  """ The column to be summed. """
+  measure: DimensionInput!
+
+  """ Employee-only API for overriding a Metric's querySource. """
+  querySource: TableLocationInput @tag(name: "internal")
+}
+
+"""
+Settings to create a new count distinct Metric.
+"""
+input CreateCountDistinctMetricInput {
+
+  """ The Data Pool that powers this Metric. """
+  dataPool: ID!
+
+  """ The Metric's unique name. """
+  uniqueName: String
+
+  """ The Metric's description. """
+  description: String
+
+  """ The Metric's filters. Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. """
+  filters: [FilterInput!]
+
+  """ The Metric's dimensions. Dimensions define the columns that will be available to filter the Metric at query time. """
+  dimensions: [DimensionInput!]
+
+  """ The dimension over which the count distinct is going to be performed. """
+  dimension: DimensionInput!
+
+  """ Employee-only API for overriding a Metric's querySource. """
+  querySource: TableLocationInput @tag(name: "internal")
+}
+
+input ModifyMetricInput {
+  metric: ID!
+  uniqueName: String
+  description: String
+
+  """ Employee-only API for updating a Metric's querySource. """
+  querySource: TableLocationInput @tag(name: "internal")
+}
+
+"""
+The input fields to fetch metric data in counter format.
+"""
+input CounterInput {
+  """ query timeout in milliseconds """
+  timeout: Int @tag(name: "internal")
+
+  """ The time range for calculating the counter."""
+  timeRange: TimeRangeInput!
+
+  """ The list of filters to apply before retreiving the counter data. """
+  filters: [FilterInput!]
+}
+
+"""
+The input fields to fetch metric data in time series format.
+"""
+input TimeSeriesInput {
+  """ query timeout in milliseconds """
+  timeout: Int @tag(name: "internal")
+
+  """ The time range for calculating the time series."""
+  timeRange: TimeRangeInput!
+
+  """ The time granularity to aggregate the metric values by. """
+  granularity: TimeSeriesGranularity!
+
+  """ The list of filters to apply before retreiving the time series data. """
+  filters: [FilterInput!]
+}
+
+"""
+The input fields to fetch metric data in leaderboard format.
+"""
+input LeaderboardInput {
+  """ query timeout in milliseconds """
+  timeout: Int @tag(name: "internal")
+
+  """ The time range for calculating the leaderboard."""
+  timeRange: TimeRangeInput!
+
+  """ A list of dimensions to group the metric values by. Typically, dimensions in a Leaderboard are what you want to compare and rank. """
+  dimensions: [DimensionInput!]!
+
+  """ The sort order of the rows. It can be ASC for ascending or DESC for descending order. It defaults to DESC when not provided."""
+  sort: Sort
+
+  """ The number of rows to be returned. It can be a number between 1 and 1,000. """
+  rowLimit: Int!
+
+  """ The list of filters to apply before retreiving the leaderboard data. """
+  filters: [FilterInput!]
+}
+
+input TimeRangeInput {
+  relative: RelativeTimeRange
+  """
+  If a relative time range is not provided, this defaults to the timestamp
+  of the earliest record in the Metric's Data Pool.
+  """
+  start: DateTime
+  """
+  If a relative time range is not provided, this defaults to the timestamp
+  of the latest record in the Metric's Data Pool.
+  """
+  stop: DateTime
+}
+
+"""
+The sort order options for metric queries.
+"""
+enum Sort {
+  ASC
+  DESC
+}
+
+enum RelativeTimeRange {
+  TODAY
+  THIS_WEEK
+  THIS_MONTH
+  THIS_YEAR
+  YESTERDAY
+  PREVIOUS_WEEK
+  PREVIOUS_MONTH
+  PREVIOUS_YEAR
+  LAST_15_MINUTES
+  LAST_30_MINUTES
+  LAST_HOUR
+  LAST_4_HOURS
+  LAST_12_HOURS
+  LAST_24_HOURS
+  LAST_7_DAYS
+  LAST_30_DAYS
+  LAST_90_DAYS
+  LAST_3_MONTHS
+  LAST_6_MONTHS
+  LAST_YEAR
+  LAST_2_YEARS
+  LAST_5_YEARS
+}
+
+enum TimeSeriesGranularity {
+  MINUTE
+  FIVE_MINUTES
+  TEN_MINUTES
+  FIFTEEN_MINUTES
+  HOUR
+  DAY
+  WEEK
+  MONTH
+  YEAR
+}
+
+input FilterInput {
+  column: String!
+  operator: FilterOperator!
+  value: String!
+}
+
+enum FilterOperator {
+  EQUALS
+  NOT_EQUALS
+  GREATER_THAN
+  GREATER_THAN_OR_EQUAL_TO
+  LESS_THAN
+  LESS_THAN_OR_EQUAL_TO
+}
+
+type CounterResponse {
+  value: String!
+}
+
+type TimeSeriesResponse {
+  labels: [String!]!
+  values: [String!]!
+}
+
+"""
+The Leaderboard Response object. Contains an array of headers and a table (array of rows) with the selected dimensions and corresponding metric values for the given time range and filters.
+"""
+type LeaderboardResponse {
+
+  """ The table headers. It contains the dimension name for the dimension columns and the metric name for metric values column. """
+  headers: [String!]!
+
+  """ An ordered array of rows. Each row contains the dimension values and the metric value. A dimension value can be empty. A metric value will never be empty."""
+  rows: [[String]!]!
+}
+
+# File, RowGroup & Block
+
+type File @tag(name: "internal") {
+  name: String!
+
+  """ This is the Parquet file's size in bytes. """
+  size: Int!
+
+  numRowGroups: Int!
+
+  numBlocks: Int @deprecated(reason: "If you want to know this, you can go down to the Row Group-level")
+
+  """ This is the total number of Rows contained within the Parquet file. """
+  numRows: Int!
+
+  """ The number of new records contained within the File, if known. This excludes filtered records. """
+  newRecords: String
+
+  """ The number of updated records contained within the File, if known. This excludes filtered records. """
+  updatedRecords: String
+
+  """ The number of deleted records contained within the File, if known. This excludes filtered records. """
+  deletedRecords: String
+
+  """ The number of filtered records contained within the File, due to issues such as missing time dimension, if known. """
+  invalidRecords: String
+
+  rowGroups (first: Int, after: String, last: Int, before: String): RowGroupConnection
+  status: FileStatus!
+  startedAt: DateTime
+  succeededAt: DateTime
+  failedAt: DateTime
+  error: String
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  createdBy: String!
+  modifiedBy: String!
+}
+
+enum FileStatus {
+  NotStarted
+  Started
+  Succeeded
+  Failed
+}
+
+type FileConnection @tag(name: "internal") {
+  pageInfo: PageInfo!
+  edges: [FileEdge!]
+  nodes: [File!]
+}
+
+type FileEdge @tag(name: "internal") {
+  cursor: String!
+  node: File!
+}
+
+type RowGroup @tag(name: "internal") {
+  index: Int!
+
+  """ This is the total number of Blocks contained within the Row Group. This is known only after the Row Group has succeeded. """
+  numBlocks: Int
+
+  """ This is the total number of Rows contained within the Row Group. """
+  numRows: Int!
+
+  """ The number of new records contained within the Row Group, if known. This excludes filtered records. """
+  newRecords: String
+
+  """ The number of updated records contained within the Row Group, if known. This excludes filtered records. """
+  updatedRecords: String
+
+  """ The number of deleted records contained within the Row Group, if known. This excludes filtered records. """
+  deletedRecords: String
+
+  """ The number of filtered records contained within the Row Group, due to issues such as missing time dimension, if known. """
+  invalidRecords: String
+
+  blocks (first: Int, after: String, last: Int, before: String): BlockConnection
+  status: RowGroupStatus!
+  startedAt: DateTime
+  succeededAt: DateTime
+  failedAt: DateTime
+  error: String
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  createdBy: String!
+  modifiedBy: String!
+}
+
+enum RowGroupStatus {
+  NotStarted
+  Started
+  Succeeded
+  Failed
+}
+
+type RowGroupConnection @tag(name: "internal") {
+  pageInfo: PageInfo!
+  edges: [RowGroupEdge!]
+  nodes: [RowGroup!]
+}
+
+type RowGroupEdge @tag(name: "internal") {
+  cursor: String!
+  node: RowGroup!
+}
+
+type Block @tag(name: "internal") {
+  index: Int!
+
+  """ This is the total number of Rows contained within the Block. This is known only after the Block has succeeded. """
+  numRows: Int
+
+  """ The number of new records contained within the Block, if known. This excludes filtered records. """
+  newRecords: String
+
+  """ The number of updated records contained within the Block, if known. This excludes filtered records. """
+  updatedRecords: String
+
+  """ The number of deleted records contained within the Block, if known. This excludes filtered records. """
+  deletedRecords: String
+
+  """ The number of filtered records contained within the Block, due to issues such as missing time dimension, if known. """
+  invalidRecords: String
+
+  status: BlockStatus!
+  startedAt: DateTime!
+  succeededAt: DateTime
+  failedAt: DateTime
+  error: String
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  createdBy: String!
+  modifiedBy: String!
+}
+
+enum BlockStatus {
+  Started
+  Succeeded
+  Failed
+}
+
+type BlockConnection @tag(name: "internal") {
+  pageInfo: PageInfo!
+  edges: [BlockEdge!]
+  nodes: [Block!]
+}
+
+type BlockEdge @tag(name: "internal") {
+  cursor: String!
+  node: Block!
+}
+
+type IamUser implements Node @tag(name: "internal") {
+  id: ID!
+
+  createdAt: DateTime!
+  createdBy: String!
+  modifiedAt: DateTime!
+  modifiedBy: String!
+
+  accountId: Account!
+  username: String!
+  accessKeyId: String
+  secretAccessKey: String
+  expiresAt: String
+}
+
+type IamUserConnection @tag(name: "internal") {
+  pageInfo: PageInfo!
+  edges: [IamUserEdge!]!
+  nodes: [IamUser!]!
+}
+
+type IamUserEdge @tag(name: "internal") {
+  cursor: String!
+  node: IamUser!
+}
+
+type Mutation {
+
+  # Application Mutations
+  createApplication (input: createApplicationInput!): ApplicationOrFailureResponse
+  modifyApplication (input: modifyApplicationInput!): ApplicationOrFailureResponse
+  deleteApplication (id: ID!): ID
+  deleteApplicationByName (uniqueName: String!): ID
+
+  # DataSource Mutations
+  createSnowflakeDataSource (input: createSnowflakeDataSourceInput! ): DataSourceOrFailureResponse
+  modifySnowflakeDataSource (input: modifySnowflakeDataSourceInput!): DataSourceOrFailureResponse
+  reconnectDataSource (input: idOrUniqueName!): DataSource
+  introspectTables (input: idOrUniqueName!): TableIntrospection
+  # Tests that Propel can actually connect to the data warehouse. Updates the status.
+  testDataSource (input: idOrUniqueName!): DataSourceOrFailureResponse
+  deleteDataSource (id: ID!): ID
+  deleteDataSourceByName (uniqueName: String!): ID
+
+  # DataPool Mutations
+  createDataPool (input: createDataPoolInput!): DataPoolOrFailureResponse
+  modifyDataPool (input: modifyDataPoolInput!): DataPoolOrFailureResponse
+
+  """
+  Deprecated. Use retryDataPoolSetup instead.
+  """
+  reconnectDataPool (input: idOrUniqueName!): DataPool @deprecated(reason: "Use retryDataPoolSetup instead")
+
+  """
+  Retries to set up the Data Pool identified by the given ID.
+  """
+  retryDataPoolSetup (id: ID!): DataPool
+
+  """
+  Retries to set up the Data Pool identified by the given unique name.
+  """
+  retryDataPoolSetupByName (uniqueName: String!): DataPool
+
+  # Extracts the schema from the table and updates the schema object.
+  inspectDataPoolSchema (input: idOrUniqueName!): DataPoolOrFailureResponse
+  # Tests that Propel has access to the table, that the Streams are created properly, and that the Tasks are executing. Updates the status.
+  testDataPool (input: idOrUniqueName!): DataPoolOrFailureResponse
+  deleteDataPool (id: ID!): ID
+  deleteDataPoolByName (uniqueName: String!): ID
+
+  """ Disabling syncing of a Data Pool. """
+  disableSyncing (id: ID!): DataPool
+
+  """ Re-enable syncing of a Data Pool. """
+  enableSyncing (id: ID!): DataPool
+
+  """ Resync everything in a Data Pool. """
+  resyncEverything (id: ID!): DataPool @tag(name: "internal")
+
+  # Sync mutations
+
+  """ Retry an individual Sync. """
+  forceStartSync (id: ID!): Sync @tag(name: "internal")
+  retrySync (id: ID!): Sync @tag(name: "internal")
+  deleteSync (id: ID!): ID @tag(name: "internal")
+
+  # Metrics
+  createCountMetric (input: CreateCountMetricInput): MetricResponse
+  createCountDistinctMetric (input: CreateCountDistinctMetricInput): MetricResponse
+  createSumMetric (input: CreateSumMetricInput): MetricResponse
+  modifyMetric (input: ModifyMetricInput): MetricResponse
+  deleteMetric (id: ID!): ID
+  deleteMetricByName (uniqueName: String!): ID
+
+  """ Employee-only API for updating a Data Pool's Metric's querySource values. """
+  updateMetricsQuerySources (input: UpdateMetricsQuerySourcesInput!): ID @tag(name: "internal")
+
+  """ Employee-only API for pausing ingestion globally. """
+  pauseIngestionGlobally: Boolean @tag(name: "internal")
+
+  """ Employee-only API for resuming ingestion globally. """
+  resumeIngestionGlobally: Boolean @tag(name: "internal")
+}
+
+type Query {
+  application (id: ID!): Application
+  applicationByName (uniqueName: String!): Application
+  applicationByClientId (clientId: String!): Application
+  applications (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): ApplicationConnection
+
+  dataSource (id: ID!): DataSource
+  dataSourceByName (uniqueName: String!): DataSource
+  dataSources (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): DataSourceConnection
+
+  dataPool (id: ID!): DataPool
+  dataPoolByName (uniqueName: String!): DataPool
+  dataPools (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): DataPoolConnection
+
+  metric (id: ID!): Metric
+  metricByName (uniqueName: String!): Metric
+  metrics (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): MetricConnection
+
+  sync (id: ID!): Sync
+
+  """ Employee-only API for listing Syncs by status. Note that, internally, Syncs' statuses differ from the SyncStatus enum. That's why we accept a string. """
+  syncsByStatus (
+    status: String!
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): SyncConnection @tag(name: "internal")
+
+  """ Employee-only API for checking whether ingestion is paused globally. """
+  isIngestionPausedGlobally: Boolean @tag(name: "internal")
+
+  iamUsers (
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): IamUserConnection  @tag(name: "internal")
+}
+
+"""
+The Propel GraphQL API schema
+"""
+schema {
+  query: Query
+  mutation: Mutation
+}

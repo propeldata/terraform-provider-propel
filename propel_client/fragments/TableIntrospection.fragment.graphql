@@ -1,0 +1,11 @@
+fragment TableIntrospectionData on TableIntrospection {
+    dataSource {
+        id
+    }
+    status
+    createdAt
+    createdBy
+    modifiedAt
+    modifiedBy
+    numTables
+}

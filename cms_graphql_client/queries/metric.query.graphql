@@ -1,5 +1,0 @@
-query Metric($id: ID!) {
-    metric(id: $id) {
-        ...metric
-    }
-}

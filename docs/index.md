@@ -1,30 +1,29 @@
 ---
-page_title: "Provider: HashiCups"
+page_title: "Provider: Propel"
 subcategory: ""
 description: |-
-  Terraform provider for interacting with HashiCups API.
+  Terraform provider for interacting with Propel API.
 ---
 
-# HashiCups Provider
-
--> Visit the [Call APIs with Terraform Providers](https://learn.hashicorp.com/collections/terraform/providers?utm_source=WEBSITE&utm_medium=WEB_IO&utm_offer=ARTICLE_PAGE&utm_content=DOCS) Learn tutorials for an interactive getting started experience.
-
-The HashiCups provider is used to interact with a fictional coffee-shop application, HashiCups. This provider is meant to serve as an educational tool to show users how:
-1. use providers to [create, read, update and delete (CRUD) resources](https://learn.hashicorp.com/tutorials/terraform/provider-use?in=terraform/providers) using Terraform.
-1. create a custom Terraform provider.
-
-To learn how to re-create the HashiCups provider, refer to the [Call APIs with Terraform Providers](https://learn.hashicorp.com/collections/terraform/providers?utm_source=WEBSITE&utm_medium=WEB_IO&utm_offer=ARTICLE_PAGE&utm_content=DOCS) Learn tutorials.
-
-Use the navigation to the left to read about the available resources.
+# Propel Provider
+The [Propel](https://propeldata.com) provider is used to interact with Propel resources, including Data Sources, Data Pools and Metrics. The provider needs to be configured with the proper Application credentials (client ID and secret) before it can be used.
 
 ## Example Usage
 
-Do not keep your authentication password in HCL for production environments, use Terraform environment variables.
-
 ```terraform
-provider "hashicups" {
-  username = "education"
-  password = "test123"
+
+terraform {
+  required_providers {
+    propel = {
+      source = "propeldata.com/propeldata/propel"
+    }
+  }
+}
+
+# Configure the provider to use your Propel Application
+provider "propel" {
+  client_id = var.propel_client_id
+  client_secret = var.propel_client_secret
 }
 ```
 
@@ -32,6 +31,5 @@ provider "hashicups" {
 
 ### Optional
 
-- **username** (String, Optional) Username to authenticate to HashiCups API
-- **password** (String, Optional) Password to authenticate to HashiCups API
-- **host** (String, Optional) HashiCups API address (defaults to `localhost:19090`)
+- **client_id** (String) Your Propel Application's client ID
+- **client_secret** (String) Your Propel Application's client secret

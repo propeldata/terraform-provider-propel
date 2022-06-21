@@ -1,0 +1,5 @@
+mutation ReconnectDataSource($input: idOrUniqueName!) {
+    reconnectDataSource(input: $input) {
+        ...DataSourceData
+    }
+}

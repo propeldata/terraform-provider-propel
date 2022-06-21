@@ -1,0 +1,12 @@
+query DataPools($first: Int, $last: Int, $after: String, $before: String) {
+    dataPools(first: $first, last: $last, after: $after, before: $before) {
+        pageInfo {
+            ...PageInfoData
+        }
+        edges {
+            node {
+                ...DataPoolData
+            }
+        }
+    }
+}

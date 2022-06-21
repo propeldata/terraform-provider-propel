@@ -12,20 +12,100 @@ provider "propel" {
   client_secret = var.client_secret
 }
 
-resource "propel_datasource" "datasource" {
-  unique_name = var.uniqueName
-  description = var.description
-  connection_settings = {
-    username = var.username
-    password = var.password
-    warehouse = var.warehouse
-    role = var.role
-    account = var.account
-    database = var.database
-    schema = var.schema
+resource "propel_data_source" "data_source" {
+  unique_name = "My Data Source"
+  description = "Data Source Description"
+
+  connection_settings {
+    account = "Snowflake Account"
+    database = "Snowflake Database"
+    warehouse = "Snowflake Warehouse"
+    schema = "Snowflake Schema"
+    role = "Snowflake Role"
+    username = "Snowflake Username"
+    password = var.snowflake_password
   }
 }
 
-output "datasource" {
-  value = propel_datasource.datasource.id
+resource "propel_data_pool" "data_pool" {
+  unique_name = "My Data Pool"
+  description = "Data Pool Description"
+  data_source = propel_data_source.data_source.id
+
+  table = "sample"
+  timestamp = "date"
+}
+
+resource "propel_metric" "count_metric" {
+  unique_name = "My Count Metric"
+  description = "Metric Description"
+  data_pool = propel_data_pool.data_pool.id
+
+  type = "COUNT"
+
+  filter {
+    column = "column_3"
+    operator = "EQUALS"
+    value = "value"
+  }
+
+  filter {
+    column = "column_4"
+    operator = "EQUALS"
+    value = "value"
+  }
+
+  dimensions = ["column_1", "column_2"]
+}
+
+resource "propel_metric" "sum_metric" {
+  unique_name = "My Sum Metric"
+  data_pool = propel_data_pool.data_pool.id
+
+  type = "SUM"
+  measure = "column_1"
+
+  filter {
+    column = "column_3"
+    operator = "EQUALS"
+    value = "value"
+  }
+
+  dimensions = ["column_1", "column_2"]
+}
+
+resource "propel_metric" "count_distinct_metric" {
+  unique_name = "My Count Distinct Metric"
+  data_pool = propel_data_pool.data_pool.id
+
+  type = "COUNT_DISTINCT"
+  dimension = "column_1"
+
+  filter {
+    column = "column_4"
+    operator = "EQUALS"
+    value = "value"
+  }
+
+  dimensions = ["column_1", "column_2"]
+}
+
+output "data_source_id" {
+  value = propel_data_source.data_source.id
+}
+
+output "data_pool_id" {
+  value = propel_data_pool.data_pool.id
+}
+
+output "count_metric_id" {
+  value = propel_metric.count_metric.id
+}
+
+output "sum_metric_id" {
+  value = propel_metric.sum_metric.id
+}
+
+output "count_distinct_metric_id" {
+  value = propel_metric.count_distinct_metric.id
 }

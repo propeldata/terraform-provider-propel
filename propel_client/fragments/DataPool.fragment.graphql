@@ -1,0 +1,40 @@
+fragment DataPoolData on DataPool {
+    id
+    ...CommonData
+    dataSource {
+        ...DataSourceData
+    }
+    status
+    error {
+        message
+    }
+    table
+    timestamp {
+      ...DimensionData
+    }
+    columns {
+        nodes {
+            ...ColumnData
+        }
+    }
+    availableMeasures {
+        nodes {
+            ...ColumnData
+        }
+    }
+    setupTasks {
+        name
+        description
+        status
+        error {
+            code
+            message
+        }
+        completedAt
+    }
+    syncs {
+        nodes {
+            ...SyncData
+        }
+    }
+}

@@ -1,5 +1,0 @@
-mutation ReconnectDataPool($input: idOrUniqueName!) {
-    reconnectDataPool(input: $input) {
-        ...dataPool
-    }
-}

@@ -2,16 +2,14 @@ package propel
 
 import (
 	"context"
-
-	cms "terraform-provider-hashicups/cms_graphql_client"
+	"fmt"
+	"runtime"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-)
 
-const (
-	apiURL   = "https://api.us-east-2.propeldata.com/graphql"
-	oauthURL = "https://auth.us-east-2.propeldata.com/oauth2/token"
+	"github.com/propeldata/terraform-provider/propel/internal/utils"
+	pc "github.com/propeldata/terraform-provider/propel_client"
 )
 
 // Provider -
@@ -34,7 +32,9 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"propel_datasource": resourceDataSource(),
+			"propel_data_source": resourceDataSource(),
+			"propel_data_pool":   resourceDataPool(),
+			"propel_metric":      resourceMetric(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}
@@ -57,7 +57,14 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		return nil, diags
 	}
 
-	c, err := cms.NewCmsClient(apiURL, oauthURL, clientID, clientSecret)
+	userAgent := utils.GetUserAgent(fmt.Sprintf(
+		"propel-client-go (go %s; os %s; arch %s)",
+		runtime.Version(),
+		runtime.GOOS,
+		runtime.GOARCH,
+	))
+
+	c, err := pc.NewPropelClient(clientID, clientSecret, userAgent)
 	if err != nil {
 		return nil, diag.FromErr(err)
 	}

@@ -1,5 +1,0 @@
-query MetricByName($uniqueName: String!) {
-    metric: metricByName(uniqueName: $uniqueName) {
-        ...metric
-    }
-}

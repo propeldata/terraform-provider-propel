@@ -1,8 +1,0 @@
-mutation ModifyMetric($input: ModifyMetricInput) {
-    modifyMetric(input: $input) {
-        __typename
-        metric {
-            ...metric
-        }
-    }
-}

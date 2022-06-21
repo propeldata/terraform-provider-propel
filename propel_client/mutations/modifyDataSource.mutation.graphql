@@ -1,0 +1,15 @@
+mutation ModifySnowflakeDataSource($input: modifySnowflakeDataSourceInput!) {
+    modifySnowflakeDataSource(input: $input) {
+        __typename
+        ... on DataSourceResponse {
+            dataSource {
+                ...DataSourceData
+            }
+        }
+        ... on FailureResponse {
+            error {
+                ...GqlError
+            }
+        }
+    }
+}

@@ -1,19 +1,17 @@
-# Terraform Provider Hashicups
+# Propel Terraform Provider
 
-This repo is a companion repo to the [Call APIs with Terraform Providers](https://learn.hashicorp.com/collections/terraform/providers) Learn collection. 
+The [Propel](https://propeldata.com) provider is used to interact with Propel resources, including Data Sources, Data Pools and Metrics. The provider needs to be configured with the proper Application credentials (client ID and secret) before it can be used.
 
-In the collection, you will use the HashiCups provider as a bridge between Terraform and the HashiCups API. Then, extend Terraform by recreating the HashiCups provider. By the end of this collection, you will be able to take these intuitions to create your own custom Terraform provider. 
-
-Visit the [`boilerplate`](https://github.com/hashicorp/terraform-provider-hashicups/tree/boilerplate) branch of this repository for this Terraform provider's specific starter template. The [Terraform Provider Scaffold](https://github.com/hashicorp/terraform-provider-scaffolding) is a quick-start repository for creating a Terraform provider. Use this GitHub template when you're ready to create your own custom provider.
-
-
+## Requirements
+- [Terraform](https://www.terraform.io/downloads.html) 1.2.x
+- [Go](https://golang.org/doc/install) 1.17 (to build the provider plugin)
 
 ## Build provider
 
 Run the following command to build the provider
 
 ```shell
-$ go build -o terraform-provider-hashicups
+$ go build -o terraform-provider-propel
 ```
 
 ## Local release build
@@ -26,7 +24,6 @@ $ go install github.com/goreleaser/goreleaser@latest
 $ make release
 ```
 
-You will find the releases in the `/dist` directory. You will need to rename the provider binary to `terraform-provider-hashicups` and move the binary into [the appropriate subdirectory within the user plugins directory](https://learn.hashicorp.com/tutorials/terraform/provider-use?in=terraform/providers#install-hashicups-provider).
 ## Test sample configuration
 
 First, build and install the provider.
@@ -45,4 +42,28 @@ Run the following command to initialize the workspace and apply the sample confi
 
 ```shell
 $ terraform init && terraform apply
+```
+
+## Developing the provider
+
+### Running Tests
+
+Configuring tests is similar to configuring the provider. Tests generally assume the following environment variables must be set in order to run tests:
+```
+PROPEL_CLIENT_ID
+PROPEL_CLIENT_SECRET
+```
+
+Additional variables may be required for other tests:
+```
+PROPEL_TEST_SNOWFLAKE_ACCOUNT
+PROPEL_TEST_SNOWFLAKE_WAREHOUSE
+PROPEL_TEST_SNOWFLAKE_ROLE
+PROPEL_TEST_SNOWFLAKE_USERNAME
+PROPEL_TEST_SNOWFLAKE_PASSWORD
+```
+
+Command to run the acceptance tests:
+```
+make testacc
 ```

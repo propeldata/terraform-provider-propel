@@ -1,0 +1,19 @@
+fragment SyncData on Sync {
+    id
+    queryId
+    status
+    newRecords
+    updatedRecords
+    deletedRecords
+    invalidRecords
+    startedAt
+    succeededAt
+    failedAt
+    error {
+        message
+    }
+    createdAt
+    createdBy
+    modifiedAt
+    modifiedBy
+}

@@ -1,0 +1,15 @@
+mutation CreateSnowflakeDataSource($input: createSnowflakeDataSourceInput!) {
+    createSnowflakeDataSource(input: $input) {
+        __typename
+        ... on DataSourceResponse {
+            dataSource {
+                ...DataSourceData
+            }
+        }
+        ... on FailureResponse {
+            error {
+                ...GqlError
+            }
+        }
+    }
+}

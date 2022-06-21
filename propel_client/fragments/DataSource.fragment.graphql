@@ -1,0 +1,50 @@
+fragment DataSourceData on DataSource {
+    id
+    ...CommonData
+    type
+    status
+    error {
+        message
+    }
+    connectionSettings {
+        __typename
+        ... on SnowflakeConnectionSettings {
+            account
+            database
+            warehouse
+            schema
+            username
+            role
+        }
+    }
+    tables (first: 100) {
+        nodes {
+            name
+            availableTimestamps (first: 100) {
+                nodes {
+                    ...ColumnData
+                }
+            }
+            availableMeasures (first: 100) {
+                nodes {
+                    ...ColumnData
+                }
+            }
+        }
+    }
+    checks {
+        name
+        description
+        status
+        error {
+            code
+            message
+        }
+        checkedAt
+    }
+    tableIntrospections (first: 100) {
+        nodes {
+            ...TableIntrospectionData
+        }
+    }
+}

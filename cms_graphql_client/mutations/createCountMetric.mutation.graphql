@@ -1,8 +1,0 @@
-mutation CreateCountMetric($input: CreateCountMetricInput) {
-    createCountMetric(input: $input) {
-        __typename
-        metric {
-            ...metric
-        }
-    }
-}

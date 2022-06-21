@@ -1,0 +1,12 @@
+query DataSources($first: Int, $last: Int, $after: String, $before: String) {
+    dataSources(first: $first, last: $last, after: $after, before: $before) {
+        pageInfo {
+            ...PageInfoData
+        }
+        edges {
+            node {
+                ...DataSourceData
+            }
+        }
+    }
+}

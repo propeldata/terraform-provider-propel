@@ -1,8 +1,0 @@
-mutation CreateSumMetric($input: CreateSumMetricInput) {
-    createSumMetric(input: $input) {
-        __typename
-        metric {
-            ...metric
-        }
-    }
-}

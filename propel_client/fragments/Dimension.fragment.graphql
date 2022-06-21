@@ -1,0 +1,6 @@
+fragment DimensionData on Dimension {
+    columnName
+    type
+    isNullable
+    isUniqueKey
+}
