@@ -15,7 +15,8 @@ The [Propel](https://propeldata.com) provider is used to interact with Propel re
 terraform {
   required_providers {
     propel = {
-      source = "propeldata.com/propeldata/propel"
+      source = "propeldata/propel"
+      version = "0.0.1"
     }
   }
 }

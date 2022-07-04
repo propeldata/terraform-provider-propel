@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    propel = {
+      source = "propeldata/propel"
+      version = "0.0.1"
+    }
+  }
+}
+
 provider "propel" {
   client_id = var.client_id
   client_secret = var.client_secret
