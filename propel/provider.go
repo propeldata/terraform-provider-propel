@@ -8,8 +8,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	"github.com/propeldata/terraform-provider/propel/internal/utils"
-	pc "github.com/propeldata/terraform-provider/propel_client"
+	"github.com/propeldata/terraform-provider-propel/propel/internal/utils"
+	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
 // Provider -

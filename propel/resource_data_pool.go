@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	pc "github.com/propeldata/terraform-provider/propel_client"
+	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
 func resourceDataPool() *schema.Resource {

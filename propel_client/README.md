@@ -24,11 +24,11 @@ import (
 	"fmt"
 	"log"
 
-	pc "github.com/propeldata/terraform-provider/propel_client"
+	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
 func main() {
-	c, err := pc.NewPropelClient("clientID", "clientSecret")
+	c, err := pc.NewPropelClient("clientID", "clientSecret", "user-agent")
 	if err != nil {
 		log.Fatal(err)
 	}

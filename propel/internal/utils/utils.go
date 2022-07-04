@@ -5,7 +5,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/meta"
 
-	"github.com/propeldata/terraform-provider/version"
+	"github.com/propeldata/terraform-provider-propel/version"
 )
 
 // GetUserAgent augments the default user agent with provider details
