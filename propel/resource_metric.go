@@ -106,7 +106,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 
 	var diags diag.Diagnostics
 
-	var filters []pc.FilterInput
+	filters := make([]pc.FilterInput, 0)
 	if def, ok := d.Get("filter").([]interface{}); ok && len(def) > 0 {
 		filters = expandMetricFilters(def)
 	}
