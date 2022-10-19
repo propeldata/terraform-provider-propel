@@ -1,0 +1,7 @@
+mutation CreateHttpDataSource($input: CreateHttpDataSourceInput!) {
+    createHttpDataSource(input: $input) {
+        dataSource {
+            ...DataSourceData
+        }
+    }
+}

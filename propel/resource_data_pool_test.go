@@ -14,15 +14,7 @@ import (
 )
 
 func TestAccPropelDataPoolBasic(t *testing.T) {
-	ctx := map[string]interface{}{
-		"snowflake_account":   getTestSnowflakeAccountFromEnv(t),
-		"snowflake_database":  "CLUSTER_TESTS",
-		"snowflake_warehouse": getTestSnowflakeWarehouseFromEnv(t),
-		"snowflake_schema":    "CLUSTER_TESTS",
-		"snowflake_role":      getTestSnowflakeRoleFromEnv(t),
-		"snowflake_username":  getTestSnowflakeUsernameFromEnv(t),
-		"snowflake_password":  getTestSnowflakePasswordFromEnv(t),
-	}
+	ctx := map[string]interface{}{}
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
@@ -44,17 +36,7 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]interface{}) string {
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
 		unique_name = "test"
-		type = "SNOWFLAKE"
-
-		snowflake_connection_settings {
-			account = "%{snowflake_account}"
-			database = "%{snowflake_database}"
-			warehouse = "%{snowflake_warehouse}"
-			schema = "%{snowflake_schema}"
-			role = "%{snowflake_role}"
-			username = "%{snowflake_username}"
-			password = "%{snowflake_password}"
-		}
+		type = "HTTP"
 	}
 
 	resource "propel_data_pool" "bar" {

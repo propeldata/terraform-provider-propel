@@ -16,6 +16,12 @@ fragment DataSourceData on DataSource {
             username
             role
         }
+        ... on HttpConnectionSettings {
+            basicAuth {
+                username
+                password
+            }
+        }
     }
     tables (first: 100) {
         nodes {

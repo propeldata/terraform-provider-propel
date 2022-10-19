@@ -19,13 +19,6 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 	ctx := map[string]interface{}{
 		"resource_name":       "new",
 		"unique_name":         acctest.RandString(10),
-		"snowflake_account":   getTestSnowflakeAccountFromEnv(t),
-		"snowflake_database":  "CLUSTER_TESTS",
-		"snowflake_warehouse": getTestSnowflakeWarehouseFromEnv(t),
-		"snowflake_schema":    "CLUSTER_TESTS",
-		"snowflake_role":      getTestSnowflakeRoleFromEnv(t),
-		"snowflake_username":  getTestSnowflakeUsernameFromEnv(t),
-		"snowflake_password":  getTestSnowflakePasswordFromEnv(t),
 	}
 
 	ctxInvalid := map[string]interface{}{
@@ -55,7 +48,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				),
 			},
 			{
-				Config:      testAccCheckPropelDataSourceConfigBasic(ctxInvalid),
+				Config:      testAccCheckPropelDataSourceConfigBroken(ctxInvalid),
 				ExpectError: regexp.MustCompile(`DataSource in BROKEN status`),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.foo"),
@@ -71,7 +64,15 @@ func testAccCheckPropelDataSourceConfigBasic(ctx map[string]interface{}) string 
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "SNOWFLAKE"
+		type = "HTTP"
+	}`, ctx)
+}
+
+func testAccCheckPropelDataSourceConfigBroken(ctx map[string]interface{}) string {
+	return Nprintf(`
+	resource "propel_data_source" "%{resource_name}" {
+		unique_name = "%{unique_name}"
+		type = "Snowflake"
 
 		snowflake_connection_settings {
 			account = "%{snowflake_account}"
