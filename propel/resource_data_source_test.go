@@ -71,8 +71,9 @@ func testAccCheckPropelDataSourceConfigBasic(ctx map[string]interface{}) string 
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
+		type = "SNOWFLAKE"
 
-		connection_settings {
+		snowflake_connection_settings {
 			account = "%{snowflake_account}"
 			database = "%{snowflake_database}"
 			warehouse = "%{snowflake_warehouse}"

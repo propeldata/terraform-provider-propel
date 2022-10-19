@@ -3,6 +3,7 @@ package propel
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/Khan/genqlient/graphql"
@@ -38,7 +39,7 @@ func resourceDataSource() *schema.Resource {
 			},
 			"type": {
 				Type:     schema.TypeString,
-				Computed: true,
+				Required: true,
 			},
 			"status": {
 				Type:     schema.TypeString,
@@ -74,10 +75,11 @@ func resourceDataSource() *schema.Resource {
 				Computed:    true,
 				Description: "The user who modified the Data Source",
 			},
-			"connection_settings": {
-				Type:     schema.TypeList,
-				Required: true,
-				MaxItems: 1,
+			"snowflake_connection_settings": {
+				Type:          schema.TypeList,
+				Optional:      true,
+				ConflictsWith: []string{"http_connection_settings"},
+				MaxItems:      1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"account": {
@@ -122,12 +124,23 @@ func resourceDataSource() *schema.Resource {
 }
 
 func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	// TODO(mroberts): The Propel GraphQL API should eventually return this uppercase.
+	dataSourceType := d.Get("type").(string)
+	switch strings.ToUpper(dataSourceType) {
+	case "SNOWFLAKE":
+		return resourceSnowflakeDataSourceCreate(ctx, d, meta)
+	default:
+		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
+	}
+}
+
+func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	connectionSettings := d.Get("connection_settings").([]interface{})[0].(map[string]interface{})
+	connectionSettings := d.Get("snowflake_connection_settings").([]interface{})[0].(map[string]interface{})
 
 	input := pc.CreateSnowflakeDataSourceInput{
 		UniqueName:  d.Get("unique_name").(string),
@@ -172,9 +185,6 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 
 func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
-
-	// Warning or errors can be collected in a slice type
-	var diags diag.Diagnostics
 
 	response, err := pc.DataSource(ctx, c, d.Id())
 	if err != nil {
@@ -222,7 +232,18 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.FromErr(err)
 	}
 
-	cs := d.Get("connection_settings").([]interface{})[0].(map[string]interface{})
+	// TODO(mroberts): The Propel GraphQL API should eventually return this uppercase.
+	dataSourceType := string(response.DataSource.Type)
+	switch strings.ToUpper(dataSourceType) {
+	case "SNOWFLAKE":
+		return handleSnowflakeConnectionSettings(response, d)
+	default:
+		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
+	}
+}
+
+func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	cs := d.Get("snowflake_connection_settings").([]interface{})[0].(map[string]interface{})
 
 	settings := map[string]interface{}{
 		"password": cs["password"],
@@ -236,13 +257,15 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		settings["schema"] = s.GetSchema()
 		settings["role"] = s.GetRole()
 		settings["username"] = s.GetUsername()
+	default:
+		return diag.Errorf("Missing SnowflakeConnectionSettings")
 	}
 
-	if err := d.Set("connection_settings", []map[string]interface{}{settings}); err != nil {
+	if err := d.Set("snowflake_connection_settings", []map[string]interface{}{settings}); err != nil {
 		return diag.FromErr(err)
 	}
 
-	return diags
+	return nil
 }
 
 func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {

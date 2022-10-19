@@ -12,11 +12,12 @@ provider "propel" {
   client_secret = var.client_secret
 }
 
-resource "propel_data_source" "data_source" {
-  unique_name = "My Data Source"
-  description = "Data Source Description"
+resource "propel_data_source" "snowflake_data_source" {
+  unique_name = "My Snowflake Data Source"
+  description = "This is an example of a Snowflake Data Source"
+  type = "SNOWFLAKE"
 
-  connection_settings {
+  snowflake_connection_settings {
     account = "Snowflake Account"
     database = "Snowflake Database"
     warehouse = "Snowflake Warehouse"
