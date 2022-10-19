@@ -80,6 +80,32 @@ func (v *ColumnData) GetCreatedAt() time.Time { return v.CreatedAt }
 // GetCreatedBy returns ColumnData.CreatedBy, and is useful for accessing the field via an interface.
 func (v *ColumnData) GetCreatedBy() string { return v.CreatedBy }
 
+// The Propel data types.
+type ColumnType string
+
+const (
+	// True or false.
+	ColumnTypeBoolean ColumnType = "BOOLEAN"
+	// A variable-length string.
+	ColumnTypeString ColumnType = "STRING"
+	// A 32-bit signed double-precision floating point number.
+	ColumnTypeFloat ColumnType = "FLOAT"
+	// A 64-bit signed double-precision floating point number.
+	ColumnTypeDouble ColumnType = "DOUBLE"
+	// An 8-bit signed integer, with a minimum value of -2⁷ and a maximum value of 2⁷-1.
+	ColumnTypeInt8 ColumnType = "INT8"
+	// A 16-bit signed integer, with a minimum value of -2¹⁵ and a maximum value of 2¹⁵-1.
+	ColumnTypeInt16 ColumnType = "INT16"
+	// A 32-bit signed integer, with a minimum value of -2³¹ and a maximum value of 2³¹-1.
+	ColumnTypeInt32 ColumnType = "INT32"
+	// A 64-bit signed integer, with a minimum value of -2⁶³ and a maximum value of 2⁶³-1.
+	ColumnTypeInt64 ColumnType = "INT64"
+	// A date without a timestamp. For example, "YYYY-MM-DD".
+	ColumnTypeDate ColumnType = "DATE"
+	// A date with a timestamp. For example, "yyy-MM-dd HH:mm:ss".
+	ColumnTypeTimestamp ColumnType = "TIMESTAMP"
+)
+
 // CommonData includes the GraphQL fields of Common requested by the fragment CommonData.
 // The GraphQL type's documentation follows.
 //
@@ -1434,6 +1460,246 @@ func (v *CreateDataPoolResponse) __premarshalJSON() (*__premarshalCreateDataPool
 		}
 	}
 	return &retval, nil
+}
+
+// CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse) GetDataSource() CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://docs.propeldata.com).
+type CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetError() DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetConnectionSettings returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetTables() DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetAccount() CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetEnvironment() CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error DataSourceDataError `json:"error"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account CommonDataAccount `json:"account"`
+
+	Environment CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalCreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalCreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"Unable to marshal CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// The fields for creating an HTTP Data Source.
+type CreateHttpDataSourceInput struct {
+	// The Data Source's unique name.
+	UniqueName string `json:"uniqueName"`
+	// The Data Source's description.
+	Description string `json:"description"`
+	// The HTTP Data Source connection settings.
+	ConnectionSettings HttpConnectionSettingsInput `json:"connectionSettings"`
+}
+
+// GetUniqueName returns CreateHttpDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceInput) GetUniqueName() string { return v.UniqueName }
+
+// GetDescription returns CreateHttpDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceInput) GetDescription() string { return v.Description }
+
+// GetConnectionSettings returns CreateHttpDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceInput) GetConnectionSettings() HttpConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// CreateHttpDataSourceResponse is returned by CreateHttpDataSource on success.
+type CreateHttpDataSourceResponse struct {
+	// This mutation creates a new HTTP Data Source from the given settings.
+	//
+	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+	CreateHttpDataSource CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse `json:"createHttpDataSource"`
+}
+
+// GetCreateHttpDataSource returns CreateHttpDataSourceResponse.CreateHttpDataSource, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceResponse) GetCreateHttpDataSource() CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse {
+	return v.CreateHttpDataSource
 }
 
 // CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse includes the requested fields of the GraphQL interface DataSourceOrFailureResponse.
@@ -4459,11 +4725,42 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 // The HTTP Data Source connection settings.
 type DataSourceDataConnectionSettingsHttpConnectionSettings struct {
 	Typename string `json:"__typename"`
+	// The HTTP Basic authentication settings for uploading new data.
+	//
+	// If this parameter is not provided, anyone with the URL to your tables will be able to upload data.
+	// While it's OK to test without HTTP Basic authentication, we recommend enabling it.
+	BasicAuth DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings `json:"basicAuth"`
 }
 
 // GetTypename returns DataSourceDataConnectionSettingsHttpConnectionSettings.Typename, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) GetTypename() string {
 	return v.Typename
+}
+
+// GetBasicAuth returns DataSourceDataConnectionSettingsHttpConnectionSettings.BasicAuth, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) GetBasicAuth() DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings {
+	return v.BasicAuth
+}
+
+// DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings includes the requested fields of the GraphQL type HttpBasicAuthSettings.
+// The GraphQL type's documentation follows.
+//
+// The HTTP Basic authentication settings.
+type DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings struct {
+	// Username for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
+	Username string `json:"username"`
+	// Password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
+	Password string `json:"password"`
+}
+
+// GetUsername returns DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings.Username, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings) GetUsername() string {
+	return v.Username
+}
+
+// GetPassword returns DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings.Password, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings) GetPassword() string {
+	return v.Password
 }
 
 // DataSourceDataConnectionSettingsSnowflakeConnectionSettings includes the requested fields of the GraphQL type SnowflakeConnectionSettings.
@@ -5759,6 +6056,70 @@ func (v *GqlError) GetCode() int { return v.Code }
 
 // GetMessage returns GqlError.Message, and is useful for accessing the field via an interface.
 func (v *GqlError) GetMessage() string { return v.Message }
+
+// The fields for specifying an HTTP Data Source's Basic authentication settings.
+type HttpBasicAuthInput struct {
+	// The username for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
+	Username string `json:"username"`
+	// The password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
+	Password string `json:"password"`
+}
+
+// GetUsername returns HttpBasicAuthInput.Username, and is useful for accessing the field via an interface.
+func (v *HttpBasicAuthInput) GetUsername() string { return v.Username }
+
+// GetPassword returns HttpBasicAuthInput.Password, and is useful for accessing the field via an interface.
+func (v *HttpBasicAuthInput) GetPassword() string { return v.Password }
+
+// The fields for creating an HTTP Data Source's connection settings.
+type HttpConnectionSettingsInput struct {
+	// The Data Source's tables.
+	Tables []HttpDataSourceTableInput `json:"tables"`
+	// The HTTP Basic authentication settings for uploading new data.
+	//
+	// If this parameter is not provided, anyone with the URL to your tables will be able to upload data.
+	// While it's OK to test without HTTP Basic authentication, we recommend enabling it.
+	BasicAuth HttpBasicAuthInput `json:"basicAuth"`
+}
+
+// GetTables returns HttpConnectionSettingsInput.Tables, and is useful for accessing the field via an interface.
+func (v *HttpConnectionSettingsInput) GetTables() []HttpDataSourceTableInput { return v.Tables }
+
+// GetBasicAuth returns HttpConnectionSettingsInput.BasicAuth, and is useful for accessing the field via an interface.
+func (v *HttpConnectionSettingsInput) GetBasicAuth() HttpBasicAuthInput { return v.BasicAuth }
+
+// The fields for specifying a Column in a Table.
+type HttpDataSourceColumnInput struct {
+	// The column name. It has to be unique within a Table.
+	Name string `json:"name"`
+	// The column type.
+	Type ColumnType `json:"type"`
+	// Whether the column's type is nullable or not.
+	Nullable bool `json:"nullable"`
+}
+
+// GetName returns HttpDataSourceColumnInput.Name, and is useful for accessing the field via an interface.
+func (v *HttpDataSourceColumnInput) GetName() string { return v.Name }
+
+// GetType returns HttpDataSourceColumnInput.Type, and is useful for accessing the field via an interface.
+func (v *HttpDataSourceColumnInput) GetType() ColumnType { return v.Type }
+
+// GetNullable returns HttpDataSourceColumnInput.Nullable, and is useful for accessing the field via an interface.
+func (v *HttpDataSourceColumnInput) GetNullable() bool { return v.Nullable }
+
+// The fields for specifying a Table.
+type HttpDataSourceTableInput struct {
+	// The name of the table
+	Name string `json:"name"`
+	// All the columns that will be present in the table
+	Columns []HttpDataSourceColumnInput `json:"columns"`
+}
+
+// GetName returns HttpDataSourceTableInput.Name, and is useful for accessing the field via an interface.
+func (v *HttpDataSourceTableInput) GetName() string { return v.Name }
+
+// GetColumns returns HttpDataSourceTableInput.Columns, and is useful for accessing the field via an interface.
+func (v *HttpDataSourceTableInput) GetColumns() []HttpDataSourceColumnInput { return v.Columns }
 
 // The ID or unique name input.
 //
@@ -9380,6 +9741,14 @@ type __CreateDataPoolInput struct {
 // GetInput returns __CreateDataPoolInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateDataPoolInput) GetInput() CreateDataPoolInput { return v.Input }
 
+// __CreateHttpDataSourceInput is used internally by genqlient
+type __CreateHttpDataSourceInput struct {
+	Input CreateHttpDataSourceInput `json:"input"`
+}
+
+// GetInput returns __CreateHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateHttpDataSourceInput) GetInput() CreateHttpDataSourceInput { return v.Input }
+
 // __CreateSnowflakeDataSourceInput is used internally by genqlient
 type __CreateSnowflakeDataSourceInput struct {
 	Input CreateSnowflakeDataSourceInput `json:"input"`
@@ -9719,6 +10088,12 @@ fragment DataSourceData on DataSource {
 			username
 			role
 		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -9956,6 +10331,12 @@ fragment DataSourceData on DataSource {
 			username
 			role
 		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -10149,6 +10530,12 @@ fragment DataSourceData on DataSource {
 			username
 			role
 		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -10249,6 +10636,135 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
+func CreateHttpDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input CreateHttpDataSourceInput,
+) (*CreateHttpDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateHttpDataSource",
+		Query: `
+mutation CreateHttpDataSource ($input: CreateHttpDataSourceInput!) {
+	createHttpDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			name
+			availableTimestamps(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+			availableMeasures(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	kind
+	isNullable
+	defaultValue
+	isPrimaryKey
+	isUniqueKey
+	comment
+	policyName
+	cachedAt
+	createdAt
+	createdBy
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`,
+		Variables: &__CreateHttpDataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateHttpDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
 func CreateSnowflakeDataSource(
 	ctx context.Context,
 	client graphql.Client,
@@ -10289,6 +10805,12 @@ fragment DataSourceData on DataSource {
 			schema
 			username
 			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
 		}
 	}
 	tables(first: 100) {
@@ -10527,6 +11049,12 @@ fragment DataSourceData on DataSource {
 			username
 			role
 		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -10705,6 +11233,12 @@ fragment DataSourceData on DataSource {
 			schema
 			username
 			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
 		}
 	}
 	tables(first: 100) {
@@ -10890,6 +11424,12 @@ fragment DataSourceData on DataSource {
 			schema
 			username
 			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
 		}
 	}
 	tables(first: 100) {
@@ -11092,6 +11632,12 @@ fragment DataSourceData on DataSource {
 			username
 			role
 		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -11226,6 +11772,12 @@ fragment DataSourceData on DataSource {
 			username
 			role
 		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -11346,6 +11898,12 @@ fragment DataSourceData on DataSource {
 			schema
 			username
 			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
 		}
 	}
 	tables(first: 100) {
@@ -11483,6 +12041,12 @@ fragment DataSourceData on DataSource {
 			schema
 			username
 			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
 		}
 	}
 	tables(first: 100) {
@@ -11897,6 +12461,12 @@ fragment DataSourceData on DataSource {
 			username
 			role
 		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -12130,6 +12700,12 @@ fragment DataSourceData on DataSource {
 			schema
 			username
 			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12385,6 +12961,12 @@ fragment DataSourceData on DataSource {
 			username
 			role
 		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -12580,6 +13162,12 @@ fragment DataSourceData on DataSource {
 			schema
 			username
 			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12824,6 +13412,12 @@ fragment DataSourceData on DataSource {
 			username
 			role
 		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -12958,6 +13552,12 @@ fragment DataSourceData on DataSource {
 			schema
 			username
 			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
 		}
 	}
 	tables(first: 100) {

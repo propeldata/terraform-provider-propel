@@ -18,7 +18,8 @@ operations:
 - mutations/createCountDistinctMetric.mutation.graphql
 - mutations/createCountMetric.mutation.graphql
 - mutations/createDataPool.mutation.graphql
-- mutations/createDataSource.mutation.graphql
+- mutations/createHttpDataSource.mutation.graphql
+- mutations/createSnowflakeDataSource.mutation.graphql
 - mutations/createSumMetric.mutation.graphql
 #- mutations/deleteApplication.mutation.graphql
 #- mutations/deleteApplicationByName.mutation.graphql

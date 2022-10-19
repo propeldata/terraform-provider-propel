@@ -17,14 +17,6 @@ var (
 	testAccProviderFactories map[string]func() (*schema.Provider, error)
 )
 
-const (
-	snowflakeTestAccountEnvVar   = "PROPEL_TEST_SNOWFLAKE_ACCOUNT"
-	snowflakeTestWarehouseEnvVar = "PROPEL_TEST_SNOWFLAKE_WAREHOUSE"
-	snowflakeTestRoleEnvVar      = "PROPEL_TEST_SNOWFLAKE_ROLE"
-	snowflakeTestUsernameEnvVar  = "PROPEL_TEST_SNOWFLAKE_USERNAME"
-	snowflakeTestPasswordEnvVar  = "PROPEL_TEST_SNOWFLAKE_PASSWORD"
-)
-
 func init() {
 	testAccProvider = Provider()
 	testAccProviderFactories = map[string]func() (*schema.Provider, error){
@@ -77,54 +69,4 @@ func Nprintf(format string, params map[string]interface{}) string {
 		format = strings.Replace(format, "%{"+key+"}", fmt.Sprintf("%v", val), -1)
 	}
 	return format
-}
-
-func getTestSnowflakeAccountFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, snowflakeTestAccountEnvVar)
-
-	if v := os.Getenv(snowflakeTestAccountEnvVar); v != "" {
-		return v
-	}
-
-	return ""
-}
-
-func getTestSnowflakeWarehouseFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, snowflakeTestWarehouseEnvVar)
-
-	if v := os.Getenv(snowflakeTestWarehouseEnvVar); v != "" {
-		return v
-	}
-
-	return ""
-}
-
-func getTestSnowflakeRoleFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, snowflakeTestRoleEnvVar)
-
-	if v := os.Getenv(snowflakeTestRoleEnvVar); v != "" {
-		return v
-	}
-
-	return ""
-}
-
-func getTestSnowflakeUsernameFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, snowflakeTestUsernameEnvVar)
-
-	if v := os.Getenv(snowflakeTestUsernameEnvVar); v != "" {
-		return v
-	}
-
-	return ""
-}
-
-func getTestSnowflakePasswordFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, snowflakeTestPasswordEnvVar)
-
-	if v := os.Getenv(snowflakeTestPasswordEnvVar); v != "" {
-		return v
-	}
-
-	return ""
 }

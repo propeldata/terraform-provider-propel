@@ -114,6 +114,37 @@ func resourceDataSource() *schema.Resource {
 					},
 				},
 			},
+			"http_connection_settings": {
+				Type:          schema.TypeList,
+				Optional:      true,
+				ConflictsWith: []string{"snowflake_connection_settings"},
+				MaxItems:      1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						// TODO(mroberts): Come back and support `basicAuth` here. There are a couple things getting in
+						//   the way, though. First, the GraphQL code generator makes things required when they ought to
+						//   be optional. Second, accessing these nested resources is cumbersome (maybe I just don't
+						//   know how to do it).
+						/* "basicAuth": {
+							Type:     schema.TypeList,
+							Required: false,
+							MaxItems: 1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"username": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"password": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+								},
+							},
+						}, */
+					},
+				},
+			},
 		},
 
 		Timeouts: &schema.ResourceTimeout{
@@ -129,6 +160,8 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 	switch strings.ToUpper(dataSourceType) {
 	case "SNOWFLAKE":
 		return resourceSnowflakeDataSourceCreate(ctx, d, meta)
+	case "HTTP":
+		return resourceHttpDataSourceCreate(ctx, d, meta)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
@@ -181,6 +214,32 @@ func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceDa
 	}
 
 	return diags
+}
+
+func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	c := meta.(graphql.Client)
+
+	input := pc.CreateHttpDataSourceInput{
+		UniqueName:  d.Get("unique_name").(string),
+		Description: d.Get("description").(string),
+	}
+
+	response, err := pc.CreateHttpDataSource(ctx, c, input)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	r := response.CreateHttpDataSource
+	d.SetId(r.DataSource.Id)
+
+	timeout := d.Timeout(schema.TimeoutCreate)
+
+	err = waitForDataSourceConnected(ctx, c, d.Id(), timeout)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	return resourceDataSourceRead(ctx, d, meta)
 }
 
 func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
@@ -237,6 +296,8 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 	switch strings.ToUpper(dataSourceType) {
 	case "SNOWFLAKE":
 		return handleSnowflakeConnectionSettings(response, d)
+	case "HTTP":
+		return handleHttpConnectionSettings(response, d)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
@@ -265,6 +326,10 @@ func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schem
 		return diag.FromErr(err)
 	}
 
+	return nil
+}
+
+func handleHttpConnectionSettings(_ *pc.DataSourceResponse, _ *schema.ResourceData) diag.Diagnostics {
 	return nil
 }
 
