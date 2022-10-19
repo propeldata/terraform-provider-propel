@@ -1,6 +1,5 @@
 fragment SyncData on Sync {
     id
-    queryId
     status
     newRecords
     updatedRecords

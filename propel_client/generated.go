@@ -12,19 +12,36 @@ import (
 )
 
 // ColumnData includes the GraphQL fields of Column requested by the fragment ColumnData.
+// The GraphQL type's documentation follows.
+//
+// The column object.
+//
+// Once a table introspection succeeds, it creates a new table object for every table it introspected. Within each table object, it also creates a column object for every column it introspected.
 type ColumnData struct {
-	Name         string    `json:"name"`
-	Type         string    `json:"type"`
-	Kind         string    `json:"kind"`
-	IsNullable   bool      `json:"isNullable"`
-	DefaultValue string    `json:"defaultValue"`
-	IsPrimaryKey bool      `json:"isPrimaryKey"`
-	IsUniqueKey  bool      `json:"isUniqueKey"`
-	Comment      string    `json:"comment"`
-	PolicyName   string    `json:"policyName"`
-	CachedAt     time.Time `json:"cachedAt"`
-	CreatedAt    time.Time `json:"createdAt"`
-	CreatedBy    string    `json:"createdBy"`
+	// The column's name.
+	Name string `json:"name"`
+	// The column's type.
+	Type string `json:"type"`
+	// Information about the column obtained from Snowflake.
+	Kind string `json:"kind"`
+	// Whether the column is nullable, meaning whether it accepts a null value.
+	IsNullable bool `json:"isNullable"`
+	// Information about the column obtained from Snowflake.
+	DefaultValue string `json:"defaultValue"`
+	// Information about the column obtained from Snowflake.
+	IsPrimaryKey bool `json:"isPrimaryKey"`
+	// Information about the column obtained from Snowflake.
+	IsUniqueKey bool `json:"isUniqueKey"`
+	// Information about the column obtained from Snowflake.
+	Comment string `json:"comment"`
+	// Information about the column obtained from Snowflake.
+	PolicyName string `json:"policyName"`
+	// The time at which the column was cached (i.e., the time at which it was introspected).
+	CachedAt time.Time `json:"cachedAt"`
+	// The time at which the column was created. This is the same as its `cachedAt` time.
+	CreatedAt time.Time `json:"createdAt"`
+	// The columns's creator. This corresponds to the initiator of the table introspection. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+	CreatedBy string `json:"createdBy"`
 }
 
 // GetName returns ColumnData.Name, and is useful for accessing the field via an interface.
@@ -64,6 +81,11 @@ func (v *ColumnData) GetCreatedAt() time.Time { return v.CreatedAt }
 func (v *ColumnData) GetCreatedBy() string { return v.CreatedBy }
 
 // CommonData includes the GraphQL fields of Common requested by the fragment CommonData.
+// The GraphQL type's documentation follows.
+//
+// All Propel resources, such as Applications and Metrics, have a set of common properties, such as the Propel Account and Environment that they are associated with. They also have a unique ID, which is specified in the interface `Node`.
+//
+// Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 //
 // CommonData is implemented by the following types:
 // CommonDataApplication
@@ -73,20 +95,44 @@ func (v *ColumnData) GetCreatedBy() string { return v.CreatedBy }
 type CommonData interface {
 	implementsGraphQLInterfaceCommonData()
 	// GetUniqueName returns the interface-field "uniqueName" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// The resource's unique name.
 	GetUniqueName() string
 	// GetDescription returns the interface-field "description" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// The resource's description.
 	GetDescription() string
 	// GetAccount returns the interface-field "account" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// The resource's Account.
 	GetAccount() CommonDataAccount
 	// GetEnvironment returns the interface-field "environment" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// The resource's Environment.
 	GetEnvironment() CommonDataEnvironment
 	// GetCreatedAt returns the interface-field "createdAt" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// The resource's creation date and time in UTC.
 	GetCreatedAt() time.Time
 	// GetModifiedAt returns the interface-field "modifiedAt" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// The resource's last modification date and time in UTC.
 	GetModifiedAt() time.Time
 	// GetCreatedBy returns the interface-field "createdBy" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// The resource's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
 	GetCreatedBy() string
 	// GetModifiedBy returns the interface-field "modifiedBy" from its implementation.
+	// The GraphQL interface field's documentation follows.
+	//
+	// The resource's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
 	GetModifiedBy() string
 }
 
@@ -175,7 +221,11 @@ func __marshalCommonData(v *CommonData) ([]byte, error) {
 }
 
 // CommonDataAccount includes the requested fields of the GraphQL type Account.
+// The GraphQL type's documentation follows.
+//
+// The Account object.
 type CommonDataAccount struct {
+	// The Account's unique identifier.
 	Id string `json:"id"`
 }
 
@@ -183,15 +233,28 @@ type CommonDataAccount struct {
 func (v *CommonDataAccount) GetId() string { return v.Id }
 
 // CommonData includes the GraphQL fields of Application requested by the fragment CommonData.
+// The GraphQL type's documentation follows.
+//
+// All Propel resources, such as Applications and Metrics, have a set of common properties, such as the Propel Account and Environment that they are associated with. They also have a unique ID, which is specified in the interface `Node`.
+//
+// Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 type CommonDataApplication struct {
-	UniqueName  string                `json:"uniqueName"`
-	Description string                `json:"description"`
-	Account     CommonDataAccount     `json:"account"`
+	// The resource's unique name.
+	UniqueName string `json:"uniqueName"`
+	// The resource's description.
+	Description string `json:"description"`
+	// The resource's Account.
+	Account CommonDataAccount `json:"account"`
+	// The resource's Environment.
 	Environment CommonDataEnvironment `json:"environment"`
-	CreatedAt   time.Time             `json:"createdAt"`
-	ModifiedAt  time.Time             `json:"modifiedAt"`
-	CreatedBy   string                `json:"createdBy"`
-	ModifiedBy  string                `json:"modifiedBy"`
+	// The resource's creation date and time in UTC.
+	CreatedAt time.Time `json:"createdAt"`
+	// The resource's last modification date and time in UTC.
+	ModifiedAt time.Time `json:"modifiedAt"`
+	// The resource's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+	CreatedBy string `json:"createdBy"`
+	// The resource's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
+	ModifiedBy string `json:"modifiedBy"`
 }
 
 // GetUniqueName returns CommonDataApplication.UniqueName, and is useful for accessing the field via an interface.
@@ -219,15 +282,28 @@ func (v *CommonDataApplication) GetCreatedBy() string { return v.CreatedBy }
 func (v *CommonDataApplication) GetModifiedBy() string { return v.ModifiedBy }
 
 // CommonData includes the GraphQL fields of DataPool requested by the fragment CommonData.
+// The GraphQL type's documentation follows.
+//
+// All Propel resources, such as Applications and Metrics, have a set of common properties, such as the Propel Account and Environment that they are associated with. They also have a unique ID, which is specified in the interface `Node`.
+//
+// Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 type CommonDataDataPool struct {
-	UniqueName  string                `json:"uniqueName"`
-	Description string                `json:"description"`
-	Account     CommonDataAccount     `json:"account"`
+	// The resource's unique name.
+	UniqueName string `json:"uniqueName"`
+	// The resource's description.
+	Description string `json:"description"`
+	// The resource's Account.
+	Account CommonDataAccount `json:"account"`
+	// The resource's Environment.
 	Environment CommonDataEnvironment `json:"environment"`
-	CreatedAt   time.Time             `json:"createdAt"`
-	ModifiedAt  time.Time             `json:"modifiedAt"`
-	CreatedBy   string                `json:"createdBy"`
-	ModifiedBy  string                `json:"modifiedBy"`
+	// The resource's creation date and time in UTC.
+	CreatedAt time.Time `json:"createdAt"`
+	// The resource's last modification date and time in UTC.
+	ModifiedAt time.Time `json:"modifiedAt"`
+	// The resource's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+	CreatedBy string `json:"createdBy"`
+	// The resource's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
+	ModifiedBy string `json:"modifiedBy"`
 }
 
 // GetUniqueName returns CommonDataDataPool.UniqueName, and is useful for accessing the field via an interface.
@@ -255,15 +331,28 @@ func (v *CommonDataDataPool) GetCreatedBy() string { return v.CreatedBy }
 func (v *CommonDataDataPool) GetModifiedBy() string { return v.ModifiedBy }
 
 // CommonData includes the GraphQL fields of DataSource requested by the fragment CommonData.
+// The GraphQL type's documentation follows.
+//
+// All Propel resources, such as Applications and Metrics, have a set of common properties, such as the Propel Account and Environment that they are associated with. They also have a unique ID, which is specified in the interface `Node`.
+//
+// Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 type CommonDataDataSource struct {
-	UniqueName  string                `json:"uniqueName"`
-	Description string                `json:"description"`
-	Account     CommonDataAccount     `json:"account"`
+	// The resource's unique name.
+	UniqueName string `json:"uniqueName"`
+	// The resource's description.
+	Description string `json:"description"`
+	// The resource's Account.
+	Account CommonDataAccount `json:"account"`
+	// The resource's Environment.
 	Environment CommonDataEnvironment `json:"environment"`
-	CreatedAt   time.Time             `json:"createdAt"`
-	ModifiedAt  time.Time             `json:"modifiedAt"`
-	CreatedBy   string                `json:"createdBy"`
-	ModifiedBy  string                `json:"modifiedBy"`
+	// The resource's creation date and time in UTC.
+	CreatedAt time.Time `json:"createdAt"`
+	// The resource's last modification date and time in UTC.
+	ModifiedAt time.Time `json:"modifiedAt"`
+	// The resource's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+	CreatedBy string `json:"createdBy"`
+	// The resource's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
+	ModifiedBy string `json:"modifiedBy"`
 }
 
 // GetUniqueName returns CommonDataDataSource.UniqueName, and is useful for accessing the field via an interface.
@@ -291,7 +380,13 @@ func (v *CommonDataDataSource) GetCreatedBy() string { return v.CreatedBy }
 func (v *CommonDataDataSource) GetModifiedBy() string { return v.ModifiedBy }
 
 // CommonDataEnvironment includes the requested fields of the GraphQL type Environment.
+// The GraphQL type's documentation follows.
+//
+// The Environments object.
+//
+// Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads. Environments are hosted in a specific region, initially in us-east-2 only.
 type CommonDataEnvironment struct {
+	// The Environment's unique identifier.
 	Id string `json:"id"`
 }
 
@@ -299,15 +394,28 @@ type CommonDataEnvironment struct {
 func (v *CommonDataEnvironment) GetId() string { return v.Id }
 
 // CommonData includes the GraphQL fields of Metric requested by the fragment CommonData.
+// The GraphQL type's documentation follows.
+//
+// All Propel resources, such as Applications and Metrics, have a set of common properties, such as the Propel Account and Environment that they are associated with. They also have a unique ID, which is specified in the interface `Node`.
+//
+// Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 type CommonDataMetric struct {
-	UniqueName  string                `json:"uniqueName"`
-	Description string                `json:"description"`
-	Account     CommonDataAccount     `json:"account"`
+	// The resource's unique name.
+	UniqueName string `json:"uniqueName"`
+	// The resource's description.
+	Description string `json:"description"`
+	// The resource's Account.
+	Account CommonDataAccount `json:"account"`
+	// The resource's Environment.
 	Environment CommonDataEnvironment `json:"environment"`
-	CreatedAt   time.Time             `json:"createdAt"`
-	ModifiedAt  time.Time             `json:"modifiedAt"`
-	CreatedBy   string                `json:"createdBy"`
-	ModifiedBy  string                `json:"modifiedBy"`
+	// The resource's creation date and time in UTC.
+	CreatedAt time.Time `json:"createdAt"`
+	// The resource's last modification date and time in UTC.
+	ModifiedAt time.Time `json:"modifiedAt"`
+	// The resource's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+	CreatedBy string `json:"createdBy"`
+	// The resource's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
+	ModifiedBy string `json:"modifiedBy"`
 }
 
 // GetUniqueName returns CommonDataMetric.UniqueName, and is useful for accessing the field via an interface.
@@ -335,9 +443,13 @@ func (v *CommonDataMetric) GetCreatedBy() string { return v.CreatedBy }
 func (v *CommonDataMetric) GetModifiedBy() string { return v.ModifiedBy }
 
 // CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Metric.
 type CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse struct {
-	Typename string                                                                 `json:"__typename"`
-	Metric   CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric `json:"metric"`
+	Typename string `json:"__typename"`
+	// The Metric which was created or modified.
+	Metric CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric `json:"metric"`
 }
 
 // GetTypename returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
@@ -351,6 +463,13 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse) GetMe
 }
 
 // CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
 type CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -527,22 +646,20 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 	return &retval, nil
 }
 
-// Settings to create a new count distinct Metric.
+// The fields for creating a new Count Distinct Metric.
 type CreateCountDistinctMetricInput struct {
 	// The Data Pool that powers this Metric.
 	DataPool string `json:"dataPool"`
-	// The Metric's unique name.
+	// The Metric's unique name. If not specified, Propel will set the ID as unique name.
 	UniqueName string `json:"uniqueName"`
 	// The Metric's description.
 	Description string `json:"description"`
-	// The Metric's filters. Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included.
+	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
 	Filters []FilterInput `json:"filters"`
-	// The Metric's dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
+	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []DimensionInput `json:"dimensions"`
-	// The dimension over which the count distinct is going to be performed.
+	// The Dimension over which the count distinct operation is going to be performed.
 	Dimension DimensionInput `json:"dimension"`
-	// Employee-only API for overriding a Metric's querySource.
-	QuerySource TableLocationInput `json:"querySource"`
 }
 
 // GetDataPool returns CreateCountDistinctMetricInput.DataPool, and is useful for accessing the field via an interface.
@@ -563,11 +680,11 @@ func (v *CreateCountDistinctMetricInput) GetDimensions() []DimensionInput { retu
 // GetDimension returns CreateCountDistinctMetricInput.Dimension, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricInput) GetDimension() DimensionInput { return v.Dimension }
 
-// GetQuerySource returns CreateCountDistinctMetricInput.QuerySource, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricInput) GetQuerySource() TableLocationInput { return v.QuerySource }
-
 // CreateCountDistinctMetricResponse is returned by CreateCountDistinctMetric on success.
 type CreateCountDistinctMetricResponse struct {
+	// This mutation creates a new Count Distinct Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	//
+	// A Metric is a business indicator measured over time. A Count Distinct Metric returns the number of distinct items found in the underlying data over a specific time period.
 	CreateCountDistinctMetric CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse `json:"createCountDistinctMetric"`
 }
 
@@ -577,9 +694,13 @@ func (v *CreateCountDistinctMetricResponse) GetCreateCountDistinctMetric() Creat
 }
 
 // CreateCountMetricCreateCountMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Metric.
 type CreateCountMetricCreateCountMetricMetricResponse struct {
-	Typename string                                                 `json:"__typename"`
-	Metric   CreateCountMetricCreateCountMetricMetricResponseMetric `json:"metric"`
+	Typename string `json:"__typename"`
+	// The Metric which was created or modified.
+	Metric CreateCountMetricCreateCountMetricMetricResponseMetric `json:"metric"`
 }
 
 // GetTypename returns CreateCountMetricCreateCountMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
@@ -591,6 +712,13 @@ func (v *CreateCountMetricCreateCountMetricMetricResponse) GetMetric() CreateCou
 }
 
 // CreateCountMetricCreateCountMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
 type CreateCountMetricCreateCountMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -767,20 +895,18 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) __premarshalJSO
 	return &retval, nil
 }
 
-// Settings to create a new count Metric.
+// The fields for creating a new Count Metric.
 type CreateCountMetricInput struct {
 	// The Data Pool that powers this Metric.
 	DataPool string `json:"dataPool"`
-	// The Metric's unique name.
+	// The Metric's unique name. If not specified, Propel will set the ID as unique name.
 	UniqueName string `json:"uniqueName"`
 	// The Metric's description.
 	Description string `json:"description"`
-	// The Metric's filters. Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included.
+	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
 	Filters []FilterInput `json:"filters"`
-	// The Metric's dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
+	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []DimensionInput `json:"dimensions"`
-	// Employee-only API for overriding a Metric's querySource.
-	QuerySource TableLocationInput `json:"querySource"`
 }
 
 // GetDataPool returns CreateCountMetricInput.DataPool, and is useful for accessing the field via an interface.
@@ -798,11 +924,11 @@ func (v *CreateCountMetricInput) GetFilters() []FilterInput { return v.Filters }
 // GetDimensions returns CreateCountMetricInput.Dimensions, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricInput) GetDimensions() []DimensionInput { return v.Dimensions }
 
-// GetQuerySource returns CreateCountMetricInput.QuerySource, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricInput) GetQuerySource() TableLocationInput { return v.QuerySource }
-
 // CreateCountMetricResponse is returned by CreateCountMetric on success.
 type CreateCountMetricResponse struct {
+	// This mutation creates a new Count Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	//
+	// A Metric is a business indicator measured over time. A Count Metric returns the number of items found in the underlying data over a specific time period.
 	CreateCountMetric CreateCountMetricCreateCountMetricMetricResponse `json:"createCountMetric"`
 }
 
@@ -816,6 +942,12 @@ func (v *CreateCountMetricResponse) GetCreateCountMetric() CreateCountMetricCrea
 // CreateDataPoolCreateDataPoolDataPoolOrFailureResponse is implemented by the following types:
 // CreateDataPoolCreateDataPoolDataPoolResponse
 // CreateDataPoolCreateDataPoolFailureResponse
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Pool.
+//
+// If successful, an `DataPoolResponse` will be returned; otherwise, a
+// `FailureResponse` will be returned.
 type CreateDataPoolCreateDataPoolDataPoolOrFailureResponse interface {
 	implementsGraphQLInterfaceCreateDataPoolCreateDataPoolDataPoolOrFailureResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
@@ -885,8 +1017,12 @@ func __marshalCreateDataPoolCreateDataPoolDataPoolOrFailureResponse(v *CreateDat
 }
 
 // CreateDataPoolCreateDataPoolDataPoolResponse includes the requested fields of the GraphQL type DataPoolResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Pool.
 type CreateDataPoolCreateDataPoolDataPoolResponse struct {
-	Typename string                                               `json:"__typename"`
+	Typename string `json:"__typename"`
+	// The Data Pool which was created or modified.
 	DataPool CreateDataPoolCreateDataPoolDataPoolResponseDataPool `json:"dataPool"`
 }
 
@@ -899,6 +1035,13 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponse) GetDataPool() CreateDataP
 }
 
 // CreateDataPoolCreateDataPoolDataPoolResponseDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object.
+//
+// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+//
+// [Learn more about Data Pools](https://docs.propeldata.com).
 type CreateDataPoolCreateDataPoolDataPoolResponseDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -1089,9 +1232,13 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) __premarshalJSON(
 }
 
 // CreateDataPoolCreateDataPoolFailureResponse includes the requested fields of the GraphQL type FailureResponse.
+// The GraphQL type's documentation follows.
+//
+// The failure response object.
 type CreateDataPoolCreateDataPoolFailureResponse struct {
-	Typename string                                           `json:"__typename"`
-	Error    CreateDataPoolCreateDataPoolFailureResponseError `json:"error"`
+	Typename string `json:"__typename"`
+	// The error that caused the failure.
+	Error CreateDataPoolCreateDataPoolFailureResponseError `json:"error"`
 }
 
 // GetTypename returns CreateDataPoolCreateDataPoolFailureResponse.Typename, and is useful for accessing the field via an interface.
@@ -1103,6 +1250,9 @@ func (v *CreateDataPoolCreateDataPoolFailureResponse) GetError() CreateDataPoolC
 }
 
 // CreateDataPoolCreateDataPoolFailureResponseError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
 type CreateDataPoolCreateDataPoolFailureResponseError struct {
 	GqlError `json:"-"`
 }
@@ -1162,15 +1312,26 @@ func (v *CreateDataPoolCreateDataPoolFailureResponseError) __premarshalJSON() (*
 	return &retval, nil
 }
 
+// Fields for creating a Data Pool.
 type CreateDataPoolInput struct {
-	DataSource          IdOrUniqueName `json:"dataSource"`
-	Table               string         `json:"table"`
-	Timestamp           DimensionInput `json:"timestamp"`
-	UniqueName          string         `json:"uniqueName"`
-	Description         string         `json:"description"`
-	DataRetentionInDays int            `json:"dataRetentionInDays"`
-	// Employee-only API for overriding a Data Pool's syncDestination.
-	SyncDestination TableLocationInput `json:"syncDestination"`
+	// The Data Source that will be used to create the Data Pool.
+	DataSource IdOrUniqueName `json:"dataSource"`
+	// The table that the Data Pool will sync from.
+	Table string `json:"table"`
+	// The table's primary timestamp column.
+	Timestamp DimensionInput `json:"timestamp"`
+	// The Data Pool's unique name. If not specified, Propel will set the ID as the unique name.
+	UniqueName string `json:"uniqueName"`
+	// The Data Pool's description.
+	Description string `json:"description"`
+	// The Data Pool's data retention in days. If not specified, records will be kept undefinitely.
+	DataRetentionInDays int `json:"dataRetentionInDays"`
+	// The list of columns to exclude from the Data Pool. The specified columns from the underlying table will not be synced to the Data Pool.
+	//
+	// You may not exclude the timestamp column. Additionally, if you specify a `tenant`, that column may not be excluded.
+	ExcludedColumns []string `json:"excludedColumns"`
+	// An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
+	Tenant TenantInput `json:"tenant"`
 }
 
 // GetDataSource returns CreateDataPoolInput.DataSource, and is useful for accessing the field via an interface.
@@ -1191,11 +1352,19 @@ func (v *CreateDataPoolInput) GetDescription() string { return v.Description }
 // GetDataRetentionInDays returns CreateDataPoolInput.DataRetentionInDays, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInput) GetDataRetentionInDays() int { return v.DataRetentionInDays }
 
-// GetSyncDestination returns CreateDataPoolInput.SyncDestination, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInput) GetSyncDestination() TableLocationInput { return v.SyncDestination }
+// GetExcludedColumns returns CreateDataPoolInput.ExcludedColumns, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolInput) GetExcludedColumns() []string { return v.ExcludedColumns }
+
+// GetTenant returns CreateDataPoolInput.Tenant, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolInput) GetTenant() TenantInput { return v.Tenant }
 
 // CreateDataPoolResponse is returned by CreateDataPool on success.
 type CreateDataPoolResponse struct {
+	// This mutation creates a new Data Pool from the given Data Source based on the specified table and using a particular column as the timestamp.
+	//
+	// The mutation returns the newly created Data Pool (or an error message if creating the Data Pool fails).
+	//
+	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
 	CreateDataPool CreateDataPoolCreateDataPoolDataPoolOrFailureResponse `json:"-"`
 }
 
@@ -1272,6 +1441,12 @@ func (v *CreateDataPoolResponse) __premarshalJSON() (*__premarshalCreateDataPool
 // CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse is implemented by the following types:
 // CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse
 // CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a DataSource.
+//
+// If successful, an `DataSourceResponse` will be returned; otherwise, a
+// `FailureResponse` will be returned.
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse interface {
 	implementsGraphQLInterfaceCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
@@ -1341,8 +1516,12 @@ func __marshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFail
 }
 
 // CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse struct {
-	Typename   string                                                                         `json:"__typename"`
+	Typename string `json:"__typename"`
+	// The Data Source which was created or modified.
 	DataSource CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource `json:"dataSource"`
 }
 
@@ -1357,6 +1536,13 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse) G
 }
 
 // CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://docs.propeldata.com).
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -1542,9 +1728,13 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDat
 }
 
 // CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse includes the requested fields of the GraphQL type FailureResponse.
+// The GraphQL type's documentation follows.
+//
+// The failure response object.
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse struct {
-	Typename string                                                                 `json:"__typename"`
-	Error    CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError `json:"error"`
+	Typename string `json:"__typename"`
+	// The error that caused the failure.
+	Error CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError `json:"error"`
 }
 
 // GetTypename returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse.Typename, and is useful for accessing the field via an interface.
@@ -1558,6 +1748,9 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse) GetE
 }
 
 // CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError struct {
 	GqlError `json:"-"`
 }
@@ -1619,9 +1812,13 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError)
 	return &retval, nil
 }
 
+// The fields for creating a Snowflake Data Source.
 type CreateSnowflakeDataSourceInput struct {
-	UniqueName         string                           `json:"uniqueName"`
-	Description        string                           `json:"description"`
+	// The Data Source's unique name. If not specified, Propel will set the ID as unique name.
+	UniqueName string `json:"uniqueName"`
+	// The Data Source's description.
+	Description string `json:"description"`
+	// The Data Source's connection settings.
 	ConnectionSettings SnowflakeConnectionSettingsInput `json:"connectionSettings"`
 }
 
@@ -1638,6 +1835,11 @@ func (v *CreateSnowflakeDataSourceInput) GetConnectionSettings() SnowflakeConnec
 
 // CreateSnowflakeDataSourceResponse is returned by CreateSnowflakeDataSource on success.
 type CreateSnowflakeDataSourceResponse struct {
+	// This mutation creates a new Data Source from the given Snowflake database using the specified Snowflake account, warehouse, schema, username, and role.
+	//
+	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+	//
+	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
 	CreateSnowflakeDataSource CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse `json:"-"`
 }
 
@@ -1710,9 +1912,13 @@ func (v *CreateSnowflakeDataSourceResponse) __premarshalJSON() (*__premarshalCre
 }
 
 // CreateSumMetricCreateSumMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Metric.
 type CreateSumMetricCreateSumMetricMetricResponse struct {
-	Typename string                                             `json:"__typename"`
-	Metric   CreateSumMetricCreateSumMetricMetricResponseMetric `json:"metric"`
+	Typename string `json:"__typename"`
+	// The Metric which was created or modified.
+	Metric CreateSumMetricCreateSumMetricMetricResponseMetric `json:"metric"`
 }
 
 // GetTypename returns CreateSumMetricCreateSumMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
@@ -1724,6 +1930,13 @@ func (v *CreateSumMetricCreateSumMetricMetricResponse) GetMetric() CreateSumMetr
 }
 
 // CreateSumMetricCreateSumMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
 type CreateSumMetricCreateSumMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -1898,22 +2111,20 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) __premarshalJSON() 
 	return &retval, nil
 }
 
-// Settings to create a new sum Metric.
+// The fields for creating a new Sum Metric.
 type CreateSumMetricInput struct {
 	// The Data Pool that powers this Metric.
 	DataPool string `json:"dataPool"`
-	// The Metric's unique name.
+	// The Metric's unique name. If not specified, Propel will set the ID as unique name.
 	UniqueName string `json:"uniqueName"`
 	// The Metric's description.
 	Description string `json:"description"`
-	// The Metric's filters. Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included.
+	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
 	Filters []FilterInput `json:"filters"`
-	// The Metric's dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
+	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []DimensionInput `json:"dimensions"`
 	// The column to be summed.
 	Measure DimensionInput `json:"measure"`
-	// Employee-only API for overriding a Metric's querySource.
-	QuerySource TableLocationInput `json:"querySource"`
 }
 
 // GetDataPool returns CreateSumMetricInput.DataPool, and is useful for accessing the field via an interface.
@@ -1934,11 +2145,11 @@ func (v *CreateSumMetricInput) GetDimensions() []DimensionInput { return v.Dimen
 // GetMeasure returns CreateSumMetricInput.Measure, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricInput) GetMeasure() DimensionInput { return v.Measure }
 
-// GetQuerySource returns CreateSumMetricInput.QuerySource, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricInput) GetQuerySource() TableLocationInput { return v.QuerySource }
-
 // CreateSumMetricResponse is returned by CreateSumMetric on success.
 type CreateSumMetricResponse struct {
+	// This mutation creates a new Sum Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	//
+	// A Metric is a business indicator measured over time. A Sum Metric returns the sum of the values found in the underlying data over a specific time period.
 	CreateSumMetric CreateSumMetricCreateSumMetricMetricResponse `json:"createSumMetric"`
 }
 
@@ -1948,6 +2159,13 @@ func (v *CreateSumMetricResponse) GetCreateSumMetric() CreateSumMetricCreateSumM
 }
 
 // DataPoolByNameDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object.
+//
+// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+//
+// [Learn more about Data Pools](https://docs.propeldata.com).
 type DataPoolByNameDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -2131,6 +2349,9 @@ func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByName
 
 // DataPoolByNameResponse is returned by DataPoolByName on success.
 type DataPoolByNameResponse struct {
+	// This query returns the Data Pool specified by the given unique name.
+	//
+	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
 	DataPool DataPoolByNameDataPool `json:"dataPool"`
 }
 
@@ -2138,16 +2359,34 @@ type DataPoolByNameResponse struct {
 func (v *DataPoolByNameResponse) GetDataPool() DataPoolByNameDataPool { return v.DataPool }
 
 // DataPoolData includes the GraphQL fields of DataPool requested by the fragment DataPoolData.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object.
+//
+// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+//
+// [Learn more about Data Pools](https://docs.propeldata.com).
 type DataPoolData struct {
+	// The Data Pool's unique identifier.
 	Id                 string `json:"id"`
 	CommonDataDataPool `json:"-"`
-	DataSource         DataPoolDataDataSource                        `json:"dataSource"`
-	Status             DataPoolStatus                                `json:"status"`
-	Error              DataPoolDataError                             `json:"error"`
-	Table              string                                        `json:"table"`
-	Timestamp          DataPoolDataTimestampDimension                `json:"timestamp"`
-	Columns            DataPoolDataColumnsColumnConnection           `json:"columns"`
-	AvailableMeasures  DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	// The Data Pool's Data Source.
+	DataSource DataPoolDataDataSource `json:"dataSource"`
+	// The Data Pool's status.
+	Status DataPoolStatus    `json:"status"`
+	Error  DataPoolDataError `json:"error"`
+	// The name of the Data Pool's table.
+	Table string `json:"table"`
+	// The Data Pool's timestamp column.
+	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+	// A list of columns included in the Data Pool. The specified columns from the underlying table will by synced to the Data Pool.
+	//
+	// This list does not include any excluded columns. You can access those via `excludedColumns`.
+	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+	// A list of measures (numeric columns) available to Metrics.
+	//
+	// This list does not include any excluded columns.
+	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 	// A list of setup tasks performed on the Data Pool during its most recent setup attempt.
 	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 	Syncs      DataPoolDataSyncsSyncConnection           `json:"syncs"`
@@ -2307,7 +2546,13 @@ func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
 }
 
 // DataPoolDataAvailableMeasuresColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
+// The GraphQL type's documentation follows.
+//
+// The column connection object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataPoolDataAvailableMeasuresColumnConnection struct {
+	// The connection's nodes.
 	Nodes []DataPoolDataAvailableMeasuresColumnConnectionNodesColumn `json:"nodes"`
 }
 
@@ -2317,6 +2562,11 @@ func (v *DataPoolDataAvailableMeasuresColumnConnection) GetNodes() []DataPoolDat
 }
 
 // DataPoolDataAvailableMeasuresColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
+// The GraphQL type's documentation follows.
+//
+// The column object.
+//
+// Once a table introspection succeeds, it creates a new table object for every table it introspected. Within each table object, it also creates a column object for every column it introspected.
 type DataPoolDataAvailableMeasuresColumnConnectionNodesColumn struct {
 	ColumnData `json:"-"`
 }
@@ -2459,7 +2709,13 @@ func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) __premarshalJ
 }
 
 // DataPoolDataColumnsColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
+// The GraphQL type's documentation follows.
+//
+// The column connection object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataPoolDataColumnsColumnConnection struct {
+	// The connection's nodes.
 	Nodes []DataPoolDataColumnsColumnConnectionNodesColumn `json:"nodes"`
 }
 
@@ -2469,6 +2725,11 @@ func (v *DataPoolDataColumnsColumnConnection) GetNodes() []DataPoolDataColumnsCo
 }
 
 // DataPoolDataColumnsColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
+// The GraphQL type's documentation follows.
+//
+// The column object.
+//
+// Once a table introspection succeeds, it creates a new table object for every table it introspected. Within each table object, it also creates a column object for every column it introspected.
 type DataPoolDataColumnsColumnConnectionNodesColumn struct {
 	ColumnData `json:"-"`
 }
@@ -2605,6 +2866,13 @@ func (v *DataPoolDataColumnsColumnConnectionNodesColumn) __premarshalJSON() (*__
 }
 
 // DataPoolDataDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://docs.propeldata.com).
 type DataPoolDataDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -2782,7 +3050,11 @@ func (v *DataPoolDataDataSource) __premarshalJSON() (*__premarshalDataPoolDataDa
 }
 
 // DataPoolDataError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
 type DataPoolDataError struct {
+	// The error message.
 	Message string `json:"message"`
 }
 
@@ -2790,6 +3062,13 @@ type DataPoolDataError struct {
 func (v *DataPoolDataError) GetMessage() string { return v.Message }
 
 // DataPoolDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object.
+//
+// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+//
+// [Learn more about Data Pools](https://docs.propeldata.com).
 type DataPoolDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -2966,16 +3245,23 @@ func (v *DataPoolDataPool) __premarshalJSON() (*__premarshalDataPoolDataPool, er
 }
 
 // DataPoolDataSetupTasksDataPoolSetupTask includes the requested fields of the GraphQL type DataPoolSetupTask.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool Setup Task object.
+//
+// Data Pool Setup Tasks are executed when setting up your Data Pool. They ensure Propel will be able to sync records from your Data Source to your Data Pool.
+//
+// The exact Setup Tasks to perform vary by Data Source. For example, Data Pools pointing to a Snowflake-backed Data Sources will have their own specific Setup Tasks.
 type DataPoolDataSetupTasksDataPoolSetupTask struct {
-	// The name of the Data Pool setup task to be performed.
+	// The name of the Data Pool Setup Task to be performed.
 	Name string `json:"name"`
-	// A description of the Data Pool setup task to be performed.
+	// A description of the Data Pool Setup Task to be performed.
 	Description string `json:"description"`
-	// The status of the Data Pool setup task (all setup tasks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED).
+	// The status of the Data Pool Setup Task (all setup tasks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED).
 	Status DataPoolSetupTaskStatus `json:"status"`
-	// If the Data Pool setup task failed, this field includes a descriptive error message.
+	// If the Data Pool Setup Task failed, this field includes a descriptive error message.
 	Error DataPoolDataSetupTasksDataPoolSetupTaskError `json:"error"`
-	// The time at which the Data Pool setup task was completed.
+	// The time at which the Data Pool Setup Task was completed.
 	CompletedAt time.Time `json:"completedAt"`
 }
 
@@ -2999,8 +3285,13 @@ func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetError() DataPoolDataSetupTa
 func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetCompletedAt() time.Time { return v.CompletedAt }
 
 // DataPoolDataSetupTasksDataPoolSetupTaskError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
 type DataPoolDataSetupTasksDataPoolSetupTaskError struct {
-	Code    int    `json:"code"`
+	// The error code.
+	Code int `json:"code"`
+	// The error message.
 	Message string `json:"message"`
 }
 
@@ -3011,7 +3302,13 @@ func (v *DataPoolDataSetupTasksDataPoolSetupTaskError) GetCode() int { return v.
 func (v *DataPoolDataSetupTasksDataPoolSetupTaskError) GetMessage() string { return v.Message }
 
 // DataPoolDataSyncsSyncConnection includes the requested fields of the GraphQL type SyncConnection.
+// The GraphQL type's documentation follows.
+//
+// The Sync connection object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataPoolDataSyncsSyncConnection struct {
+	// The connection's nodes.
 	Nodes []DataPoolDataSyncsSyncConnectionNodesSync `json:"nodes"`
 }
 
@@ -3021,15 +3318,17 @@ func (v *DataPoolDataSyncsSyncConnection) GetNodes() []DataPoolDataSyncsSyncConn
 }
 
 // DataPoolDataSyncsSyncConnectionNodesSync includes the requested fields of the GraphQL type Sync.
+// The GraphQL type's documentation follows.
+//
+// The Sync object.
+//
+// This represents the process of syncing data from your Data Source (for example, a Snowflake data warehouse) to your Data Pool.
 type DataPoolDataSyncsSyncConnectionNodesSync struct {
 	SyncData `json:"-"`
 }
 
 // GetId returns DataPoolDataSyncsSyncConnectionNodesSync.Id, and is useful for accessing the field via an interface.
 func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetId() string { return v.SyncData.Id }
-
-// GetQueryId returns DataPoolDataSyncsSyncConnectionNodesSync.QueryId, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetQueryId() string { return v.SyncData.QueryId }
 
 // GetStatus returns DataPoolDataSyncsSyncConnectionNodesSync.Status, and is useful for accessing the field via an interface.
 func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetStatus() SyncStatus { return v.SyncData.Status }
@@ -3118,8 +3417,6 @@ func (v *DataPoolDataSyncsSyncConnectionNodesSync) UnmarshalJSON(b []byte) error
 type __premarshalDataPoolDataSyncsSyncConnectionNodesSync struct {
 	Id string `json:"id"`
 
-	QueryId string `json:"queryId"`
-
 	Status SyncStatus `json:"status"`
 
 	NewRecords string `json:"newRecords"`
@@ -3159,7 +3456,6 @@ func (v *DataPoolDataSyncsSyncConnectionNodesSync) __premarshalJSON() (*__premar
 	var retval __premarshalDataPoolDataSyncsSyncConnectionNodesSync
 
 	retval.Id = v.SyncData.Id
-	retval.QueryId = v.SyncData.QueryId
 	retval.Status = v.SyncData.Status
 	retval.NewRecords = v.SyncData.NewRecords
 	retval.UpdatedRecords = v.SyncData.UpdatedRecords
@@ -3251,44 +3547,59 @@ func (v *DataPoolDataTimestampDimension) __premarshalJSON() (*__premarshalDataPo
 
 // DataPoolResponse is returned by DataPool on success.
 type DataPoolResponse struct {
+	// This query returns the Data Pool specified by the given ID.
+	//
+	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
 	DataPool DataPoolDataPool `json:"dataPool"`
 }
 
 // GetDataPool returns DataPoolResponse.DataPool, and is useful for accessing the field via an interface.
 func (v *DataPoolResponse) GetDataPool() DataPoolDataPool { return v.DataPool }
 
+// The status of a Data Pool Setup Task.
 type DataPoolSetupTaskStatus string
 
 const (
+	// The Data Pool Setup Task has not been started yet.
 	DataPoolSetupTaskStatusNotStarted DataPoolSetupTaskStatus = "NOT_STARTED"
-	DataPoolSetupTaskStatusSucceeded  DataPoolSetupTaskStatus = "SUCCEEDED"
-	DataPoolSetupTaskStatusFailed     DataPoolSetupTaskStatus = "FAILED"
+	// The Data Pool Setup Task has completed successfully.
+	DataPoolSetupTaskStatusSucceeded DataPoolSetupTaskStatus = "SUCCEEDED"
+	// The Data Pool Setup Task has failed.
+	DataPoolSetupTaskStatusFailed DataPoolSetupTaskStatus = "FAILED"
 )
 
+// The status of a Data Pool.
 type DataPoolStatus string
 
 const (
-	// The Data Pool has been created. We will attempt to set it up soon.
+	// The Data Pool has been created and will be set up soon.
 	DataPoolStatusCreated DataPoolStatus = "CREATED"
-	// We are attempting to setup the Data Pool
+	// Propel is attempting to set up the Data Pool.
 	DataPoolStatusPending DataPoolStatus = "PENDING"
-	// The Data Pool is setup and serving data. Check its Syncs to monitor data ingestion.
+	// The Data Pool is set up and serving data. Check its Syncs to monitor data ingestion.
 	DataPoolStatusLive DataPoolStatus = "LIVE"
-	// We could not setup the Data Pool. Check its setup tasks before re-attempting setup.
+	// The Data Pool setup failed. Check its Setup Tasks before re-attempting setup.
 	DataPoolStatusSetupFailed DataPoolStatus = "SETUP_FAILED"
 	DataPoolStatusConnecting  DataPoolStatus = "CONNECTING"
 	DataPoolStatusConnected   DataPoolStatus = "CONNECTED"
 	DataPoolStatusBroken      DataPoolStatus = "BROKEN"
 	DataPoolStatusPausing     DataPoolStatus = "PAUSING"
 	DataPoolStatusPaused      DataPoolStatus = "PAUSED"
-	// We are deleting the Data Pool and all of its associated data.
+	// Propel is deleting the Data Pool and all of its associated data.
 	DataPoolStatusDeleting DataPoolStatus = "DELETING"
 )
 
 // DataPoolsDataPoolsDataPoolConnection includes the requested fields of the GraphQL type DataPoolConnection.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool connection object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataPoolsDataPoolsDataPoolConnection struct {
-	PageInfo DataPoolsDataPoolsDataPoolConnectionPageInfo            `json:"pageInfo"`
-	Edges    []DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge `json:"edges"`
+	// The connection's page info.
+	PageInfo DataPoolsDataPoolsDataPoolConnectionPageInfo `json:"pageInfo"`
+	// The connection's edges.
+	Edges []DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge `json:"edges"`
 }
 
 // GetPageInfo returns DataPoolsDataPoolsDataPoolConnection.PageInfo, and is useful for accessing the field via an interface.
@@ -3302,7 +3613,13 @@ func (v *DataPoolsDataPoolsDataPoolConnection) GetEdges() []DataPoolsDataPoolsDa
 }
 
 // DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge includes the requested fields of the GraphQL type DataPoolEdge.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool edge object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge struct {
+	// The edge's node.
 	Node DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool `json:"node"`
 }
 
@@ -3312,6 +3629,13 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge) GetNode() DataPo
 }
 
 // DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object.
+//
+// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+//
+// [Learn more about Data Pools](https://docs.propeldata.com).
 type DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -3502,6 +3826,9 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) __pr
 }
 
 // DataPoolsDataPoolsDataPoolConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// The page info object used for pagination.
 type DataPoolsDataPoolsDataPoolConnectionPageInfo struct {
 	PageInfoData `json:"-"`
 }
@@ -3581,6 +3908,15 @@ func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) __premarshalJSON() (*__pr
 
 // DataPoolsResponse is returned by DataPools on success.
 type DataPoolsResponse struct {
+	// This query returns the Data Pools within the Environment.
+	//
+	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries. Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
+	//
+	// The `dataPools` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+	//
+	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
+	//
+	// For backward pagination, the `last` parameter defines the number of results to return, and the `before` parameter defines the cursor to continue from. You should pass the cursor for the _first_ result of the current page to `before`.
 	DataPools DataPoolsDataPoolsDataPoolConnection `json:"dataPools"`
 }
 
@@ -3588,6 +3924,13 @@ type DataPoolsResponse struct {
 func (v *DataPoolsResponse) GetDataPools() DataPoolsDataPoolsDataPoolConnection { return v.DataPools }
 
 // DataSourceByNameDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://docs.propeldata.com).
 type DataSourceByNameDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -3766,31 +4109,51 @@ func (v *DataSourceByNameDataSource) __premarshalJSON() (*__premarshalDataSource
 
 // DataSourceByNameResponse is returned by DataSourceByName on success.
 type DataSourceByNameResponse struct {
+	// This query returns the Data Source specified by the given unique name.
+	//
+	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
 	DataSource DataSourceByNameDataSource `json:"dataSource"`
 }
 
 // GetDataSource returns DataSourceByNameResponse.DataSource, and is useful for accessing the field via an interface.
 func (v *DataSourceByNameResponse) GetDataSource() DataSourceByNameDataSource { return v.DataSource }
 
+// The status of a Data Source Check.
 type DataSourceCheckStatus string
 
 const (
+	// The Check has not started.
 	DataSourceCheckStatusNotStarted DataSourceCheckStatus = "NOT_STARTED"
-	DataSourceCheckStatusSucceeded  DataSourceCheckStatus = "SUCCEEDED"
-	DataSourceCheckStatusFailed     DataSourceCheckStatus = "FAILED"
+	// The Check succeeded.
+	DataSourceCheckStatusSucceeded DataSourceCheckStatus = "SUCCEEDED"
+	// The Check failed.
+	DataSourceCheckStatusFailed DataSourceCheckStatus = "FAILED"
 )
 
 // DataSourceData includes the GraphQL fields of DataSource requested by the fragment DataSourceData.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://docs.propeldata.com).
 type DataSourceData struct {
+	// The Data Source's unique identifier.
 	Id                   string `json:"id"`
 	CommonDataDataSource `json:"-"`
-	Type                 DataSourceType                      `json:"type"`
-	Status               DataSourceStatus                    `json:"status"`
-	Error                DataSourceDataError                 `json:"error"`
-	ConnectionSettings   DataSourceDataConnectionSettings    `json:"-"`
-	Tables               DataSourceDataTablesTableConnection `json:"tables"`
+	// The Data Source's type.
+	Type DataSourceType `json:"type"`
+	// The Data Source's status.
+	Status DataSourceStatus    `json:"status"`
+	Error  DataSourceDataError `json:"error"`
+	// The Data Source's connection settings.
+	ConnectionSettings DataSourceDataConnectionSettings `json:"-"`
+	// The tables contained within the Data Source, according to the most recent table introspection.
+	Tables DataSourceDataTablesTableConnection `json:"tables"`
 	// A list of checks performed on the Data Source during its most recent connection attempt.
-	Checks              []DataSourceDataChecksDataSourceCheck                         `json:"checks"`
+	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	// A list of table introspections performed for the Data Source. You can see how tables and columns changed over time by paging through this list.
 	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 }
 
@@ -3963,16 +4326,23 @@ func (v *DataSourceData) __premarshalJSON() (*__premarshalDataSourceData, error)
 }
 
 // DataSourceDataChecksDataSourceCheck includes the requested fields of the GraphQL type DataSourceCheck.
+// The GraphQL type's documentation follows.
+//
+// The Data Source Check object.
+//
+// Data Source Checks are executed when setting up your Data Source. They check that Propel will be able to receive data and setup Data Pools.
+//
+// The exact Checks to perform vary by Data Source. For example, Snowflake-backed Data Sources will have their own specific Checks.
 type DataSourceDataChecksDataSourceCheck struct {
-	// The name of the Data Source check to be performed.
+	// The name of the Data Source Check to be performed.
 	Name string `json:"name"`
-	// A description of the Data Source check to be performed.
+	// A description of the Data Source Check to be performed.
 	Description string `json:"description"`
-	// The status of the Data Source check (all checks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED).
+	// The status of the Data Source Check (all checks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED).
 	Status DataSourceCheckStatus `json:"status"`
-	// If the Data Source check failed, this field includes a descriptive error message.
+	// If the Data Source Check failed, this field includes a descriptive error message.
 	Error DataSourceDataChecksDataSourceCheckError `json:"error"`
-	// The time at which the Data Source check was performed.
+	// The time at which the Data Source Check was performed.
 	CheckedAt time.Time `json:"checkedAt"`
 }
 
@@ -3994,8 +4364,13 @@ func (v *DataSourceDataChecksDataSourceCheck) GetError() DataSourceDataChecksDat
 func (v *DataSourceDataChecksDataSourceCheck) GetCheckedAt() time.Time { return v.CheckedAt }
 
 // DataSourceDataChecksDataSourceCheckError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
 type DataSourceDataChecksDataSourceCheckError struct {
-	Code    int    `json:"code"`
+	// The error code.
+	Code int `json:"code"`
+	// The error message.
 	Message string `json:"message"`
 }
 
@@ -4009,6 +4384,7 @@ func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return 
 //
 // DataSourceDataConnectionSettings is implemented by the following types:
 // DataSourceDataConnectionSettingsSnowflakeConnectionSettings
+// DataSourceDataConnectionSettingsHttpConnectionSettings
 type DataSourceDataConnectionSettings interface {
 	implementsGraphQLInterfaceDataSourceDataConnectionSettings()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
@@ -4016,6 +4392,8 @@ type DataSourceDataConnectionSettings interface {
 }
 
 func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
+}
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 
 func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConnectionSettings) error {
@@ -4034,6 +4412,9 @@ func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConn
 	switch tn.TypeName {
 	case "SnowflakeConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsSnowflakeConnectionSettings)
+		return json.Unmarshal(b, *v)
+	case "HttpConnectionSettings":
+		*v = new(DataSourceDataConnectionSettingsHttpConnectionSettings)
 		return json.Unmarshal(b, *v)
 	case "":
 		return fmt.Errorf(
@@ -4056,6 +4437,14 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 			*DataSourceDataConnectionSettingsSnowflakeConnectionSettings
 		}{typename, v}
 		return json.Marshal(result)
+	case *DataSourceDataConnectionSettingsHttpConnectionSettings:
+		typename = "HttpConnectionSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DataSourceDataConnectionSettingsHttpConnectionSettings
+		}{typename, v}
+		return json.Marshal(result)
 	case nil:
 		return []byte("null"), nil
 	default:
@@ -4064,15 +4453,37 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 	}
 }
 
+// DataSourceDataConnectionSettingsHttpConnectionSettings includes the requested fields of the GraphQL type HttpConnectionSettings.
+// The GraphQL type's documentation follows.
+//
+// The HTTP Data Source connection settings.
+type DataSourceDataConnectionSettingsHttpConnectionSettings struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns DataSourceDataConnectionSettingsHttpConnectionSettings.Typename, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) GetTypename() string {
+	return v.Typename
+}
+
 // DataSourceDataConnectionSettingsSnowflakeConnectionSettings includes the requested fields of the GraphQL type SnowflakeConnectionSettings.
+// The GraphQL type's documentation follows.
+//
+// The Snowflake Data Source connection settings.
 type DataSourceDataConnectionSettingsSnowflakeConnectionSettings struct {
-	Typename  string `json:"__typename"`
-	Account   string `json:"account"`
-	Database  string `json:"database"`
+	Typename string `json:"__typename"`
+	// The Snowflake account. This is the part before the "snowflakecomputing.com" part of your Snowflake URL.
+	Account string `json:"account"`
+	// The Snowflake database name.
+	Database string `json:"database"`
+	// The Snowflake warehouse name. It should be "PROPELLING" if you used the default name in the setup script.
 	Warehouse string `json:"warehouse"`
-	Schema    string `json:"schema"`
-	Username  string `json:"username"`
-	Role      string `json:"role"`
+	// The Snowflake schema.
+	Schema string `json:"schema"`
+	// The Snowflake username. It should be "PROPEL" if you used the default name in the setup script.
+	Username string `json:"username"`
+	// The Snowflake role. It should be "PROPELLER" if you used the default name in the setup script.
+	Role string `json:"role"`
 }
 
 // GetTypename returns DataSourceDataConnectionSettingsSnowflakeConnectionSettings.Typename, and is useful for accessing the field via an interface.
@@ -4109,7 +4520,11 @@ func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetUsernam
 func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetRole() string { return v.Role }
 
 // DataSourceDataError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
 type DataSourceDataError struct {
+	// The error message.
 	Message string `json:"message"`
 }
 
@@ -4117,6 +4532,13 @@ type DataSourceDataError struct {
 func (v *DataSourceDataError) GetMessage() string { return v.Message }
 
 // DataSourceDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://docs.propeldata.com).
 type DataSourceDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -4294,7 +4716,13 @@ func (v *DataSourceDataSource) __premarshalJSON() (*__premarshalDataSourceDataSo
 }
 
 // DataSourceDataTableIntrospectionsTableIntrospectionConnection includes the requested fields of the GraphQL type TableIntrospectionConnection.
+// The GraphQL type's documentation follows.
+//
+// The table introspection connection object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourceDataTableIntrospectionsTableIntrospectionConnection struct {
+	// The connection's nodes.
 	Nodes []DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection `json:"nodes"`
 }
 
@@ -4304,6 +4732,11 @@ func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnection) GetNodes
 }
 
 // DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection includes the requested fields of the GraphQL type TableIntrospection.
+// The GraphQL type's documentation follows.
+//
+// The table introspection object.
+//
+// When setting up a Data Source, Propel may need to introspect tables in order to determine what tables and columns are available to create Data Pools from. The table introspection represents the lifecycle of this operation (whether it's in-progress, succeeded, or failed) and the resulting tables and columns. These will be captured as table and column objects, respectively.
 type DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection struct {
 	TableIntrospectionData `json:"-"`
 }
@@ -4406,7 +4839,13 @@ func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTable
 }
 
 // DataSourceDataTablesTableConnection includes the requested fields of the GraphQL type TableConnection.
+// The GraphQL type's documentation follows.
+//
+// The table connection object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourceDataTablesTableConnection struct {
+	// The connection's nodes.
 	Nodes []DataSourceDataTablesTableConnectionNodesTable `json:"nodes"`
 }
 
@@ -4416,10 +4855,18 @@ func (v *DataSourceDataTablesTableConnection) GetNodes() []DataSourceDataTablesT
 }
 
 // DataSourceDataTablesTableConnectionNodesTable includes the requested fields of the GraphQL type Table.
+// The GraphQL type's documentation follows.
+//
+// The table object.
+//
+// Once a table introspection succeeds, it creates a new table object for every table it introspected.
 type DataSourceDataTablesTableConnectionNodesTable struct {
-	Name                string                                                                           `json:"name"`
+	// The table's name.
+	Name string `json:"name"`
+	// The table's columns which can be used as a timestamp for a Data Pool.
 	AvailableTimestamps DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection `json:"availableTimestamps"`
-	AvailableMeasures   DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection   `json:"availableMeasures"`
+	// The table's columns which can be used as a measure for a Metric.
+	AvailableMeasures DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection `json:"availableMeasures"`
 }
 
 // GetName returns DataSourceDataTablesTableConnectionNodesTable.Name, and is useful for accessing the field via an interface.
@@ -4436,7 +4883,13 @@ func (v *DataSourceDataTablesTableConnectionNodesTable) GetAvailableMeasures() D
 }
 
 // DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
+// The GraphQL type's documentation follows.
+//
+// The column connection object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection struct {
+	// The connection's nodes.
 	Nodes []DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn `json:"nodes"`
 }
 
@@ -4446,6 +4899,11 @@ func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnCon
 }
 
 // DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
+// The GraphQL type's documentation follows.
+//
+// The column object.
+//
+// Once a table introspection succeeds, it creates a new table object for every table it introspected. Within each table object, it also creates a column object for every column it introspected.
 type DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn struct {
 	ColumnData `json:"-"`
 }
@@ -4588,7 +5046,13 @@ func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnCon
 }
 
 // DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
+// The GraphQL type's documentation follows.
+//
+// The column connection object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection struct {
+	// The connection's nodes.
 	Nodes []DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn `json:"nodes"`
 }
 
@@ -4598,6 +5062,11 @@ func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnC
 }
 
 // DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
+// The GraphQL type's documentation follows.
+//
+// The column object.
+//
+// Once a table introspection succeeds, it creates a new table object for every table it introspected. Within each table object, it also creates a column object for every column it introspected.
 type DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn struct {
 	ColumnData `json:"-"`
 }
@@ -4741,32 +5210,54 @@ func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnC
 
 // DataSourceResponse is returned by DataSource on success.
 type DataSourceResponse struct {
+	// This query returns the Data Source specified by the given ID.
+	//
+	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
 	DataSource DataSourceDataSource `json:"dataSource"`
 }
 
 // GetDataSource returns DataSourceResponse.DataSource, and is useful for accessing the field via an interface.
 func (v *DataSourceResponse) GetDataSource() DataSourceDataSource { return v.DataSource }
 
+// The status of a Data Source.
 type DataSourceStatus string
 
 const (
-	DataSourceStatusCreated    DataSourceStatus = "CREATED"
+	// The Data Source has been created, but it is not connected yet.
+	DataSourceStatusCreated DataSourceStatus = "CREATED"
+	// Propel is attempting to connect the Data Source.
 	DataSourceStatusConnecting DataSourceStatus = "CONNECTING"
-	DataSourceStatusConnected  DataSourceStatus = "CONNECTED"
-	DataSourceStatusBroken     DataSourceStatus = "BROKEN"
-	DataSourceStatusDeleting   DataSourceStatus = "DELETING"
+	// The Data Source is connected.
+	DataSourceStatusConnected DataSourceStatus = "CONNECTED"
+	// The Data Source failed to connect.
+	DataSourceStatusBroken DataSourceStatus = "BROKEN"
+	// Propel is deleting the Data Source.
+	DataSourceStatusDeleting DataSourceStatus = "DELETING"
 )
 
+// The types of Data Sources.
 type DataSourceType string
 
 const (
+	// Indicates a Snowflake Data Source.
 	DataSourceTypeSnowflake DataSourceType = "Snowflake"
+	// Indicates an Http Data Source.
+	DataSourceTypeHttp DataSourceType = "Http"
+	// Indicates an S3 Data Source.
+	DataSourceTypeS3 DataSourceType = "S3"
 )
 
 // DataSourcesDataSourcesDataSourceConnection includes the requested fields of the GraphQL type DataSourceConnection.
+// The GraphQL type's documentation follows.
+//
+// The Data Source connection object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourcesDataSourcesDataSourceConnection struct {
-	PageInfo DataSourcesDataSourcesDataSourceConnectionPageInfo              `json:"pageInfo"`
-	Edges    []DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge `json:"edges"`
+	// The connection's page info.
+	PageInfo DataSourcesDataSourcesDataSourceConnectionPageInfo `json:"pageInfo"`
+	// The connection's edges.
+	Edges []DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge `json:"edges"`
 }
 
 // GetPageInfo returns DataSourcesDataSourcesDataSourceConnection.PageInfo, and is useful for accessing the field via an interface.
@@ -4780,7 +5271,13 @@ func (v *DataSourcesDataSourcesDataSourceConnection) GetEdges() []DataSourcesDat
 }
 
 // DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge includes the requested fields of the GraphQL type DataSourceEdge.
+// The GraphQL type's documentation follows.
+//
+// The Data Source edge object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge struct {
+	// The edge's node.
 	Node DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource `json:"node"`
 }
 
@@ -4790,6 +5287,13 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge) GetNode(
 }
 
 // DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://docs.propeldata.com).
 type DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -4975,6 +5479,9 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSo
 }
 
 // DataSourcesDataSourcesDataSourceConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// The page info object used for pagination.
 type DataSourcesDataSourcesDataSourceConnectionPageInfo struct {
 	PageInfoData `json:"-"`
 }
@@ -5054,6 +5561,15 @@ func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) __premarshalJSON() 
 
 // DataSourcesResponse is returned by DataSources on success.
 type DataSourcesResponse struct {
+	// This query returns the Data Sources within the Environment.
+	//
+	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source. Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
+	//
+	// The `dataSources` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+	//
+	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
+	//
+	// For backward pagination, the `last` parameter defines the number of results to return, and the `before` parameter defines the cursor to continue from. You should pass the cursor for the _first_ result of the current page to `before`.
 	DataSources DataSourcesDataSourcesDataSourceConnection `json:"dataSources"`
 }
 
@@ -5064,6 +5580,9 @@ func (v *DataSourcesResponse) GetDataSources() DataSourcesDataSourcesDataSourceC
 
 // DeleteDataPoolByNameResponse is returned by DeleteDataPoolByName on success.
 type DeleteDataPoolByNameResponse struct {
+	// This mutation deletes the specified Data Pool by name and then returns the Data Pool's ID if the Data Pool was deleted successfully.
+	//
+	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
 	DeleteDataPoolByName string `json:"deleteDataPoolByName"`
 }
 
@@ -5074,6 +5593,9 @@ func (v *DeleteDataPoolByNameResponse) GetDeleteDataPoolByName() string {
 
 // DeleteDataPoolResponse is returned by DeleteDataPool on success.
 type DeleteDataPoolResponse struct {
+	// This mutation deletes the specified Data Pool by ID and then returns the same ID if the Data Pool was deleted successfully.
+	//
+	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
 	DeleteDataPool string `json:"deleteDataPool"`
 }
 
@@ -5082,6 +5604,9 @@ func (v *DeleteDataPoolResponse) GetDeleteDataPool() string { return v.DeleteDat
 
 // DeleteDataSourceByNameResponse is returned by DeleteDataSourceByName on success.
 type DeleteDataSourceByNameResponse struct {
+	// This mutation deletes the specified Data Source by name and then returns the Data Source's ID if the Data Source was deleted successfully.
+	//
+	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
 	DeleteDataSourceByName string `json:"deleteDataSourceByName"`
 }
 
@@ -5092,6 +5617,9 @@ func (v *DeleteDataSourceByNameResponse) GetDeleteDataSourceByName() string {
 
 // DeleteDataSourceResponse is returned by DeleteDataSource on success.
 type DeleteDataSourceResponse struct {
+	// This mutation deletes the specified Data Source by ID and then returns the same ID if the Data Source was deleted successfully.
+	//
+	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
 	DeleteDataSource string `json:"deleteDataSource"`
 }
 
@@ -5100,6 +5628,9 @@ func (v *DeleteDataSourceResponse) GetDeleteDataSource() string { return v.Delet
 
 // DeleteMetricByNameResponse is returned by DeleteMetricByName on success.
 type DeleteMetricByNameResponse struct {
+	// This mutation deletes the specified Metric by name and then returns the Metric's ID if the Data Source was deleted successfully.
+	//
+	// A Metric is a business indicator measured over time.
 	DeleteMetricByName string `json:"deleteMetricByName"`
 }
 
@@ -5108,6 +5639,9 @@ func (v *DeleteMetricByNameResponse) GetDeleteMetricByName() string { return v.D
 
 // DeleteMetricResponse is returned by DeleteMetric on success.
 type DeleteMetricResponse struct {
+	// This mutation deletes the specified Metric by ID and then returns the same ID if the Data Source was deleted successfully.
+	//
+	// A Metric is a business indicator measured over time.
 	DeleteMetric string `json:"deleteMetric"`
 }
 
@@ -5141,7 +5675,9 @@ func (v *DimensionData) GetIsNullable() bool { return v.IsNullable }
 // GetIsUniqueKey returns DimensionData.IsUniqueKey, and is useful for accessing the field via an interface.
 func (v *DimensionData) GetIsUniqueKey() bool { return v.IsUniqueKey }
 
+// The fields for creating or modifying a Dimension.
 type DimensionInput struct {
+	// The name of the column to create the Dimension from.
 	ColumnName string `json:"columnName"`
 }
 
@@ -5149,10 +5685,16 @@ type DimensionInput struct {
 func (v *DimensionInput) GetColumnName() string { return v.ColumnName }
 
 // FilterData includes the GraphQL fields of Filter requested by the fragment FilterData.
+// The GraphQL type's documentation follows.
+//
+// The fields of a Filter.
 type FilterData struct {
-	Column   string         `json:"column"`
+	// The name of the column to filter on.
+	Column string `json:"column"`
+	// The operation to perform when comparing the column and filter values.
 	Operator FilterOperator `json:"operator"`
-	Value    string         `json:"value"`
+	// The value to compare the column to.
+	Value string `json:"value"`
 }
 
 // GetColumn returns FilterData.Column, and is useful for accessing the field via an interface.
@@ -5164,10 +5706,14 @@ func (v *FilterData) GetOperator() FilterOperator { return v.Operator }
 // GetValue returns FilterData.Value, and is useful for accessing the field via an interface.
 func (v *FilterData) GetValue() string { return v.Value }
 
+// The fields for defining a Filter.
 type FilterInput struct {
-	Column   string         `json:"column"`
+	// The name of the column to filter on.
+	Column string `json:"column"`
+	// The operation to perform when comparing the column and filter values.
 	Operator FilterOperator `json:"operator"`
-	Value    string         `json:"value"`
+	// The value to compare the column to.
+	Value string `json:"value"`
 }
 
 // GetColumn returns FilterInput.Column, and is useful for accessing the field via an interface.
@@ -5179,20 +5725,32 @@ func (v *FilterInput) GetOperator() FilterOperator { return v.Operator }
 // GetValue returns FilterInput.Value, and is useful for accessing the field via an interface.
 func (v *FilterInput) GetValue() string { return v.Value }
 
+// The available Filter operators.
 type FilterOperator string
 
 const (
-	FilterOperatorEquals               FilterOperator = "EQUALS"
-	FilterOperatorNotEquals            FilterOperator = "NOT_EQUALS"
-	FilterOperatorGreaterThan          FilterOperator = "GREATER_THAN"
+	// Selects values that are equal to the specified value.
+	FilterOperatorEquals FilterOperator = "EQUALS"
+	// Selects values that are not equal to the specified value.
+	FilterOperatorNotEquals FilterOperator = "NOT_EQUALS"
+	// Selects values that are greater than the specified value.
+	FilterOperatorGreaterThan FilterOperator = "GREATER_THAN"
+	// Selects values that are greater or equal to the specified value.
 	FilterOperatorGreaterThanOrEqualTo FilterOperator = "GREATER_THAN_OR_EQUAL_TO"
-	FilterOperatorLessThan             FilterOperator = "LESS_THAN"
-	FilterOperatorLessThanOrEqualTo    FilterOperator = "LESS_THAN_OR_EQUAL_TO"
+	// Selects values that are less than the specified value.
+	FilterOperatorLessThan FilterOperator = "LESS_THAN"
+	// Selects values that are less or equal to the specified value.
+	FilterOperatorLessThanOrEqualTo FilterOperator = "LESS_THAN_OR_EQUAL_TO"
 )
 
 // GqlError includes the GraphQL fields of Error requested by the fragment GqlError.
+// The GraphQL type's documentation follows.
+//
+// The error object.
 type GqlError struct {
-	Code    int    `json:"code"`
+	// The error code.
+	Code int `json:"code"`
+	// The error message.
 	Message string `json:"message"`
 }
 
@@ -5202,8 +5760,13 @@ func (v *GqlError) GetCode() int { return v.Code }
 // GetMessage returns GqlError.Message, and is useful for accessing the field via an interface.
 func (v *GqlError) GetMessage() string { return v.Message }
 
+// The ID or unique name input.
+//
+// If both ID and unique name are provided, the ID will take precedence.
 type IdOrUniqueName struct {
-	Id         string `json:"id"`
+	// The unique identifier of the object.
+	Id string `json:"id"`
+	// The unique name of the object.
 	UniqueName string `json:"uniqueName"`
 }
 
@@ -5214,6 +5777,13 @@ func (v *IdOrUniqueName) GetId() string { return v.Id }
 func (v *IdOrUniqueName) GetUniqueName() string { return v.UniqueName }
 
 // MetricByNameMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
 type MetricByNameMetric struct {
 	MetricData `json:"-"`
 }
@@ -5376,6 +5946,9 @@ func (v *MetricByNameMetric) __premarshalJSON() (*__premarshalMetricByNameMetric
 
 // MetricByNameResponse is returned by MetricByName on success.
 type MetricByNameResponse struct {
+	// This query returns the Metric specified by the given unique name.
+	//
+	// A Metric is a business indicator measured over time.
 	Metric MetricByNameMetric `json:"metric"`
 }
 
@@ -5383,14 +5956,25 @@ type MetricByNameResponse struct {
 func (v *MetricByNameResponse) GetMetric() MetricByNameMetric { return v.Metric }
 
 // MetricData includes the GraphQL fields of Metric requested by the fragment MetricData.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
 type MetricData struct {
 	CommonDataMetric `json:"-"`
-	Id               string `json:"id"`
+	// The Metric's unique identifier.
+	Id string `json:"id"`
 	// The Data Pool that powers this Metric.
-	DataPool   MetricDataDataPool              `json:"dataPool"`
+	DataPool MetricDataDataPool `json:"dataPool"`
+	// The Metric's Dimensions. These Dimensions are available to Query Filters.
 	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
-	Timestamp  MetricDataTimestampDimension    `json:"timestamp"`
-	Measure    MetricDataMeasureDimension      `json:"measure"`
+	// The Metric's timestamp. This is the same as its Data Pool's timestamp.
+	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	// The Metric's measure. Access this from the Metric's `settings` object instead.
+	Measure MetricDataMeasureDimension `json:"measure"`
 	// The settings for the Metric. The settings are specific to the Metric's type.
 	Settings MetricDataSettingsMetricSettings `json:"-"`
 	// The Metric's type. The different Metric types determine how the values are calculated.
@@ -5554,6 +6138,13 @@ func (v *MetricData) __premarshalJSON() (*__premarshalMetricData, error) {
 }
 
 // MetricDataDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object.
+//
+// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+//
+// [Learn more about Data Pools](https://docs.propeldata.com).
 type MetricDataDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -5877,15 +6468,26 @@ func (v *MetricDataMeasureDimension) __premarshalJSON() (*__premarshalMetricData
 	return &retval, nil
 }
 
+// MetricDataSettingsAverageMetricSettings includes the requested fields of the GraphQL type AverageMetricSettings.
+// The GraphQL type's documentation follows.
+//
+// Settings for Average Metrics.
+type MetricDataSettingsAverageMetricSettings struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns MetricDataSettingsAverageMetricSettings.Typename, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettings) GetTypename() string { return v.Typename }
+
 // MetricDataSettingsCountDistinctMetricSettings includes the requested fields of the GraphQL type CountDistinctMetricSettings.
 // The GraphQL type's documentation follows.
 //
-// Settings for count distinct Metrics.
+// Settings for Count Distinct Metrics.
 type MetricDataSettingsCountDistinctMetricSettings struct {
 	Typename string `json:"__typename"`
-	// Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
+	// Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.
 	Filters []MetricDataSettingsCountDistinctMetricSettingsFiltersFilter `json:"filters"`
-	// The dimension where the count distinct is going to be performed.
+	// The Dimension where the count distinct operation is going to be performed.
 	Dimension MetricDataSettingsCountDistinctMetricSettingsDimension `json:"dimension"`
 }
 
@@ -5984,6 +6586,9 @@ func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) __premarshalJSO
 }
 
 // MetricDataSettingsCountDistinctMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
+// The GraphQL type's documentation follows.
+//
+// The fields of a Filter.
 type MetricDataSettingsCountDistinctMetricSettingsFiltersFilter struct {
 	FilterData `json:"-"`
 }
@@ -6056,10 +6661,10 @@ func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) __premarsha
 // MetricDataSettingsCountMetricSettings includes the requested fields of the GraphQL type CountMetricSettings.
 // The GraphQL type's documentation follows.
 //
-// Settings for count Metrics.
+// Settings for Count Metrics.
 type MetricDataSettingsCountMetricSettings struct {
 	Typename string `json:"__typename"`
-	// Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
+	// Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.
 	Filters []MetricDataSettingsCountMetricSettingsFiltersFilter `json:"filters"`
 }
 
@@ -6072,6 +6677,9 @@ func (v *MetricDataSettingsCountMetricSettings) GetFilters() []MetricDataSetting
 }
 
 // MetricDataSettingsCountMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
+// The GraphQL type's documentation follows.
+//
+// The fields of a Filter.
 type MetricDataSettingsCountMetricSettingsFiltersFilter struct {
 	FilterData `json:"-"`
 }
@@ -6141,12 +6749,26 @@ func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) __premarshalJSON() 
 	return &retval, nil
 }
 
+// MetricDataSettingsMaxMetricSettings includes the requested fields of the GraphQL type MaxMetricSettings.
+// The GraphQL type's documentation follows.
+//
+// Settings for Max Metrics.
+type MetricDataSettingsMaxMetricSettings struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns MetricDataSettingsMaxMetricSettings.Typename, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettings) GetTypename() string { return v.Typename }
+
 // MetricDataSettingsMetricSettings includes the requested fields of the GraphQL interface MetricSettings.
 //
 // MetricDataSettingsMetricSettings is implemented by the following types:
 // MetricDataSettingsCountMetricSettings
 // MetricDataSettingsSumMetricSettings
 // MetricDataSettingsCountDistinctMetricSettings
+// MetricDataSettingsAverageMetricSettings
+// MetricDataSettingsMinMetricSettings
+// MetricDataSettingsMaxMetricSettings
 // The GraphQL type's documentation follows.
 //
 // A Metric's settings, depending on its type.
@@ -6161,6 +6783,12 @@ func (v *MetricDataSettingsCountMetricSettings) implementsGraphQLInterfaceMetric
 func (v *MetricDataSettingsSumMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
 }
 func (v *MetricDataSettingsCountDistinctMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+}
+func (v *MetricDataSettingsAverageMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+}
+func (v *MetricDataSettingsMinMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+}
+func (v *MetricDataSettingsMaxMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
 }
 
 func __unmarshalMetricDataSettingsMetricSettings(b []byte, v *MetricDataSettingsMetricSettings) error {
@@ -6185,6 +6813,15 @@ func __unmarshalMetricDataSettingsMetricSettings(b []byte, v *MetricDataSettings
 		return json.Unmarshal(b, *v)
 	case "CountDistinctMetricSettings":
 		*v = new(MetricDataSettingsCountDistinctMetricSettings)
+		return json.Unmarshal(b, *v)
+	case "AverageMetricSettings":
+		*v = new(MetricDataSettingsAverageMetricSettings)
+		return json.Unmarshal(b, *v)
+	case "MinMetricSettings":
+		*v = new(MetricDataSettingsMinMetricSettings)
+		return json.Unmarshal(b, *v)
+	case "MaxMetricSettings":
+		*v = new(MetricDataSettingsMaxMetricSettings)
 		return json.Unmarshal(b, *v)
 	case "":
 		return fmt.Errorf(
@@ -6223,6 +6860,30 @@ func __marshalMetricDataSettingsMetricSettings(v *MetricDataSettingsMetricSettin
 			*MetricDataSettingsCountDistinctMetricSettings
 		}{typename, v}
 		return json.Marshal(result)
+	case *MetricDataSettingsAverageMetricSettings:
+		typename = "AverageMetricSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*MetricDataSettingsAverageMetricSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case *MetricDataSettingsMinMetricSettings:
+		typename = "MinMetricSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*MetricDataSettingsMinMetricSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case *MetricDataSettingsMaxMetricSettings:
+		typename = "MaxMetricSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*MetricDataSettingsMaxMetricSettings
+		}{typename, v}
+		return json.Marshal(result)
 	case nil:
 		return []byte("null"), nil
 	default:
@@ -6231,15 +6892,26 @@ func __marshalMetricDataSettingsMetricSettings(v *MetricDataSettingsMetricSettin
 	}
 }
 
+// MetricDataSettingsMinMetricSettings includes the requested fields of the GraphQL type MinMetricSettings.
+// The GraphQL type's documentation follows.
+//
+// Settings for Min Metrics.
+type MetricDataSettingsMinMetricSettings struct {
+	Typename string `json:"__typename"`
+}
+
+// GetTypename returns MetricDataSettingsMinMetricSettings.Typename, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettings) GetTypename() string { return v.Typename }
+
 // MetricDataSettingsSumMetricSettings includes the requested fields of the GraphQL type SumMetricSettings.
 // The GraphQL type's documentation follows.
 //
-// Settings for sum Metrics.
+// Settings for Sum Metrics.
 type MetricDataSettingsSumMetricSettings struct {
 	Typename string `json:"__typename"`
-	// Filters allow defining a Metric with a subset of records from the given Data Pool. If no filters are present, all records will be included. To filter at query time, add Dimensions and use the `filter` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query-time
+	// Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.
 	Filters []MetricDataSettingsSumMetricSettingsFiltersFilter `json:"filters"`
-	// The dimension to be summed.
+	// The Dimension to be summed.
 	Measure MetricDataSettingsSumMetricSettingsMeasureDimension `json:"measure"`
 }
 
@@ -6257,6 +6929,9 @@ func (v *MetricDataSettingsSumMetricSettings) GetMeasure() MetricDataSettingsSum
 }
 
 // MetricDataSettingsSumMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
+// The GraphQL type's documentation follows.
+//
+// The fields of a Filter.
 type MetricDataSettingsSumMetricSettingsFiltersFilter struct {
 	FilterData `json:"-"`
 }
@@ -6481,6 +7156,13 @@ func (v *MetricDataTimestampDimension) __premarshalJSON() (*__premarshalMetricDa
 }
 
 // MetricMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
 type MetricMetric struct {
 	MetricData `json:"-"`
 }
@@ -6633,28 +7315,46 @@ func (v *MetricMetric) __premarshalJSON() (*__premarshalMetricMetric, error) {
 
 // MetricResponse is returned by Metric on success.
 type MetricResponse struct {
+	// This query returns the Metric specified by the given ID.
+	//
+	// A Metric is a business indicator measured over time.
 	Metric MetricMetric `json:"metric"`
 }
 
 // GetMetric returns MetricResponse.Metric, and is useful for accessing the field via an interface.
 func (v *MetricResponse) GetMetric() MetricMetric { return v.Metric }
 
+// The available Metric types.
 type MetricType string
 
 const (
-	// Counts the number of records that meet the filter criteria.
+	// Counts the number of records that matches the Metric Filters. For time series, it will count the values for each time granularity.
 	MetricTypeCount MetricType = "COUNT"
-	// Sums a specified column for every row that meets the filter criteria.
+	// Sums the values of the specified column for every record that matches the Metric Filters. For time series, it will sum the values for each time granularity.
 	MetricTypeSum MetricType = "SUM"
-	// Counts the number of different records in the provided column.
+	// Counts the number of distinct values in the specified column for every record that matches the Metric Filters. For time series, it will count the distinct values for each time granularity.
 	MetricTypeCountDistinct MetricType = "COUNT_DISTINCT"
+	// Averages the values of the specified column for every record that matches the Metric Filters. For time series, it will average the values for each time granularity.
+	MetricTypeAverage MetricType = "AVERAGE"
+	// Selects the minimum value of the specified column for every record that matches the Metric Filters. For time series, it will select the minimum value for each time granularity.
+	MetricTypeMin MetricType = "MIN"
+	// Selects the maximum value of the specified column for every record that matches the Metric Filters. For time series, it will select the maximum value for each time granularity.
+	MetricTypeMax MetricType = "MAX"
 )
 
 // MetricsMetricsMetricConnection includes the requested fields of the GraphQL type MetricConnection.
+// The GraphQL type's documentation follows.
+//
+// The Metric connection object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type MetricsMetricsMetricConnection struct {
-	PageInfo MetricsMetricsMetricConnectionPageInfo          `json:"pageInfo"`
-	Nodes    []MetricsMetricsMetricConnectionNodesMetric     `json:"nodes"`
-	Edges    []MetricsMetricsMetricConnectionEdgesMetricEdge `json:"edges"`
+	// The connection's page info.
+	PageInfo MetricsMetricsMetricConnectionPageInfo `json:"pageInfo"`
+	// The connection's nodes.
+	Nodes []MetricsMetricsMetricConnectionNodesMetric `json:"nodes"`
+	// The connection's edges.
+	Edges []MetricsMetricsMetricConnectionEdgesMetricEdge `json:"edges"`
 }
 
 // GetPageInfo returns MetricsMetricsMetricConnection.PageInfo, and is useful for accessing the field via an interface.
@@ -6673,9 +7373,16 @@ func (v *MetricsMetricsMetricConnection) GetEdges() []MetricsMetricsMetricConnec
 }
 
 // MetricsMetricsMetricConnectionEdgesMetricEdge includes the requested fields of the GraphQL type MetricEdge.
+// The GraphQL type's documentation follows.
+//
+// The Metric edge object.
+//
+// Learn more about [pagination in GraphQL](/docs/api/pagination).
 type MetricsMetricsMetricConnectionEdgesMetricEdge struct {
-	Cursor string                                                  `json:"cursor"`
-	Node   MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric `json:"node"`
+	// The edge's cursor.
+	Cursor string `json:"cursor"`
+	// The edge's node.
+	Node MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric `json:"node"`
 }
 
 // GetCursor returns MetricsMetricsMetricConnectionEdgesMetricEdge.Cursor, and is useful for accessing the field via an interface.
@@ -6687,6 +7394,13 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdge) GetNode() MetricsMetrics
 }
 
 // MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
 type MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric struct {
 	MetricData `json:"-"`
 }
@@ -6864,6 +7578,13 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) __premarshalJS
 }
 
 // MetricsMetricsMetricConnectionNodesMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
 type MetricsMetricsMetricConnectionNodesMetric struct {
 	MetricData `json:"-"`
 }
@@ -7037,6 +7758,9 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) __premarshalJSON() (*__prema
 }
 
 // MetricsMetricsMetricConnectionPageInfo includes the requested fields of the GraphQL type PageInfo.
+// The GraphQL type's documentation follows.
+//
+// The page info object used for pagination.
 type MetricsMetricsMetricConnectionPageInfo struct {
 	PageInfoData `json:"-"`
 }
@@ -7116,20 +7840,31 @@ func (v *MetricsMetricsMetricConnectionPageInfo) __premarshalJSON() (*__premarsh
 
 // MetricsResponse is returned by Metrics on success.
 type MetricsResponse struct {
+	// This query returns the Metrics within the Environment.
+	//
+	// A Metric is a business indicator measured over time. Each Metric is associated with one Data Pool, which is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries. Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
+	//
+	// The `metrics` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+	//
+	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
+	//
+	// For backward pagination, the `last` parameter defines the number of results to return, and the `before` parameter defines the cursor to continue from. You should pass the cursor for the _first_ result of the current page to `before`.
 	Metrics MetricsMetricsMetricConnection `json:"metrics"`
 }
 
 // GetMetrics returns MetricsResponse.Metrics, and is useful for accessing the field via an interface.
 func (v *MetricsResponse) GetMetrics() MetricsMetricsMetricConnection { return v.Metrics }
 
+// The fields for modifying a Data Pool.
 type ModifyDataPoolInput struct {
-	IdOrUniqueName      IdOrUniqueName `json:"idOrUniqueName"`
-	UniqueName          string         `json:"uniqueName"`
-	Description         string         `json:"description"`
-	DataRetentionInDays int            `json:"dataRetentionInDays"`
-	// Employee-only API for updating a Data Pool's syncDestination. If you change this, you need to take care to migrate
-	// historical data to the new syncDestination yourself. You will also need to update the Data Pool's Metrics.
-	SyncDestination TableLocationInput `json:"syncDestination"`
+	// The ID or unique name of the Data Pool to modify.
+	IdOrUniqueName IdOrUniqueName `json:"idOrUniqueName"`
+	// The Data Pool's new unique name.
+	UniqueName string `json:"uniqueName"`
+	// The Data Pool's new description.
+	Description string `json:"description"`
+	// The Data Pool's new data retention in days.
+	DataRetentionInDays int `json:"dataRetentionInDays"`
 }
 
 // GetIdOrUniqueName returns ModifyDataPoolInput.IdOrUniqueName, and is useful for accessing the field via an interface.
@@ -7144,14 +7879,17 @@ func (v *ModifyDataPoolInput) GetDescription() string { return v.Description }
 // GetDataRetentionInDays returns ModifyDataPoolInput.DataRetentionInDays, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolInput) GetDataRetentionInDays() int { return v.DataRetentionInDays }
 
-// GetSyncDestination returns ModifyDataPoolInput.SyncDestination, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolInput) GetSyncDestination() TableLocationInput { return v.SyncDestination }
-
 // ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse includes the requested fields of the GraphQL interface DataPoolOrFailureResponse.
 //
 // ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse is implemented by the following types:
 // ModifyDataPoolModifyDataPoolDataPoolResponse
 // ModifyDataPoolModifyDataPoolFailureResponse
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Pool.
+//
+// If successful, an `DataPoolResponse` will be returned; otherwise, a
+// `FailureResponse` will be returned.
 type ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse interface {
 	implementsGraphQLInterfaceModifyDataPoolModifyDataPoolDataPoolOrFailureResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
@@ -7221,8 +7959,12 @@ func __marshalModifyDataPoolModifyDataPoolDataPoolOrFailureResponse(v *ModifyDat
 }
 
 // ModifyDataPoolModifyDataPoolDataPoolResponse includes the requested fields of the GraphQL type DataPoolResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Pool.
 type ModifyDataPoolModifyDataPoolDataPoolResponse struct {
-	Typename string                                               `json:"__typename"`
+	Typename string `json:"__typename"`
+	// The Data Pool which was created or modified.
 	DataPool ModifyDataPoolModifyDataPoolDataPoolResponseDataPool `json:"dataPool"`
 }
 
@@ -7235,6 +7977,13 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponse) GetDataPool() ModifyDataP
 }
 
 // ModifyDataPoolModifyDataPoolDataPoolResponseDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object.
+//
+// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+//
+// [Learn more about Data Pools](https://docs.propeldata.com).
 type ModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -7425,9 +8174,13 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON(
 }
 
 // ModifyDataPoolModifyDataPoolFailureResponse includes the requested fields of the GraphQL type FailureResponse.
+// The GraphQL type's documentation follows.
+//
+// The failure response object.
 type ModifyDataPoolModifyDataPoolFailureResponse struct {
-	Typename string                                           `json:"__typename"`
-	Error    ModifyDataPoolModifyDataPoolFailureResponseError `json:"error"`
+	Typename string `json:"__typename"`
+	// The error that caused the failure.
+	Error ModifyDataPoolModifyDataPoolFailureResponseError `json:"error"`
 }
 
 // GetTypename returns ModifyDataPoolModifyDataPoolFailureResponse.Typename, and is useful for accessing the field via an interface.
@@ -7439,6 +8192,9 @@ func (v *ModifyDataPoolModifyDataPoolFailureResponse) GetError() ModifyDataPoolM
 }
 
 // ModifyDataPoolModifyDataPoolFailureResponseError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
 type ModifyDataPoolModifyDataPoolFailureResponseError struct {
 	GqlError `json:"-"`
 }
@@ -7500,6 +8256,11 @@ func (v *ModifyDataPoolModifyDataPoolFailureResponseError) __premarshalJSON() (*
 
 // ModifyDataPoolResponse is returned by ModifyDataPool on success.
 type ModifyDataPoolResponse struct {
+	// This mutation selects a Data Pool by its ID or unique name and modifies it to have the given unique name, description, and data retention time.
+	//
+	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool.
+	//
+	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
 	ModifyDataPool ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse `json:"-"`
 }
 
@@ -7571,12 +8332,20 @@ func (v *ModifyDataPoolResponse) __premarshalJSON() (*__premarshalModifyDataPool
 	return &retval, nil
 }
 
+// The fields for modifying a Metric.
 type ModifyMetricInput struct {
-	Metric      string `json:"metric"`
-	UniqueName  string `json:"uniqueName"`
+	// The ID of the Metric to modify.
+	Metric string `json:"metric"`
+	// The Metric's new unique name.
+	UniqueName string `json:"uniqueName"`
+	// The Metric's new description.
 	Description string `json:"description"`
-	// Employee-only API for updating a Metric's querySource.
-	QuerySource TableLocationInput `json:"querySource"`
+	// The Metric's new Dimensions. Used to add or remove Dimensions.
+	Dimensions []DimensionInput `json:"dimensions"`
+	// The Metric's new Filters. Used to add or remove Metric Filters.
+	Filters []FilterInput `json:"filters"`
+	// Enables or disables access control for the Metric.
+	AccessControlEnabled bool `json:"accessControlEnabled"`
 }
 
 // GetMetric returns ModifyMetricInput.Metric, and is useful for accessing the field via an interface.
@@ -7588,13 +8357,23 @@ func (v *ModifyMetricInput) GetUniqueName() string { return v.UniqueName }
 // GetDescription returns ModifyMetricInput.Description, and is useful for accessing the field via an interface.
 func (v *ModifyMetricInput) GetDescription() string { return v.Description }
 
-// GetQuerySource returns ModifyMetricInput.QuerySource, and is useful for accessing the field via an interface.
-func (v *ModifyMetricInput) GetQuerySource() TableLocationInput { return v.QuerySource }
+// GetDimensions returns ModifyMetricInput.Dimensions, and is useful for accessing the field via an interface.
+func (v *ModifyMetricInput) GetDimensions() []DimensionInput { return v.Dimensions }
+
+// GetFilters returns ModifyMetricInput.Filters, and is useful for accessing the field via an interface.
+func (v *ModifyMetricInput) GetFilters() []FilterInput { return v.Filters }
+
+// GetAccessControlEnabled returns ModifyMetricInput.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *ModifyMetricInput) GetAccessControlEnabled() bool { return v.AccessControlEnabled }
 
 // ModifyMetricModifyMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Metric.
 type ModifyMetricModifyMetricMetricResponse struct {
-	Typename string                                       `json:"__typename"`
-	Metric   ModifyMetricModifyMetricMetricResponseMetric `json:"metric"`
+	Typename string `json:"__typename"`
+	// The Metric which was created or modified.
+	Metric ModifyMetricModifyMetricMetricResponseMetric `json:"metric"`
 }
 
 // GetTypename returns ModifyMetricModifyMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
@@ -7606,6 +8385,13 @@ func (v *ModifyMetricModifyMetricMetricResponse) GetMetric() ModifyMetricModifyM
 }
 
 // ModifyMetricModifyMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
 type ModifyMetricModifyMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -7780,6 +8566,11 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) __premarshalJSON() (*__pr
 
 // ModifyMetricResponse is returned by ModifyMetric on success.
 type ModifyMetricResponse struct {
+	// This mutation selects a Metric by its ID and modifies it to have the given unique name, description, and Dimensions.
+	//
+	// If any of the optional arguments are omitted, those properties will be unchanged on the Metric.
+	//
+	// A Metric is a business indicator measured over time.
 	ModifyMetric ModifyMetricModifyMetricMetricResponse `json:"modifyMetric"`
 }
 
@@ -7788,10 +8579,15 @@ func (v *ModifyMetricResponse) GetModifyMetric() ModifyMetricModifyMetricMetricR
 	return v.ModifyMetric
 }
 
+// The fields for modifying a Snowflake Data Source.
 type ModifySnowflakeDataSourceInput struct {
-	IdOrUniqueName     IdOrUniqueName                          `json:"idOrUniqueName"`
-	UniqueName         string                                  `json:"uniqueName"`
-	Description        string                                  `json:"description"`
+	// The ID or unique name of the Data Source to modify.
+	IdOrUniqueName IdOrUniqueName `json:"idOrUniqueName"`
+	// The Data Source's new unique name.
+	UniqueName string `json:"uniqueName"`
+	// The Data Source's new description.
+	Description string `json:"description"`
+	// The Data Source's new connection settings.
 	ConnectionSettings PartialSnowflakeConnectionSettingsInput `json:"connectionSettings"`
 }
 
@@ -7814,6 +8610,12 @@ func (v *ModifySnowflakeDataSourceInput) GetConnectionSettings() PartialSnowflak
 // ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse is implemented by the following types:
 // ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse
 // ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a DataSource.
+//
+// If successful, an `DataSourceResponse` will be returned; otherwise, a
+// `FailureResponse` will be returned.
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse interface {
 	implementsGraphQLInterfaceModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
@@ -7883,8 +8685,12 @@ func __marshalModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFail
 }
 
 // ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse struct {
-	Typename   string                                                                         `json:"__typename"`
+	Typename string `json:"__typename"`
+	// The Data Source which was created or modified.
 	DataSource ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource `json:"dataSource"`
 }
 
@@ -7899,6 +8705,13 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse) G
 }
 
 // ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://docs.propeldata.com).
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -8084,9 +8897,13 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDat
 }
 
 // ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse includes the requested fields of the GraphQL type FailureResponse.
+// The GraphQL type's documentation follows.
+//
+// The failure response object.
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse struct {
-	Typename string                                                                 `json:"__typename"`
-	Error    ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError `json:"error"`
+	Typename string `json:"__typename"`
+	// The error that caused the failure.
+	Error ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError `json:"error"`
 }
 
 // GetTypename returns ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse.Typename, and is useful for accessing the field via an interface.
@@ -8100,6 +8917,9 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse) GetE
 }
 
 // ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError struct {
 	GqlError `json:"-"`
 }
@@ -8163,6 +8983,11 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError)
 
 // ModifySnowflakeDataSourceResponse is returned by ModifySnowflakeDataSource on success.
 type ModifySnowflakeDataSourceResponse struct {
+	// This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
+	//
+	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+	//
+	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
 	ModifySnowflakeDataSource ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse `json:"-"`
 }
 
@@ -8235,11 +9060,18 @@ func (v *ModifySnowflakeDataSourceResponse) __premarshalJSON() (*__premarshalMod
 }
 
 // PageInfoData includes the GraphQL fields of PageInfo requested by the fragment PageInfoData.
+// The GraphQL type's documentation follows.
+//
+// The page info object used for pagination.
 type PageInfoData struct {
-	StartCursor     string `json:"startCursor"`
-	EndCursor       string `json:"endCursor"`
-	HasNextPage     bool   `json:"hasNextPage"`
-	HasPreviousPage bool   `json:"hasPreviousPage"`
+	// Points to the first item returned in the results. Used when paginating backward.
+	StartCursor string `json:"startCursor"`
+	// Points to the last item returned in the results. Used when paginating forward.
+	EndCursor string `json:"endCursor"`
+	// A boolean that indicates whether a next page of results exists. Can be used to display a "next page" button in user interfaces, for example.
+	HasNextPage bool `json:"hasNextPage"`
+	// A boolean that indicates whether a previous page of results exists. Can be used to display a "previous page" button in user interfaces, for example.
+	HasPreviousPage bool `json:"hasPreviousPage"`
 }
 
 // GetStartCursor returns PageInfoData.StartCursor, and is useful for accessing the field via an interface.
@@ -8254,14 +9086,22 @@ func (v *PageInfoData) GetHasNextPage() bool { return v.HasNextPage }
 // GetHasPreviousPage returns PageInfoData.HasPreviousPage, and is useful for accessing the field via an interface.
 func (v *PageInfoData) GetHasPreviousPage() bool { return v.HasPreviousPage }
 
+// The fields for modifying a Snowflake Data Source's connection settings.
 type PartialSnowflakeConnectionSettingsInput struct {
-	Account   string `json:"account"`
-	Database  string `json:"database"`
+	// The Snowflake account. Only include the part before the "snowflakecomputing.com" part of your Snowflake URL (make sure you are in classic console, not Snowsight). For AWS-based accounts, this looks like "znXXXXX.us-east-2.aws". For Google Cloud-based accounts, this looks like "ffXXXXX.us-central1.gcp". If not provided this property will not be modified.
+	Account string `json:"account"`
+	// The Snowflake database name. If not provided this property will not be modified.
+	Database string `json:"database"`
+	// The Snowflake warehouse name. It should be "PROPELLING" if you used the default name in the setup script. If not provided this property will not be modified.
 	Warehouse string `json:"warehouse"`
-	Schema    string `json:"schema"`
-	Username  string `json:"username"`
-	Password  string `json:"password"`
-	Role      string `json:"role"`
+	// The Snowflake schema. If not provided this property will not be modified.
+	Schema string `json:"schema"`
+	// The Snowflake username. It should be "PROPEL" if you used the default name in the setup script. If not provided this property will not be modified.
+	Username string `json:"username"`
+	// The Snowflake password. If not provided this property will not be modified.
+	Password string `json:"password"`
+	// The Snowflake role. It should be "PROPELLER" if you used the default name in the setup script. If not provided this property will not be modified.
+	Role string `json:"role"`
 }
 
 // GetAccount returns PartialSnowflakeConnectionSettingsInput.Account, and is useful for accessing the field via an interface.
@@ -8285,14 +9125,22 @@ func (v *PartialSnowflakeConnectionSettingsInput) GetPassword() string { return 
 // GetRole returns PartialSnowflakeConnectionSettingsInput.Role, and is useful for accessing the field via an interface.
 func (v *PartialSnowflakeConnectionSettingsInput) GetRole() string { return v.Role }
 
+// The fields for creating a Snowflake Data Source's connection settings.
 type SnowflakeConnectionSettingsInput struct {
-	Account   string `json:"account"`
-	Database  string `json:"database"`
+	// The Snowflake account. Only include the part before the "snowflakecomputing.com" part of your Snowflake URL (make sure you are in classic console, not Snowsight). For AWS-based accounts, this looks like "znXXXXX.us-east-2.aws". For Google Cloud-based accounts, this looks like "ffXXXXX.us-central1.gcp".
+	Account string `json:"account"`
+	// The Snowflake database name.
+	Database string `json:"database"`
+	// The Snowflake warehouse name. It should be "PROPELLING" if you used the default name in the setup script.
 	Warehouse string `json:"warehouse"`
-	Schema    string `json:"schema"`
-	Username  string `json:"username"`
-	Password  string `json:"password"`
-	Role      string `json:"role"`
+	// The Snowflake schema.
+	Schema string `json:"schema"`
+	// The Snowflake username. It should be "PROPEL" if you used the default name in the setup script.
+	Username string `json:"username"`
+	// The Snowflake password.
+	Password string `json:"password"`
+	// The Snowflake role. It should be "PROPELLER" if you used the default name in the setup script.
+	Role string `json:"role"`
 }
 
 // GetAccount returns SnowflakeConnectionSettingsInput.Account, and is useful for accessing the field via an interface.
@@ -8317,11 +9165,14 @@ func (v *SnowflakeConnectionSettingsInput) GetPassword() string { return v.Passw
 func (v *SnowflakeConnectionSettingsInput) GetRole() string { return v.Role }
 
 // SyncData includes the GraphQL fields of Sync requested by the fragment SyncData.
+// The GraphQL type's documentation follows.
+//
+// The Sync object.
+//
+// This represents the process of syncing data from your Data Source (for example, a Snowflake data warehouse) to your Data Pool.
 type SyncData struct {
-	// The ID of the Sync resource.
+	// The Sync's unique identifier.
 	Id string `json:"id"`
-	// This is the ID of the query which generated the Sync in Snowflake. In the future, this will become private.
-	QueryId string `json:"queryId"`
 	// The status of the Sync (all Syncs begin as SYNCING before transitioning to SUCCEEDED or FAILED).
 	Status SyncStatus `json:"status"`
 	// The number of new records contained within the Sync, if known. This excludes filtered records.
@@ -8330,8 +9181,7 @@ type SyncData struct {
 	UpdatedRecords string `json:"updatedRecords"`
 	// The number of deleted records contained within the Sync, if known. This excludes filtered records.
 	DeletedRecords string `json:"deletedRecords"`
-	// The number of filtered records contained within the Sync, due to issues such as missing time dimension, if
-	// known.
+	// The number of filtered records contained within the Sync, due to issues such as a missing timestamp Dimension, if any are known to be invalid.
 	InvalidRecords string `json:"invalidRecords"`
 	// The time at which the Sync started.
 	StartedAt time.Time `json:"startedAt"`
@@ -8340,18 +9190,19 @@ type SyncData struct {
 	// The time at which the Sync failed.
 	FailedAt time.Time `json:"failedAt"`
 	// If the Sync failed, this represents the reason the Sync failed.
-	Error      SyncDataError `json:"error"`
-	CreatedAt  time.Time     `json:"createdAt"`
-	CreatedBy  string        `json:"createdBy"`
-	ModifiedAt time.Time     `json:"modifiedAt"`
-	ModifiedBy string        `json:"modifiedBy"`
+	Error SyncDataError `json:"error"`
+	// The Sync's creation date and time in UTC.
+	CreatedAt time.Time `json:"createdAt"`
+	// The Sync's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+	CreatedBy string `json:"createdBy"`
+	// The Sync's last modification date and time in UTC.
+	ModifiedAt time.Time `json:"modifiedAt"`
+	// The Sync's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
+	ModifiedBy string `json:"modifiedBy"`
 }
 
 // GetId returns SyncData.Id, and is useful for accessing the field via an interface.
 func (v *SyncData) GetId() string { return v.Id }
-
-// GetQueryId returns SyncData.QueryId, and is useful for accessing the field via an interface.
-func (v *SyncData) GetQueryId() string { return v.QueryId }
 
 // GetStatus returns SyncData.Status, and is useful for accessing the field via an interface.
 func (v *SyncData) GetStatus() SyncStatus { return v.Status }
@@ -8393,35 +9244,52 @@ func (v *SyncData) GetModifiedAt() time.Time { return v.ModifiedAt }
 func (v *SyncData) GetModifiedBy() string { return v.ModifiedBy }
 
 // SyncDataError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
 type SyncDataError struct {
+	// The error message.
 	Message string `json:"message"`
 }
 
 // GetMessage returns SyncDataError.Message, and is useful for accessing the field via an interface.
 func (v *SyncDataError) GetMessage() string { return v.Message }
 
+// The status of a Sync.
 type SyncStatus string
 
 const (
-	// We are actively syncing records contained within the Sync.
+	// Propel is actively syncing records contained within the Sync.
 	SyncStatusSyncing SyncStatus = "SYNCING"
-	// We successfully synced all records contained within the Sync.
+	// The Sync succeeded. Propel successfully synced all records contained within the Sync.
 	SyncStatusSucceeded SyncStatus = "SUCCEEDED"
-	// We failed to sync some or all records contained within the Sync.
+	// The Sync failed. Propel failed to sync some or all records contained within the Sync.
 	SyncStatusFailed SyncStatus = "FAILED"
-	// We are deleting the Sync.
+	// Propel is deleting the Sync.
 	SyncStatusDeleting SyncStatus = "DELETING"
 )
 
 // TableIntrospectionData includes the GraphQL fields of TableIntrospection requested by the fragment TableIntrospectionData.
+// The GraphQL type's documentation follows.
+//
+// The table introspection object.
+//
+// When setting up a Data Source, Propel may need to introspect tables in order to determine what tables and columns are available to create Data Pools from. The table introspection represents the lifecycle of this operation (whether it's in-progress, succeeded, or failed) and the resulting tables and columns. These will be captured as table and column objects, respectively.
 type TableIntrospectionData struct {
+	// The Data Source the table introspection was performed for.
 	DataSource TableIntrospectionDataDataSource `json:"dataSource"`
-	Status     TableIntrospectionStatus         `json:"status"`
-	CreatedAt  time.Time                        `json:"createdAt"`
-	CreatedBy  string                           `json:"createdBy"`
-	ModifiedAt time.Time                        `json:"modifiedAt"`
-	ModifiedBy string                           `json:"modifiedBy"`
-	NumTables  int                              `json:"numTables"`
+	// The status of the table introspection.
+	Status TableIntrospectionStatus `json:"status"`
+	// The table introspection's creation date and time in UTC.
+	CreatedAt time.Time `json:"createdAt"`
+	// The table introspection's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+	CreatedBy string `json:"createdBy"`
+	// The table introspection's last modification date and time in UTC.
+	ModifiedAt time.Time `json:"modifiedAt"`
+	// The table introspection's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
+	ModifiedBy string `json:"modifiedBy"`
+	// The number of tables introspected.
+	NumTables int `json:"numTables"`
 }
 
 // GetDataSource returns TableIntrospectionData.DataSource, and is useful for accessing the field via an interface.
@@ -8448,30 +9316,45 @@ func (v *TableIntrospectionData) GetModifiedBy() string { return v.ModifiedBy }
 func (v *TableIntrospectionData) GetNumTables() int { return v.NumTables }
 
 // TableIntrospectionDataDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://docs.propeldata.com).
 type TableIntrospectionDataDataSource struct {
+	// The Data Source's unique identifier.
 	Id string `json:"id"`
 }
 
 // GetId returns TableIntrospectionDataDataSource.Id, and is useful for accessing the field via an interface.
 func (v *TableIntrospectionDataDataSource) GetId() string { return v.Id }
 
+// The status of a table introspection.
 type TableIntrospectionStatus string
 
 const (
+	// The table introspection has not started.
 	TableIntrospectionStatusNotStarted TableIntrospectionStatus = "NOT_STARTED"
-	TableIntrospectionStatusStarted    TableIntrospectionStatus = "STARTED"
-	TableIntrospectionStatusSucceeded  TableIntrospectionStatus = "SUCCEEDED"
-	TableIntrospectionStatusFailed     TableIntrospectionStatus = "FAILED"
+	// The table introspection has started.
+	TableIntrospectionStatusStarted TableIntrospectionStatus = "STARTED"
+	// The table introspection succeeded.
+	TableIntrospectionStatusSucceeded TableIntrospectionStatus = "SUCCEEDED"
+	// The table introspection failed.
+	TableIntrospectionStatusFailed TableIntrospectionStatus = "FAILED"
 )
 
-// Override the TableLocation to sync a Data Pool to. Optional fields have sensible defaults.
-type TableLocationInput struct {
-	// The name of the table.
-	Table string `json:"table"`
+// Fields for specifying a Data Pool's Tenant ID.
+//
+// The Tenant ID can be used for partitioning and restricting access between customers (Tenants) within a Data Pool.
+type TenantInput struct {
+	// The name of the column that represents the Tenant ID.
+	ColumnName string `json:"columnName"`
 }
 
-// GetTable returns TableLocationInput.Table, and is useful for accessing the field via an interface.
-func (v *TableLocationInput) GetTable() string { return v.Table }
+// GetColumnName returns TenantInput.ColumnName, and is useful for accessing the field via an interface.
+func (v *TenantInput) GetColumnName() string { return v.ColumnName }
 
 // __CreateCountDistinctMetricInput is used internally by genqlient
 type __CreateCountDistinctMetricInput struct {
@@ -8698,16 +9581,9 @@ func CreateCountDistinctMetric(
 	client graphql.Client,
 	input CreateCountDistinctMetricInput,
 ) (*CreateCountDistinctMetricResponse, error) {
-	__input := __CreateCountDistinctMetricInput{
-		Input: input,
-	}
-	var err error
-
-	var retval CreateCountDistinctMetricResponse
-	err = client.MakeRequest(
-		ctx,
-		"CreateCountDistinctMetric",
-		`
+	req := &graphql.Request{
+		OpName: "CreateCountDistinctMetric",
+		Query: `
 mutation CreateCountDistinctMetric ($input: CreateCountDistinctMetricInput) {
 	createCountDistinctMetric(input: $input) {
 		__typename
@@ -8891,7 +9767,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -8920,10 +9795,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__CreateCountDistinctMetricInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateCountDistinctMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func CreateCountMetric(
@@ -8931,16 +9818,9 @@ func CreateCountMetric(
 	client graphql.Client,
 	input CreateCountMetricInput,
 ) (*CreateCountMetricResponse, error) {
-	__input := __CreateCountMetricInput{
-		Input: input,
-	}
-	var err error
-
-	var retval CreateCountMetricResponse
-	err = client.MakeRequest(
-		ctx,
-		"CreateCountMetric",
-		`
+	req := &graphql.Request{
+		OpName: "CreateCountMetric",
+		Query: `
 mutation CreateCountMetric ($input: CreateCountMetricInput) {
 	createCountMetric(input: $input) {
 		__typename
@@ -9124,7 +10004,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -9153,10 +10032,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__CreateCountMetricInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateCountMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func CreateDataPool(
@@ -9164,16 +10055,9 @@ func CreateDataPool(
 	client graphql.Client,
 	input CreateDataPoolInput,
 ) (*CreateDataPoolResponse, error) {
-	__input := __CreateDataPoolInput{
-		Input: input,
-	}
-	var err error
-
-	var retval CreateDataPoolResponse
-	err = client.MakeRequest(
-		ctx,
-		"CreateDataPool",
-		`
+	req := &graphql.Request{
+		OpName: "CreateDataPool",
+		Query: `
 mutation CreateDataPool ($input: createDataPoolInput!) {
 	createDataPool(input: $input) {
 		__typename
@@ -9319,7 +10203,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -9348,10 +10231,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__CreateDataPoolInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateDataPoolResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func CreateSnowflakeDataSource(
@@ -9359,16 +10254,9 @@ func CreateSnowflakeDataSource(
 	client graphql.Client,
 	input CreateSnowflakeDataSourceInput,
 ) (*CreateSnowflakeDataSourceResponse, error) {
-	__input := __CreateSnowflakeDataSourceInput{
-		Input: input,
-	}
-	var err error
-
-	var retval CreateSnowflakeDataSourceResponse
-	err = client.MakeRequest(
-		ctx,
-		"CreateSnowflakeDataSource",
-		`
+	req := &graphql.Request{
+		OpName: "CreateSnowflakeDataSource",
+		Query: `
 mutation CreateSnowflakeDataSource ($input: createSnowflakeDataSourceInput!) {
 	createSnowflakeDataSource(input: $input) {
 		__typename
@@ -9478,10 +10366,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__CreateSnowflakeDataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateSnowflakeDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func CreateSumMetric(
@@ -9489,16 +10389,9 @@ func CreateSumMetric(
 	client graphql.Client,
 	input CreateSumMetricInput,
 ) (*CreateSumMetricResponse, error) {
-	__input := __CreateSumMetricInput{
-		Input: input,
-	}
-	var err error
-
-	var retval CreateSumMetricResponse
-	err = client.MakeRequest(
-		ctx,
-		"CreateSumMetric",
-		`
+	req := &graphql.Request{
+		OpName: "CreateSumMetric",
+		Query: `
 mutation CreateSumMetric ($input: CreateSumMetricInput) {
 	createSumMetric(input: $input) {
 		__typename
@@ -9682,7 +10575,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -9711,10 +10603,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__CreateSumMetricInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateSumMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DataPool(
@@ -9722,16 +10626,9 @@ func DataPool(
 	client graphql.Client,
 	id string,
 ) (*DataPoolResponse, error) {
-	__input := __DataPoolInput{
-		Id: id,
-	}
-	var err error
-
-	var retval DataPoolResponse
-	err = client.MakeRequest(
-		ctx,
-		"DataPool",
-		`
+	req := &graphql.Request{
+		OpName: "DataPool",
+		Query: `
 query DataPool ($id: ID!) {
 	dataPool(id: $id) {
 		... DataPoolData
@@ -9863,7 +10760,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -9892,10 +10788,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DataPoolInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data DataPoolResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DataPoolByName(
@@ -9903,16 +10811,9 @@ func DataPoolByName(
 	client graphql.Client,
 	uniqueName string,
 ) (*DataPoolByNameResponse, error) {
-	__input := __DataPoolByNameInput{
-		UniqueName: uniqueName,
-	}
-	var err error
-
-	var retval DataPoolByNameResponse
-	err = client.MakeRequest(
-		ctx,
-		"DataPoolByName",
-		`
+	req := &graphql.Request{
+		OpName: "DataPoolByName",
+		Query: `
 query DataPoolByName ($uniqueName: String!) {
 	dataPool: dataPoolByName(uniqueName: $uniqueName) {
 		... DataPoolData
@@ -10044,7 +10945,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -10073,10 +10973,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DataPoolByNameInput{
+			UniqueName: uniqueName,
+		},
+	}
+	var err error
+
+	var data DataPoolByNameResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DataPools(
@@ -10087,19 +10999,9 @@ func DataPools(
 	after string,
 	before string,
 ) (*DataPoolsResponse, error) {
-	__input := __DataPoolsInput{
-		First:  first,
-		Last:   last,
-		After:  after,
-		Before: before,
-	}
-	var err error
-
-	var retval DataPoolsResponse
-	err = client.MakeRequest(
-		ctx,
-		"DataPools",
-		`
+	req := &graphql.Request{
+		OpName: "DataPools",
+		Query: `
 query DataPools ($first: Int, $last: Int, $after: String, $before: String) {
 	dataPools(first: $first, last: $last, after: $after, before: $before) {
 		pageInfo {
@@ -10244,7 +11146,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -10273,10 +11174,25 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DataPoolsInput{
+			First:  first,
+			Last:   last,
+			After:  after,
+			Before: before,
+		},
+	}
+	var err error
+
+	var data DataPoolsResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DataSource(
@@ -10284,16 +11200,9 @@ func DataSource(
 	client graphql.Client,
 	id string,
 ) (*DataSourceResponse, error) {
-	__input := __DataSourceInput{
-		Id: id,
-	}
-	var err error
-
-	var retval DataSourceResponse
-	err = client.MakeRequest(
-		ctx,
-		"DataSource",
-		`
+	req := &graphql.Request{
+		OpName: "DataSource",
+		Query: `
 query DataSource ($id: ID!) {
 	dataSource(id: $id) {
 		... DataSourceData
@@ -10389,10 +11298,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DataSourceInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data DataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DataSourceByName(
@@ -10400,16 +11321,9 @@ func DataSourceByName(
 	client graphql.Client,
 	uniqueName string,
 ) (*DataSourceByNameResponse, error) {
-	__input := __DataSourceByNameInput{
-		UniqueName: uniqueName,
-	}
-	var err error
-
-	var retval DataSourceByNameResponse
-	err = client.MakeRequest(
-		ctx,
-		"DataSourceByName",
-		`
+	req := &graphql.Request{
+		OpName: "DataSourceByName",
+		Query: `
 query DataSourceByName ($uniqueName: String!) {
 	dataSource: dataSourceByName(uniqueName: $uniqueName) {
 		... DataSourceData
@@ -10505,10 +11419,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DataSourceByNameInput{
+			UniqueName: uniqueName,
+		},
+	}
+	var err error
+
+	var data DataSourceByNameResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DataSources(
@@ -10519,19 +11445,9 @@ func DataSources(
 	after string,
 	before string,
 ) (*DataSourcesResponse, error) {
-	__input := __DataSourcesInput{
-		First:  first,
-		Last:   last,
-		After:  after,
-		Before: before,
-	}
-	var err error
-
-	var retval DataSourcesResponse
-	err = client.MakeRequest(
-		ctx,
-		"DataSources",
-		`
+	req := &graphql.Request{
+		OpName: "DataSources",
+		Query: `
 query DataSources ($first: Int, $last: Int, $after: String, $before: String) {
 	dataSources(first: $first, last: $last, after: $after, before: $before) {
 		pageInfo {
@@ -10640,10 +11556,25 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DataSourcesInput{
+			First:  first,
+			Last:   last,
+			After:  after,
+			Before: before,
+		},
+	}
+	var err error
+
+	var data DataSourcesResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DeleteDataPool(
@@ -10651,24 +11582,29 @@ func DeleteDataPool(
 	client graphql.Client,
 	id string,
 ) (*DeleteDataPoolResponse, error) {
-	__input := __DeleteDataPoolInput{
-		Id: id,
-	}
-	var err error
-
-	var retval DeleteDataPoolResponse
-	err = client.MakeRequest(
-		ctx,
-		"DeleteDataPool",
-		`
+	req := &graphql.Request{
+		OpName: "DeleteDataPool",
+		Query: `
 mutation DeleteDataPool ($id: ID!) {
 	deleteDataPool(id: $id)
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DeleteDataPoolInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data DeleteDataPoolResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DeleteDataPoolByName(
@@ -10676,24 +11612,29 @@ func DeleteDataPoolByName(
 	client graphql.Client,
 	uniqueName string,
 ) (*DeleteDataPoolByNameResponse, error) {
-	__input := __DeleteDataPoolByNameInput{
-		UniqueName: uniqueName,
-	}
-	var err error
-
-	var retval DeleteDataPoolByNameResponse
-	err = client.MakeRequest(
-		ctx,
-		"DeleteDataPoolByName",
-		`
+	req := &graphql.Request{
+		OpName: "DeleteDataPoolByName",
+		Query: `
 mutation DeleteDataPoolByName ($uniqueName: String!) {
 	deleteDataPoolByName(uniqueName: $uniqueName)
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DeleteDataPoolByNameInput{
+			UniqueName: uniqueName,
+		},
+	}
+	var err error
+
+	var data DeleteDataPoolByNameResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DeleteDataSource(
@@ -10701,24 +11642,29 @@ func DeleteDataSource(
 	client graphql.Client,
 	id string,
 ) (*DeleteDataSourceResponse, error) {
-	__input := __DeleteDataSourceInput{
-		Id: id,
-	}
-	var err error
-
-	var retval DeleteDataSourceResponse
-	err = client.MakeRequest(
-		ctx,
-		"DeleteDataSource",
-		`
+	req := &graphql.Request{
+		OpName: "DeleteDataSource",
+		Query: `
 mutation DeleteDataSource ($id: ID!) {
 	deleteDataSource(id: $id)
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DeleteDataSourceInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data DeleteDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DeleteDataSourceByName(
@@ -10726,24 +11672,29 @@ func DeleteDataSourceByName(
 	client graphql.Client,
 	uniqueName string,
 ) (*DeleteDataSourceByNameResponse, error) {
-	__input := __DeleteDataSourceByNameInput{
-		UniqueName: uniqueName,
-	}
-	var err error
-
-	var retval DeleteDataSourceByNameResponse
-	err = client.MakeRequest(
-		ctx,
-		"DeleteDataSourceByName",
-		`
+	req := &graphql.Request{
+		OpName: "DeleteDataSourceByName",
+		Query: `
 mutation DeleteDataSourceByName ($uniqueName: String!) {
 	deleteDataSourceByName(uniqueName: $uniqueName)
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DeleteDataSourceByNameInput{
+			UniqueName: uniqueName,
+		},
+	}
+	var err error
+
+	var data DeleteDataSourceByNameResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DeleteMetric(
@@ -10751,24 +11702,29 @@ func DeleteMetric(
 	client graphql.Client,
 	id string,
 ) (*DeleteMetricResponse, error) {
-	__input := __DeleteMetricInput{
-		Id: id,
-	}
-	var err error
-
-	var retval DeleteMetricResponse
-	err = client.MakeRequest(
-		ctx,
-		"DeleteMetric",
-		`
+	req := &graphql.Request{
+		OpName: "DeleteMetric",
+		Query: `
 mutation DeleteMetric ($id: ID!) {
 	deleteMetric(id: $id)
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DeleteMetricInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data DeleteMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func DeleteMetricByName(
@@ -10776,24 +11732,29 @@ func DeleteMetricByName(
 	client graphql.Client,
 	uniqueName string,
 ) (*DeleteMetricByNameResponse, error) {
-	__input := __DeleteMetricByNameInput{
-		UniqueName: uniqueName,
-	}
-	var err error
-
-	var retval DeleteMetricByNameResponse
-	err = client.MakeRequest(
-		ctx,
-		"DeleteMetricByName",
-		`
+	req := &graphql.Request{
+		OpName: "DeleteMetricByName",
+		Query: `
 mutation DeleteMetricByName ($uniqueName: String!) {
 	deleteMetricByName(uniqueName: $uniqueName)
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__DeleteMetricByNameInput{
+			UniqueName: uniqueName,
+		},
+	}
+	var err error
+
+	var data DeleteMetricByNameResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func Metric(
@@ -10801,16 +11762,9 @@ func Metric(
 	client graphql.Client,
 	id string,
 ) (*MetricResponse, error) {
-	__input := __MetricInput{
-		Id: id,
-	}
-	var err error
-
-	var retval MetricResponse
-	err = client.MakeRequest(
-		ctx,
-		"Metric",
-		`
+	req := &graphql.Request{
+		OpName: "Metric",
+		Query: `
 query Metric ($id: ID!) {
 	metric(id: $id) {
 		... MetricData
@@ -10991,7 +11945,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -11020,10 +11973,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__MetricInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data MetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func MetricByName(
@@ -11031,16 +11996,9 @@ func MetricByName(
 	client graphql.Client,
 	uniqueName string,
 ) (*MetricByNameResponse, error) {
-	__input := __MetricByNameInput{
-		UniqueName: uniqueName,
-	}
-	var err error
-
-	var retval MetricByNameResponse
-	err = client.MakeRequest(
-		ctx,
-		"MetricByName",
-		`
+	req := &graphql.Request{
+		OpName: "MetricByName",
+		Query: `
 query MetricByName ($uniqueName: String!) {
 	metric: metricByName(uniqueName: $uniqueName) {
 		... MetricData
@@ -11221,7 +12179,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -11250,10 +12207,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__MetricByNameInput{
+			UniqueName: uniqueName,
+		},
+	}
+	var err error
+
+	var data MetricByNameResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func Metrics(
@@ -11264,19 +12233,9 @@ func Metrics(
 	after string,
 	before string,
 ) (*MetricsResponse, error) {
-	__input := __MetricsInput{
-		First:  first,
-		Last:   last,
-		After:  after,
-		Before: before,
-	}
-	var err error
-
-	var retval MetricsResponse
-	err = client.MakeRequest(
-		ctx,
-		"Metrics",
-		`
+	req := &graphql.Request{
+		OpName: "Metrics",
+		Query: `
 query Metrics ($first: Int, $last: Int, $after: String, $before: String) {
 	metrics(first: $first, last: $last, after: $after, before: $before) {
 		pageInfo {
@@ -11474,7 +12433,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -11503,10 +12461,25 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__MetricsInput{
+			First:  first,
+			Last:   last,
+			After:  after,
+			Before: before,
+		},
+	}
+	var err error
+
+	var data MetricsResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func ModifyDataPool(
@@ -11514,16 +12487,9 @@ func ModifyDataPool(
 	client graphql.Client,
 	input ModifyDataPoolInput,
 ) (*ModifyDataPoolResponse, error) {
-	__input := __ModifyDataPoolInput{
-		Input: input,
-	}
-	var err error
-
-	var retval ModifyDataPoolResponse
-	err = client.MakeRequest(
-		ctx,
-		"ModifyDataPool",
-		`
+	req := &graphql.Request{
+		OpName: "ModifyDataPool",
+		Query: `
 mutation ModifyDataPool ($input: modifyDataPoolInput!) {
 	modifyDataPool(input: $input) {
 		__typename
@@ -11669,7 +12635,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -11698,10 +12663,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__ModifyDataPoolInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyDataPoolResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func ModifyMetric(
@@ -11709,16 +12686,9 @@ func ModifyMetric(
 	client graphql.Client,
 	input ModifyMetricInput,
 ) (*ModifyMetricResponse, error) {
-	__input := __ModifyMetricInput{
-		Input: input,
-	}
-	var err error
-
-	var retval ModifyMetricResponse
-	err = client.MakeRequest(
-		ctx,
-		"ModifyMetric",
-		`
+	req := &graphql.Request{
+		OpName: "ModifyMetric",
+		Query: `
 mutation ModifyMetric ($input: ModifyMetricInput) {
 	modifyMetric(input: $input) {
 		__typename
@@ -11902,7 +12872,6 @@ fragment ColumnData on Column {
 }
 fragment SyncData on Sync {
 	id
-	queryId
 	status
 	newRecords
 	updatedRecords
@@ -11931,10 +12900,22 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__ModifyMetricInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
 
 func ModifySnowflakeDataSource(
@@ -11942,16 +12923,9 @@ func ModifySnowflakeDataSource(
 	client graphql.Client,
 	input ModifySnowflakeDataSourceInput,
 ) (*ModifySnowflakeDataSourceResponse, error) {
-	__input := __ModifySnowflakeDataSourceInput{
-		Input: input,
-	}
-	var err error
-
-	var retval ModifySnowflakeDataSourceResponse
-	err = client.MakeRequest(
-		ctx,
-		"ModifySnowflakeDataSource",
-		`
+	req := &graphql.Request{
+		OpName: "ModifySnowflakeDataSource",
+		Query: `
 mutation ModifySnowflakeDataSource ($input: modifySnowflakeDataSourceInput!) {
 	modifySnowflakeDataSource(input: $input) {
 		__typename
@@ -12061,8 +13035,20 @@ fragment TableIntrospectionData on TableIntrospection {
 	numTables
 }
 `,
-		&retval,
-		&__input,
+		Variables: &__ModifySnowflakeDataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifySnowflakeDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
 	)
-	return &retval, err
+
+	return &data, err
 }
