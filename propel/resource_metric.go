@@ -106,31 +106,30 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 
 	var diags diag.Diagnostics
 
-	filters := make([]pc.FilterInput, 0)
+	filters := make([]*pc.FilterInput, 0)
 	if def, ok := d.Get("filter").([]interface{}); ok && len(def) > 0 {
 		filters = expandMetricFilters(def)
 	}
 
-	dimensions := make([]pc.DimensionInput, 0)
+	dimensions := make([]*pc.DimensionInput, 0)
 	if def, ok := d.GetOk("dimensions"); ok {
 		dimensions = expandMetricDimensions(def.(*schema.Set).List())
 	}
 
+	uniqueName := d.Get("unique_name").(string)
+	description := d.Get("description").(string)
+
 	switch d.Get("type") {
 	case "SUM":
-		input := pc.CreateSumMetricInput{
+		input := &pc.CreateSumMetricInput{
 			DataPool:    d.Get("data_pool").(string),
-			UniqueName:  d.Get("unique_name").(string),
-			Description: d.Get("description").(string),
+			UniqueName:  &uniqueName,
+			Description: &description,
 			Filters:     filters,
 			Dimensions:  dimensions,
-			Measure: pc.DimensionInput{
+			Measure: &pc.DimensionInput{
 				ColumnName: d.Get("measure").(string),
 			},
-		}
-
-		if def, ok := d.GetOk("unique_name"); ok {
-			input.UniqueName = def.(string)
 		}
 
 		response, err := pc.CreateSumMetric(ctx, c, input)
@@ -140,10 +139,10 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 
 		d.SetId(response.GetCreateSumMetric().Metric.Id)
 	case "COUNT":
-		input := pc.CreateCountMetricInput{
+		input := &pc.CreateCountMetricInput{
 			DataPool:    d.Get("data_pool").(string),
-			UniqueName:  d.Get("unique_name").(string),
-			Description: d.Get("description").(string),
+			UniqueName:  &uniqueName,
+			Description: &description,
 			Filters:     filters,
 			Dimensions:  dimensions,
 		}
@@ -155,13 +154,13 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 
 		d.SetId(response.GetCreateCountMetric().Metric.Id)
 	case "COUNT_DISTINCT":
-		input := pc.CreateCountDistinctMetricInput{
+		input := &pc.CreateCountDistinctMetricInput{
 			DataPool:    d.Get("data_pool").(string),
-			UniqueName:  d.Get("unique_name").(string),
-			Description: d.Get("description").(string),
+			UniqueName:  &uniqueName,
+			Description: &description,
 			Filters:     filters,
 			Dimensions:  dimensions,
-			Dimension: pc.DimensionInput{
+			Dimension: &pc.DimensionInput{
 				ColumnName: d.Get("dimension").(string),
 			},
 		}
@@ -267,10 +266,12 @@ func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 	c := m.(graphql.Client)
 
 	if d.HasChanges("unique_name", "description") {
-		modifyMetric := pc.ModifyMetricInput{
+		uniqueName := d.Get("unique_name").(string)
+		description := d.Get("description").(string)
+		modifyMetric := &pc.ModifyMetricInput{
 			Metric:      d.Id(),
-			UniqueName:  d.Get("unique_name").(string),
-			Description: d.Get("description").(string),
+			UniqueName:  &uniqueName,
+			Description: &description,
 		}
 
 		_, err := pc.ModifyMetric(ctx, c, modifyMetric)
@@ -295,8 +296,8 @@ func resourceMetricDelete(ctx context.Context, d *schema.ResourceData, m interfa
 	return nil
 }
 
-func expandMetricFilters(def []interface{}) []pc.FilterInput {
-	filters := make([]pc.FilterInput, 0, len(def))
+func expandMetricFilters(def []interface{}) []*pc.FilterInput {
+	filters := make([]*pc.FilterInput, 0, len(def))
 
 	for _, rawFilter := range def {
 		filter := rawFilter.(map[string]interface{})
@@ -318,7 +319,7 @@ func expandMetricFilters(def []interface{}) []pc.FilterInput {
 			operator = pc.FilterOperatorLessThanOrEqualTo
 		}
 
-		f := pc.FilterInput{
+		f := &pc.FilterInput{
 			Column:   filter["column"].(string),
 			Operator: operator,
 			Value:    filter["value"].(string),
@@ -330,13 +331,13 @@ func expandMetricFilters(def []interface{}) []pc.FilterInput {
 	return filters
 }
 
-func expandMetricDimensions(def []interface{}) []pc.DimensionInput {
-	dimensions := make([]pc.DimensionInput, 0, len(def))
+func expandMetricDimensions(def []interface{}) []*pc.DimensionInput {
+	dimensions := make([]*pc.DimensionInput, 0, len(def))
 
 	for _, rawDimension := range def {
 		dimension := rawDimension.(string)
 
-		d := pc.DimensionInput{
+		d := &pc.DimensionInput{
 			ColumnName: dimension,
 		}
 		dimensions = append(dimensions, d)

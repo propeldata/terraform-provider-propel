@@ -23,7 +23,7 @@ type ColumnData struct {
 	// The column's type.
 	Type string `json:"type"`
 	// Whether the column is nullable, meaning whether it accepts a null value.
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 }
 
 // GetName returns ColumnData.Name, and is useful for accessing the field via an interface.
@@ -33,7 +33,7 @@ func (v *ColumnData) GetName() string { return v.Name }
 func (v *ColumnData) GetType() string { return v.Type }
 
 // GetIsNullable returns ColumnData.IsNullable, and is useful for accessing the field via an interface.
-func (v *ColumnData) GetIsNullable() bool { return v.IsNullable }
+func (v *ColumnData) GetIsNullable() *bool { return v.IsNullable }
 
 // The Propel data types.
 type ColumnType string
@@ -89,12 +89,12 @@ type CommonData interface {
 	// The GraphQL interface field's documentation follows.
 	//
 	// The resource's Account.
-	GetAccount() CommonDataAccount
+	GetAccount() *CommonDataAccount
 	// GetEnvironment returns the interface-field "environment" from its implementation.
 	// The GraphQL interface field's documentation follows.
 	//
 	// The resource's Environment.
-	GetEnvironment() CommonDataEnvironment
+	GetEnvironment() *CommonDataEnvironment
 	// GetCreatedAt returns the interface-field "createdAt" from its implementation.
 	// The GraphQL interface field's documentation follows.
 	//
@@ -225,9 +225,9 @@ type CommonDataApplication struct {
 	// The resource's description.
 	Description string `json:"description"`
 	// The resource's Account.
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 	// The resource's Environment.
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 	// The resource's creation date and time in UTC.
 	CreatedAt time.Time `json:"createdAt"`
 	// The resource's last modification date and time in UTC.
@@ -245,10 +245,10 @@ func (v *CommonDataApplication) GetUniqueName() string { return v.UniqueName }
 func (v *CommonDataApplication) GetDescription() string { return v.Description }
 
 // GetAccount returns CommonDataApplication.Account, and is useful for accessing the field via an interface.
-func (v *CommonDataApplication) GetAccount() CommonDataAccount { return v.Account }
+func (v *CommonDataApplication) GetAccount() *CommonDataAccount { return v.Account }
 
 // GetEnvironment returns CommonDataApplication.Environment, and is useful for accessing the field via an interface.
-func (v *CommonDataApplication) GetEnvironment() CommonDataEnvironment { return v.Environment }
+func (v *CommonDataApplication) GetEnvironment() *CommonDataEnvironment { return v.Environment }
 
 // GetCreatedAt returns CommonDataApplication.CreatedAt, and is useful for accessing the field via an interface.
 func (v *CommonDataApplication) GetCreatedAt() time.Time { return v.CreatedAt }
@@ -274,9 +274,9 @@ type CommonDataDataPool struct {
 	// The resource's description.
 	Description string `json:"description"`
 	// The resource's Account.
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 	// The resource's Environment.
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 	// The resource's creation date and time in UTC.
 	CreatedAt time.Time `json:"createdAt"`
 	// The resource's last modification date and time in UTC.
@@ -294,10 +294,10 @@ func (v *CommonDataDataPool) GetUniqueName() string { return v.UniqueName }
 func (v *CommonDataDataPool) GetDescription() string { return v.Description }
 
 // GetAccount returns CommonDataDataPool.Account, and is useful for accessing the field via an interface.
-func (v *CommonDataDataPool) GetAccount() CommonDataAccount { return v.Account }
+func (v *CommonDataDataPool) GetAccount() *CommonDataAccount { return v.Account }
 
 // GetEnvironment returns CommonDataDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *CommonDataDataPool) GetEnvironment() CommonDataEnvironment { return v.Environment }
+func (v *CommonDataDataPool) GetEnvironment() *CommonDataEnvironment { return v.Environment }
 
 // GetCreatedAt returns CommonDataDataPool.CreatedAt, and is useful for accessing the field via an interface.
 func (v *CommonDataDataPool) GetCreatedAt() time.Time { return v.CreatedAt }
@@ -323,9 +323,9 @@ type CommonDataDataSource struct {
 	// The resource's description.
 	Description string `json:"description"`
 	// The resource's Account.
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 	// The resource's Environment.
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 	// The resource's creation date and time in UTC.
 	CreatedAt time.Time `json:"createdAt"`
 	// The resource's last modification date and time in UTC.
@@ -343,10 +343,10 @@ func (v *CommonDataDataSource) GetUniqueName() string { return v.UniqueName }
 func (v *CommonDataDataSource) GetDescription() string { return v.Description }
 
 // GetAccount returns CommonDataDataSource.Account, and is useful for accessing the field via an interface.
-func (v *CommonDataDataSource) GetAccount() CommonDataAccount { return v.Account }
+func (v *CommonDataDataSource) GetAccount() *CommonDataAccount { return v.Account }
 
 // GetEnvironment returns CommonDataDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *CommonDataDataSource) GetEnvironment() CommonDataEnvironment { return v.Environment }
+func (v *CommonDataDataSource) GetEnvironment() *CommonDataEnvironment { return v.Environment }
 
 // GetCreatedAt returns CommonDataDataSource.CreatedAt, and is useful for accessing the field via an interface.
 func (v *CommonDataDataSource) GetCreatedAt() time.Time { return v.CreatedAt }
@@ -386,9 +386,9 @@ type CommonDataMetric struct {
 	// The resource's description.
 	Description string `json:"description"`
 	// The resource's Account.
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 	// The resource's Environment.
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 	// The resource's creation date and time in UTC.
 	CreatedAt time.Time `json:"createdAt"`
 	// The resource's last modification date and time in UTC.
@@ -406,10 +406,10 @@ func (v *CommonDataMetric) GetUniqueName() string { return v.UniqueName }
 func (v *CommonDataMetric) GetDescription() string { return v.Description }
 
 // GetAccount returns CommonDataMetric.Account, and is useful for accessing the field via an interface.
-func (v *CommonDataMetric) GetAccount() CommonDataAccount { return v.Account }
+func (v *CommonDataMetric) GetAccount() *CommonDataAccount { return v.Account }
 
 // GetEnvironment returns CommonDataMetric.Environment, and is useful for accessing the field via an interface.
-func (v *CommonDataMetric) GetEnvironment() CommonDataEnvironment { return v.Environment }
+func (v *CommonDataMetric) GetEnvironment() *CommonDataEnvironment { return v.Environment }
 
 // GetCreatedAt returns CommonDataMetric.CreatedAt, and is useful for accessing the field via an interface.
 func (v *CommonDataMetric) GetCreatedAt() time.Time { return v.CreatedAt }
@@ -428,18 +428,18 @@ func (v *CommonDataMetric) GetModifiedBy() string { return v.ModifiedBy }
 //
 // The result of a mutation which creates or modifies a Metric.
 type CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The Metric which was created or modified.
-	Metric CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric `json:"metric"`
+	Metric *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric `json:"metric"`
 }
 
 // GetTypename returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse) GetTypename() string {
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse) GetTypename() *string {
 	return v.Typename
 }
 
 // GetMetric returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse.Metric, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse) GetMetric() CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric {
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse) GetMetric() *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric {
 	return v.Metric
 }
 
@@ -461,22 +461,22 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 }
 
 // GetDataPool returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetDataPool() MetricDataDataPool {
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
 }
 
 // GetDimensions returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetDimensions() []MetricDataDimensionsDimension {
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetDimensions() []*MetricDataDimensionsDimension {
 	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetTimestamp() MetricDataTimestampDimension {
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetTimestamp() *MetricDataTimestampDimension {
 	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetMeasure() MetricDataMeasureDimension {
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetMeasure() *MetricDataMeasureDimension {
 	return v.MetricData.Measure
 }
 
@@ -501,12 +501,12 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 }
 
 // GetAccount returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetAccount() CommonDataAccount {
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetAccount() *CommonDataAccount {
 	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetEnvironment() CommonDataEnvironment {
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetEnvironment() *CommonDataEnvironment {
 	return v.MetricData.CommonDataMetric.Environment
 }
 
@@ -558,13 +558,13 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 type __premarshalCreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
-	DataPool MetricDataDataPool `json:"dataPool"`
+	DataPool *MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure MetricDataMeasureDimension `json:"measure"`
+	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -574,9 +574,9 @@ type __premarshalCreateCountDistinctMetricCreateCountDistinctMetricMetricRespons
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -632,45 +632,45 @@ type CreateCountDistinctMetricInput struct {
 	// The Data Pool that powers this Metric.
 	DataPool string `json:"dataPool"`
 	// The Metric's unique name. If not specified, Propel will set the ID as unique name.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 	// The Metric's description.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
-	Filters []FilterInput `json:"filters"`
+	Filters []*FilterInput `json:"filters,omitempty"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
-	Dimensions []DimensionInput `json:"dimensions"`
+	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The Dimension over which the count distinct operation is going to be performed.
-	Dimension DimensionInput `json:"dimension"`
+	Dimension *DimensionInput `json:"dimension,omitempty"`
 }
 
 // GetDataPool returns CreateCountDistinctMetricInput.DataPool, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricInput) GetDataPool() string { return v.DataPool }
 
 // GetUniqueName returns CreateCountDistinctMetricInput.UniqueName, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricInput) GetUniqueName() string { return v.UniqueName }
+func (v *CreateCountDistinctMetricInput) GetUniqueName() *string { return v.UniqueName }
 
 // GetDescription returns CreateCountDistinctMetricInput.Description, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricInput) GetDescription() string { return v.Description }
+func (v *CreateCountDistinctMetricInput) GetDescription() *string { return v.Description }
 
 // GetFilters returns CreateCountDistinctMetricInput.Filters, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricInput) GetFilters() []FilterInput { return v.Filters }
+func (v *CreateCountDistinctMetricInput) GetFilters() []*FilterInput { return v.Filters }
 
 // GetDimensions returns CreateCountDistinctMetricInput.Dimensions, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricInput) GetDimensions() []DimensionInput { return v.Dimensions }
+func (v *CreateCountDistinctMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
 
 // GetDimension returns CreateCountDistinctMetricInput.Dimension, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricInput) GetDimension() DimensionInput { return v.Dimension }
+func (v *CreateCountDistinctMetricInput) GetDimension() *DimensionInput { return v.Dimension }
 
 // CreateCountDistinctMetricResponse is returned by CreateCountDistinctMetric on success.
 type CreateCountDistinctMetricResponse struct {
 	// This mutation creates a new Count Distinct Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
 	// A Metric is a business indicator measured over time. A Count Distinct Metric returns the number of distinct items found in the underlying data over a specific time period.
-	CreateCountDistinctMetric CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse `json:"createCountDistinctMetric"`
+	CreateCountDistinctMetric *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse `json:"createCountDistinctMetric"`
 }
 
 // GetCreateCountDistinctMetric returns CreateCountDistinctMetricResponse.CreateCountDistinctMetric, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricResponse) GetCreateCountDistinctMetric() CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse {
+func (v *CreateCountDistinctMetricResponse) GetCreateCountDistinctMetric() *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse {
 	return v.CreateCountDistinctMetric
 }
 
@@ -679,16 +679,16 @@ func (v *CreateCountDistinctMetricResponse) GetCreateCountDistinctMetric() Creat
 //
 // The result of a mutation which creates or modifies a Metric.
 type CreateCountMetricCreateCountMetricMetricResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The Metric which was created or modified.
-	Metric CreateCountMetricCreateCountMetricMetricResponseMetric `json:"metric"`
+	Metric *CreateCountMetricCreateCountMetricMetricResponseMetric `json:"metric"`
 }
 
 // GetTypename returns CreateCountMetricCreateCountMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponse) GetTypename() string { return v.Typename }
+func (v *CreateCountMetricCreateCountMetricMetricResponse) GetTypename() *string { return v.Typename }
 
 // GetMetric returns CreateCountMetricCreateCountMetricMetricResponse.Metric, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponse) GetMetric() CreateCountMetricCreateCountMetricMetricResponseMetric {
+func (v *CreateCountMetricCreateCountMetricMetricResponse) GetMetric() *CreateCountMetricCreateCountMetricMetricResponseMetric {
 	return v.Metric
 }
 
@@ -710,22 +710,22 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetId() string 
 }
 
 // GetDataPool returns CreateCountMetricCreateCountMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDataPool() MetricDataDataPool {
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
 }
 
 // GetDimensions returns CreateCountMetricCreateCountMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDimensions() []MetricDataDimensionsDimension {
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDimensions() []*MetricDataDimensionsDimension {
 	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns CreateCountMetricCreateCountMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetTimestamp() MetricDataTimestampDimension {
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetTimestamp() *MetricDataTimestampDimension {
 	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns CreateCountMetricCreateCountMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetMeasure() MetricDataMeasureDimension {
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetMeasure() *MetricDataMeasureDimension {
 	return v.MetricData.Measure
 }
 
@@ -750,12 +750,12 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDescription(
 }
 
 // GetAccount returns CreateCountMetricCreateCountMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetAccount() CommonDataAccount {
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetAccount() *CommonDataAccount {
 	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns CreateCountMetricCreateCountMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetEnvironment() CommonDataEnvironment {
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetEnvironment() *CommonDataEnvironment {
 	return v.MetricData.CommonDataMetric.Environment
 }
 
@@ -807,13 +807,13 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) UnmarshalJSON(b
 type __premarshalCreateCountMetricCreateCountMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
-	DataPool MetricDataDataPool `json:"dataPool"`
+	DataPool *MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure MetricDataMeasureDimension `json:"measure"`
+	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -823,9 +823,9 @@ type __premarshalCreateCountMetricCreateCountMetricMetricResponseMetric struct {
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -881,40 +881,40 @@ type CreateCountMetricInput struct {
 	// The Data Pool that powers this Metric.
 	DataPool string `json:"dataPool"`
 	// The Metric's unique name. If not specified, Propel will set the ID as unique name.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 	// The Metric's description.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
-	Filters []FilterInput `json:"filters"`
+	Filters []*FilterInput `json:"filters,omitempty"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
-	Dimensions []DimensionInput `json:"dimensions"`
+	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 }
 
 // GetDataPool returns CreateCountMetricInput.DataPool, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricInput) GetDataPool() string { return v.DataPool }
 
 // GetUniqueName returns CreateCountMetricInput.UniqueName, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricInput) GetUniqueName() string { return v.UniqueName }
+func (v *CreateCountMetricInput) GetUniqueName() *string { return v.UniqueName }
 
 // GetDescription returns CreateCountMetricInput.Description, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricInput) GetDescription() string { return v.Description }
+func (v *CreateCountMetricInput) GetDescription() *string { return v.Description }
 
 // GetFilters returns CreateCountMetricInput.Filters, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricInput) GetFilters() []FilterInput { return v.Filters }
+func (v *CreateCountMetricInput) GetFilters() []*FilterInput { return v.Filters }
 
 // GetDimensions returns CreateCountMetricInput.Dimensions, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricInput) GetDimensions() []DimensionInput { return v.Dimensions }
+func (v *CreateCountMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
 
 // CreateCountMetricResponse is returned by CreateCountMetric on success.
 type CreateCountMetricResponse struct {
 	// This mutation creates a new Count Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
 	// A Metric is a business indicator measured over time. A Count Metric returns the number of items found in the underlying data over a specific time period.
-	CreateCountMetric CreateCountMetricCreateCountMetricMetricResponse `json:"createCountMetric"`
+	CreateCountMetric *CreateCountMetricCreateCountMetricMetricResponse `json:"createCountMetric"`
 }
 
 // GetCreateCountMetric returns CreateCountMetricResponse.CreateCountMetric, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricResponse) GetCreateCountMetric() CreateCountMetricCreateCountMetricMetricResponse {
+func (v *CreateCountMetricResponse) GetCreateCountMetric() *CreateCountMetricCreateCountMetricMetricResponse {
 	return v.CreateCountMetric
 }
 
@@ -932,7 +932,7 @@ func (v *CreateCountMetricResponse) GetCreateCountMetric() CreateCountMetricCrea
 type CreateDataPoolCreateDataPoolDataPoolOrFailureResponse interface {
 	implementsGraphQLInterfaceCreateDataPoolCreateDataPoolDataPoolOrFailureResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
+	GetTypename() *string
 }
 
 func (v *CreateDataPoolCreateDataPoolDataPoolResponse) implementsGraphQLInterfaceCreateDataPoolCreateDataPoolDataPoolOrFailureResponse() {
@@ -1002,16 +1002,16 @@ func __marshalCreateDataPoolCreateDataPoolDataPoolOrFailureResponse(v *CreateDat
 //
 // The result of a mutation which creates or modifies a Data Pool.
 type CreateDataPoolCreateDataPoolDataPoolResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The Data Pool which was created or modified.
-	DataPool CreateDataPoolCreateDataPoolDataPoolResponseDataPool `json:"dataPool"`
+	DataPool *CreateDataPoolCreateDataPoolDataPoolResponseDataPool `json:"dataPool"`
 }
 
 // GetTypename returns CreateDataPoolCreateDataPoolDataPoolResponse.Typename, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponse) GetTypename() string { return v.Typename }
+func (v *CreateDataPoolCreateDataPoolDataPoolResponse) GetTypename() *string { return v.Typename }
 
 // GetDataPool returns CreateDataPoolCreateDataPoolDataPoolResponse.DataPool, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponse) GetDataPool() CreateDataPoolCreateDataPoolDataPoolResponseDataPool {
+func (v *CreateDataPoolCreateDataPoolDataPoolResponse) GetDataPool() *CreateDataPoolCreateDataPoolDataPoolResponseDataPool {
 	return v.DataPool
 }
 
@@ -1033,7 +1033,7 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetId() string {
 }
 
 // GetDataSource returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetDataSource() DataPoolDataDataSource {
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetDataSource() *DataPoolDataDataSource {
 	return v.DataPoolData.DataSource
 }
 
@@ -1043,7 +1043,7 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetStatus() DataP
 }
 
 // GetError returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Error, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetError() DataPoolDataError {
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetError() *DataPoolDataError {
 	return v.DataPoolData.Error
 }
 
@@ -1053,27 +1053,27 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetTable() string
 }
 
 // GetTimestamp returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetTimestamp() *DataPoolDataTimestampDimension {
 	return v.DataPoolData.Timestamp
 }
 
 // GetColumns returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetColumns() *DataPoolDataColumnsColumnConnection {
 	return v.DataPoolData.Columns
 }
 
 // GetAvailableMeasures returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetAvailableMeasures() *DataPoolDataAvailableMeasuresColumnConnection {
 	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetupTask {
 	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetSyncs() DataPoolDataSyncsSyncConnection {
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
 	return v.DataPoolData.Syncs
 }
 
@@ -1088,12 +1088,12 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetDescription() 
 }
 
 // GetAccount returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Account, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetAccount() CommonDataAccount {
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetAccount() *CommonDataAccount {
 	return v.DataPoolData.CommonDataDataPool.Account
 }
 
 // GetEnvironment returns CreateDataPoolCreateDataPoolDataPoolResponseDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetEnvironment() CommonDataEnvironment {
+func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) GetEnvironment() *CommonDataEnvironment {
 	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
@@ -1145,31 +1145,31 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) UnmarshalJSON(b [
 type __premarshalCreateDataPoolCreateDataPoolDataPoolResponseDataPool struct {
 	Id string `json:"id"`
 
-	DataSource DataPoolDataDataSource `json:"dataSource"`
+	DataSource *DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error DataPoolDataError `json:"error"`
+	Error *DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+	Timestamp *DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+	Columns *DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures *DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
+	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -1217,16 +1217,16 @@ func (v *CreateDataPoolCreateDataPoolDataPoolResponseDataPool) __premarshalJSON(
 //
 // The failure response object.
 type CreateDataPoolCreateDataPoolFailureResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The error that caused the failure.
-	Error CreateDataPoolCreateDataPoolFailureResponseError `json:"error"`
+	Error *CreateDataPoolCreateDataPoolFailureResponseError `json:"error"`
 }
 
 // GetTypename returns CreateDataPoolCreateDataPoolFailureResponse.Typename, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolFailureResponse) GetTypename() string { return v.Typename }
+func (v *CreateDataPoolCreateDataPoolFailureResponse) GetTypename() *string { return v.Typename }
 
 // GetError returns CreateDataPoolCreateDataPoolFailureResponse.Error, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolFailureResponse) GetError() CreateDataPoolCreateDataPoolFailureResponseError {
+func (v *CreateDataPoolCreateDataPoolFailureResponse) GetError() *CreateDataPoolCreateDataPoolFailureResponseError {
 	return v.Error
 }
 
@@ -1239,7 +1239,7 @@ type CreateDataPoolCreateDataPoolFailureResponseError struct {
 }
 
 // GetCode returns CreateDataPoolCreateDataPoolFailureResponseError.Code, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolFailureResponseError) GetCode() int { return v.GqlError.Code }
+func (v *CreateDataPoolCreateDataPoolFailureResponseError) GetCode() *int { return v.GqlError.Code }
 
 // GetMessage returns CreateDataPoolCreateDataPoolFailureResponseError.Message, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolFailureResponseError) GetMessage() string {
@@ -1272,7 +1272,7 @@ func (v *CreateDataPoolCreateDataPoolFailureResponseError) UnmarshalJSON(b []byt
 }
 
 type __premarshalCreateDataPoolCreateDataPoolFailureResponseError struct {
-	Code int `json:"code"`
+	Code *int `json:"code"`
 
 	Message string `json:"message"`
 }
@@ -1296,36 +1296,36 @@ func (v *CreateDataPoolCreateDataPoolFailureResponseError) __premarshalJSON() (*
 // Fields for creating a Data Pool.
 type CreateDataPoolInput struct {
 	// The Data Source that will be used to create the Data Pool.
-	DataSource IdOrUniqueName `json:"dataSource"`
+	DataSource *IdOrUniqueName `json:"dataSource,omitempty"`
 	// The table that the Data Pool will sync from.
 	Table string `json:"table"`
 	// The table's primary timestamp column.
-	Timestamp DimensionInput `json:"timestamp"`
+	Timestamp *DimensionInput `json:"timestamp,omitempty"`
 	// The Data Pool's unique name. If not specified, Propel will set the ID as the unique name.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 	// The Data Pool's description.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The Data Pool's data retention in days. If not specified, records will be kept undefinitely.
-	DataRetentionInDays int `json:"dataRetentionInDays"`
+	DataRetentionInDays *int `json:"dataRetentionInDays"`
 }
 
 // GetDataSource returns CreateDataPoolInput.DataSource, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInput) GetDataSource() IdOrUniqueName { return v.DataSource }
+func (v *CreateDataPoolInput) GetDataSource() *IdOrUniqueName { return v.DataSource }
 
 // GetTable returns CreateDataPoolInput.Table, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInput) GetTable() string { return v.Table }
 
 // GetTimestamp returns CreateDataPoolInput.Timestamp, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInput) GetTimestamp() DimensionInput { return v.Timestamp }
+func (v *CreateDataPoolInput) GetTimestamp() *DimensionInput { return v.Timestamp }
 
 // GetUniqueName returns CreateDataPoolInput.UniqueName, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInput) GetUniqueName() string { return v.UniqueName }
+func (v *CreateDataPoolInput) GetUniqueName() *string { return v.UniqueName }
 
 // GetDescription returns CreateDataPoolInput.Description, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInput) GetDescription() string { return v.Description }
+func (v *CreateDataPoolInput) GetDescription() *string { return v.Description }
 
 // GetDataRetentionInDays returns CreateDataPoolInput.DataRetentionInDays, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInput) GetDataRetentionInDays() int { return v.DataRetentionInDays }
+func (v *CreateDataPoolInput) GetDataRetentionInDays() *int { return v.DataRetentionInDays }
 
 // CreateDataPoolResponse is returned by CreateDataPool on success.
 type CreateDataPoolResponse struct {
@@ -1334,11 +1334,11 @@ type CreateDataPoolResponse struct {
 	// The mutation returns the newly created Data Pool (or an error message if creating the Data Pool fails).
 	//
 	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-	CreateDataPool CreateDataPoolCreateDataPoolDataPoolOrFailureResponse `json:"-"`
+	CreateDataPool *CreateDataPoolCreateDataPoolDataPoolOrFailureResponse `json:"-"`
 }
 
 // GetCreateDataPool returns CreateDataPoolResponse.CreateDataPool, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolResponse) GetCreateDataPool() CreateDataPoolCreateDataPoolDataPoolOrFailureResponse {
+func (v *CreateDataPoolResponse) GetCreateDataPool() *CreateDataPoolCreateDataPoolDataPoolOrFailureResponse {
 	return v.CreateDataPool
 }
 
@@ -1364,8 +1364,9 @@ func (v *CreateDataPoolResponse) UnmarshalJSON(b []byte) error {
 		dst := &v.CreateDataPool
 		src := firstPass.CreateDataPool
 		if len(src) != 0 && string(src) != "null" {
+			*dst = new(CreateDataPoolCreateDataPoolDataPoolOrFailureResponse)
 			err = __unmarshalCreateDataPoolCreateDataPoolDataPoolOrFailureResponse(
-				src, dst)
+				src, *dst)
 			if err != nil {
 				return fmt.Errorf(
 					"Unable to unmarshal CreateDataPoolResponse.CreateDataPool: %w", err)
@@ -1394,12 +1395,14 @@ func (v *CreateDataPoolResponse) __premarshalJSON() (*__premarshalCreateDataPool
 
 		dst := &retval.CreateDataPool
 		src := v.CreateDataPool
-		var err error
-		*dst, err = __marshalCreateDataPoolCreateDataPoolDataPoolOrFailureResponse(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"Unable to marshal CreateDataPoolResponse.CreateDataPool: %w", err)
+		if src != nil {
+			var err error
+			*dst, err = __marshalCreateDataPoolCreateDataPoolDataPoolOrFailureResponse(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"Unable to marshal CreateDataPoolResponse.CreateDataPool: %w", err)
+			}
 		}
 	}
 	return &retval, nil
@@ -1411,11 +1414,11 @@ func (v *CreateDataPoolResponse) __premarshalJSON() (*__premarshalCreateDataPool
 // The result of a mutation which creates or modifies a Data Source.
 type CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse struct {
 	// The Data Source which was created or modified.
-	DataSource CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource `json:"dataSource"`
+	DataSource *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource `json:"dataSource"`
 }
 
 // GetDataSource returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse) GetDataSource() CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource {
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse) GetDataSource() *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource {
 	return v.DataSource
 }
 
@@ -1447,7 +1450,7 @@ func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) G
 }
 
 // GetError returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetError() DataSourceDataError {
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
 	return v.DataSourceData.Error
 }
 
@@ -1457,17 +1460,17 @@ func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) G
 }
 
 // GetTables returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetTables() DataSourceDataTablesTableConnection {
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
 	return v.DataSourceData.Tables
 }
 
 // GetChecks returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
 	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
 	return v.DataSourceData.TableIntrospections
 }
 
@@ -1482,12 +1485,12 @@ func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) G
 }
 
 // GetAccount returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetAccount() CommonDataAccount {
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
 	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetEnvironment() CommonDataEnvironment {
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
 	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
@@ -1543,23 +1546,23 @@ type __premarshalCreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataS
 
 	Status DataSourceStatus `json:"status"`
 
-	Error DataSourceDataError `json:"error"`
+	Error *DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables DataSourceDataTablesTableConnection `json:"tables"`
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -1614,21 +1617,21 @@ func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) _
 // The fields for creating an HTTP Data Source.
 type CreateHttpDataSourceInput struct {
 	// The Data Source's unique name.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 	// The Data Source's description.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The HTTP Data Source connection settings.
-	ConnectionSettings HttpConnectionSettingsInput `json:"connectionSettings"`
+	ConnectionSettings *HttpConnectionSettingsInput `json:"connectionSettings,omitempty"`
 }
 
 // GetUniqueName returns CreateHttpDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceInput) GetUniqueName() string { return v.UniqueName }
+func (v *CreateHttpDataSourceInput) GetUniqueName() *string { return v.UniqueName }
 
 // GetDescription returns CreateHttpDataSourceInput.Description, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceInput) GetDescription() string { return v.Description }
+func (v *CreateHttpDataSourceInput) GetDescription() *string { return v.Description }
 
 // GetConnectionSettings returns CreateHttpDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceInput) GetConnectionSettings() HttpConnectionSettingsInput {
+func (v *CreateHttpDataSourceInput) GetConnectionSettings() *HttpConnectionSettingsInput {
 	return v.ConnectionSettings
 }
 
@@ -1637,11 +1640,11 @@ type CreateHttpDataSourceResponse struct {
 	// This mutation creates a new HTTP Data Source from the given settings.
 	//
 	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
-	CreateHttpDataSource CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse `json:"createHttpDataSource"`
+	CreateHttpDataSource *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse `json:"createHttpDataSource"`
 }
 
 // GetCreateHttpDataSource returns CreateHttpDataSourceResponse.CreateHttpDataSource, and is useful for accessing the field via an interface.
-func (v *CreateHttpDataSourceResponse) GetCreateHttpDataSource() CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse {
+func (v *CreateHttpDataSourceResponse) GetCreateHttpDataSource() *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse {
 	return v.CreateHttpDataSource
 }
 
@@ -1651,11 +1654,11 @@ func (v *CreateHttpDataSourceResponse) GetCreateHttpDataSource() CreateHttpDataS
 // The result of a mutation which creates or modifies a Data Source.
 type CreateS3DataSourceCreateS3DataSourceDataSourceResponse struct {
 	// The Data Source which was created or modified.
-	DataSource CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource `json:"dataSource"`
+	DataSource *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource `json:"dataSource"`
 }
 
 // GetDataSource returns CreateS3DataSourceCreateS3DataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponse) GetDataSource() CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource {
+func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponse) GetDataSource() *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource {
 	return v.DataSource
 }
 
@@ -1687,7 +1690,7 @@ func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetSt
 }
 
 // GetError returns CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetError() DataSourceDataError {
+func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
 	return v.DataSourceData.Error
 }
 
@@ -1697,17 +1700,17 @@ func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetCo
 }
 
 // GetTables returns CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetTables() DataSourceDataTablesTableConnection {
+func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
 	return v.DataSourceData.Tables
 }
 
 // GetChecks returns CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
 	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
 	return v.DataSourceData.TableIntrospections
 }
 
@@ -1722,12 +1725,12 @@ func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetDe
 }
 
 // GetAccount returns CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetAccount() CommonDataAccount {
+func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
 	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetEnvironment() CommonDataEnvironment {
+func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
 	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
@@ -1783,23 +1786,23 @@ type __premarshalCreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSourc
 
 	Status DataSourceStatus `json:"status"`
 
-	Error DataSourceDataError `json:"error"`
+	Error *DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables DataSourceDataTablesTableConnection `json:"tables"`
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -1853,21 +1856,21 @@ func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) __pre
 
 type CreateS3DataSourceInput struct {
 	// The Data Source's unique name. If not specified, Propel will set the ID as unique name.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 	// The Data Source's description.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The S3 Data Source connection settings.
-	ConnectionSettings S3ConnectionSettingsInput `json:"connectionSettings"`
+	ConnectionSettings *S3ConnectionSettingsInput `json:"connectionSettings,omitempty"`
 }
 
 // GetUniqueName returns CreateS3DataSourceInput.UniqueName, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceInput) GetUniqueName() string { return v.UniqueName }
+func (v *CreateS3DataSourceInput) GetUniqueName() *string { return v.UniqueName }
 
 // GetDescription returns CreateS3DataSourceInput.Description, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceInput) GetDescription() string { return v.Description }
+func (v *CreateS3DataSourceInput) GetDescription() *string { return v.Description }
 
 // GetConnectionSettings returns CreateS3DataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceInput) GetConnectionSettings() S3ConnectionSettingsInput {
+func (v *CreateS3DataSourceInput) GetConnectionSettings() *S3ConnectionSettingsInput {
 	return v.ConnectionSettings
 }
 
@@ -1876,11 +1879,11 @@ type CreateS3DataSourceResponse struct {
 	// This mutation creates a new Data Source, pointed at the specified S3 bucket.
 	//
 	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
-	CreateS3DataSource CreateS3DataSourceCreateS3DataSourceDataSourceResponse `json:"createS3DataSource"`
+	CreateS3DataSource *CreateS3DataSourceCreateS3DataSourceDataSourceResponse `json:"createS3DataSource"`
 }
 
 // GetCreateS3DataSource returns CreateS3DataSourceResponse.CreateS3DataSource, and is useful for accessing the field via an interface.
-func (v *CreateS3DataSourceResponse) GetCreateS3DataSource() CreateS3DataSourceCreateS3DataSourceDataSourceResponse {
+func (v *CreateS3DataSourceResponse) GetCreateS3DataSource() *CreateS3DataSourceCreateS3DataSourceDataSourceResponse {
 	return v.CreateS3DataSource
 }
 
@@ -1898,7 +1901,7 @@ func (v *CreateS3DataSourceResponse) GetCreateS3DataSource() CreateS3DataSourceC
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse interface {
 	implementsGraphQLInterfaceCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
+	GetTypename() *string
 }
 
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse) implementsGraphQLInterfaceCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse() {
@@ -1968,18 +1971,18 @@ func __marshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFail
 //
 // The result of a mutation which creates or modifies a Data Source.
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The Data Source which was created or modified.
-	DataSource CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource `json:"dataSource"`
+	DataSource *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource `json:"dataSource"`
 }
 
 // GetTypename returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse.Typename, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse) GetTypename() string {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse) GetTypename() *string {
 	return v.Typename
 }
 
 // GetDataSource returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse) GetDataSource() CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse) GetDataSource() *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource {
 	return v.DataSource
 }
 
@@ -2011,7 +2014,7 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDat
 }
 
 // GetError returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetError() DataSourceDataError {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
 	return v.DataSourceData.Error
 }
 
@@ -2021,17 +2024,17 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDat
 }
 
 // GetTables returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetTables() DataSourceDataTablesTableConnection {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
 	return v.DataSourceData.Tables
 }
 
 // GetChecks returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
 	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
 	return v.DataSourceData.TableIntrospections
 }
 
@@ -2046,12 +2049,12 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDat
 }
 
 // GetAccount returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetAccount() CommonDataAccount {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
 	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetEnvironment() CommonDataEnvironment {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
 	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
@@ -2107,23 +2110,23 @@ type __premarshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceRes
 
 	Status DataSourceStatus `json:"status"`
 
-	Error DataSourceDataError `json:"error"`
+	Error *DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables DataSourceDataTablesTableConnection `json:"tables"`
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -2180,18 +2183,18 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDat
 //
 // The failure response object.
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The error that caused the failure.
-	Error CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError `json:"error"`
+	Error *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError `json:"error"`
 }
 
 // GetTypename returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse.Typename, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse) GetTypename() string {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse) GetTypename() *string {
 	return v.Typename
 }
 
 // GetError returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse.Error, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse) GetError() CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse) GetError() *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError {
 	return v.Error
 }
 
@@ -2204,7 +2207,7 @@ type CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError stru
 }
 
 // GetCode returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError.Code, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError) GetCode() int {
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError) GetCode() *int {
 	return v.GqlError.Code
 }
 
@@ -2239,7 +2242,7 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError)
 }
 
 type __premarshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError struct {
-	Code int `json:"code"`
+	Code *int `json:"code"`
 
 	Message string `json:"message"`
 }
@@ -2263,21 +2266,21 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponseError)
 // The fields for creating a Snowflake Data Source.
 type CreateSnowflakeDataSourceInput struct {
 	// The Data Source's unique name. If not specified, Propel will set the ID as unique name.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 	// The Data Source's description.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The Data Source's connection settings.
-	ConnectionSettings SnowflakeConnectionSettingsInput `json:"connectionSettings"`
+	ConnectionSettings *SnowflakeConnectionSettingsInput `json:"connectionSettings,omitempty"`
 }
 
 // GetUniqueName returns CreateSnowflakeDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceInput) GetUniqueName() string { return v.UniqueName }
+func (v *CreateSnowflakeDataSourceInput) GetUniqueName() *string { return v.UniqueName }
 
 // GetDescription returns CreateSnowflakeDataSourceInput.Description, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceInput) GetDescription() string { return v.Description }
+func (v *CreateSnowflakeDataSourceInput) GetDescription() *string { return v.Description }
 
 // GetConnectionSettings returns CreateSnowflakeDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceInput) GetConnectionSettings() SnowflakeConnectionSettingsInput {
+func (v *CreateSnowflakeDataSourceInput) GetConnectionSettings() *SnowflakeConnectionSettingsInput {
 	return v.ConnectionSettings
 }
 
@@ -2288,11 +2291,11 @@ type CreateSnowflakeDataSourceResponse struct {
 	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
 	//
 	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-	CreateSnowflakeDataSource CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse `json:"-"`
+	CreateSnowflakeDataSource *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse `json:"-"`
 }
 
 // GetCreateSnowflakeDataSource returns CreateSnowflakeDataSourceResponse.CreateSnowflakeDataSource, and is useful for accessing the field via an interface.
-func (v *CreateSnowflakeDataSourceResponse) GetCreateSnowflakeDataSource() CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse {
+func (v *CreateSnowflakeDataSourceResponse) GetCreateSnowflakeDataSource() *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse {
 	return v.CreateSnowflakeDataSource
 }
 
@@ -2318,8 +2321,9 @@ func (v *CreateSnowflakeDataSourceResponse) UnmarshalJSON(b []byte) error {
 		dst := &v.CreateSnowflakeDataSource
 		src := firstPass.CreateSnowflakeDataSource
 		if len(src) != 0 && string(src) != "null" {
+			*dst = new(CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse)
 			err = __unmarshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse(
-				src, dst)
+				src, *dst)
 			if err != nil {
 				return fmt.Errorf(
 					"Unable to unmarshal CreateSnowflakeDataSourceResponse.CreateSnowflakeDataSource: %w", err)
@@ -2348,12 +2352,14 @@ func (v *CreateSnowflakeDataSourceResponse) __premarshalJSON() (*__premarshalCre
 
 		dst := &retval.CreateSnowflakeDataSource
 		src := v.CreateSnowflakeDataSource
-		var err error
-		*dst, err = __marshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"Unable to marshal CreateSnowflakeDataSourceResponse.CreateSnowflakeDataSource: %w", err)
+		if src != nil {
+			var err error
+			*dst, err = __marshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"Unable to marshal CreateSnowflakeDataSourceResponse.CreateSnowflakeDataSource: %w", err)
+			}
 		}
 	}
 	return &retval, nil
@@ -2364,16 +2370,16 @@ func (v *CreateSnowflakeDataSourceResponse) __premarshalJSON() (*__premarshalCre
 //
 // The result of a mutation which creates or modifies a Metric.
 type CreateSumMetricCreateSumMetricMetricResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The Metric which was created or modified.
-	Metric CreateSumMetricCreateSumMetricMetricResponseMetric `json:"metric"`
+	Metric *CreateSumMetricCreateSumMetricMetricResponseMetric `json:"metric"`
 }
 
 // GetTypename returns CreateSumMetricCreateSumMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponse) GetTypename() string { return v.Typename }
+func (v *CreateSumMetricCreateSumMetricMetricResponse) GetTypename() *string { return v.Typename }
 
 // GetMetric returns CreateSumMetricCreateSumMetricMetricResponse.Metric, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponse) GetMetric() CreateSumMetricCreateSumMetricMetricResponseMetric {
+func (v *CreateSumMetricCreateSumMetricMetricResponse) GetMetric() *CreateSumMetricCreateSumMetricMetricResponseMetric {
 	return v.Metric
 }
 
@@ -2393,22 +2399,22 @@ type CreateSumMetricCreateSumMetricMetricResponseMetric struct {
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetId() string { return v.MetricData.Id }
 
 // GetDataPool returns CreateSumMetricCreateSumMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDataPool() MetricDataDataPool {
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
 }
 
 // GetDimensions returns CreateSumMetricCreateSumMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDimensions() []MetricDataDimensionsDimension {
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDimensions() []*MetricDataDimensionsDimension {
 	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns CreateSumMetricCreateSumMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetTimestamp() MetricDataTimestampDimension {
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetTimestamp() *MetricDataTimestampDimension {
 	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns CreateSumMetricCreateSumMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetMeasure() MetricDataMeasureDimension {
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetMeasure() *MetricDataMeasureDimension {
 	return v.MetricData.Measure
 }
 
@@ -2433,12 +2439,12 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDescription() st
 }
 
 // GetAccount returns CreateSumMetricCreateSumMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetAccount() CommonDataAccount {
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetAccount() *CommonDataAccount {
 	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns CreateSumMetricCreateSumMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetEnvironment() CommonDataEnvironment {
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetEnvironment() *CommonDataEnvironment {
 	return v.MetricData.CommonDataMetric.Environment
 }
 
@@ -2490,13 +2496,13 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) UnmarshalJSON(b []b
 type __premarshalCreateSumMetricCreateSumMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
-	DataPool MetricDataDataPool `json:"dataPool"`
+	DataPool *MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure MetricDataMeasureDimension `json:"measure"`
+	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -2506,9 +2512,9 @@ type __premarshalCreateSumMetricCreateSumMetricMetricResponseMetric struct {
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -2564,45 +2570,45 @@ type CreateSumMetricInput struct {
 	// The Data Pool that powers this Metric.
 	DataPool string `json:"dataPool"`
 	// The Metric's unique name. If not specified, Propel will set the ID as unique name.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 	// The Metric's description.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
-	Filters []FilterInput `json:"filters"`
+	Filters []*FilterInput `json:"filters,omitempty"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
-	Dimensions []DimensionInput `json:"dimensions"`
+	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The column to be summed.
-	Measure DimensionInput `json:"measure"`
+	Measure *DimensionInput `json:"measure,omitempty"`
 }
 
 // GetDataPool returns CreateSumMetricInput.DataPool, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricInput) GetDataPool() string { return v.DataPool }
 
 // GetUniqueName returns CreateSumMetricInput.UniqueName, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricInput) GetUniqueName() string { return v.UniqueName }
+func (v *CreateSumMetricInput) GetUniqueName() *string { return v.UniqueName }
 
 // GetDescription returns CreateSumMetricInput.Description, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricInput) GetDescription() string { return v.Description }
+func (v *CreateSumMetricInput) GetDescription() *string { return v.Description }
 
 // GetFilters returns CreateSumMetricInput.Filters, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricInput) GetFilters() []FilterInput { return v.Filters }
+func (v *CreateSumMetricInput) GetFilters() []*FilterInput { return v.Filters }
 
 // GetDimensions returns CreateSumMetricInput.Dimensions, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricInput) GetDimensions() []DimensionInput { return v.Dimensions }
+func (v *CreateSumMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
 
 // GetMeasure returns CreateSumMetricInput.Measure, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricInput) GetMeasure() DimensionInput { return v.Measure }
+func (v *CreateSumMetricInput) GetMeasure() *DimensionInput { return v.Measure }
 
 // CreateSumMetricResponse is returned by CreateSumMetric on success.
 type CreateSumMetricResponse struct {
 	// This mutation creates a new Sum Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
 	// A Metric is a business indicator measured over time. A Sum Metric returns the sum of the values found in the underlying data over a specific time period.
-	CreateSumMetric CreateSumMetricCreateSumMetricMetricResponse `json:"createSumMetric"`
+	CreateSumMetric *CreateSumMetricCreateSumMetricMetricResponse `json:"createSumMetric"`
 }
 
 // GetCreateSumMetric returns CreateSumMetricResponse.CreateSumMetric, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricResponse) GetCreateSumMetric() CreateSumMetricCreateSumMetricMetricResponse {
+func (v *CreateSumMetricResponse) GetCreateSumMetric() *CreateSumMetricCreateSumMetricMetricResponse {
 	return v.CreateSumMetric
 }
 
@@ -2622,7 +2628,7 @@ type DataPoolByNameDataPool struct {
 func (v *DataPoolByNameDataPool) GetId() string { return v.DataPoolData.Id }
 
 // GetDataSource returns DataPoolByNameDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetDataSource() DataPoolDataDataSource {
+func (v *DataPoolByNameDataPool) GetDataSource() *DataPoolDataDataSource {
 	return v.DataPoolData.DataSource
 }
 
@@ -2630,33 +2636,33 @@ func (v *DataPoolByNameDataPool) GetDataSource() DataPoolDataDataSource {
 func (v *DataPoolByNameDataPool) GetStatus() DataPoolStatus { return v.DataPoolData.Status }
 
 // GetError returns DataPoolByNameDataPool.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetError() DataPoolDataError { return v.DataPoolData.Error }
+func (v *DataPoolByNameDataPool) GetError() *DataPoolDataError { return v.DataPoolData.Error }
 
 // GetTable returns DataPoolByNameDataPool.Table, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetTable() string { return v.DataPoolData.Table }
 
 // GetTimestamp returns DataPoolByNameDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+func (v *DataPoolByNameDataPool) GetTimestamp() *DataPoolDataTimestampDimension {
 	return v.DataPoolData.Timestamp
 }
 
 // GetColumns returns DataPoolByNameDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+func (v *DataPoolByNameDataPool) GetColumns() *DataPoolDataColumnsColumnConnection {
 	return v.DataPoolData.Columns
 }
 
 // GetAvailableMeasures returns DataPoolByNameDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+func (v *DataPoolByNameDataPool) GetAvailableMeasures() *DataPoolDataAvailableMeasuresColumnConnection {
 	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns DataPoolByNameDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+func (v *DataPoolByNameDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetupTask {
 	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns DataPoolByNameDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetSyncs() DataPoolDataSyncsSyncConnection {
+func (v *DataPoolByNameDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
 	return v.DataPoolData.Syncs
 }
 
@@ -2671,12 +2677,12 @@ func (v *DataPoolByNameDataPool) GetDescription() string {
 }
 
 // GetAccount returns DataPoolByNameDataPool.Account, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetAccount() CommonDataAccount {
+func (v *DataPoolByNameDataPool) GetAccount() *CommonDataAccount {
 	return v.DataPoolData.CommonDataDataPool.Account
 }
 
 // GetEnvironment returns DataPoolByNameDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetEnvironment() CommonDataEnvironment {
+func (v *DataPoolByNameDataPool) GetEnvironment() *CommonDataEnvironment {
 	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
@@ -2728,31 +2734,31 @@ func (v *DataPoolByNameDataPool) UnmarshalJSON(b []byte) error {
 type __premarshalDataPoolByNameDataPool struct {
 	Id string `json:"id"`
 
-	DataSource DataPoolDataDataSource `json:"dataSource"`
+	DataSource *DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error DataPoolDataError `json:"error"`
+	Error *DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+	Timestamp *DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+	Columns *DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures *DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
+	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -2800,11 +2806,11 @@ type DataPoolByNameResponse struct {
 	// This query returns the Data Pool specified by the given unique name.
 	//
 	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-	DataPool DataPoolByNameDataPool `json:"dataPool"`
+	DataPool *DataPoolByNameDataPool `json:"dataPool"`
 }
 
 // GetDataPool returns DataPoolByNameResponse.DataPool, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameResponse) GetDataPool() DataPoolByNameDataPool { return v.DataPool }
+func (v *DataPoolByNameResponse) GetDataPool() *DataPoolByNameDataPool { return v.DataPool }
 
 // DataPoolData includes the GraphQL fields of DataPool requested by the fragment DataPoolData.
 // The GraphQL type's documentation follows.
@@ -2819,58 +2825,60 @@ type DataPoolData struct {
 	Id                 string `json:"id"`
 	CommonDataDataPool `json:"-"`
 	// The Data Pool's Data Source.
-	DataSource DataPoolDataDataSource `json:"dataSource"`
+	DataSource *DataPoolDataDataSource `json:"dataSource"`
 	// The Data Pool's status.
-	Status DataPoolStatus    `json:"status"`
-	Error  DataPoolDataError `json:"error"`
+	Status DataPoolStatus     `json:"status"`
+	Error  *DataPoolDataError `json:"error"`
 	// The name of the Data Pool's table.
 	Table string `json:"table"`
 	// The Data Pool's timestamp column.
-	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+	Timestamp *DataPoolDataTimestampDimension `json:"timestamp"`
 	// A list of columns included in the Data Pool. The specified columns from the underlying table will by synced to the Data Pool.
 	//
 	// This list does not include any excluded columns. You can access those via `excludedColumns`.
-	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+	Columns *DataPoolDataColumnsColumnConnection `json:"columns"`
 	// A list of measures (numeric columns) available to Metrics.
 	//
 	// This list does not include any excluded columns.
-	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures *DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 	// A list of setup tasks performed on the Data Pool during its most recent setup attempt.
-	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
-	Syncs      DataPoolDataSyncsSyncConnection           `json:"syncs"`
+	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	Syncs      *DataPoolDataSyncsSyncConnection           `json:"syncs"`
 }
 
 // GetId returns DataPoolData.Id, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetId() string { return v.Id }
 
 // GetDataSource returns DataPoolData.DataSource, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetDataSource() DataPoolDataDataSource { return v.DataSource }
+func (v *DataPoolData) GetDataSource() *DataPoolDataDataSource { return v.DataSource }
 
 // GetStatus returns DataPoolData.Status, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetStatus() DataPoolStatus { return v.Status }
 
 // GetError returns DataPoolData.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetError() DataPoolDataError { return v.Error }
+func (v *DataPoolData) GetError() *DataPoolDataError { return v.Error }
 
 // GetTable returns DataPoolData.Table, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetTable() string { return v.Table }
 
 // GetTimestamp returns DataPoolData.Timestamp, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetTimestamp() DataPoolDataTimestampDimension { return v.Timestamp }
+func (v *DataPoolData) GetTimestamp() *DataPoolDataTimestampDimension { return v.Timestamp }
 
 // GetColumns returns DataPoolData.Columns, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetColumns() DataPoolDataColumnsColumnConnection { return v.Columns }
+func (v *DataPoolData) GetColumns() *DataPoolDataColumnsColumnConnection { return v.Columns }
 
 // GetAvailableMeasures returns DataPoolData.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+func (v *DataPoolData) GetAvailableMeasures() *DataPoolDataAvailableMeasuresColumnConnection {
 	return v.AvailableMeasures
 }
 
 // GetSetupTasks returns DataPoolData.SetupTasks, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask { return v.SetupTasks }
+func (v *DataPoolData) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetupTask {
+	return v.SetupTasks
+}
 
 // GetSyncs returns DataPoolData.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetSyncs() DataPoolDataSyncsSyncConnection { return v.Syncs }
+func (v *DataPoolData) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.Syncs }
 
 // GetUniqueName returns DataPoolData.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetUniqueName() string { return v.CommonDataDataPool.UniqueName }
@@ -2879,10 +2887,10 @@ func (v *DataPoolData) GetUniqueName() string { return v.CommonDataDataPool.Uniq
 func (v *DataPoolData) GetDescription() string { return v.CommonDataDataPool.Description }
 
 // GetAccount returns DataPoolData.Account, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetAccount() CommonDataAccount { return v.CommonDataDataPool.Account }
+func (v *DataPoolData) GetAccount() *CommonDataAccount { return v.CommonDataDataPool.Account }
 
 // GetEnvironment returns DataPoolData.Environment, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetEnvironment() CommonDataEnvironment {
+func (v *DataPoolData) GetEnvironment() *CommonDataEnvironment {
 	return v.CommonDataDataPool.Environment
 }
 
@@ -2926,31 +2934,31 @@ func (v *DataPoolData) UnmarshalJSON(b []byte) error {
 type __premarshalDataPoolData struct {
 	Id string `json:"id"`
 
-	DataSource DataPoolDataDataSource `json:"dataSource"`
+	DataSource *DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error DataPoolDataError `json:"error"`
+	Error *DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+	Timestamp *DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+	Columns *DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures *DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
+	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -3001,11 +3009,11 @@ func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataPoolDataAvailableMeasuresColumnConnection struct {
 	// The connection's nodes.
-	Nodes []DataPoolDataAvailableMeasuresColumnConnectionNodesColumn `json:"nodes"`
+	Nodes []*DataPoolDataAvailableMeasuresColumnConnectionNodesColumn `json:"nodes"`
 }
 
 // GetNodes returns DataPoolDataAvailableMeasuresColumnConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnection) GetNodes() []DataPoolDataAvailableMeasuresColumnConnectionNodesColumn {
+func (v *DataPoolDataAvailableMeasuresColumnConnection) GetNodes() []*DataPoolDataAvailableMeasuresColumnConnectionNodesColumn {
 	return v.Nodes
 }
 
@@ -3030,7 +3038,7 @@ func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetType() str
 }
 
 // GetIsNullable returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetIsNullable() bool {
+func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetIsNullable() *bool {
 	return v.ColumnData.IsNullable
 }
 
@@ -3064,7 +3072,7 @@ type __premarshalDataPoolDataAvailableMeasuresColumnConnectionNodesColumn struct
 
 	Type string `json:"type"`
 
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 }
 
 func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
@@ -3092,11 +3100,11 @@ func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) __premarshalJ
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataPoolDataColumnsColumnConnection struct {
 	// The connection's nodes.
-	Nodes []DataPoolDataColumnsColumnConnectionNodesColumn `json:"nodes"`
+	Nodes []*DataPoolDataColumnsColumnConnectionNodesColumn `json:"nodes"`
 }
 
 // GetNodes returns DataPoolDataColumnsColumnConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnection) GetNodes() []DataPoolDataColumnsColumnConnectionNodesColumn {
+func (v *DataPoolDataColumnsColumnConnection) GetNodes() []*DataPoolDataColumnsColumnConnectionNodesColumn {
 	return v.Nodes
 }
 
@@ -3117,7 +3125,7 @@ func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetName() string { retu
 func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetType() string { return v.ColumnData.Type }
 
 // GetIsNullable returns DataPoolDataColumnsColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetIsNullable() bool {
+func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetIsNullable() *bool {
 	return v.ColumnData.IsNullable
 }
 
@@ -3151,7 +3159,7 @@ type __premarshalDataPoolDataColumnsColumnConnectionNodesColumn struct {
 
 	Type string `json:"type"`
 
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 }
 
 func (v *DataPoolDataColumnsColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
@@ -3193,7 +3201,7 @@ func (v *DataPoolDataDataSource) GetType() DataSourceType { return v.DataSourceD
 func (v *DataPoolDataDataSource) GetStatus() DataSourceStatus { return v.DataSourceData.Status }
 
 // GetError returns DataPoolDataDataSource.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolDataDataSource) GetError() DataSourceDataError { return v.DataSourceData.Error }
+func (v *DataPoolDataDataSource) GetError() *DataSourceDataError { return v.DataSourceData.Error }
 
 // GetConnectionSettings returns DataPoolDataDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *DataPoolDataDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
@@ -3201,17 +3209,17 @@ func (v *DataPoolDataDataSource) GetConnectionSettings() DataSourceDataConnectio
 }
 
 // GetTables returns DataPoolDataDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *DataPoolDataDataSource) GetTables() DataSourceDataTablesTableConnection {
+func (v *DataPoolDataDataSource) GetTables() *DataSourceDataTablesTableConnection {
 	return v.DataSourceData.Tables
 }
 
 // GetChecks returns DataPoolDataDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *DataPoolDataDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+func (v *DataPoolDataDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
 	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns DataPoolDataDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *DataPoolDataDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+func (v *DataPoolDataDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
 	return v.DataSourceData.TableIntrospections
 }
 
@@ -3226,12 +3234,12 @@ func (v *DataPoolDataDataSource) GetDescription() string {
 }
 
 // GetAccount returns DataPoolDataDataSource.Account, and is useful for accessing the field via an interface.
-func (v *DataPoolDataDataSource) GetAccount() CommonDataAccount {
+func (v *DataPoolDataDataSource) GetAccount() *CommonDataAccount {
 	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns DataPoolDataDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *DataPoolDataDataSource) GetEnvironment() CommonDataEnvironment {
+func (v *DataPoolDataDataSource) GetEnvironment() *CommonDataEnvironment {
 	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
@@ -3287,23 +3295,23 @@ type __premarshalDataPoolDataDataSource struct {
 
 	Status DataSourceStatus `json:"status"`
 
-	Error DataSourceDataError `json:"error"`
+	Error *DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables DataSourceDataTablesTableConnection `json:"tables"`
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -3383,39 +3391,39 @@ type DataPoolDataPool struct {
 func (v *DataPoolDataPool) GetId() string { return v.DataPoolData.Id }
 
 // GetDataSource returns DataPoolDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetDataSource() DataPoolDataDataSource { return v.DataPoolData.DataSource }
+func (v *DataPoolDataPool) GetDataSource() *DataPoolDataDataSource { return v.DataPoolData.DataSource }
 
 // GetStatus returns DataPoolDataPool.Status, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetStatus() DataPoolStatus { return v.DataPoolData.Status }
 
 // GetError returns DataPoolDataPool.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetError() DataPoolDataError { return v.DataPoolData.Error }
+func (v *DataPoolDataPool) GetError() *DataPoolDataError { return v.DataPoolData.Error }
 
 // GetTable returns DataPoolDataPool.Table, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetTable() string { return v.DataPoolData.Table }
 
 // GetTimestamp returns DataPoolDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+func (v *DataPoolDataPool) GetTimestamp() *DataPoolDataTimestampDimension {
 	return v.DataPoolData.Timestamp
 }
 
 // GetColumns returns DataPoolDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+func (v *DataPoolDataPool) GetColumns() *DataPoolDataColumnsColumnConnection {
 	return v.DataPoolData.Columns
 }
 
 // GetAvailableMeasures returns DataPoolDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+func (v *DataPoolDataPool) GetAvailableMeasures() *DataPoolDataAvailableMeasuresColumnConnection {
 	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns DataPoolDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+func (v *DataPoolDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetupTask {
 	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns DataPoolDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetSyncs() DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
+func (v *DataPoolDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
 
 // GetUniqueName returns DataPoolDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetUniqueName() string {
@@ -3428,12 +3436,12 @@ func (v *DataPoolDataPool) GetDescription() string {
 }
 
 // GetAccount returns DataPoolDataPool.Account, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetAccount() CommonDataAccount {
+func (v *DataPoolDataPool) GetAccount() *CommonDataAccount {
 	return v.DataPoolData.CommonDataDataPool.Account
 }
 
 // GetEnvironment returns DataPoolDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetEnvironment() CommonDataEnvironment {
+func (v *DataPoolDataPool) GetEnvironment() *CommonDataEnvironment {
 	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
@@ -3483,31 +3491,31 @@ func (v *DataPoolDataPool) UnmarshalJSON(b []byte) error {
 type __premarshalDataPoolDataPool struct {
 	Id string `json:"id"`
 
-	DataSource DataPoolDataDataSource `json:"dataSource"`
+	DataSource *DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error DataPoolDataError `json:"error"`
+	Error *DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+	Timestamp *DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+	Columns *DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures *DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
+	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -3562,20 +3570,20 @@ type DataPoolDataSetupTasksDataPoolSetupTask struct {
 	// The name of the Data Pool Setup Task to be performed.
 	Name string `json:"name"`
 	// A description of the Data Pool Setup Task to be performed.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The status of the Data Pool Setup Task (all setup tasks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED).
 	Status DataPoolSetupTaskStatus `json:"status"`
 	// If the Data Pool Setup Task failed, this field includes a descriptive error message.
-	Error DataPoolDataSetupTasksDataPoolSetupTaskError `json:"error"`
+	Error *DataPoolDataSetupTasksDataPoolSetupTaskError `json:"error"`
 	// The time at which the Data Pool Setup Task was completed.
-	CompletedAt time.Time `json:"completedAt"`
+	CompletedAt *time.Time `json:"completedAt"`
 }
 
 // GetName returns DataPoolDataSetupTasksDataPoolSetupTask.Name, and is useful for accessing the field via an interface.
 func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetName() string { return v.Name }
 
 // GetDescription returns DataPoolDataSetupTasksDataPoolSetupTask.Description, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetDescription() string { return v.Description }
+func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetDescription() *string { return v.Description }
 
 // GetStatus returns DataPoolDataSetupTasksDataPoolSetupTask.Status, and is useful for accessing the field via an interface.
 func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetStatus() DataPoolSetupTaskStatus {
@@ -3583,12 +3591,12 @@ func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetStatus() DataPoolSetupTaskS
 }
 
 // GetError returns DataPoolDataSetupTasksDataPoolSetupTask.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetError() DataPoolDataSetupTasksDataPoolSetupTaskError {
+func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetError() *DataPoolDataSetupTasksDataPoolSetupTaskError {
 	return v.Error
 }
 
 // GetCompletedAt returns DataPoolDataSetupTasksDataPoolSetupTask.CompletedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetCompletedAt() time.Time { return v.CompletedAt }
+func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetCompletedAt() *time.Time { return v.CompletedAt }
 
 // DataPoolDataSetupTasksDataPoolSetupTaskError includes the requested fields of the GraphQL type Error.
 // The GraphQL type's documentation follows.
@@ -3596,13 +3604,13 @@ func (v *DataPoolDataSetupTasksDataPoolSetupTask) GetCompletedAt() time.Time { r
 // The error object.
 type DataPoolDataSetupTasksDataPoolSetupTaskError struct {
 	// The error code.
-	Code int `json:"code"`
+	Code *int `json:"code"`
 	// The error message.
 	Message string `json:"message"`
 }
 
 // GetCode returns DataPoolDataSetupTasksDataPoolSetupTaskError.Code, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSetupTasksDataPoolSetupTaskError) GetCode() int { return v.Code }
+func (v *DataPoolDataSetupTasksDataPoolSetupTaskError) GetCode() *int { return v.Code }
 
 // GetMessage returns DataPoolDataSetupTasksDataPoolSetupTaskError.Message, and is useful for accessing the field via an interface.
 func (v *DataPoolDataSetupTasksDataPoolSetupTaskError) GetMessage() string { return v.Message }
@@ -3615,11 +3623,11 @@ func (v *DataPoolDataSetupTasksDataPoolSetupTaskError) GetMessage() string { ret
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataPoolDataSyncsSyncConnection struct {
 	// The connection's nodes.
-	Nodes []DataPoolDataSyncsSyncConnectionNodesSync `json:"nodes"`
+	Nodes []*DataPoolDataSyncsSyncConnectionNodesSync `json:"nodes"`
 }
 
 // GetNodes returns DataPoolDataSyncsSyncConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnection) GetNodes() []DataPoolDataSyncsSyncConnectionNodesSync {
+func (v *DataPoolDataSyncsSyncConnection) GetNodes() []*DataPoolDataSyncsSyncConnectionNodesSync {
 	return v.Nodes
 }
 
@@ -3640,42 +3648,42 @@ func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetId() string { return v.Syn
 func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetStatus() SyncStatus { return v.SyncData.Status }
 
 // GetNewRecords returns DataPoolDataSyncsSyncConnectionNodesSync.NewRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetNewRecords() string {
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetNewRecords() *string {
 	return v.SyncData.NewRecords
 }
 
 // GetUpdatedRecords returns DataPoolDataSyncsSyncConnectionNodesSync.UpdatedRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetUpdatedRecords() string {
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetUpdatedRecords() *string {
 	return v.SyncData.UpdatedRecords
 }
 
 // GetDeletedRecords returns DataPoolDataSyncsSyncConnectionNodesSync.DeletedRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetDeletedRecords() string {
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetDeletedRecords() *string {
 	return v.SyncData.DeletedRecords
 }
 
 // GetInvalidRecords returns DataPoolDataSyncsSyncConnectionNodesSync.InvalidRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetInvalidRecords() string {
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetInvalidRecords() *string {
 	return v.SyncData.InvalidRecords
 }
 
 // GetStartedAt returns DataPoolDataSyncsSyncConnectionNodesSync.StartedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetStartedAt() time.Time {
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetStartedAt() *time.Time {
 	return v.SyncData.StartedAt
 }
 
 // GetSucceededAt returns DataPoolDataSyncsSyncConnectionNodesSync.SucceededAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetSucceededAt() time.Time {
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetSucceededAt() *time.Time {
 	return v.SyncData.SucceededAt
 }
 
 // GetFailedAt returns DataPoolDataSyncsSyncConnectionNodesSync.FailedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetFailedAt() time.Time {
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetFailedAt() *time.Time {
 	return v.SyncData.FailedAt
 }
 
 // GetError returns DataPoolDataSyncsSyncConnectionNodesSync.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetError() SyncDataError { return v.SyncData.Error }
+func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetError() *SyncDataError { return v.SyncData.Error }
 
 // GetCreatedAt returns DataPoolDataSyncsSyncConnectionNodesSync.CreatedAt, and is useful for accessing the field via an interface.
 func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetCreatedAt() time.Time {
@@ -3725,21 +3733,21 @@ type __premarshalDataPoolDataSyncsSyncConnectionNodesSync struct {
 
 	Status SyncStatus `json:"status"`
 
-	NewRecords string `json:"newRecords"`
+	NewRecords *string `json:"newRecords"`
 
-	UpdatedRecords string `json:"updatedRecords"`
+	UpdatedRecords *string `json:"updatedRecords"`
 
-	DeletedRecords string `json:"deletedRecords"`
+	DeletedRecords *string `json:"deletedRecords"`
 
-	InvalidRecords string `json:"invalidRecords"`
+	InvalidRecords *string `json:"invalidRecords"`
 
-	StartedAt time.Time `json:"startedAt"`
+	StartedAt *time.Time `json:"startedAt"`
 
-	SucceededAt time.Time `json:"succeededAt"`
+	SucceededAt *time.Time `json:"succeededAt"`
 
-	FailedAt time.Time `json:"failedAt"`
+	FailedAt *time.Time `json:"failedAt"`
 
-	Error SyncDataError `json:"error"`
+	Error *SyncDataError `json:"error"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -3793,10 +3801,10 @@ func (v *DataPoolDataTimestampDimension) GetColumnName() string { return v.Dimen
 func (v *DataPoolDataTimestampDimension) GetType() string { return v.DimensionData.Type }
 
 // GetIsNullable returns DataPoolDataTimestampDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *DataPoolDataTimestampDimension) GetIsNullable() bool { return v.DimensionData.IsNullable }
+func (v *DataPoolDataTimestampDimension) GetIsNullable() *bool { return v.DimensionData.IsNullable }
 
 // GetIsUniqueKey returns DataPoolDataTimestampDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *DataPoolDataTimestampDimension) GetIsUniqueKey() bool { return v.DimensionData.IsUniqueKey }
+func (v *DataPoolDataTimestampDimension) GetIsUniqueKey() *bool { return v.DimensionData.IsUniqueKey }
 
 func (v *DataPoolDataTimestampDimension) UnmarshalJSON(b []byte) error {
 
@@ -3828,9 +3836,9 @@ type __premarshalDataPoolDataTimestampDimension struct {
 
 	Type string `json:"type"`
 
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 
-	IsUniqueKey bool `json:"isUniqueKey"`
+	IsUniqueKey *bool `json:"isUniqueKey"`
 }
 
 func (v *DataPoolDataTimestampDimension) MarshalJSON() ([]byte, error) {
@@ -3856,11 +3864,11 @@ type DataPoolResponse struct {
 	// This query returns the Data Pool specified by the given ID.
 	//
 	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-	DataPool DataPoolDataPool `json:"dataPool"`
+	DataPool *DataPoolDataPool `json:"dataPool"`
 }
 
 // GetDataPool returns DataPoolResponse.DataPool, and is useful for accessing the field via an interface.
-func (v *DataPoolResponse) GetDataPool() DataPoolDataPool { return v.DataPool }
+func (v *DataPoolResponse) GetDataPool() *DataPoolDataPool { return v.DataPool }
 
 // The status of a Data Pool Setup Task.
 type DataPoolSetupTaskStatus string
@@ -3903,18 +3911,18 @@ const (
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataPoolsDataPoolsDataPoolConnection struct {
 	// The connection's page info.
-	PageInfo DataPoolsDataPoolsDataPoolConnectionPageInfo `json:"pageInfo"`
+	PageInfo *DataPoolsDataPoolsDataPoolConnectionPageInfo `json:"pageInfo"`
 	// The connection's edges.
-	Edges []DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge `json:"edges"`
+	Edges []*DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge `json:"edges"`
 }
 
 // GetPageInfo returns DataPoolsDataPoolsDataPoolConnection.PageInfo, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnection) GetPageInfo() DataPoolsDataPoolsDataPoolConnectionPageInfo {
+func (v *DataPoolsDataPoolsDataPoolConnection) GetPageInfo() *DataPoolsDataPoolsDataPoolConnectionPageInfo {
 	return v.PageInfo
 }
 
 // GetEdges returns DataPoolsDataPoolsDataPoolConnection.Edges, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnection) GetEdges() []DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge {
+func (v *DataPoolsDataPoolsDataPoolConnection) GetEdges() []*DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge {
 	return v.Edges
 }
 
@@ -3926,11 +3934,11 @@ func (v *DataPoolsDataPoolsDataPoolConnection) GetEdges() []DataPoolsDataPoolsDa
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge struct {
 	// The edge's node.
-	Node DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool `json:"node"`
+	Node *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool `json:"node"`
 }
 
 // GetNode returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge.Node, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge) GetNode() DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool {
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge) GetNode() *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool {
 	return v.Node
 }
 
@@ -3952,7 +3960,7 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetI
 }
 
 // GetDataSource returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetDataSource() DataPoolDataDataSource {
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetDataSource() *DataPoolDataDataSource {
 	return v.DataPoolData.DataSource
 }
 
@@ -3962,7 +3970,7 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetS
 }
 
 // GetError returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetError() DataPoolDataError {
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetError() *DataPoolDataError {
 	return v.DataPoolData.Error
 }
 
@@ -3972,27 +3980,27 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetT
 }
 
 // GetTimestamp returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetTimestamp() *DataPoolDataTimestampDimension {
 	return v.DataPoolData.Timestamp
 }
 
 // GetColumns returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetColumns() *DataPoolDataColumnsColumnConnection {
 	return v.DataPoolData.Columns
 }
 
 // GetAvailableMeasures returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetAvailableMeasures() *DataPoolDataAvailableMeasuresColumnConnection {
 	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetupTask {
 	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSyncs() DataPoolDataSyncsSyncConnection {
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
 	return v.DataPoolData.Syncs
 }
 
@@ -4007,12 +4015,12 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetD
 }
 
 // GetAccount returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Account, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetAccount() CommonDataAccount {
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetAccount() *CommonDataAccount {
 	return v.DataPoolData.CommonDataDataPool.Account
 }
 
 // GetEnvironment returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetEnvironment() CommonDataEnvironment {
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetEnvironment() *CommonDataEnvironment {
 	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
@@ -4064,31 +4072,31 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) Unma
 type __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool struct {
 	Id string `json:"id"`
 
-	DataSource DataPoolDataDataSource `json:"dataSource"`
+	DataSource *DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error DataPoolDataError `json:"error"`
+	Error *DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+	Timestamp *DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+	Columns *DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures *DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
+	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -4140,12 +4148,12 @@ type DataPoolsDataPoolsDataPoolConnectionPageInfo struct {
 }
 
 // GetStartCursor returns DataPoolsDataPoolsDataPoolConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) GetStartCursor() string {
+func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) GetStartCursor() *string {
 	return v.PageInfoData.StartCursor
 }
 
 // GetEndCursor returns DataPoolsDataPoolsDataPoolConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) GetEndCursor() string {
+func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) GetEndCursor() *string {
 	return v.PageInfoData.EndCursor
 }
 
@@ -4185,9 +4193,9 @@ func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) UnmarshalJSON(b []byte) e
 }
 
 type __premarshalDataPoolsDataPoolsDataPoolConnectionPageInfo struct {
-	StartCursor string `json:"startCursor"`
+	StartCursor *string `json:"startCursor"`
 
-	EndCursor string `json:"endCursor"`
+	EndCursor *string `json:"endCursor"`
 
 	HasNextPage bool `json:"hasNextPage"`
 
@@ -4223,11 +4231,11 @@ type DataPoolsResponse struct {
 	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 	//
 	// For backward pagination, the `last` parameter defines the number of results to return, and the `before` parameter defines the cursor to continue from. You should pass the cursor for the _first_ result of the current page to `before`.
-	DataPools DataPoolsDataPoolsDataPoolConnection `json:"dataPools"`
+	DataPools *DataPoolsDataPoolsDataPoolConnection `json:"dataPools"`
 }
 
 // GetDataPools returns DataPoolsResponse.DataPools, and is useful for accessing the field via an interface.
-func (v *DataPoolsResponse) GetDataPools() DataPoolsDataPoolsDataPoolConnection { return v.DataPools }
+func (v *DataPoolsResponse) GetDataPools() *DataPoolsDataPoolsDataPoolConnection { return v.DataPools }
 
 // DataSourceByNameDataSource includes the requested fields of the GraphQL type DataSource.
 // The GraphQL type's documentation follows.
@@ -4251,7 +4259,7 @@ func (v *DataSourceByNameDataSource) GetType() DataSourceType { return v.DataSou
 func (v *DataSourceByNameDataSource) GetStatus() DataSourceStatus { return v.DataSourceData.Status }
 
 // GetError returns DataSourceByNameDataSource.Error, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetError() DataSourceDataError { return v.DataSourceData.Error }
+func (v *DataSourceByNameDataSource) GetError() *DataSourceDataError { return v.DataSourceData.Error }
 
 // GetConnectionSettings returns DataSourceByNameDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *DataSourceByNameDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
@@ -4259,17 +4267,17 @@ func (v *DataSourceByNameDataSource) GetConnectionSettings() DataSourceDataConne
 }
 
 // GetTables returns DataSourceByNameDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetTables() DataSourceDataTablesTableConnection {
+func (v *DataSourceByNameDataSource) GetTables() *DataSourceDataTablesTableConnection {
 	return v.DataSourceData.Tables
 }
 
 // GetChecks returns DataSourceByNameDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+func (v *DataSourceByNameDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
 	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns DataSourceByNameDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+func (v *DataSourceByNameDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
 	return v.DataSourceData.TableIntrospections
 }
 
@@ -4284,12 +4292,12 @@ func (v *DataSourceByNameDataSource) GetDescription() string {
 }
 
 // GetAccount returns DataSourceByNameDataSource.Account, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetAccount() CommonDataAccount {
+func (v *DataSourceByNameDataSource) GetAccount() *CommonDataAccount {
 	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns DataSourceByNameDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameDataSource) GetEnvironment() CommonDataEnvironment {
+func (v *DataSourceByNameDataSource) GetEnvironment() *CommonDataEnvironment {
 	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
@@ -4345,23 +4353,23 @@ type __premarshalDataSourceByNameDataSource struct {
 
 	Status DataSourceStatus `json:"status"`
 
-	Error DataSourceDataError `json:"error"`
+	Error *DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables DataSourceDataTablesTableConnection `json:"tables"`
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -4418,11 +4426,11 @@ type DataSourceByNameResponse struct {
 	// This query returns the Data Source specified by the given unique name.
 	//
 	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-	DataSource DataSourceByNameDataSource `json:"dataSource"`
+	DataSource *DataSourceByNameDataSource `json:"dataSource"`
 }
 
 // GetDataSource returns DataSourceByNameResponse.DataSource, and is useful for accessing the field via an interface.
-func (v *DataSourceByNameResponse) GetDataSource() DataSourceByNameDataSource { return v.DataSource }
+func (v *DataSourceByNameResponse) GetDataSource() *DataSourceByNameDataSource { return v.DataSource }
 
 // The status of a Data Source Check.
 type DataSourceCheckStatus string
@@ -4451,16 +4459,16 @@ type DataSourceData struct {
 	// The Data Source's type.
 	Type DataSourceType `json:"type"`
 	// The Data Source's status.
-	Status DataSourceStatus    `json:"status"`
-	Error  DataSourceDataError `json:"error"`
+	Status DataSourceStatus     `json:"status"`
+	Error  *DataSourceDataError `json:"error"`
 	// The Data Source's connection settings.
 	ConnectionSettings DataSourceDataConnectionSettings `json:"-"`
 	// The tables contained within the Data Source, according to the most recent table introspection.
-	Tables DataSourceDataTablesTableConnection `json:"tables"`
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
 	// A list of checks performed on the Data Source during its most recent connection attempt.
-	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
 	// A list of table introspections performed for the Data Source. You can see how tables and columns changed over time by paging through this list.
-	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 }
 
 // GetId returns DataSourceData.Id, and is useful for accessing the field via an interface.
@@ -4473,7 +4481,7 @@ func (v *DataSourceData) GetType() DataSourceType { return v.Type }
 func (v *DataSourceData) GetStatus() DataSourceStatus { return v.Status }
 
 // GetError returns DataSourceData.Error, and is useful for accessing the field via an interface.
-func (v *DataSourceData) GetError() DataSourceDataError { return v.Error }
+func (v *DataSourceData) GetError() *DataSourceDataError { return v.Error }
 
 // GetConnectionSettings returns DataSourceData.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *DataSourceData) GetConnectionSettings() DataSourceDataConnectionSettings {
@@ -4481,13 +4489,13 @@ func (v *DataSourceData) GetConnectionSettings() DataSourceDataConnectionSetting
 }
 
 // GetTables returns DataSourceData.Tables, and is useful for accessing the field via an interface.
-func (v *DataSourceData) GetTables() DataSourceDataTablesTableConnection { return v.Tables }
+func (v *DataSourceData) GetTables() *DataSourceDataTablesTableConnection { return v.Tables }
 
 // GetChecks returns DataSourceData.Checks, and is useful for accessing the field via an interface.
-func (v *DataSourceData) GetChecks() []DataSourceDataChecksDataSourceCheck { return v.Checks }
+func (v *DataSourceData) GetChecks() []*DataSourceDataChecksDataSourceCheck { return v.Checks }
 
 // GetTableIntrospections returns DataSourceData.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *DataSourceData) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+func (v *DataSourceData) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
 	return v.TableIntrospections
 }
 
@@ -4498,10 +4506,10 @@ func (v *DataSourceData) GetUniqueName() string { return v.CommonDataDataSource.
 func (v *DataSourceData) GetDescription() string { return v.CommonDataDataSource.Description }
 
 // GetAccount returns DataSourceData.Account, and is useful for accessing the field via an interface.
-func (v *DataSourceData) GetAccount() CommonDataAccount { return v.CommonDataDataSource.Account }
+func (v *DataSourceData) GetAccount() *CommonDataAccount { return v.CommonDataDataSource.Account }
 
 // GetEnvironment returns DataSourceData.Environment, and is useful for accessing the field via an interface.
-func (v *DataSourceData) GetEnvironment() CommonDataEnvironment {
+func (v *DataSourceData) GetEnvironment() *CommonDataEnvironment {
 	return v.CommonDataDataSource.Environment
 }
 
@@ -4563,23 +4571,23 @@ type __premarshalDataSourceData struct {
 
 	Status DataSourceStatus `json:"status"`
 
-	Error DataSourceDataError `json:"error"`
+	Error *DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables DataSourceDataTablesTableConnection `json:"tables"`
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -4643,31 +4651,31 @@ type DataSourceDataChecksDataSourceCheck struct {
 	// The name of the Data Source Check to be performed.
 	Name string `json:"name"`
 	// A description of the Data Source Check to be performed.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The status of the Data Source Check (all checks begin as NOT_STARTED before transitioning to SUCCEEDED or FAILED).
 	Status DataSourceCheckStatus `json:"status"`
 	// If the Data Source Check failed, this field includes a descriptive error message.
-	Error DataSourceDataChecksDataSourceCheckError `json:"error"`
+	Error *DataSourceDataChecksDataSourceCheckError `json:"error"`
 	// The time at which the Data Source Check was performed.
-	CheckedAt time.Time `json:"checkedAt"`
+	CheckedAt *time.Time `json:"checkedAt"`
 }
 
 // GetName returns DataSourceDataChecksDataSourceCheck.Name, and is useful for accessing the field via an interface.
 func (v *DataSourceDataChecksDataSourceCheck) GetName() string { return v.Name }
 
 // GetDescription returns DataSourceDataChecksDataSourceCheck.Description, and is useful for accessing the field via an interface.
-func (v *DataSourceDataChecksDataSourceCheck) GetDescription() string { return v.Description }
+func (v *DataSourceDataChecksDataSourceCheck) GetDescription() *string { return v.Description }
 
 // GetStatus returns DataSourceDataChecksDataSourceCheck.Status, and is useful for accessing the field via an interface.
 func (v *DataSourceDataChecksDataSourceCheck) GetStatus() DataSourceCheckStatus { return v.Status }
 
 // GetError returns DataSourceDataChecksDataSourceCheck.Error, and is useful for accessing the field via an interface.
-func (v *DataSourceDataChecksDataSourceCheck) GetError() DataSourceDataChecksDataSourceCheckError {
+func (v *DataSourceDataChecksDataSourceCheck) GetError() *DataSourceDataChecksDataSourceCheckError {
 	return v.Error
 }
 
 // GetCheckedAt returns DataSourceDataChecksDataSourceCheck.CheckedAt, and is useful for accessing the field via an interface.
-func (v *DataSourceDataChecksDataSourceCheck) GetCheckedAt() time.Time { return v.CheckedAt }
+func (v *DataSourceDataChecksDataSourceCheck) GetCheckedAt() *time.Time { return v.CheckedAt }
 
 // DataSourceDataChecksDataSourceCheckError includes the requested fields of the GraphQL type Error.
 // The GraphQL type's documentation follows.
@@ -4675,13 +4683,13 @@ func (v *DataSourceDataChecksDataSourceCheck) GetCheckedAt() time.Time { return 
 // The error object.
 type DataSourceDataChecksDataSourceCheckError struct {
 	// The error code.
-	Code int `json:"code"`
+	Code *int `json:"code"`
 	// The error message.
 	Message string `json:"message"`
 }
 
 // GetCode returns DataSourceDataChecksDataSourceCheckError.Code, and is useful for accessing the field via an interface.
-func (v *DataSourceDataChecksDataSourceCheckError) GetCode() int { return v.Code }
+func (v *DataSourceDataChecksDataSourceCheckError) GetCode() *int { return v.Code }
 
 // GetMessage returns DataSourceDataChecksDataSourceCheckError.Message, and is useful for accessing the field via an interface.
 func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return v.Message }
@@ -4695,7 +4703,7 @@ func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return 
 type DataSourceDataConnectionSettings interface {
 	implementsGraphQLInterfaceDataSourceDataConnectionSettings()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
+	GetTypename() *string
 }
 
 func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
@@ -4778,21 +4786,21 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 //
 // The HTTP Data Source connection settings.
 type DataSourceDataConnectionSettingsHttpConnectionSettings struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The HTTP Basic authentication settings for uploading new data.
 	//
 	// If this parameter is not provided, anyone with the URL to your tables will be able to upload data.
 	// While it's OK to test without HTTP Basic authentication, we recommend enabling it.
-	BasicAuth DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings `json:"basicAuth"`
+	BasicAuth *DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings `json:"basicAuth"`
 }
 
 // GetTypename returns DataSourceDataConnectionSettingsHttpConnectionSettings.Typename, and is useful for accessing the field via an interface.
-func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) GetTypename() string {
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) GetTypename() *string {
 	return v.Typename
 }
 
 // GetBasicAuth returns DataSourceDataConnectionSettingsHttpConnectionSettings.BasicAuth, and is useful for accessing the field via an interface.
-func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) GetBasicAuth() DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings {
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) GetBasicAuth() *DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings {
 	return v.BasicAuth
 }
 
@@ -4823,7 +4831,7 @@ func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasi
 // The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, and the tables
 // (along with their paths). We do not allow fetching the AWS secret access key ID after it has been set.
 type DataSourceDataConnectionSettingsS3ConnectionSettings struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The name of the S3 bucket.
 	Bucket string `json:"bucket"`
 	// The AWS access key ID for an IAM user with sufficient access to the S3 bucket.
@@ -4831,7 +4839,7 @@ type DataSourceDataConnectionSettingsS3ConnectionSettings struct {
 }
 
 // GetTypename returns DataSourceDataConnectionSettingsS3ConnectionSettings.Typename, and is useful for accessing the field via an interface.
-func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) GetTypename() string {
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) GetTypename() *string {
 	return v.Typename
 }
 
@@ -4848,7 +4856,7 @@ func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) GetAwsAccessKeyId
 //
 // The Snowflake Data Source connection settings.
 type DataSourceDataConnectionSettingsSnowflakeConnectionSettings struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The Snowflake account. This is the part before the "snowflakecomputing.com" part of your Snowflake URL.
 	Account string `json:"account"`
 	// The Snowflake database name.
@@ -4864,7 +4872,7 @@ type DataSourceDataConnectionSettingsSnowflakeConnectionSettings struct {
 }
 
 // GetTypename returns DataSourceDataConnectionSettingsSnowflakeConnectionSettings.Typename, and is useful for accessing the field via an interface.
-func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetTypename() string {
+func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetTypename() *string {
 	return v.Typename
 }
 
@@ -4930,7 +4938,7 @@ func (v *DataSourceDataSource) GetType() DataSourceType { return v.DataSourceDat
 func (v *DataSourceDataSource) GetStatus() DataSourceStatus { return v.DataSourceData.Status }
 
 // GetError returns DataSourceDataSource.Error, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetError() DataSourceDataError { return v.DataSourceData.Error }
+func (v *DataSourceDataSource) GetError() *DataSourceDataError { return v.DataSourceData.Error }
 
 // GetConnectionSettings returns DataSourceDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *DataSourceDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
@@ -4938,17 +4946,17 @@ func (v *DataSourceDataSource) GetConnectionSettings() DataSourceDataConnectionS
 }
 
 // GetTables returns DataSourceDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetTables() DataSourceDataTablesTableConnection {
+func (v *DataSourceDataSource) GetTables() *DataSourceDataTablesTableConnection {
 	return v.DataSourceData.Tables
 }
 
 // GetChecks returns DataSourceDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+func (v *DataSourceDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
 	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns DataSourceDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+func (v *DataSourceDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
 	return v.DataSourceData.TableIntrospections
 }
 
@@ -4963,12 +4971,12 @@ func (v *DataSourceDataSource) GetDescription() string {
 }
 
 // GetAccount returns DataSourceDataSource.Account, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetAccount() CommonDataAccount {
+func (v *DataSourceDataSource) GetAccount() *CommonDataAccount {
 	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns DataSourceDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *DataSourceDataSource) GetEnvironment() CommonDataEnvironment {
+func (v *DataSourceDataSource) GetEnvironment() *CommonDataEnvironment {
 	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
@@ -5024,23 +5032,23 @@ type __premarshalDataSourceDataSource struct {
 
 	Status DataSourceStatus `json:"status"`
 
-	Error DataSourceDataError `json:"error"`
+	Error *DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables DataSourceDataTablesTableConnection `json:"tables"`
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -5100,11 +5108,11 @@ func (v *DataSourceDataSource) __premarshalJSON() (*__premarshalDataSourceDataSo
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourceDataTableIntrospectionsTableIntrospectionConnection struct {
 	// The connection's nodes.
-	Nodes []DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection `json:"nodes"`
+	Nodes []*DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection `json:"nodes"`
 }
 
 // GetNodes returns DataSourceDataTableIntrospectionsTableIntrospectionConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnection) GetNodes() []DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection {
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnection) GetNodes() []*DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection {
 	return v.Nodes
 }
 
@@ -5119,7 +5127,7 @@ type DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntr
 }
 
 // GetDataSource returns DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.DataSource, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetDataSource() TableIntrospectionDataDataSource {
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetDataSource() *TableIntrospectionDataDataSource {
 	return v.TableIntrospectionData.DataSource
 }
 
@@ -5149,7 +5157,7 @@ func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTable
 }
 
 // GetNumTables returns DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection.NumTables, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetNumTables() int {
+func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) GetNumTables() *int {
 	return v.TableIntrospectionData.NumTables
 }
 
@@ -5179,7 +5187,7 @@ func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTable
 }
 
 type __premarshalDataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection struct {
-	DataSource TableIntrospectionDataDataSource `json:"dataSource"`
+	DataSource *TableIntrospectionDataDataSource `json:"dataSource"`
 
 	Status TableIntrospectionStatus `json:"status"`
 
@@ -5191,7 +5199,7 @@ type __premarshalDataSourceDataTableIntrospectionsTableIntrospectionConnectionNo
 
 	ModifiedBy string `json:"modifiedBy"`
 
-	NumTables int `json:"numTables"`
+	NumTables *int `json:"numTables"`
 }
 
 func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTableIntrospection) MarshalJSON() ([]byte, error) {
@@ -5223,11 +5231,11 @@ func (v *DataSourceDataTableIntrospectionsTableIntrospectionConnectionNodesTable
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourceDataTablesTableConnection struct {
 	// The connection's nodes.
-	Nodes []DataSourceDataTablesTableConnectionNodesTable `json:"nodes"`
+	Nodes []*DataSourceDataTablesTableConnectionNodesTable `json:"nodes"`
 }
 
 // GetNodes returns DataSourceDataTablesTableConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnection) GetNodes() []DataSourceDataTablesTableConnectionNodesTable {
+func (v *DataSourceDataTablesTableConnection) GetNodes() []*DataSourceDataTablesTableConnectionNodesTable {
 	return v.Nodes
 }
 
@@ -5241,14 +5249,14 @@ type DataSourceDataTablesTableConnectionNodesTable struct {
 	// The table's name.
 	Name string `json:"name"`
 	// The table's columns.
-	Columns DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection `json:"columns"`
+	Columns *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection `json:"columns"`
 }
 
 // GetName returns DataSourceDataTablesTableConnectionNodesTable.Name, and is useful for accessing the field via an interface.
 func (v *DataSourceDataTablesTableConnectionNodesTable) GetName() string { return v.Name }
 
 // GetColumns returns DataSourceDataTablesTableConnectionNodesTable.Columns, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTable) GetColumns() DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection {
+func (v *DataSourceDataTablesTableConnectionNodesTable) GetColumns() *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection {
 	return v.Columns
 }
 
@@ -5260,11 +5268,11 @@ func (v *DataSourceDataTablesTableConnectionNodesTable) GetColumns() DataSourceD
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection struct {
 	// The connection's nodes.
-	Nodes []DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn `json:"nodes"`
+	Nodes []*DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn `json:"nodes"`
 }
 
 // GetNodes returns DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection) GetNodes() []DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn {
+func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection) GetNodes() []*DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn {
 	return v.Nodes
 }
 
@@ -5289,7 +5297,7 @@ func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNod
 }
 
 // GetIsNullable returns DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn) GetIsNullable() bool {
+func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn) GetIsNullable() *bool {
 	return v.ColumnData.IsNullable
 }
 
@@ -5323,7 +5331,7 @@ type __premarshalDataSourceDataTablesTableConnectionNodesTableColumnsColumnConne
 
 	Type string `json:"type"`
 
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 }
 
 func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
@@ -5348,11 +5356,11 @@ type DataSourceResponse struct {
 	// This query returns the Data Source specified by the given ID.
 	//
 	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-	DataSource DataSourceDataSource `json:"dataSource"`
+	DataSource *DataSourceDataSource `json:"dataSource"`
 }
 
 // GetDataSource returns DataSourceResponse.DataSource, and is useful for accessing the field via an interface.
-func (v *DataSourceResponse) GetDataSource() DataSourceDataSource { return v.DataSource }
+func (v *DataSourceResponse) GetDataSource() *DataSourceDataSource { return v.DataSource }
 
 // The status of a Data Source.
 type DataSourceStatus string
@@ -5390,18 +5398,18 @@ const (
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourcesDataSourcesDataSourceConnection struct {
 	// The connection's page info.
-	PageInfo DataSourcesDataSourcesDataSourceConnectionPageInfo `json:"pageInfo"`
+	PageInfo *DataSourcesDataSourcesDataSourceConnectionPageInfo `json:"pageInfo"`
 	// The connection's edges.
-	Edges []DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge `json:"edges"`
+	Edges []*DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge `json:"edges"`
 }
 
 // GetPageInfo returns DataSourcesDataSourcesDataSourceConnection.PageInfo, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnection) GetPageInfo() DataSourcesDataSourcesDataSourceConnectionPageInfo {
+func (v *DataSourcesDataSourcesDataSourceConnection) GetPageInfo() *DataSourcesDataSourcesDataSourceConnectionPageInfo {
 	return v.PageInfo
 }
 
 // GetEdges returns DataSourcesDataSourcesDataSourceConnection.Edges, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnection) GetEdges() []DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge {
+func (v *DataSourcesDataSourcesDataSourceConnection) GetEdges() []*DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge {
 	return v.Edges
 }
 
@@ -5413,11 +5421,11 @@ func (v *DataSourcesDataSourcesDataSourceConnection) GetEdges() []DataSourcesDat
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge struct {
 	// The edge's node.
-	Node DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource `json:"node"`
+	Node *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource `json:"node"`
 }
 
 // GetNode returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge.Node, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge) GetNode() DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource {
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge) GetNode() *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource {
 	return v.Node
 }
 
@@ -5449,7 +5457,7 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSo
 }
 
 // GetError returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Error, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetError() DataSourceDataError {
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetError() *DataSourceDataError {
 	return v.DataSourceData.Error
 }
 
@@ -5459,17 +5467,17 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSo
 }
 
 // GetTables returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetTables() DataSourceDataTablesTableConnection {
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetTables() *DataSourceDataTablesTableConnection {
 	return v.DataSourceData.Tables
 }
 
 // GetChecks returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
 	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
 	return v.DataSourceData.TableIntrospections
 }
 
@@ -5484,12 +5492,12 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSo
 }
 
 // GetAccount returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Account, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetAccount() CommonDataAccount {
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetAccount() *CommonDataAccount {
 	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetEnvironment() CommonDataEnvironment {
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetEnvironment() *CommonDataEnvironment {
 	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
@@ -5545,23 +5553,23 @@ type __premarshalDataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNo
 
 	Status DataSourceStatus `json:"status"`
 
-	Error DataSourceDataError `json:"error"`
+	Error *DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables DataSourceDataTablesTableConnection `json:"tables"`
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -5622,12 +5630,12 @@ type DataSourcesDataSourcesDataSourceConnectionPageInfo struct {
 }
 
 // GetStartCursor returns DataSourcesDataSourcesDataSourceConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) GetStartCursor() string {
+func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) GetStartCursor() *string {
 	return v.PageInfoData.StartCursor
 }
 
 // GetEndCursor returns DataSourcesDataSourcesDataSourceConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
-func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) GetEndCursor() string {
+func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) GetEndCursor() *string {
 	return v.PageInfoData.EndCursor
 }
 
@@ -5667,9 +5675,9 @@ func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) UnmarshalJSON(b []b
 }
 
 type __premarshalDataSourcesDataSourcesDataSourceConnectionPageInfo struct {
-	StartCursor string `json:"startCursor"`
+	StartCursor *string `json:"startCursor"`
 
-	EndCursor string `json:"endCursor"`
+	EndCursor *string `json:"endCursor"`
 
 	HasNextPage bool `json:"hasNextPage"`
 
@@ -5705,11 +5713,11 @@ type DataSourcesResponse struct {
 	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 	//
 	// For backward pagination, the `last` parameter defines the number of results to return, and the `before` parameter defines the cursor to continue from. You should pass the cursor for the _first_ result of the current page to `before`.
-	DataSources DataSourcesDataSourcesDataSourceConnection `json:"dataSources"`
+	DataSources *DataSourcesDataSourcesDataSourceConnection `json:"dataSources"`
 }
 
 // GetDataSources returns DataSourcesResponse.DataSources, and is useful for accessing the field via an interface.
-func (v *DataSourcesResponse) GetDataSources() DataSourcesDataSourcesDataSourceConnection {
+func (v *DataSourcesResponse) GetDataSources() *DataSourcesDataSourcesDataSourceConnection {
 	return v.DataSources
 }
 
@@ -5718,11 +5726,11 @@ type DeleteDataPoolByNameResponse struct {
 	// This mutation deletes the specified Data Pool by name and then returns the Data Pool's ID if the Data Pool was deleted successfully.
 	//
 	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-	DeleteDataPoolByName string `json:"deleteDataPoolByName"`
+	DeleteDataPoolByName *string `json:"deleteDataPoolByName"`
 }
 
 // GetDeleteDataPoolByName returns DeleteDataPoolByNameResponse.DeleteDataPoolByName, and is useful for accessing the field via an interface.
-func (v *DeleteDataPoolByNameResponse) GetDeleteDataPoolByName() string {
+func (v *DeleteDataPoolByNameResponse) GetDeleteDataPoolByName() *string {
 	return v.DeleteDataPoolByName
 }
 
@@ -5731,22 +5739,22 @@ type DeleteDataPoolResponse struct {
 	// This mutation deletes the specified Data Pool by ID and then returns the same ID if the Data Pool was deleted successfully.
 	//
 	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-	DeleteDataPool string `json:"deleteDataPool"`
+	DeleteDataPool *string `json:"deleteDataPool"`
 }
 
 // GetDeleteDataPool returns DeleteDataPoolResponse.DeleteDataPool, and is useful for accessing the field via an interface.
-func (v *DeleteDataPoolResponse) GetDeleteDataPool() string { return v.DeleteDataPool }
+func (v *DeleteDataPoolResponse) GetDeleteDataPool() *string { return v.DeleteDataPool }
 
 // DeleteDataSourceByNameResponse is returned by DeleteDataSourceByName on success.
 type DeleteDataSourceByNameResponse struct {
 	// This mutation deletes the specified Data Source by name and then returns the Data Source's ID if the Data Source was deleted successfully.
 	//
 	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-	DeleteDataSourceByName string `json:"deleteDataSourceByName"`
+	DeleteDataSourceByName *string `json:"deleteDataSourceByName"`
 }
 
 // GetDeleteDataSourceByName returns DeleteDataSourceByNameResponse.DeleteDataSourceByName, and is useful for accessing the field via an interface.
-func (v *DeleteDataSourceByNameResponse) GetDeleteDataSourceByName() string {
+func (v *DeleteDataSourceByNameResponse) GetDeleteDataSourceByName() *string {
 	return v.DeleteDataSourceByName
 }
 
@@ -5755,33 +5763,33 @@ type DeleteDataSourceResponse struct {
 	// This mutation deletes the specified Data Source by ID and then returns the same ID if the Data Source was deleted successfully.
 	//
 	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-	DeleteDataSource string `json:"deleteDataSource"`
+	DeleteDataSource *string `json:"deleteDataSource"`
 }
 
 // GetDeleteDataSource returns DeleteDataSourceResponse.DeleteDataSource, and is useful for accessing the field via an interface.
-func (v *DeleteDataSourceResponse) GetDeleteDataSource() string { return v.DeleteDataSource }
+func (v *DeleteDataSourceResponse) GetDeleteDataSource() *string { return v.DeleteDataSource }
 
 // DeleteMetricByNameResponse is returned by DeleteMetricByName on success.
 type DeleteMetricByNameResponse struct {
 	// This mutation deletes the specified Metric by name and then returns the Metric's ID if the Data Source was deleted successfully.
 	//
 	// A Metric is a business indicator measured over time.
-	DeleteMetricByName string `json:"deleteMetricByName"`
+	DeleteMetricByName *string `json:"deleteMetricByName"`
 }
 
 // GetDeleteMetricByName returns DeleteMetricByNameResponse.DeleteMetricByName, and is useful for accessing the field via an interface.
-func (v *DeleteMetricByNameResponse) GetDeleteMetricByName() string { return v.DeleteMetricByName }
+func (v *DeleteMetricByNameResponse) GetDeleteMetricByName() *string { return v.DeleteMetricByName }
 
 // DeleteMetricResponse is returned by DeleteMetric on success.
 type DeleteMetricResponse struct {
 	// This mutation deletes the specified Metric by ID and then returns the same ID if the Data Source was deleted successfully.
 	//
 	// A Metric is a business indicator measured over time.
-	DeleteMetric string `json:"deleteMetric"`
+	DeleteMetric *string `json:"deleteMetric"`
 }
 
 // GetDeleteMetric returns DeleteMetricResponse.DeleteMetric, and is useful for accessing the field via an interface.
-func (v *DeleteMetricResponse) GetDeleteMetric() string { return v.DeleteMetric }
+func (v *DeleteMetricResponse) GetDeleteMetric() *string { return v.DeleteMetric }
 
 // DimensionData includes the GraphQL fields of Dimension requested by the fragment DimensionData.
 // The GraphQL type's documentation follows.
@@ -5793,9 +5801,9 @@ type DimensionData struct {
 	// The column data type.
 	Type string `json:"type"`
 	// Whether the column is nullable.
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 	// Whether the column is a unique key.
-	IsUniqueKey bool `json:"isUniqueKey"`
+	IsUniqueKey *bool `json:"isUniqueKey"`
 }
 
 // GetColumnName returns DimensionData.ColumnName, and is useful for accessing the field via an interface.
@@ -5805,10 +5813,10 @@ func (v *DimensionData) GetColumnName() string { return v.ColumnName }
 func (v *DimensionData) GetType() string { return v.Type }
 
 // GetIsNullable returns DimensionData.IsNullable, and is useful for accessing the field via an interface.
-func (v *DimensionData) GetIsNullable() bool { return v.IsNullable }
+func (v *DimensionData) GetIsNullable() *bool { return v.IsNullable }
 
 // GetIsUniqueKey returns DimensionData.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *DimensionData) GetIsUniqueKey() bool { return v.IsUniqueKey }
+func (v *DimensionData) GetIsUniqueKey() *bool { return v.IsUniqueKey }
 
 // The fields for creating or modifying a Dimension.
 type DimensionInput struct {
@@ -5884,13 +5892,13 @@ const (
 // The error object.
 type GqlError struct {
 	// The error code.
-	Code int `json:"code"`
+	Code *int `json:"code"`
 	// The error message.
 	Message string `json:"message"`
 }
 
 // GetCode returns GqlError.Code, and is useful for accessing the field via an interface.
-func (v *GqlError) GetCode() int { return v.Code }
+func (v *GqlError) GetCode() *int { return v.Code }
 
 // GetMessage returns GqlError.Message, and is useful for accessing the field via an interface.
 func (v *GqlError) GetMessage() string { return v.Message }
@@ -5912,19 +5920,19 @@ func (v *HttpBasicAuthInput) GetPassword() string { return v.Password }
 // The fields for creating an HTTP Data Source's connection settings.
 type HttpConnectionSettingsInput struct {
 	// The Data Source's tables.
-	Tables []HttpDataSourceTableInput `json:"tables"`
+	Tables []*HttpDataSourceTableInput `json:"tables,omitempty"`
 	// The HTTP Basic authentication settings for uploading new data.
 	//
 	// If this parameter is not provided, anyone with the URL to your tables will be able to upload data.
 	// While it's OK to test without HTTP Basic authentication, we recommend enabling it.
-	BasicAuth HttpBasicAuthInput `json:"basicAuth"`
+	BasicAuth *HttpBasicAuthInput `json:"basicAuth,omitempty"`
 }
 
 // GetTables returns HttpConnectionSettingsInput.Tables, and is useful for accessing the field via an interface.
-func (v *HttpConnectionSettingsInput) GetTables() []HttpDataSourceTableInput { return v.Tables }
+func (v *HttpConnectionSettingsInput) GetTables() []*HttpDataSourceTableInput { return v.Tables }
 
 // GetBasicAuth returns HttpConnectionSettingsInput.BasicAuth, and is useful for accessing the field via an interface.
-func (v *HttpConnectionSettingsInput) GetBasicAuth() HttpBasicAuthInput { return v.BasicAuth }
+func (v *HttpConnectionSettingsInput) GetBasicAuth() *HttpBasicAuthInput { return v.BasicAuth }
 
 // The fields for specifying a Column in a Table.
 type HttpDataSourceColumnInput struct {
@@ -5950,30 +5958,30 @@ type HttpDataSourceTableInput struct {
 	// The name of the table
 	Name string `json:"name"`
 	// All the columns that will be present in the table
-	Columns []HttpDataSourceColumnInput `json:"columns"`
+	Columns []*HttpDataSourceColumnInput `json:"columns,omitempty"`
 }
 
 // GetName returns HttpDataSourceTableInput.Name, and is useful for accessing the field via an interface.
 func (v *HttpDataSourceTableInput) GetName() string { return v.Name }
 
 // GetColumns returns HttpDataSourceTableInput.Columns, and is useful for accessing the field via an interface.
-func (v *HttpDataSourceTableInput) GetColumns() []HttpDataSourceColumnInput { return v.Columns }
+func (v *HttpDataSourceTableInput) GetColumns() []*HttpDataSourceColumnInput { return v.Columns }
 
 // The ID or unique name input.
 //
 // If both ID and unique name are provided, the ID will take precedence.
 type IdOrUniqueName struct {
 	// The unique identifier of the object.
-	Id string `json:"id"`
+	Id *string `json:"id"`
 	// The unique name of the object.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 }
 
 // GetId returns IdOrUniqueName.Id, and is useful for accessing the field via an interface.
-func (v *IdOrUniqueName) GetId() string { return v.Id }
+func (v *IdOrUniqueName) GetId() *string { return v.Id }
 
 // GetUniqueName returns IdOrUniqueName.UniqueName, and is useful for accessing the field via an interface.
-func (v *IdOrUniqueName) GetUniqueName() string { return v.UniqueName }
+func (v *IdOrUniqueName) GetUniqueName() *string { return v.UniqueName }
 
 // MetricByNameMetric includes the requested fields of the GraphQL type Metric.
 // The GraphQL type's documentation follows.
@@ -5991,20 +5999,20 @@ type MetricByNameMetric struct {
 func (v *MetricByNameMetric) GetId() string { return v.MetricData.Id }
 
 // GetDataPool returns MetricByNameMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetDataPool() MetricDataDataPool { return v.MetricData.DataPool }
+func (v *MetricByNameMetric) GetDataPool() *MetricDataDataPool { return v.MetricData.DataPool }
 
 // GetDimensions returns MetricByNameMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetDimensions() []MetricDataDimensionsDimension {
+func (v *MetricByNameMetric) GetDimensions() []*MetricDataDimensionsDimension {
 	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns MetricByNameMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetTimestamp() MetricDataTimestampDimension {
+func (v *MetricByNameMetric) GetTimestamp() *MetricDataTimestampDimension {
 	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns MetricByNameMetric.Measure, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetMeasure() MetricDataMeasureDimension { return v.MetricData.Measure }
+func (v *MetricByNameMetric) GetMeasure() *MetricDataMeasureDimension { return v.MetricData.Measure }
 
 // GetSettings returns MetricByNameMetric.Settings, and is useful for accessing the field via an interface.
 func (v *MetricByNameMetric) GetSettings() MetricDataSettingsMetricSettings {
@@ -6023,12 +6031,12 @@ func (v *MetricByNameMetric) GetDescription() string {
 }
 
 // GetAccount returns MetricByNameMetric.Account, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetAccount() CommonDataAccount {
+func (v *MetricByNameMetric) GetAccount() *CommonDataAccount {
 	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns MetricByNameMetric.Environment, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetEnvironment() CommonDataEnvironment {
+func (v *MetricByNameMetric) GetEnvironment() *CommonDataEnvironment {
 	return v.MetricData.CommonDataMetric.Environment
 }
 
@@ -6074,13 +6082,13 @@ func (v *MetricByNameMetric) UnmarshalJSON(b []byte) error {
 type __premarshalMetricByNameMetric struct {
 	Id string `json:"id"`
 
-	DataPool MetricDataDataPool `json:"dataPool"`
+	DataPool *MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure MetricDataMeasureDimension `json:"measure"`
+	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -6090,9 +6098,9 @@ type __premarshalMetricByNameMetric struct {
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -6148,11 +6156,11 @@ type MetricByNameResponse struct {
 	// This query returns the Metric specified by the given unique name.
 	//
 	// A Metric is a business indicator measured over time.
-	Metric MetricByNameMetric `json:"metric"`
+	Metric *MetricByNameMetric `json:"metric"`
 }
 
 // GetMetric returns MetricByNameResponse.Metric, and is useful for accessing the field via an interface.
-func (v *MetricByNameResponse) GetMetric() MetricByNameMetric { return v.Metric }
+func (v *MetricByNameResponse) GetMetric() *MetricByNameMetric { return v.Metric }
 
 // MetricData includes the GraphQL fields of Metric requested by the fragment MetricData.
 // The GraphQL type's documentation follows.
@@ -6167,13 +6175,13 @@ type MetricData struct {
 	// The Metric's unique identifier.
 	Id string `json:"id"`
 	// The Data Pool that powers this Metric.
-	DataPool MetricDataDataPool `json:"dataPool"`
+	DataPool *MetricDataDataPool `json:"dataPool"`
 	// The Metric's Dimensions. These Dimensions are available to Query Filters.
-	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
 	// The Metric's timestamp. This is the same as its Data Pool's timestamp.
-	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 	// The Metric's measure. Access this from the Metric's `settings` object instead.
-	Measure MetricDataMeasureDimension `json:"measure"`
+	Measure *MetricDataMeasureDimension `json:"measure"`
 	// The settings for the Metric. The settings are specific to the Metric's type.
 	Settings MetricDataSettingsMetricSettings `json:"-"`
 	// The Metric's type. The different Metric types determine how the values are calculated.
@@ -6184,16 +6192,16 @@ type MetricData struct {
 func (v *MetricData) GetId() string { return v.Id }
 
 // GetDataPool returns MetricData.DataPool, and is useful for accessing the field via an interface.
-func (v *MetricData) GetDataPool() MetricDataDataPool { return v.DataPool }
+func (v *MetricData) GetDataPool() *MetricDataDataPool { return v.DataPool }
 
 // GetDimensions returns MetricData.Dimensions, and is useful for accessing the field via an interface.
-func (v *MetricData) GetDimensions() []MetricDataDimensionsDimension { return v.Dimensions }
+func (v *MetricData) GetDimensions() []*MetricDataDimensionsDimension { return v.Dimensions }
 
 // GetTimestamp returns MetricData.Timestamp, and is useful for accessing the field via an interface.
-func (v *MetricData) GetTimestamp() MetricDataTimestampDimension { return v.Timestamp }
+func (v *MetricData) GetTimestamp() *MetricDataTimestampDimension { return v.Timestamp }
 
 // GetMeasure returns MetricData.Measure, and is useful for accessing the field via an interface.
-func (v *MetricData) GetMeasure() MetricDataMeasureDimension { return v.Measure }
+func (v *MetricData) GetMeasure() *MetricDataMeasureDimension { return v.Measure }
 
 // GetSettings returns MetricData.Settings, and is useful for accessing the field via an interface.
 func (v *MetricData) GetSettings() MetricDataSettingsMetricSettings { return v.Settings }
@@ -6208,10 +6216,10 @@ func (v *MetricData) GetUniqueName() string { return v.CommonDataMetric.UniqueNa
 func (v *MetricData) GetDescription() string { return v.CommonDataMetric.Description }
 
 // GetAccount returns MetricData.Account, and is useful for accessing the field via an interface.
-func (v *MetricData) GetAccount() CommonDataAccount { return v.CommonDataMetric.Account }
+func (v *MetricData) GetAccount() *CommonDataAccount { return v.CommonDataMetric.Account }
 
 // GetEnvironment returns MetricData.Environment, and is useful for accessing the field via an interface.
-func (v *MetricData) GetEnvironment() CommonDataEnvironment { return v.CommonDataMetric.Environment }
+func (v *MetricData) GetEnvironment() *CommonDataEnvironment { return v.CommonDataMetric.Environment }
 
 // GetCreatedAt returns MetricData.CreatedAt, and is useful for accessing the field via an interface.
 func (v *MetricData) GetCreatedAt() time.Time { return v.CommonDataMetric.CreatedAt }
@@ -6267,13 +6275,13 @@ func (v *MetricData) UnmarshalJSON(b []byte) error {
 type __premarshalMetricData struct {
 	Id string `json:"id"`
 
-	DataPool MetricDataDataPool `json:"dataPool"`
+	DataPool *MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure MetricDataMeasureDimension `json:"measure"`
+	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -6283,9 +6291,9 @@ type __premarshalMetricData struct {
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -6352,39 +6360,41 @@ type MetricDataDataPool struct {
 func (v *MetricDataDataPool) GetId() string { return v.DataPoolData.Id }
 
 // GetDataSource returns MetricDataDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetDataSource() DataPoolDataDataSource { return v.DataPoolData.DataSource }
+func (v *MetricDataDataPool) GetDataSource() *DataPoolDataDataSource {
+	return v.DataPoolData.DataSource
+}
 
 // GetStatus returns MetricDataDataPool.Status, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetStatus() DataPoolStatus { return v.DataPoolData.Status }
 
 // GetError returns MetricDataDataPool.Error, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetError() DataPoolDataError { return v.DataPoolData.Error }
+func (v *MetricDataDataPool) GetError() *DataPoolDataError { return v.DataPoolData.Error }
 
 // GetTable returns MetricDataDataPool.Table, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetTable() string { return v.DataPoolData.Table }
 
 // GetTimestamp returns MetricDataDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+func (v *MetricDataDataPool) GetTimestamp() *DataPoolDataTimestampDimension {
 	return v.DataPoolData.Timestamp
 }
 
 // GetColumns returns MetricDataDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+func (v *MetricDataDataPool) GetColumns() *DataPoolDataColumnsColumnConnection {
 	return v.DataPoolData.Columns
 }
 
 // GetAvailableMeasures returns MetricDataDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+func (v *MetricDataDataPool) GetAvailableMeasures() *DataPoolDataAvailableMeasuresColumnConnection {
 	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns MetricDataDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+func (v *MetricDataDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetupTask {
 	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns MetricDataDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetSyncs() DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
+func (v *MetricDataDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
 
 // GetUniqueName returns MetricDataDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetUniqueName() string {
@@ -6397,12 +6407,12 @@ func (v *MetricDataDataPool) GetDescription() string {
 }
 
 // GetAccount returns MetricDataDataPool.Account, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetAccount() CommonDataAccount {
+func (v *MetricDataDataPool) GetAccount() *CommonDataAccount {
 	return v.DataPoolData.CommonDataDataPool.Account
 }
 
 // GetEnvironment returns MetricDataDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetEnvironment() CommonDataEnvironment {
+func (v *MetricDataDataPool) GetEnvironment() *CommonDataEnvironment {
 	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
@@ -6454,31 +6464,31 @@ func (v *MetricDataDataPool) UnmarshalJSON(b []byte) error {
 type __premarshalMetricDataDataPool struct {
 	Id string `json:"id"`
 
-	DataSource DataPoolDataDataSource `json:"dataSource"`
+	DataSource *DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error DataPoolDataError `json:"error"`
+	Error *DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+	Timestamp *DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+	Columns *DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures *DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
+	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -6536,10 +6546,10 @@ func (v *MetricDataDimensionsDimension) GetColumnName() string { return v.Dimens
 func (v *MetricDataDimensionsDimension) GetType() string { return v.DimensionData.Type }
 
 // GetIsNullable returns MetricDataDimensionsDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *MetricDataDimensionsDimension) GetIsNullable() bool { return v.DimensionData.IsNullable }
+func (v *MetricDataDimensionsDimension) GetIsNullable() *bool { return v.DimensionData.IsNullable }
 
 // GetIsUniqueKey returns MetricDataDimensionsDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *MetricDataDimensionsDimension) GetIsUniqueKey() bool { return v.DimensionData.IsUniqueKey }
+func (v *MetricDataDimensionsDimension) GetIsUniqueKey() *bool { return v.DimensionData.IsUniqueKey }
 
 func (v *MetricDataDimensionsDimension) UnmarshalJSON(b []byte) error {
 
@@ -6571,9 +6581,9 @@ type __premarshalMetricDataDimensionsDimension struct {
 
 	Type string `json:"type"`
 
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 
-	IsUniqueKey bool `json:"isUniqueKey"`
+	IsUniqueKey *bool `json:"isUniqueKey"`
 }
 
 func (v *MetricDataDimensionsDimension) MarshalJSON() ([]byte, error) {
@@ -6609,10 +6619,10 @@ func (v *MetricDataMeasureDimension) GetColumnName() string { return v.Dimension
 func (v *MetricDataMeasureDimension) GetType() string { return v.DimensionData.Type }
 
 // GetIsNullable returns MetricDataMeasureDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *MetricDataMeasureDimension) GetIsNullable() bool { return v.DimensionData.IsNullable }
+func (v *MetricDataMeasureDimension) GetIsNullable() *bool { return v.DimensionData.IsNullable }
 
 // GetIsUniqueKey returns MetricDataMeasureDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *MetricDataMeasureDimension) GetIsUniqueKey() bool { return v.DimensionData.IsUniqueKey }
+func (v *MetricDataMeasureDimension) GetIsUniqueKey() *bool { return v.DimensionData.IsUniqueKey }
 
 func (v *MetricDataMeasureDimension) UnmarshalJSON(b []byte) error {
 
@@ -6644,9 +6654,9 @@ type __premarshalMetricDataMeasureDimension struct {
 
 	Type string `json:"type"`
 
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 
-	IsUniqueKey bool `json:"isUniqueKey"`
+	IsUniqueKey *bool `json:"isUniqueKey"`
 }
 
 func (v *MetricDataMeasureDimension) MarshalJSON() ([]byte, error) {
@@ -6672,34 +6682,34 @@ func (v *MetricDataMeasureDimension) __premarshalJSON() (*__premarshalMetricData
 //
 // Settings for Average Metrics.
 type MetricDataSettingsAverageMetricSettings struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 }
 
 // GetTypename returns MetricDataSettingsAverageMetricSettings.Typename, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsAverageMetricSettings) GetTypename() string { return v.Typename }
+func (v *MetricDataSettingsAverageMetricSettings) GetTypename() *string { return v.Typename }
 
 // MetricDataSettingsCountDistinctMetricSettings includes the requested fields of the GraphQL type CountDistinctMetricSettings.
 // The GraphQL type's documentation follows.
 //
 // Settings for Count Distinct Metrics.
 type MetricDataSettingsCountDistinctMetricSettings struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.
-	Filters []MetricDataSettingsCountDistinctMetricSettingsFiltersFilter `json:"filters"`
+	Filters []*MetricDataSettingsCountDistinctMetricSettingsFiltersFilter `json:"filters"`
 	// The Dimension where the count distinct operation is going to be performed.
-	Dimension MetricDataSettingsCountDistinctMetricSettingsDimension `json:"dimension"`
+	Dimension *MetricDataSettingsCountDistinctMetricSettingsDimension `json:"dimension"`
 }
 
 // GetTypename returns MetricDataSettingsCountDistinctMetricSettings.Typename, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsCountDistinctMetricSettings) GetTypename() string { return v.Typename }
+func (v *MetricDataSettingsCountDistinctMetricSettings) GetTypename() *string { return v.Typename }
 
 // GetFilters returns MetricDataSettingsCountDistinctMetricSettings.Filters, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsCountDistinctMetricSettings) GetFilters() []MetricDataSettingsCountDistinctMetricSettingsFiltersFilter {
+func (v *MetricDataSettingsCountDistinctMetricSettings) GetFilters() []*MetricDataSettingsCountDistinctMetricSettingsFiltersFilter {
 	return v.Filters
 }
 
 // GetDimension returns MetricDataSettingsCountDistinctMetricSettings.Dimension, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsCountDistinctMetricSettings) GetDimension() MetricDataSettingsCountDistinctMetricSettingsDimension {
+func (v *MetricDataSettingsCountDistinctMetricSettings) GetDimension() *MetricDataSettingsCountDistinctMetricSettingsDimension {
 	return v.Dimension
 }
 
@@ -6722,12 +6732,12 @@ func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) GetType() strin
 }
 
 // GetIsNullable returns MetricDataSettingsCountDistinctMetricSettingsDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) GetIsNullable() bool {
+func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) GetIsNullable() *bool {
 	return v.DimensionData.IsNullable
 }
 
 // GetIsUniqueKey returns MetricDataSettingsCountDistinctMetricSettingsDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) GetIsUniqueKey() bool {
+func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) GetIsUniqueKey() *bool {
 	return v.DimensionData.IsUniqueKey
 }
 
@@ -6761,9 +6771,9 @@ type __premarshalMetricDataSettingsCountDistinctMetricSettingsDimension struct {
 
 	Type string `json:"type"`
 
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 
-	IsUniqueKey bool `json:"isUniqueKey"`
+	IsUniqueKey *bool `json:"isUniqueKey"`
 }
 
 func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) MarshalJSON() ([]byte, error) {
@@ -6862,16 +6872,16 @@ func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) __premarsha
 //
 // Settings for Count Metrics.
 type MetricDataSettingsCountMetricSettings struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.
-	Filters []MetricDataSettingsCountMetricSettingsFiltersFilter `json:"filters"`
+	Filters []*MetricDataSettingsCountMetricSettingsFiltersFilter `json:"filters"`
 }
 
 // GetTypename returns MetricDataSettingsCountMetricSettings.Typename, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsCountMetricSettings) GetTypename() string { return v.Typename }
+func (v *MetricDataSettingsCountMetricSettings) GetTypename() *string { return v.Typename }
 
 // GetFilters returns MetricDataSettingsCountMetricSettings.Filters, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsCountMetricSettings) GetFilters() []MetricDataSettingsCountMetricSettingsFiltersFilter {
+func (v *MetricDataSettingsCountMetricSettings) GetFilters() []*MetricDataSettingsCountMetricSettingsFiltersFilter {
 	return v.Filters
 }
 
@@ -6953,11 +6963,11 @@ func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) __premarshalJSON() 
 //
 // Settings for Max Metrics.
 type MetricDataSettingsMaxMetricSettings struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 }
 
 // GetTypename returns MetricDataSettingsMaxMetricSettings.Typename, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsMaxMetricSettings) GetTypename() string { return v.Typename }
+func (v *MetricDataSettingsMaxMetricSettings) GetTypename() *string { return v.Typename }
 
 // MetricDataSettingsMetricSettings includes the requested fields of the GraphQL interface MetricSettings.
 //
@@ -6974,7 +6984,7 @@ func (v *MetricDataSettingsMaxMetricSettings) GetTypename() string { return v.Ty
 type MetricDataSettingsMetricSettings interface {
 	implementsGraphQLInterfaceMetricDataSettingsMetricSettings()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
+	GetTypename() *string
 }
 
 func (v *MetricDataSettingsCountMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
@@ -7096,34 +7106,34 @@ func __marshalMetricDataSettingsMetricSettings(v *MetricDataSettingsMetricSettin
 //
 // Settings for Min Metrics.
 type MetricDataSettingsMinMetricSettings struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 }
 
 // GetTypename returns MetricDataSettingsMinMetricSettings.Typename, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsMinMetricSettings) GetTypename() string { return v.Typename }
+func (v *MetricDataSettingsMinMetricSettings) GetTypename() *string { return v.Typename }
 
 // MetricDataSettingsSumMetricSettings includes the requested fields of the GraphQL type SumMetricSettings.
 // The GraphQL type's documentation follows.
 //
 // Settings for Sum Metrics.
 type MetricDataSettingsSumMetricSettings struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.
-	Filters []MetricDataSettingsSumMetricSettingsFiltersFilter `json:"filters"`
+	Filters []*MetricDataSettingsSumMetricSettingsFiltersFilter `json:"filters"`
 	// The Dimension to be summed.
-	Measure MetricDataSettingsSumMetricSettingsMeasureDimension `json:"measure"`
+	Measure *MetricDataSettingsSumMetricSettingsMeasureDimension `json:"measure"`
 }
 
 // GetTypename returns MetricDataSettingsSumMetricSettings.Typename, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsSumMetricSettings) GetTypename() string { return v.Typename }
+func (v *MetricDataSettingsSumMetricSettings) GetTypename() *string { return v.Typename }
 
 // GetFilters returns MetricDataSettingsSumMetricSettings.Filters, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsSumMetricSettings) GetFilters() []MetricDataSettingsSumMetricSettingsFiltersFilter {
+func (v *MetricDataSettingsSumMetricSettings) GetFilters() []*MetricDataSettingsSumMetricSettingsFiltersFilter {
 	return v.Filters
 }
 
 // GetMeasure returns MetricDataSettingsSumMetricSettings.Measure, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsSumMetricSettings) GetMeasure() MetricDataSettingsSumMetricSettingsMeasureDimension {
+func (v *MetricDataSettingsSumMetricSettings) GetMeasure() *MetricDataSettingsSumMetricSettingsMeasureDimension {
 	return v.Measure
 }
 
@@ -7219,12 +7229,12 @@ func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) GetType() string {
 }
 
 // GetIsNullable returns MetricDataSettingsSumMetricSettingsMeasureDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) GetIsNullable() bool {
+func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) GetIsNullable() *bool {
 	return v.DimensionData.IsNullable
 }
 
 // GetIsUniqueKey returns MetricDataSettingsSumMetricSettingsMeasureDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) GetIsUniqueKey() bool {
+func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) GetIsUniqueKey() *bool {
 	return v.DimensionData.IsUniqueKey
 }
 
@@ -7258,9 +7268,9 @@ type __premarshalMetricDataSettingsSumMetricSettingsMeasureDimension struct {
 
 	Type string `json:"type"`
 
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 
-	IsUniqueKey bool `json:"isUniqueKey"`
+	IsUniqueKey *bool `json:"isUniqueKey"`
 }
 
 func (v *MetricDataSettingsSumMetricSettingsMeasureDimension) MarshalJSON() ([]byte, error) {
@@ -7296,10 +7306,10 @@ func (v *MetricDataTimestampDimension) GetColumnName() string { return v.Dimensi
 func (v *MetricDataTimestampDimension) GetType() string { return v.DimensionData.Type }
 
 // GetIsNullable returns MetricDataTimestampDimension.IsNullable, and is useful for accessing the field via an interface.
-func (v *MetricDataTimestampDimension) GetIsNullable() bool { return v.DimensionData.IsNullable }
+func (v *MetricDataTimestampDimension) GetIsNullable() *bool { return v.DimensionData.IsNullable }
 
 // GetIsUniqueKey returns MetricDataTimestampDimension.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *MetricDataTimestampDimension) GetIsUniqueKey() bool { return v.DimensionData.IsUniqueKey }
+func (v *MetricDataTimestampDimension) GetIsUniqueKey() *bool { return v.DimensionData.IsUniqueKey }
 
 func (v *MetricDataTimestampDimension) UnmarshalJSON(b []byte) error {
 
@@ -7331,9 +7341,9 @@ type __premarshalMetricDataTimestampDimension struct {
 
 	Type string `json:"type"`
 
-	IsNullable bool `json:"isNullable"`
+	IsNullable *bool `json:"isNullable"`
 
-	IsUniqueKey bool `json:"isUniqueKey"`
+	IsUniqueKey *bool `json:"isUniqueKey"`
 }
 
 func (v *MetricDataTimestampDimension) MarshalJSON() ([]byte, error) {
@@ -7370,18 +7380,18 @@ type MetricMetric struct {
 func (v *MetricMetric) GetId() string { return v.MetricData.Id }
 
 // GetDataPool returns MetricMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetDataPool() MetricDataDataPool { return v.MetricData.DataPool }
+func (v *MetricMetric) GetDataPool() *MetricDataDataPool { return v.MetricData.DataPool }
 
 // GetDimensions returns MetricMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetDimensions() []MetricDataDimensionsDimension {
+func (v *MetricMetric) GetDimensions() []*MetricDataDimensionsDimension {
 	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns MetricMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetTimestamp() MetricDataTimestampDimension { return v.MetricData.Timestamp }
+func (v *MetricMetric) GetTimestamp() *MetricDataTimestampDimension { return v.MetricData.Timestamp }
 
 // GetMeasure returns MetricMetric.Measure, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetMeasure() MetricDataMeasureDimension { return v.MetricData.Measure }
+func (v *MetricMetric) GetMeasure() *MetricDataMeasureDimension { return v.MetricData.Measure }
 
 // GetSettings returns MetricMetric.Settings, and is useful for accessing the field via an interface.
 func (v *MetricMetric) GetSettings() MetricDataSettingsMetricSettings { return v.MetricData.Settings }
@@ -7396,10 +7406,10 @@ func (v *MetricMetric) GetUniqueName() string { return v.MetricData.CommonDataMe
 func (v *MetricMetric) GetDescription() string { return v.MetricData.CommonDataMetric.Description }
 
 // GetAccount returns MetricMetric.Account, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetAccount() CommonDataAccount { return v.MetricData.CommonDataMetric.Account }
+func (v *MetricMetric) GetAccount() *CommonDataAccount { return v.MetricData.CommonDataMetric.Account }
 
 // GetEnvironment returns MetricMetric.Environment, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetEnvironment() CommonDataEnvironment {
+func (v *MetricMetric) GetEnvironment() *CommonDataEnvironment {
 	return v.MetricData.CommonDataMetric.Environment
 }
 
@@ -7443,13 +7453,13 @@ func (v *MetricMetric) UnmarshalJSON(b []byte) error {
 type __premarshalMetricMetric struct {
 	Id string `json:"id"`
 
-	DataPool MetricDataDataPool `json:"dataPool"`
+	DataPool *MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure MetricDataMeasureDimension `json:"measure"`
+	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -7459,9 +7469,9 @@ type __premarshalMetricMetric struct {
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -7517,11 +7527,11 @@ type MetricResponse struct {
 	// This query returns the Metric specified by the given ID.
 	//
 	// A Metric is a business indicator measured over time.
-	Metric MetricMetric `json:"metric"`
+	Metric *MetricMetric `json:"metric"`
 }
 
 // GetMetric returns MetricResponse.Metric, and is useful for accessing the field via an interface.
-func (v *MetricResponse) GetMetric() MetricMetric { return v.Metric }
+func (v *MetricResponse) GetMetric() *MetricMetric { return v.Metric }
 
 // The available Metric types.
 type MetricType string
@@ -7549,25 +7559,25 @@ const (
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
 type MetricsMetricsMetricConnection struct {
 	// The connection's page info.
-	PageInfo MetricsMetricsMetricConnectionPageInfo `json:"pageInfo"`
+	PageInfo *MetricsMetricsMetricConnectionPageInfo `json:"pageInfo"`
 	// The connection's nodes.
-	Nodes []MetricsMetricsMetricConnectionNodesMetric `json:"nodes"`
+	Nodes []*MetricsMetricsMetricConnectionNodesMetric `json:"nodes"`
 	// The connection's edges.
-	Edges []MetricsMetricsMetricConnectionEdgesMetricEdge `json:"edges"`
+	Edges []*MetricsMetricsMetricConnectionEdgesMetricEdge `json:"edges"`
 }
 
 // GetPageInfo returns MetricsMetricsMetricConnection.PageInfo, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnection) GetPageInfo() MetricsMetricsMetricConnectionPageInfo {
+func (v *MetricsMetricsMetricConnection) GetPageInfo() *MetricsMetricsMetricConnectionPageInfo {
 	return v.PageInfo
 }
 
 // GetNodes returns MetricsMetricsMetricConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnection) GetNodes() []MetricsMetricsMetricConnectionNodesMetric {
+func (v *MetricsMetricsMetricConnection) GetNodes() []*MetricsMetricsMetricConnectionNodesMetric {
 	return v.Nodes
 }
 
 // GetEdges returns MetricsMetricsMetricConnection.Edges, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnection) GetEdges() []MetricsMetricsMetricConnectionEdgesMetricEdge {
+func (v *MetricsMetricsMetricConnection) GetEdges() []*MetricsMetricsMetricConnectionEdgesMetricEdge {
 	return v.Edges
 }
 
@@ -7581,14 +7591,14 @@ type MetricsMetricsMetricConnectionEdgesMetricEdge struct {
 	// The edge's cursor.
 	Cursor string `json:"cursor"`
 	// The edge's node.
-	Node MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric `json:"node"`
+	Node *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric `json:"node"`
 }
 
 // GetCursor returns MetricsMetricsMetricConnectionEdgesMetricEdge.Cursor, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdge) GetCursor() string { return v.Cursor }
 
 // GetNode returns MetricsMetricsMetricConnectionEdgesMetricEdge.Node, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdge) GetNode() MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric {
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdge) GetNode() *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric {
 	return v.Node
 }
 
@@ -7610,22 +7620,22 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetId() string
 }
 
 // GetDataPool returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDataPool() MetricDataDataPool {
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
 }
 
 // GetDimensions returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDimensions() []MetricDataDimensionsDimension {
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDimensions() []*MetricDataDimensionsDimension {
 	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetTimestamp() MetricDataTimestampDimension {
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetTimestamp() *MetricDataTimestampDimension {
 	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Measure, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetMeasure() MetricDataMeasureDimension {
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetMeasure() *MetricDataMeasureDimension {
 	return v.MetricData.Measure
 }
 
@@ -7650,12 +7660,12 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDescription
 }
 
 // GetAccount returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Account, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetAccount() CommonDataAccount {
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetAccount() *CommonDataAccount {
 	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Environment, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetEnvironment() CommonDataEnvironment {
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetEnvironment() *CommonDataEnvironment {
 	return v.MetricData.CommonDataMetric.Environment
 }
 
@@ -7707,13 +7717,13 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) UnmarshalJSON(
 type __premarshalMetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric struct {
 	Id string `json:"id"`
 
-	DataPool MetricDataDataPool `json:"dataPool"`
+	DataPool *MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure MetricDataMeasureDimension `json:"measure"`
+	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -7723,9 +7733,9 @@ type __premarshalMetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric struct 
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -7792,22 +7802,22 @@ type MetricsMetricsMetricConnectionNodesMetric struct {
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetId() string { return v.MetricData.Id }
 
 // GetDataPool returns MetricsMetricsMetricConnectionNodesMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetDataPool() MetricDataDataPool {
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
 }
 
 // GetDimensions returns MetricsMetricsMetricConnectionNodesMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetDimensions() []MetricDataDimensionsDimension {
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetDimensions() []*MetricDataDimensionsDimension {
 	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns MetricsMetricsMetricConnectionNodesMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetTimestamp() MetricDataTimestampDimension {
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetTimestamp() *MetricDataTimestampDimension {
 	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns MetricsMetricsMetricConnectionNodesMetric.Measure, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetMeasure() MetricDataMeasureDimension {
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetMeasure() *MetricDataMeasureDimension {
 	return v.MetricData.Measure
 }
 
@@ -7830,12 +7840,12 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) GetDescription() string {
 }
 
 // GetAccount returns MetricsMetricsMetricConnectionNodesMetric.Account, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetAccount() CommonDataAccount {
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetAccount() *CommonDataAccount {
 	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns MetricsMetricsMetricConnectionNodesMetric.Environment, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetEnvironment() CommonDataEnvironment {
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetEnvironment() *CommonDataEnvironment {
 	return v.MetricData.CommonDataMetric.Environment
 }
 
@@ -7887,13 +7897,13 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) UnmarshalJSON(b []byte) erro
 type __premarshalMetricsMetricsMetricConnectionNodesMetric struct {
 	Id string `json:"id"`
 
-	DataPool MetricDataDataPool `json:"dataPool"`
+	DataPool *MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure MetricDataMeasureDimension `json:"measure"`
+	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -7903,9 +7913,9 @@ type __premarshalMetricsMetricsMetricConnectionNodesMetric struct {
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -7965,12 +7975,12 @@ type MetricsMetricsMetricConnectionPageInfo struct {
 }
 
 // GetStartCursor returns MetricsMetricsMetricConnectionPageInfo.StartCursor, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionPageInfo) GetStartCursor() string {
+func (v *MetricsMetricsMetricConnectionPageInfo) GetStartCursor() *string {
 	return v.PageInfoData.StartCursor
 }
 
 // GetEndCursor returns MetricsMetricsMetricConnectionPageInfo.EndCursor, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionPageInfo) GetEndCursor() string {
+func (v *MetricsMetricsMetricConnectionPageInfo) GetEndCursor() *string {
 	return v.PageInfoData.EndCursor
 }
 
@@ -8010,9 +8020,9 @@ func (v *MetricsMetricsMetricConnectionPageInfo) UnmarshalJSON(b []byte) error {
 }
 
 type __premarshalMetricsMetricsMetricConnectionPageInfo struct {
-	StartCursor string `json:"startCursor"`
+	StartCursor *string `json:"startCursor"`
 
-	EndCursor string `json:"endCursor"`
+	EndCursor *string `json:"endCursor"`
 
 	HasNextPage bool `json:"hasNextPage"`
 
@@ -8048,35 +8058,35 @@ type MetricsResponse struct {
 	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 	//
 	// For backward pagination, the `last` parameter defines the number of results to return, and the `before` parameter defines the cursor to continue from. You should pass the cursor for the _first_ result of the current page to `before`.
-	Metrics MetricsMetricsMetricConnection `json:"metrics"`
+	Metrics *MetricsMetricsMetricConnection `json:"metrics"`
 }
 
 // GetMetrics returns MetricsResponse.Metrics, and is useful for accessing the field via an interface.
-func (v *MetricsResponse) GetMetrics() MetricsMetricsMetricConnection { return v.Metrics }
+func (v *MetricsResponse) GetMetrics() *MetricsMetricsMetricConnection { return v.Metrics }
 
 // The fields for modifying a Data Pool.
 type ModifyDataPoolInput struct {
 	// The ID or unique name of the Data Pool to modify.
-	IdOrUniqueName IdOrUniqueName `json:"idOrUniqueName"`
+	IdOrUniqueName *IdOrUniqueName `json:"idOrUniqueName,omitempty"`
 	// The Data Pool's new unique name.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 	// The Data Pool's new description.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The Data Pool's new data retention in days.
-	DataRetentionInDays int `json:"dataRetentionInDays"`
+	DataRetentionInDays *int `json:"dataRetentionInDays"`
 }
 
 // GetIdOrUniqueName returns ModifyDataPoolInput.IdOrUniqueName, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolInput) GetIdOrUniqueName() IdOrUniqueName { return v.IdOrUniqueName }
+func (v *ModifyDataPoolInput) GetIdOrUniqueName() *IdOrUniqueName { return v.IdOrUniqueName }
 
 // GetUniqueName returns ModifyDataPoolInput.UniqueName, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolInput) GetUniqueName() string { return v.UniqueName }
+func (v *ModifyDataPoolInput) GetUniqueName() *string { return v.UniqueName }
 
 // GetDescription returns ModifyDataPoolInput.Description, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolInput) GetDescription() string { return v.Description }
+func (v *ModifyDataPoolInput) GetDescription() *string { return v.Description }
 
 // GetDataRetentionInDays returns ModifyDataPoolInput.DataRetentionInDays, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolInput) GetDataRetentionInDays() int { return v.DataRetentionInDays }
+func (v *ModifyDataPoolInput) GetDataRetentionInDays() *int { return v.DataRetentionInDays }
 
 // ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse includes the requested fields of the GraphQL interface DataPoolOrFailureResponse.
 //
@@ -8092,7 +8102,7 @@ func (v *ModifyDataPoolInput) GetDataRetentionInDays() int { return v.DataRetent
 type ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse interface {
 	implementsGraphQLInterfaceModifyDataPoolModifyDataPoolDataPoolOrFailureResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
+	GetTypename() *string
 }
 
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponse) implementsGraphQLInterfaceModifyDataPoolModifyDataPoolDataPoolOrFailureResponse() {
@@ -8162,16 +8172,16 @@ func __marshalModifyDataPoolModifyDataPoolDataPoolOrFailureResponse(v *ModifyDat
 //
 // The result of a mutation which creates or modifies a Data Pool.
 type ModifyDataPoolModifyDataPoolDataPoolResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The Data Pool which was created or modified.
-	DataPool ModifyDataPoolModifyDataPoolDataPoolResponseDataPool `json:"dataPool"`
+	DataPool *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool `json:"dataPool"`
 }
 
 // GetTypename returns ModifyDataPoolModifyDataPoolDataPoolResponse.Typename, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponse) GetTypename() string { return v.Typename }
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponse) GetTypename() *string { return v.Typename }
 
 // GetDataPool returns ModifyDataPoolModifyDataPoolDataPoolResponse.DataPool, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponse) GetDataPool() ModifyDataPoolModifyDataPoolDataPoolResponseDataPool {
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponse) GetDataPool() *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool {
 	return v.DataPool
 }
 
@@ -8193,7 +8203,7 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetId() string {
 }
 
 // GetDataSource returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.DataSource, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDataSource() DataPoolDataDataSource {
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDataSource() *DataPoolDataDataSource {
 	return v.DataPoolData.DataSource
 }
 
@@ -8203,7 +8213,7 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetStatus() DataP
 }
 
 // GetError returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Error, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetError() DataPoolDataError {
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetError() *DataPoolDataError {
 	return v.DataPoolData.Error
 }
 
@@ -8213,27 +8223,27 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTable() string
 }
 
 // GetTimestamp returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Timestamp, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTimestamp() DataPoolDataTimestampDimension {
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTimestamp() *DataPoolDataTimestampDimension {
 	return v.DataPoolData.Timestamp
 }
 
 // GetColumns returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Columns, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetColumns() DataPoolDataColumnsColumnConnection {
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetColumns() *DataPoolDataColumnsColumnConnection {
 	return v.DataPoolData.Columns
 }
 
 // GetAvailableMeasures returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAvailableMeasures() DataPoolDataAvailableMeasuresColumnConnection {
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAvailableMeasures() *DataPoolDataAvailableMeasuresColumnConnection {
 	return v.DataPoolData.AvailableMeasures
 }
 
 // GetSetupTasks returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.SetupTasks, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSetupTasks() []DataPoolDataSetupTasksDataPoolSetupTask {
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetupTask {
 	return v.DataPoolData.SetupTasks
 }
 
 // GetSyncs returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSyncs() DataPoolDataSyncsSyncConnection {
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
 	return v.DataPoolData.Syncs
 }
 
@@ -8248,12 +8258,12 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDescription() 
 }
 
 // GetAccount returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Account, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAccount() CommonDataAccount {
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAccount() *CommonDataAccount {
 	return v.DataPoolData.CommonDataDataPool.Account
 }
 
 // GetEnvironment returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Environment, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetEnvironment() CommonDataEnvironment {
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetEnvironment() *CommonDataEnvironment {
 	return v.DataPoolData.CommonDataDataPool.Environment
 }
 
@@ -8305,31 +8315,31 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) UnmarshalJSON(b [
 type __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 	Id string `json:"id"`
 
-	DataSource DataPoolDataDataSource `json:"dataSource"`
+	DataSource *DataPoolDataDataSource `json:"dataSource"`
 
 	Status DataPoolStatus `json:"status"`
 
-	Error DataPoolDataError `json:"error"`
+	Error *DataPoolDataError `json:"error"`
 
 	Table string `json:"table"`
 
-	Timestamp DataPoolDataTimestampDimension `json:"timestamp"`
+	Timestamp *DataPoolDataTimestampDimension `json:"timestamp"`
 
-	Columns DataPoolDataColumnsColumnConnection `json:"columns"`
+	Columns *DataPoolDataColumnsColumnConnection `json:"columns"`
 
-	AvailableMeasures DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	AvailableMeasures *DataPoolDataAvailableMeasuresColumnConnection `json:"availableMeasures"`
 
-	SetupTasks []DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
+	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs DataPoolDataSyncsSyncConnection `json:"syncs"`
+	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -8377,16 +8387,16 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON(
 //
 // The failure response object.
 type ModifyDataPoolModifyDataPoolFailureResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The error that caused the failure.
-	Error ModifyDataPoolModifyDataPoolFailureResponseError `json:"error"`
+	Error *ModifyDataPoolModifyDataPoolFailureResponseError `json:"error"`
 }
 
 // GetTypename returns ModifyDataPoolModifyDataPoolFailureResponse.Typename, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolFailureResponse) GetTypename() string { return v.Typename }
+func (v *ModifyDataPoolModifyDataPoolFailureResponse) GetTypename() *string { return v.Typename }
 
 // GetError returns ModifyDataPoolModifyDataPoolFailureResponse.Error, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolFailureResponse) GetError() ModifyDataPoolModifyDataPoolFailureResponseError {
+func (v *ModifyDataPoolModifyDataPoolFailureResponse) GetError() *ModifyDataPoolModifyDataPoolFailureResponseError {
 	return v.Error
 }
 
@@ -8399,7 +8409,7 @@ type ModifyDataPoolModifyDataPoolFailureResponseError struct {
 }
 
 // GetCode returns ModifyDataPoolModifyDataPoolFailureResponseError.Code, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolFailureResponseError) GetCode() int { return v.GqlError.Code }
+func (v *ModifyDataPoolModifyDataPoolFailureResponseError) GetCode() *int { return v.GqlError.Code }
 
 // GetMessage returns ModifyDataPoolModifyDataPoolFailureResponseError.Message, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolFailureResponseError) GetMessage() string {
@@ -8432,7 +8442,7 @@ func (v *ModifyDataPoolModifyDataPoolFailureResponseError) UnmarshalJSON(b []byt
 }
 
 type __premarshalModifyDataPoolModifyDataPoolFailureResponseError struct {
-	Code int `json:"code"`
+	Code *int `json:"code"`
 
 	Message string `json:"message"`
 }
@@ -8460,11 +8470,11 @@ type ModifyDataPoolResponse struct {
 	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool.
 	//
 	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-	ModifyDataPool ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse `json:"-"`
+	ModifyDataPool *ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse `json:"-"`
 }
 
 // GetModifyDataPool returns ModifyDataPoolResponse.ModifyDataPool, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolResponse) GetModifyDataPool() ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse {
+func (v *ModifyDataPoolResponse) GetModifyDataPool() *ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse {
 	return v.ModifyDataPool
 }
 
@@ -8490,8 +8500,9 @@ func (v *ModifyDataPoolResponse) UnmarshalJSON(b []byte) error {
 		dst := &v.ModifyDataPool
 		src := firstPass.ModifyDataPool
 		if len(src) != 0 && string(src) != "null" {
+			*dst = new(ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse)
 			err = __unmarshalModifyDataPoolModifyDataPoolDataPoolOrFailureResponse(
-				src, dst)
+				src, *dst)
 			if err != nil {
 				return fmt.Errorf(
 					"Unable to unmarshal ModifyDataPoolResponse.ModifyDataPool: %w", err)
@@ -8520,12 +8531,14 @@ func (v *ModifyDataPoolResponse) __premarshalJSON() (*__premarshalModifyDataPool
 
 		dst := &retval.ModifyDataPool
 		src := v.ModifyDataPool
-		var err error
-		*dst, err = __marshalModifyDataPoolModifyDataPoolDataPoolOrFailureResponse(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"Unable to marshal ModifyDataPoolResponse.ModifyDataPool: %w", err)
+		if src != nil {
+			var err error
+			*dst, err = __marshalModifyDataPoolModifyDataPoolDataPoolOrFailureResponse(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"Unable to marshal ModifyDataPoolResponse.ModifyDataPool: %w", err)
+			}
 		}
 	}
 	return &retval, nil
@@ -8536,50 +8549,50 @@ type ModifyMetricInput struct {
 	// The ID of the Metric to modify.
 	Metric string `json:"metric"`
 	// The Metric's new unique name.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 	// The Metric's new description.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The Metric's new Dimensions. Used to add or remove Dimensions.
-	Dimensions []DimensionInput `json:"dimensions"`
+	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The Metric's new Filters. Used to add or remove Metric Filters.
-	Filters []FilterInput `json:"filters"`
+	Filters []*FilterInput `json:"filters,omitempty"`
 	// Enables or disables access control for the Metric.
-	AccessControlEnabled bool `json:"accessControlEnabled"`
+	AccessControlEnabled *bool `json:"accessControlEnabled"`
 }
 
 // GetMetric returns ModifyMetricInput.Metric, and is useful for accessing the field via an interface.
 func (v *ModifyMetricInput) GetMetric() string { return v.Metric }
 
 // GetUniqueName returns ModifyMetricInput.UniqueName, and is useful for accessing the field via an interface.
-func (v *ModifyMetricInput) GetUniqueName() string { return v.UniqueName }
+func (v *ModifyMetricInput) GetUniqueName() *string { return v.UniqueName }
 
 // GetDescription returns ModifyMetricInput.Description, and is useful for accessing the field via an interface.
-func (v *ModifyMetricInput) GetDescription() string { return v.Description }
+func (v *ModifyMetricInput) GetDescription() *string { return v.Description }
 
 // GetDimensions returns ModifyMetricInput.Dimensions, and is useful for accessing the field via an interface.
-func (v *ModifyMetricInput) GetDimensions() []DimensionInput { return v.Dimensions }
+func (v *ModifyMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
 
 // GetFilters returns ModifyMetricInput.Filters, and is useful for accessing the field via an interface.
-func (v *ModifyMetricInput) GetFilters() []FilterInput { return v.Filters }
+func (v *ModifyMetricInput) GetFilters() []*FilterInput { return v.Filters }
 
 // GetAccessControlEnabled returns ModifyMetricInput.AccessControlEnabled, and is useful for accessing the field via an interface.
-func (v *ModifyMetricInput) GetAccessControlEnabled() bool { return v.AccessControlEnabled }
+func (v *ModifyMetricInput) GetAccessControlEnabled() *bool { return v.AccessControlEnabled }
 
 // ModifyMetricModifyMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
 // The GraphQL type's documentation follows.
 //
 // The result of a mutation which creates or modifies a Metric.
 type ModifyMetricModifyMetricMetricResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The Metric which was created or modified.
-	Metric ModifyMetricModifyMetricMetricResponseMetric `json:"metric"`
+	Metric *ModifyMetricModifyMetricMetricResponseMetric `json:"metric"`
 }
 
 // GetTypename returns ModifyMetricModifyMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponse) GetTypename() string { return v.Typename }
+func (v *ModifyMetricModifyMetricMetricResponse) GetTypename() *string { return v.Typename }
 
 // GetMetric returns ModifyMetricModifyMetricMetricResponse.Metric, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponse) GetMetric() ModifyMetricModifyMetricMetricResponseMetric {
+func (v *ModifyMetricModifyMetricMetricResponse) GetMetric() *ModifyMetricModifyMetricMetricResponseMetric {
 	return v.Metric
 }
 
@@ -8599,22 +8612,22 @@ type ModifyMetricModifyMetricMetricResponseMetric struct {
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetId() string { return v.MetricData.Id }
 
 // GetDataPool returns ModifyMetricModifyMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDataPool() MetricDataDataPool {
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
 }
 
 // GetDimensions returns ModifyMetricModifyMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDimensions() []MetricDataDimensionsDimension {
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDimensions() []*MetricDataDimensionsDimension {
 	return v.MetricData.Dimensions
 }
 
 // GetTimestamp returns ModifyMetricModifyMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetTimestamp() MetricDataTimestampDimension {
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetTimestamp() *MetricDataTimestampDimension {
 	return v.MetricData.Timestamp
 }
 
 // GetMeasure returns ModifyMetricModifyMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetMeasure() MetricDataMeasureDimension {
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetMeasure() *MetricDataMeasureDimension {
 	return v.MetricData.Measure
 }
 
@@ -8637,12 +8650,12 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDescription() string {
 }
 
 // GetAccount returns ModifyMetricModifyMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetAccount() CommonDataAccount {
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetAccount() *CommonDataAccount {
 	return v.MetricData.CommonDataMetric.Account
 }
 
 // GetEnvironment returns ModifyMetricModifyMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetEnvironment() CommonDataEnvironment {
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetEnvironment() *CommonDataEnvironment {
 	return v.MetricData.CommonDataMetric.Environment
 }
 
@@ -8694,13 +8707,13 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) UnmarshalJSON(b []byte) e
 type __premarshalModifyMetricModifyMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
-	DataPool MetricDataDataPool `json:"dataPool"`
+	DataPool *MetricDataDataPool `json:"dataPool"`
 
-	Dimensions []MetricDataDimensionsDimension `json:"dimensions"`
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
 
-	Timestamp MetricDataTimestampDimension `json:"timestamp"`
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 
-	Measure MetricDataMeasureDimension `json:"measure"`
+	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
 
@@ -8710,9 +8723,9 @@ type __premarshalModifyMetricModifyMetricMetricResponseMetric struct {
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -8770,37 +8783,37 @@ type ModifyMetricResponse struct {
 	// If any of the optional arguments are omitted, those properties will be unchanged on the Metric.
 	//
 	// A Metric is a business indicator measured over time.
-	ModifyMetric ModifyMetricModifyMetricMetricResponse `json:"modifyMetric"`
+	ModifyMetric *ModifyMetricModifyMetricMetricResponse `json:"modifyMetric"`
 }
 
 // GetModifyMetric returns ModifyMetricResponse.ModifyMetric, and is useful for accessing the field via an interface.
-func (v *ModifyMetricResponse) GetModifyMetric() ModifyMetricModifyMetricMetricResponse {
+func (v *ModifyMetricResponse) GetModifyMetric() *ModifyMetricModifyMetricMetricResponse {
 	return v.ModifyMetric
 }
 
 // The fields for modifying a Snowflake Data Source.
 type ModifySnowflakeDataSourceInput struct {
 	// The ID or unique name of the Data Source to modify.
-	IdOrUniqueName IdOrUniqueName `json:"idOrUniqueName"`
+	IdOrUniqueName *IdOrUniqueName `json:"idOrUniqueName,omitempty"`
 	// The Data Source's new unique name.
-	UniqueName string `json:"uniqueName"`
+	UniqueName *string `json:"uniqueName"`
 	// The Data Source's new description.
-	Description string `json:"description"`
+	Description *string `json:"description"`
 	// The Data Source's new connection settings.
-	ConnectionSettings PartialSnowflakeConnectionSettingsInput `json:"connectionSettings"`
+	ConnectionSettings *PartialSnowflakeConnectionSettingsInput `json:"connectionSettings,omitempty"`
 }
 
 // GetIdOrUniqueName returns ModifySnowflakeDataSourceInput.IdOrUniqueName, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceInput) GetIdOrUniqueName() IdOrUniqueName { return v.IdOrUniqueName }
+func (v *ModifySnowflakeDataSourceInput) GetIdOrUniqueName() *IdOrUniqueName { return v.IdOrUniqueName }
 
 // GetUniqueName returns ModifySnowflakeDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceInput) GetUniqueName() string { return v.UniqueName }
+func (v *ModifySnowflakeDataSourceInput) GetUniqueName() *string { return v.UniqueName }
 
 // GetDescription returns ModifySnowflakeDataSourceInput.Description, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceInput) GetDescription() string { return v.Description }
+func (v *ModifySnowflakeDataSourceInput) GetDescription() *string { return v.Description }
 
 // GetConnectionSettings returns ModifySnowflakeDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceInput) GetConnectionSettings() PartialSnowflakeConnectionSettingsInput {
+func (v *ModifySnowflakeDataSourceInput) GetConnectionSettings() *PartialSnowflakeConnectionSettingsInput {
 	return v.ConnectionSettings
 }
 
@@ -8818,7 +8831,7 @@ func (v *ModifySnowflakeDataSourceInput) GetConnectionSettings() PartialSnowflak
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse interface {
 	implementsGraphQLInterfaceModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
-	GetTypename() string
+	GetTypename() *string
 }
 
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse) implementsGraphQLInterfaceModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse() {
@@ -8888,18 +8901,18 @@ func __marshalModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFail
 //
 // The result of a mutation which creates or modifies a Data Source.
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The Data Source which was created or modified.
-	DataSource ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource `json:"dataSource"`
+	DataSource *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource `json:"dataSource"`
 }
 
 // GetTypename returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse.Typename, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse) GetTypename() string {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse) GetTypename() *string {
 	return v.Typename
 }
 
 // GetDataSource returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse) GetDataSource() ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse) GetDataSource() *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource {
 	return v.DataSource
 }
 
@@ -8931,7 +8944,7 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDat
 }
 
 // GetError returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetError() DataSourceDataError {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
 	return v.DataSourceData.Error
 }
 
@@ -8941,17 +8954,17 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDat
 }
 
 // GetTables returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetTables() DataSourceDataTablesTableConnection {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
 	return v.DataSourceData.Tables
 }
 
 // GetChecks returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetChecks() []DataSourceDataChecksDataSourceCheck {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
 	return v.DataSourceData.Checks
 }
 
 // GetTableIntrospections returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetTableIntrospections() DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
 	return v.DataSourceData.TableIntrospections
 }
 
@@ -8966,12 +8979,12 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDat
 }
 
 // GetAccount returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetAccount() CommonDataAccount {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
 	return v.DataSourceData.CommonDataDataSource.Account
 }
 
 // GetEnvironment returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetEnvironment() CommonDataEnvironment {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
 	return v.DataSourceData.CommonDataDataSource.Environment
 }
 
@@ -9027,23 +9040,23 @@ type __premarshalModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceRes
 
 	Status DataSourceStatus `json:"status"`
 
-	Error DataSourceDataError `json:"error"`
+	Error *DataSourceDataError `json:"error"`
 
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
-	Tables DataSourceDataTablesTableConnection `json:"tables"`
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
 
-	Checks []DataSourceDataChecksDataSourceCheck `json:"checks"`
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
 
-	TableIntrospections DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
 
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
 
-	Account CommonDataAccount `json:"account"`
+	Account *CommonDataAccount `json:"account"`
 
-	Environment CommonDataEnvironment `json:"environment"`
+	Environment *CommonDataEnvironment `json:"environment"`
 
 	CreatedAt time.Time `json:"createdAt"`
 
@@ -9100,18 +9113,18 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDat
 //
 // The failure response object.
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse struct {
-	Typename string `json:"__typename"`
+	Typename *string `json:"__typename"`
 	// The error that caused the failure.
-	Error ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError `json:"error"`
+	Error *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError `json:"error"`
 }
 
 // GetTypename returns ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse.Typename, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse) GetTypename() string {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse) GetTypename() *string {
 	return v.Typename
 }
 
 // GetError returns ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse.Error, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse) GetError() ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponse) GetError() *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError {
 	return v.Error
 }
 
@@ -9124,7 +9137,7 @@ type ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError stru
 }
 
 // GetCode returns ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError.Code, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError) GetCode() int {
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError) GetCode() *int {
 	return v.GqlError.Code
 }
 
@@ -9159,7 +9172,7 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError)
 }
 
 type __premarshalModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError struct {
-	Code int `json:"code"`
+	Code *int `json:"code"`
 
 	Message string `json:"message"`
 }
@@ -9187,11 +9200,11 @@ type ModifySnowflakeDataSourceResponse struct {
 	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
 	//
 	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-	ModifySnowflakeDataSource ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse `json:"-"`
+	ModifySnowflakeDataSource *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse `json:"-"`
 }
 
 // GetModifySnowflakeDataSource returns ModifySnowflakeDataSourceResponse.ModifySnowflakeDataSource, and is useful for accessing the field via an interface.
-func (v *ModifySnowflakeDataSourceResponse) GetModifySnowflakeDataSource() ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse {
+func (v *ModifySnowflakeDataSourceResponse) GetModifySnowflakeDataSource() *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse {
 	return v.ModifySnowflakeDataSource
 }
 
@@ -9217,8 +9230,9 @@ func (v *ModifySnowflakeDataSourceResponse) UnmarshalJSON(b []byte) error {
 		dst := &v.ModifySnowflakeDataSource
 		src := firstPass.ModifySnowflakeDataSource
 		if len(src) != 0 && string(src) != "null" {
+			*dst = new(ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse)
 			err = __unmarshalModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse(
-				src, dst)
+				src, *dst)
 			if err != nil {
 				return fmt.Errorf(
 					"Unable to unmarshal ModifySnowflakeDataSourceResponse.ModifySnowflakeDataSource: %w", err)
@@ -9247,12 +9261,14 @@ func (v *ModifySnowflakeDataSourceResponse) __premarshalJSON() (*__premarshalMod
 
 		dst := &retval.ModifySnowflakeDataSource
 		src := v.ModifySnowflakeDataSource
-		var err error
-		*dst, err = __marshalModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"Unable to marshal ModifySnowflakeDataSourceResponse.ModifySnowflakeDataSource: %w", err)
+		if src != nil {
+			var err error
+			*dst, err = __marshalModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"Unable to marshal ModifySnowflakeDataSourceResponse.ModifySnowflakeDataSource: %w", err)
+			}
 		}
 	}
 	return &retval, nil
@@ -9264,9 +9280,9 @@ func (v *ModifySnowflakeDataSourceResponse) __premarshalJSON() (*__premarshalMod
 // The page info object used for pagination.
 type PageInfoData struct {
 	// Points to the first item returned in the results. Used when paginating backward.
-	StartCursor string `json:"startCursor"`
+	StartCursor *string `json:"startCursor"`
 	// Points to the last item returned in the results. Used when paginating forward.
-	EndCursor string `json:"endCursor"`
+	EndCursor *string `json:"endCursor"`
 	// A boolean that indicates whether a next page of results exists. Can be used to display a "next page" button in user interfaces, for example.
 	HasNextPage bool `json:"hasNextPage"`
 	// A boolean that indicates whether a previous page of results exists. Can be used to display a "previous page" button in user interfaces, for example.
@@ -9274,10 +9290,10 @@ type PageInfoData struct {
 }
 
 // GetStartCursor returns PageInfoData.StartCursor, and is useful for accessing the field via an interface.
-func (v *PageInfoData) GetStartCursor() string { return v.StartCursor }
+func (v *PageInfoData) GetStartCursor() *string { return v.StartCursor }
 
 // GetEndCursor returns PageInfoData.EndCursor, and is useful for accessing the field via an interface.
-func (v *PageInfoData) GetEndCursor() string { return v.EndCursor }
+func (v *PageInfoData) GetEndCursor() *string { return v.EndCursor }
 
 // GetHasNextPage returns PageInfoData.HasNextPage, and is useful for accessing the field via an interface.
 func (v *PageInfoData) GetHasNextPage() bool { return v.HasNextPage }
@@ -9288,41 +9304,41 @@ func (v *PageInfoData) GetHasPreviousPage() bool { return v.HasPreviousPage }
 // The fields for modifying a Snowflake Data Source's connection settings.
 type PartialSnowflakeConnectionSettingsInput struct {
 	// The Snowflake account. Only include the part before the "snowflakecomputing.com" part of your Snowflake URL (make sure you are in classic console, not Snowsight). For AWS-based accounts, this looks like "znXXXXX.us-east-2.aws". For Google Cloud-based accounts, this looks like "ffXXXXX.us-central1.gcp". If not provided this property will not be modified.
-	Account string `json:"account"`
+	Account *string `json:"account"`
 	// The Snowflake database name. If not provided this property will not be modified.
-	Database string `json:"database"`
+	Database *string `json:"database"`
 	// The Snowflake warehouse name. It should be "PROPELLING" if you used the default name in the setup script. If not provided this property will not be modified.
-	Warehouse string `json:"warehouse"`
+	Warehouse *string `json:"warehouse"`
 	// The Snowflake schema. If not provided this property will not be modified.
-	Schema string `json:"schema"`
+	Schema *string `json:"schema"`
 	// The Snowflake username. It should be "PROPEL" if you used the default name in the setup script. If not provided this property will not be modified.
-	Username string `json:"username"`
+	Username *string `json:"username"`
 	// The Snowflake password. If not provided this property will not be modified.
-	Password string `json:"password"`
+	Password *string `json:"password"`
 	// The Snowflake role. It should be "PROPELLER" if you used the default name in the setup script. If not provided this property will not be modified.
-	Role string `json:"role"`
+	Role *string `json:"role"`
 }
 
 // GetAccount returns PartialSnowflakeConnectionSettingsInput.Account, and is useful for accessing the field via an interface.
-func (v *PartialSnowflakeConnectionSettingsInput) GetAccount() string { return v.Account }
+func (v *PartialSnowflakeConnectionSettingsInput) GetAccount() *string { return v.Account }
 
 // GetDatabase returns PartialSnowflakeConnectionSettingsInput.Database, and is useful for accessing the field via an interface.
-func (v *PartialSnowflakeConnectionSettingsInput) GetDatabase() string { return v.Database }
+func (v *PartialSnowflakeConnectionSettingsInput) GetDatabase() *string { return v.Database }
 
 // GetWarehouse returns PartialSnowflakeConnectionSettingsInput.Warehouse, and is useful for accessing the field via an interface.
-func (v *PartialSnowflakeConnectionSettingsInput) GetWarehouse() string { return v.Warehouse }
+func (v *PartialSnowflakeConnectionSettingsInput) GetWarehouse() *string { return v.Warehouse }
 
 // GetSchema returns PartialSnowflakeConnectionSettingsInput.Schema, and is useful for accessing the field via an interface.
-func (v *PartialSnowflakeConnectionSettingsInput) GetSchema() string { return v.Schema }
+func (v *PartialSnowflakeConnectionSettingsInput) GetSchema() *string { return v.Schema }
 
 // GetUsername returns PartialSnowflakeConnectionSettingsInput.Username, and is useful for accessing the field via an interface.
-func (v *PartialSnowflakeConnectionSettingsInput) GetUsername() string { return v.Username }
+func (v *PartialSnowflakeConnectionSettingsInput) GetUsername() *string { return v.Username }
 
 // GetPassword returns PartialSnowflakeConnectionSettingsInput.Password, and is useful for accessing the field via an interface.
-func (v *PartialSnowflakeConnectionSettingsInput) GetPassword() string { return v.Password }
+func (v *PartialSnowflakeConnectionSettingsInput) GetPassword() *string { return v.Password }
 
 // GetRole returns PartialSnowflakeConnectionSettingsInput.Role, and is useful for accessing the field via an interface.
-func (v *PartialSnowflakeConnectionSettingsInput) GetRole() string { return v.Role }
+func (v *PartialSnowflakeConnectionSettingsInput) GetRole() *string { return v.Role }
 
 // The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, the AWS secret
 // access key, and the tables (along with their paths).
@@ -9334,7 +9350,7 @@ type S3ConnectionSettingsInput struct {
 	// The AWS secret access key for an IAM user with sufficient access to the S3 bucket.
 	AwsSecretAccessKey string `json:"awsSecretAccessKey"`
 	// The S3 Data Source's tables.
-	Tables []S3DataSourceTableInput `json:"tables"`
+	Tables []*S3DataSourceTableInput `json:"tables,omitempty"`
 }
 
 // GetBucket returns S3ConnectionSettingsInput.Bucket, and is useful for accessing the field via an interface.
@@ -9347,7 +9363,7 @@ func (v *S3ConnectionSettingsInput) GetAwsAccessKeyId() string { return v.AwsAcc
 func (v *S3ConnectionSettingsInput) GetAwsSecretAccessKey() string { return v.AwsSecretAccessKey }
 
 // GetTables returns S3ConnectionSettingsInput.Tables, and is useful for accessing the field via an interface.
-func (v *S3ConnectionSettingsInput) GetTables() []S3DataSourceTableInput { return v.Tables }
+func (v *S3ConnectionSettingsInput) GetTables() []*S3DataSourceTableInput { return v.Tables }
 
 type S3DataSourceColumnInput struct {
 	// The column name. It has to be unique within a Table.
@@ -9371,19 +9387,19 @@ type S3DataSourceTableInput struct {
 	// The name of the table
 	Name string `json:"name"`
 	// The path to the table's files in S3.
-	Path string `json:"path"`
+	Path *string `json:"path"`
 	// All the columns that will be present in the table
-	Columns []S3DataSourceColumnInput `json:"columns"`
+	Columns []*S3DataSourceColumnInput `json:"columns,omitempty"`
 }
 
 // GetName returns S3DataSourceTableInput.Name, and is useful for accessing the field via an interface.
 func (v *S3DataSourceTableInput) GetName() string { return v.Name }
 
 // GetPath returns S3DataSourceTableInput.Path, and is useful for accessing the field via an interface.
-func (v *S3DataSourceTableInput) GetPath() string { return v.Path }
+func (v *S3DataSourceTableInput) GetPath() *string { return v.Path }
 
 // GetColumns returns S3DataSourceTableInput.Columns, and is useful for accessing the field via an interface.
-func (v *S3DataSourceTableInput) GetColumns() []S3DataSourceColumnInput { return v.Columns }
+func (v *S3DataSourceTableInput) GetColumns() []*S3DataSourceColumnInput { return v.Columns }
 
 // The fields for creating a Snowflake Data Source's connection settings.
 type SnowflakeConnectionSettingsInput struct {
@@ -9436,21 +9452,21 @@ type SyncData struct {
 	// The status of the Sync (all Syncs begin as SYNCING before transitioning to SUCCEEDED or FAILED).
 	Status SyncStatus `json:"status"`
 	// The number of new records contained within the Sync, if known. This excludes filtered records.
-	NewRecords string `json:"newRecords"`
+	NewRecords *string `json:"newRecords"`
 	// The number of updated records contained within the Sync, if known. This excludes filtered records.
-	UpdatedRecords string `json:"updatedRecords"`
+	UpdatedRecords *string `json:"updatedRecords"`
 	// The number of deleted records contained within the Sync, if known. This excludes filtered records.
-	DeletedRecords string `json:"deletedRecords"`
+	DeletedRecords *string `json:"deletedRecords"`
 	// The number of filtered records contained within the Sync, due to issues such as a missing timestamp Dimension, if any are known to be invalid.
-	InvalidRecords string `json:"invalidRecords"`
+	InvalidRecords *string `json:"invalidRecords"`
 	// The time at which the Sync started.
-	StartedAt time.Time `json:"startedAt"`
+	StartedAt *time.Time `json:"startedAt"`
 	// The time at which the Sync succeeded.
-	SucceededAt time.Time `json:"succeededAt"`
+	SucceededAt *time.Time `json:"succeededAt"`
 	// The time at which the Sync failed.
-	FailedAt time.Time `json:"failedAt"`
+	FailedAt *time.Time `json:"failedAt"`
 	// If the Sync failed, this represents the reason the Sync failed.
-	Error SyncDataError `json:"error"`
+	Error *SyncDataError `json:"error"`
 	// The Sync's creation date and time in UTC.
 	CreatedAt time.Time `json:"createdAt"`
 	// The Sync's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
@@ -9468,28 +9484,28 @@ func (v *SyncData) GetId() string { return v.Id }
 func (v *SyncData) GetStatus() SyncStatus { return v.Status }
 
 // GetNewRecords returns SyncData.NewRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetNewRecords() string { return v.NewRecords }
+func (v *SyncData) GetNewRecords() *string { return v.NewRecords }
 
 // GetUpdatedRecords returns SyncData.UpdatedRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetUpdatedRecords() string { return v.UpdatedRecords }
+func (v *SyncData) GetUpdatedRecords() *string { return v.UpdatedRecords }
 
 // GetDeletedRecords returns SyncData.DeletedRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetDeletedRecords() string { return v.DeletedRecords }
+func (v *SyncData) GetDeletedRecords() *string { return v.DeletedRecords }
 
 // GetInvalidRecords returns SyncData.InvalidRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetInvalidRecords() string { return v.InvalidRecords }
+func (v *SyncData) GetInvalidRecords() *string { return v.InvalidRecords }
 
 // GetStartedAt returns SyncData.StartedAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetStartedAt() time.Time { return v.StartedAt }
+func (v *SyncData) GetStartedAt() *time.Time { return v.StartedAt }
 
 // GetSucceededAt returns SyncData.SucceededAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetSucceededAt() time.Time { return v.SucceededAt }
+func (v *SyncData) GetSucceededAt() *time.Time { return v.SucceededAt }
 
 // GetFailedAt returns SyncData.FailedAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetFailedAt() time.Time { return v.FailedAt }
+func (v *SyncData) GetFailedAt() *time.Time { return v.FailedAt }
 
 // GetError returns SyncData.Error, and is useful for accessing the field via an interface.
-func (v *SyncData) GetError() SyncDataError { return v.Error }
+func (v *SyncData) GetError() *SyncDataError { return v.Error }
 
 // GetCreatedAt returns SyncData.CreatedAt, and is useful for accessing the field via an interface.
 func (v *SyncData) GetCreatedAt() time.Time { return v.CreatedAt }
@@ -9537,7 +9553,7 @@ const (
 // When setting up a Data Source, Propel may need to introspect tables in order to determine what tables and columns are available to create Data Pools from. The table introspection represents the lifecycle of this operation (whether it's in-progress, succeeded, or failed) and the resulting tables and columns. These will be captured as table and column objects, respectively.
 type TableIntrospectionData struct {
 	// The Data Source the table introspection was performed for.
-	DataSource TableIntrospectionDataDataSource `json:"dataSource"`
+	DataSource *TableIntrospectionDataDataSource `json:"dataSource"`
 	// The status of the table introspection.
 	Status TableIntrospectionStatus `json:"status"`
 	// The table introspection's creation date and time in UTC.
@@ -9549,11 +9565,11 @@ type TableIntrospectionData struct {
 	// The table introspection's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
 	ModifiedBy string `json:"modifiedBy"`
 	// The number of tables introspected.
-	NumTables int `json:"numTables"`
+	NumTables *int `json:"numTables"`
 }
 
 // GetDataSource returns TableIntrospectionData.DataSource, and is useful for accessing the field via an interface.
-func (v *TableIntrospectionData) GetDataSource() TableIntrospectionDataDataSource {
+func (v *TableIntrospectionData) GetDataSource() *TableIntrospectionDataDataSource {
 	return v.DataSource
 }
 
@@ -9573,7 +9589,7 @@ func (v *TableIntrospectionData) GetModifiedAt() time.Time { return v.ModifiedAt
 func (v *TableIntrospectionData) GetModifiedBy() string { return v.ModifiedBy }
 
 // GetNumTables returns TableIntrospectionData.NumTables, and is useful for accessing the field via an interface.
-func (v *TableIntrospectionData) GetNumTables() int { return v.NumTables }
+func (v *TableIntrospectionData) GetNumTables() *int { return v.NumTables }
 
 // TableIntrospectionDataDataSource includes the requested fields of the GraphQL type DataSource.
 // The GraphQL type's documentation follows.
@@ -9607,59 +9623,59 @@ const (
 
 // __CreateCountDistinctMetricInput is used internally by genqlient
 type __CreateCountDistinctMetricInput struct {
-	Input CreateCountDistinctMetricInput `json:"input"`
+	Input *CreateCountDistinctMetricInput `json:"input,omitempty"`
 }
 
 // GetInput returns __CreateCountDistinctMetricInput.Input, and is useful for accessing the field via an interface.
-func (v *__CreateCountDistinctMetricInput) GetInput() CreateCountDistinctMetricInput { return v.Input }
+func (v *__CreateCountDistinctMetricInput) GetInput() *CreateCountDistinctMetricInput { return v.Input }
 
 // __CreateCountMetricInput is used internally by genqlient
 type __CreateCountMetricInput struct {
-	Input CreateCountMetricInput `json:"input"`
+	Input *CreateCountMetricInput `json:"input,omitempty"`
 }
 
 // GetInput returns __CreateCountMetricInput.Input, and is useful for accessing the field via an interface.
-func (v *__CreateCountMetricInput) GetInput() CreateCountMetricInput { return v.Input }
+func (v *__CreateCountMetricInput) GetInput() *CreateCountMetricInput { return v.Input }
 
 // __CreateDataPoolInput is used internally by genqlient
 type __CreateDataPoolInput struct {
-	Input CreateDataPoolInput `json:"input"`
+	Input *CreateDataPoolInput `json:"input,omitempty"`
 }
 
 // GetInput returns __CreateDataPoolInput.Input, and is useful for accessing the field via an interface.
-func (v *__CreateDataPoolInput) GetInput() CreateDataPoolInput { return v.Input }
+func (v *__CreateDataPoolInput) GetInput() *CreateDataPoolInput { return v.Input }
 
 // __CreateHttpDataSourceInput is used internally by genqlient
 type __CreateHttpDataSourceInput struct {
-	Input CreateHttpDataSourceInput `json:"input"`
+	Input *CreateHttpDataSourceInput `json:"input,omitempty"`
 }
 
 // GetInput returns __CreateHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
-func (v *__CreateHttpDataSourceInput) GetInput() CreateHttpDataSourceInput { return v.Input }
+func (v *__CreateHttpDataSourceInput) GetInput() *CreateHttpDataSourceInput { return v.Input }
 
 // __CreateS3DataSourceInput is used internally by genqlient
 type __CreateS3DataSourceInput struct {
-	Input CreateS3DataSourceInput `json:"input"`
+	Input *CreateS3DataSourceInput `json:"input,omitempty"`
 }
 
 // GetInput returns __CreateS3DataSourceInput.Input, and is useful for accessing the field via an interface.
-func (v *__CreateS3DataSourceInput) GetInput() CreateS3DataSourceInput { return v.Input }
+func (v *__CreateS3DataSourceInput) GetInput() *CreateS3DataSourceInput { return v.Input }
 
 // __CreateSnowflakeDataSourceInput is used internally by genqlient
 type __CreateSnowflakeDataSourceInput struct {
-	Input CreateSnowflakeDataSourceInput `json:"input"`
+	Input *CreateSnowflakeDataSourceInput `json:"input,omitempty"`
 }
 
 // GetInput returns __CreateSnowflakeDataSourceInput.Input, and is useful for accessing the field via an interface.
-func (v *__CreateSnowflakeDataSourceInput) GetInput() CreateSnowflakeDataSourceInput { return v.Input }
+func (v *__CreateSnowflakeDataSourceInput) GetInput() *CreateSnowflakeDataSourceInput { return v.Input }
 
 // __CreateSumMetricInput is used internally by genqlient
 type __CreateSumMetricInput struct {
-	Input CreateSumMetricInput `json:"input"`
+	Input *CreateSumMetricInput `json:"input,omitempty"`
 }
 
 // GetInput returns __CreateSumMetricInput.Input, and is useful for accessing the field via an interface.
-func (v *__CreateSumMetricInput) GetInput() CreateSumMetricInput { return v.Input }
+func (v *__CreateSumMetricInput) GetInput() *CreateSumMetricInput { return v.Input }
 
 // __DataPoolByNameInput is used internally by genqlient
 type __DataPoolByNameInput struct {
@@ -9679,23 +9695,23 @@ func (v *__DataPoolInput) GetId() string { return v.Id }
 
 // __DataPoolsInput is used internally by genqlient
 type __DataPoolsInput struct {
-	First  int    `json:"first"`
-	Last   int    `json:"last"`
-	After  string `json:"after"`
-	Before string `json:"before"`
+	First  *int    `json:"first"`
+	Last   *int    `json:"last"`
+	After  *string `json:"after"`
+	Before *string `json:"before"`
 }
 
 // GetFirst returns __DataPoolsInput.First, and is useful for accessing the field via an interface.
-func (v *__DataPoolsInput) GetFirst() int { return v.First }
+func (v *__DataPoolsInput) GetFirst() *int { return v.First }
 
 // GetLast returns __DataPoolsInput.Last, and is useful for accessing the field via an interface.
-func (v *__DataPoolsInput) GetLast() int { return v.Last }
+func (v *__DataPoolsInput) GetLast() *int { return v.Last }
 
 // GetAfter returns __DataPoolsInput.After, and is useful for accessing the field via an interface.
-func (v *__DataPoolsInput) GetAfter() string { return v.After }
+func (v *__DataPoolsInput) GetAfter() *string { return v.After }
 
 // GetBefore returns __DataPoolsInput.Before, and is useful for accessing the field via an interface.
-func (v *__DataPoolsInput) GetBefore() string { return v.Before }
+func (v *__DataPoolsInput) GetBefore() *string { return v.Before }
 
 // __DataSourceByNameInput is used internally by genqlient
 type __DataSourceByNameInput struct {
@@ -9715,23 +9731,23 @@ func (v *__DataSourceInput) GetId() string { return v.Id }
 
 // __DataSourcesInput is used internally by genqlient
 type __DataSourcesInput struct {
-	First  int    `json:"first"`
-	Last   int    `json:"last"`
-	After  string `json:"after"`
-	Before string `json:"before"`
+	First  *int    `json:"first"`
+	Last   *int    `json:"last"`
+	After  *string `json:"after"`
+	Before *string `json:"before"`
 }
 
 // GetFirst returns __DataSourcesInput.First, and is useful for accessing the field via an interface.
-func (v *__DataSourcesInput) GetFirst() int { return v.First }
+func (v *__DataSourcesInput) GetFirst() *int { return v.First }
 
 // GetLast returns __DataSourcesInput.Last, and is useful for accessing the field via an interface.
-func (v *__DataSourcesInput) GetLast() int { return v.Last }
+func (v *__DataSourcesInput) GetLast() *int { return v.Last }
 
 // GetAfter returns __DataSourcesInput.After, and is useful for accessing the field via an interface.
-func (v *__DataSourcesInput) GetAfter() string { return v.After }
+func (v *__DataSourcesInput) GetAfter() *string { return v.After }
 
 // GetBefore returns __DataSourcesInput.Before, and is useful for accessing the field via an interface.
-func (v *__DataSourcesInput) GetBefore() string { return v.Before }
+func (v *__DataSourcesInput) GetBefore() *string { return v.Before }
 
 // __DeleteDataPoolByNameInput is used internally by genqlient
 type __DeleteDataPoolByNameInput struct {
@@ -9799,52 +9815,52 @@ func (v *__MetricInput) GetId() string { return v.Id }
 
 // __MetricsInput is used internally by genqlient
 type __MetricsInput struct {
-	First  int    `json:"first"`
-	Last   int    `json:"last"`
-	After  string `json:"after"`
-	Before string `json:"before"`
+	First  *int    `json:"first"`
+	Last   *int    `json:"last"`
+	After  *string `json:"after"`
+	Before *string `json:"before"`
 }
 
 // GetFirst returns __MetricsInput.First, and is useful for accessing the field via an interface.
-func (v *__MetricsInput) GetFirst() int { return v.First }
+func (v *__MetricsInput) GetFirst() *int { return v.First }
 
 // GetLast returns __MetricsInput.Last, and is useful for accessing the field via an interface.
-func (v *__MetricsInput) GetLast() int { return v.Last }
+func (v *__MetricsInput) GetLast() *int { return v.Last }
 
 // GetAfter returns __MetricsInput.After, and is useful for accessing the field via an interface.
-func (v *__MetricsInput) GetAfter() string { return v.After }
+func (v *__MetricsInput) GetAfter() *string { return v.After }
 
 // GetBefore returns __MetricsInput.Before, and is useful for accessing the field via an interface.
-func (v *__MetricsInput) GetBefore() string { return v.Before }
+func (v *__MetricsInput) GetBefore() *string { return v.Before }
 
 // __ModifyDataPoolInput is used internally by genqlient
 type __ModifyDataPoolInput struct {
-	Input ModifyDataPoolInput `json:"input"`
+	Input *ModifyDataPoolInput `json:"input,omitempty"`
 }
 
 // GetInput returns __ModifyDataPoolInput.Input, and is useful for accessing the field via an interface.
-func (v *__ModifyDataPoolInput) GetInput() ModifyDataPoolInput { return v.Input }
+func (v *__ModifyDataPoolInput) GetInput() *ModifyDataPoolInput { return v.Input }
 
 // __ModifyMetricInput is used internally by genqlient
 type __ModifyMetricInput struct {
-	Input ModifyMetricInput `json:"input"`
+	Input *ModifyMetricInput `json:"input,omitempty"`
 }
 
 // GetInput returns __ModifyMetricInput.Input, and is useful for accessing the field via an interface.
-func (v *__ModifyMetricInput) GetInput() ModifyMetricInput { return v.Input }
+func (v *__ModifyMetricInput) GetInput() *ModifyMetricInput { return v.Input }
 
 // __ModifySnowflakeDataSourceInput is used internally by genqlient
 type __ModifySnowflakeDataSourceInput struct {
-	Input ModifySnowflakeDataSourceInput `json:"input"`
+	Input *ModifySnowflakeDataSourceInput `json:"input,omitempty"`
 }
 
 // GetInput returns __ModifySnowflakeDataSourceInput.Input, and is useful for accessing the field via an interface.
-func (v *__ModifySnowflakeDataSourceInput) GetInput() ModifySnowflakeDataSourceInput { return v.Input }
+func (v *__ModifySnowflakeDataSourceInput) GetInput() *ModifySnowflakeDataSourceInput { return v.Input }
 
 func CreateCountDistinctMetric(
 	ctx context.Context,
 	client graphql.Client,
-	input CreateCountDistinctMetricInput,
+	input *CreateCountDistinctMetricInput,
 ) (*CreateCountDistinctMetricResponse, error) {
 	req := &graphql.Request{
 		OpName: "CreateCountDistinctMetric",
@@ -10077,7 +10093,7 @@ fragment TableIntrospectionData on TableIntrospection {
 func CreateCountMetric(
 	ctx context.Context,
 	client graphql.Client,
-	input CreateCountMetricInput,
+	input *CreateCountMetricInput,
 ) (*CreateCountMetricResponse, error) {
 	req := &graphql.Request{
 		OpName: "CreateCountMetric",
@@ -10310,7 +10326,7 @@ fragment TableIntrospectionData on TableIntrospection {
 func CreateDataPool(
 	ctx context.Context,
 	client graphql.Client,
-	input CreateDataPoolInput,
+	input *CreateDataPoolInput,
 ) (*CreateDataPoolResponse, error) {
 	req := &graphql.Request{
 		OpName: "CreateDataPool",
@@ -10505,7 +10521,7 @@ fragment TableIntrospectionData on TableIntrospection {
 func CreateHttpDataSource(
 	ctx context.Context,
 	client graphql.Client,
-	input CreateHttpDataSourceInput,
+	input *CreateHttpDataSourceInput,
 ) (*CreateHttpDataSourceResponse, error) {
 	req := &graphql.Request{
 		OpName: "CreateHttpDataSource",
@@ -10624,7 +10640,7 @@ fragment TableIntrospectionData on TableIntrospection {
 func CreateS3DataSource(
 	ctx context.Context,
 	client graphql.Client,
-	input CreateS3DataSourceInput,
+	input *CreateS3DataSourceInput,
 ) (*CreateS3DataSourceResponse, error) {
 	req := &graphql.Request{
 		OpName: "CreateS3DataSource",
@@ -10743,7 +10759,7 @@ fragment TableIntrospectionData on TableIntrospection {
 func CreateSnowflakeDataSource(
 	ctx context.Context,
 	client graphql.Client,
-	input CreateSnowflakeDataSourceInput,
+	input *CreateSnowflakeDataSourceInput,
 ) (*CreateSnowflakeDataSourceResponse, error) {
 	req := &graphql.Request{
 		OpName: "CreateSnowflakeDataSource",
@@ -10874,7 +10890,7 @@ fragment TableIntrospectionData on TableIntrospection {
 func CreateSumMetric(
 	ctx context.Context,
 	client graphql.Client,
-	input CreateSumMetricInput,
+	input *CreateSumMetricInput,
 ) (*CreateSumMetricResponse, error) {
 	req := &graphql.Request{
 		OpName: "CreateSumMetric",
@@ -11469,10 +11485,10 @@ fragment TableIntrospectionData on TableIntrospection {
 func DataPools(
 	ctx context.Context,
 	client graphql.Client,
-	first int,
-	last int,
-	after string,
-	before string,
+	first *int,
+	last *int,
+	after *string,
+	before *string,
 ) (*DataPoolsResponse, error) {
 	req := &graphql.Request{
 		OpName: "DataPools",
@@ -11903,10 +11919,10 @@ fragment TableIntrospectionData on TableIntrospection {
 func DataSources(
 	ctx context.Context,
 	client graphql.Client,
-	first int,
-	last int,
-	after string,
-	before string,
+	first *int,
+	last *int,
+	after *string,
+	before *string,
 ) (*DataSourcesResponse, error) {
 	req := &graphql.Request{
 		OpName: "DataSources",
@@ -12679,10 +12695,10 @@ fragment TableIntrospectionData on TableIntrospection {
 func Metrics(
 	ctx context.Context,
 	client graphql.Client,
-	first int,
-	last int,
-	after string,
-	before string,
+	first *int,
+	last *int,
+	after *string,
+	before *string,
 ) (*MetricsResponse, error) {
 	req := &graphql.Request{
 		OpName: "Metrics",
@@ -12932,7 +12948,7 @@ fragment TableIntrospectionData on TableIntrospection {
 func ModifyDataPool(
 	ctx context.Context,
 	client graphql.Client,
-	input ModifyDataPoolInput,
+	input *ModifyDataPoolInput,
 ) (*ModifyDataPoolResponse, error) {
 	req := &graphql.Request{
 		OpName: "ModifyDataPool",
@@ -13127,7 +13143,7 @@ fragment TableIntrospectionData on TableIntrospection {
 func ModifyMetric(
 	ctx context.Context,
 	client graphql.Client,
-	input ModifyMetricInput,
+	input *ModifyMetricInput,
 ) (*ModifyMetricResponse, error) {
 	req := &graphql.Request{
 		OpName: "ModifyMetric",
@@ -13360,7 +13376,7 @@ fragment TableIntrospectionData on TableIntrospection {
 func ModifySnowflakeDataSource(
 	ctx context.Context,
 	client graphql.Client,
-	input ModifySnowflakeDataSourceInput,
+	input *ModifySnowflakeDataSourceInput,
 ) (*ModifySnowflakeDataSourceResponse, error) {
 	req := &graphql.Request{
 		OpName: "ModifySnowflakeDataSource",

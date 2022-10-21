@@ -127,13 +127,9 @@ func resourceDataSource() *schema.Resource {
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						// TODO(mroberts): Come back and support `basicAuth` here. There are a couple things getting in
-						//   the way, though. First, the GraphQL code generator makes things required when they ought to
-						//   be optional. Second, accessing these nested resources is cumbersome (maybe I just don't
-						//   know how to do it).
-						/* "basicAuth": {
+						"basic_auth": {
 							Type:     schema.TypeList,
-							Required: false,
+							Optional: true,
 							MaxItems: 1,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
@@ -147,7 +143,7 @@ func resourceDataSource() *schema.Resource {
 									},
 								},
 							},
-						}, */
+						},
 					},
 				},
 			},
@@ -255,10 +251,12 @@ func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceDa
 
 	connectionSettings := d.Get("snowflake_connection_settings").([]interface{})[0].(map[string]interface{})
 
-	input := pc.CreateSnowflakeDataSourceInput{
-		UniqueName:  d.Get("unique_name").(string),
-		Description: d.Get("description").(string),
-		ConnectionSettings: pc.SnowflakeConnectionSettingsInput{
+	uniqueName := d.Get("unique_name").(string)
+	description := d.Get("description").(string)
+	input := &pc.CreateSnowflakeDataSourceInput{
+		UniqueName:  &uniqueName,
+		Description: &description,
+		ConnectionSettings: &pc.SnowflakeConnectionSettingsInput{
 			Account:   connectionSettings["account"].(string),
 			Database:  connectionSettings["database"].(string),
 			Warehouse: connectionSettings["warehouse"].(string),
@@ -274,7 +272,7 @@ func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceDa
 		return diag.FromErr(err)
 	}
 
-	switch r := response.GetCreateSnowflakeDataSource().(type) {
+	switch r := (*response.GetCreateSnowflakeDataSource()).(type) {
 	case *pc.CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse:
 		d.SetId(r.DataSource.Id)
 
@@ -299,16 +297,19 @@ func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceDa
 func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
-	tables := make([]pc.HttpDataSourceTableInput, 0)
+	tables := make([]*pc.HttpDataSourceTableInput, 0)
 	if def, ok := d.Get("table").([]interface{}); ok && len(def) > 0 {
 		tables = expandHttpTables(def)
 	}
 
-	input := pc.CreateHttpDataSourceInput{
-		UniqueName:  d.Get("unique_name").(string),
-		Description: d.Get("description").(string),
-		ConnectionSettings: pc.HttpConnectionSettingsInput{
-			Tables: tables,
+	uniqueName := d.Get("unique_name").(string)
+	description := d.Get("description").(string)
+	input := &pc.CreateHttpDataSourceInput{
+		UniqueName:  &uniqueName,
+		Description: &description,
+		ConnectionSettings: &pc.HttpConnectionSettingsInput{
+			BasicAuth: nil,
+			Tables:    tables,
 		},
 	}
 
@@ -333,17 +334,19 @@ func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, m
 func resourceS3DataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
-	tables := make([]pc.S3DataSourceTableInput, 0)
+	tables := make([]*pc.S3DataSourceTableInput, 0)
 	if def, ok := d.Get("table").([]interface{}); ok && len(def) > 0 {
 		tables = expandS3Tables(def)
 	}
 
 	connectionSettings := d.Get("s3_connection_settings").([]interface{})[0].(map[string]interface{})
 
-	input := pc.CreateS3DataSourceInput{
-		UniqueName:  d.Get("unique_name").(string),
-		Description: d.Get("description").(string),
-		ConnectionSettings: pc.S3ConnectionSettingsInput{
+	uniqueName := d.Get("unique_name").(string)
+	description := d.Get("description").(string)
+	input := &pc.CreateS3DataSourceInput{
+		UniqueName:  &uniqueName,
+		Description: &description,
+		ConnectionSettings: &pc.S3ConnectionSettingsInput{
 			Bucket:             connectionSettings["bucket"].(string),
 			AwsAccessKeyId:     connectionSettings["aws_access_key_id"].(string),
 			AwsSecretAccessKey: connectionSettings["aws_secret_access_key"].(string),
@@ -465,6 +468,11 @@ func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schem
 }
 
 func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	// FIXME(mroberts): We need to handle the case where tables is not yet populated.
+	if response.DataSource.Tables == nil {
+		return nil
+	}
+
 	tables := make([]interface{}, 0, len(response.DataSource.Tables.Nodes))
 
 	// FIXME(mroberts): This is only going to work for the first page of results.
@@ -494,6 +502,11 @@ func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) d
 }
 
 func handleS3Tables(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	// FIXME(mroberts): We need to handle the case where tables is not yet populated.
+	if response.DataSource.Tables == nil {
+		return nil
+	}
+
 	tables := make([]interface{}, 0, len(response.DataSource.Tables.Nodes))
 
 	// FIXME(mroberts): This is only going to work for the first page of results.
@@ -549,12 +562,15 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m int
 	c := m.(graphql.Client)
 
 	if d.HasChanges("unique_name", "description") {
-		modifyDataSource := pc.ModifySnowflakeDataSourceInput{
-			IdOrUniqueName: pc.IdOrUniqueName{
-				Id: d.Id(),
+		id := d.Id()
+		uniqueName := d.Get("unique_name").(string)
+		description := d.Get("description").(string)
+		modifyDataSource := &pc.ModifySnowflakeDataSourceInput{
+			IdOrUniqueName: &pc.IdOrUniqueName{
+				Id: &id,
 			},
-			UniqueName:  d.Get("unique_name").(string),
-			Description: d.Get("description").(string),
+			UniqueName:  &uniqueName,
+			Description: &description,
 		}
 
 		_, err := pc.ModifySnowflakeDataSource(ctx, c, modifyDataSource)
@@ -615,15 +631,15 @@ func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id s
 	return nil
 }
 
-func expandHttpTables(def []interface{}) []pc.HttpDataSourceTableInput {
-	tables := make([]pc.HttpDataSourceTableInput, 0, len(def))
+func expandHttpTables(def []interface{}) []*pc.HttpDataSourceTableInput {
+	tables := make([]*pc.HttpDataSourceTableInput, 0, len(def))
 
 	for _, rawTable := range def {
 		table := rawTable.(map[string]interface{})
 
 		columns := expandHttpColumns(table["column"].([]interface{}))
 
-		tables = append(tables, pc.HttpDataSourceTableInput{
+		tables = append(tables, &pc.HttpDataSourceTableInput{
 			Name:    table["name"].(string),
 			Columns: columns,
 		})
@@ -632,8 +648,8 @@ func expandHttpTables(def []interface{}) []pc.HttpDataSourceTableInput {
 	return tables
 }
 
-func expandHttpColumns(def []interface{}) []pc.HttpDataSourceColumnInput {
-	columns := make([]pc.HttpDataSourceColumnInput, 0, len(def))
+func expandHttpColumns(def []interface{}) []*pc.HttpDataSourceColumnInput {
+	columns := make([]*pc.HttpDataSourceColumnInput, 0, len(def))
 
 	for _, rawColumn := range def {
 		column := rawColumn.(map[string]interface{})
@@ -660,7 +676,7 @@ func expandHttpColumns(def []interface{}) []pc.HttpDataSourceColumnInput {
 			columnType = pc.ColumnTypeTimestamp
 		}
 
-		columns = append(columns, pc.HttpDataSourceColumnInput{
+		columns = append(columns, &pc.HttpDataSourceColumnInput{
 			Name:     column["name"].(string),
 			Type:     columnType,
 			Nullable: column["nullable"].(bool),
@@ -670,16 +686,18 @@ func expandHttpColumns(def []interface{}) []pc.HttpDataSourceColumnInput {
 	return columns
 }
 
-func expandS3Tables(def []interface{}) []pc.S3DataSourceTableInput {
-	tables := make([]pc.S3DataSourceTableInput, 0, len(def))
+func expandS3Tables(def []interface{}) []*pc.S3DataSourceTableInput {
+	tables := make([]*pc.S3DataSourceTableInput, 0, len(def))
 
 	for _, rawTable := range def {
 		table := rawTable.(map[string]interface{})
 
 		columns := expandS3Columns(table["column"].([]interface{}))
 
-		tables = append(tables, pc.S3DataSourceTableInput{
+		path := table["path"].(string)
+		tables = append(tables, &pc.S3DataSourceTableInput{
 			Name:    table["name"].(string),
+			Path:    &path,
 			Columns: columns,
 		})
 	}
@@ -687,8 +705,8 @@ func expandS3Tables(def []interface{}) []pc.S3DataSourceTableInput {
 	return tables
 }
 
-func expandS3Columns(def []interface{}) []pc.S3DataSourceColumnInput {
-	columns := make([]pc.S3DataSourceColumnInput, 0, len(def))
+func expandS3Columns(def []interface{}) []*pc.S3DataSourceColumnInput {
+	columns := make([]*pc.S3DataSourceColumnInput, 0, len(def))
 
 	for _, rawColumn := range def {
 		column := rawColumn.(map[string]interface{})
@@ -715,7 +733,7 @@ func expandS3Columns(def []interface{}) []pc.S3DataSourceColumnInput {
 			columnType = pc.ColumnTypeTimestamp
 		}
 
-		columns = append(columns, pc.S3DataSourceColumnInput{
+		columns = append(columns, &pc.S3DataSourceColumnInput{
 			Name:     column["name"].(string),
 			Type:     columnType,
 			Nullable: column["nullable"].(bool),
