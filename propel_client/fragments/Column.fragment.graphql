@@ -1,14 +1,5 @@
 fragment ColumnData on Column {
     name
     type
-    kind
     isNullable
-    defaultValue
-    isPrimaryKey
-    isUniqueKey
-    comment
-    policyName
-    cachedAt
-    createdAt
-    createdBy
 }

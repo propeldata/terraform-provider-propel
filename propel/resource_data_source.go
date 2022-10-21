@@ -3,6 +3,7 @@ package propel
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"strings"
 	"time"
 
@@ -145,6 +146,56 @@ func resourceDataSource() *schema.Resource {
 					},
 				},
 			},
+			"table": {
+				Type:     schema.TypeList,
+				Optional: true,
+				ForceNew: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"name": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"path": {
+							Type:     schema.TypeString,
+							Optional: true,
+						},
+						"column": {
+							Type:     schema.TypeList,
+							Required: true,
+							ForceNew: true,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"name": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"type": {
+										Type:     schema.TypeString,
+										Required: true,
+										ValidateFunc: validation.StringInSlice([]string{
+											"BOOLEAN",
+											"DATE",
+											"DOUBLE",
+											"FLOAT",
+											"INT8",
+											"INT16",
+											"INT32",
+											"INT64",
+											"STRING",
+											"TIMESTAMP",
+										}, false),
+									},
+									"nullable": {
+										Type:     schema.TypeBool,
+										Required: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 
 		Timeouts: &schema.ResourceTimeout{
@@ -219,11 +270,16 @@ func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceDa
 func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
+	tables := make([]pc.HttpDataSourceTableInput, 0)
+	if def, ok := d.Get("table").([]interface{}); ok && len(def) > 0 {
+		tables = expandHttpTables(def)
+	}
+
 	input := pc.CreateHttpDataSourceInput{
 		UniqueName:  d.Get("unique_name").(string),
 		Description: d.Get("description").(string),
 		ConnectionSettings: pc.HttpConnectionSettingsInput{
-			Tables: []pc.HttpDataSourceTableInput{},
+			Tables: tables,
 		},
 	}
 
@@ -300,6 +356,9 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 	case "SNOWFLAKE":
 		return handleSnowflakeConnectionSettings(response, d)
 	case "HTTP":
+		if diags := handleHttpTables(response, d); diags != nil {
+			return diags
+		}
 		return handleHttpConnectionSettings(response, d)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
@@ -332,7 +391,56 @@ func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schem
 	return nil
 }
 
-func handleHttpConnectionSettings(_ *pc.DataSourceResponse, _ *schema.ResourceData) diag.Diagnostics {
+func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	tables := make([]interface{}, 0, len(response.DataSource.Tables.Nodes))
+
+	// FIXME(mroberts): This is only going to work for the first page of results.
+	for _, table := range response.DataSource.Tables.Nodes {
+		/*tablePrefix := fmt.Sprintf("table.%d", tableIndex)
+
+		if err := d.Set(tablePrefix + ".name", table.Name); err != nil {
+			return diag.FromErr(err)
+		}*/
+
+		columns := make([]interface{}, 0, len(table.Columns.Nodes))
+
+		// FIXME(mroberts): This is only going to work for the first page of results.
+		for _, column := range table.Columns.Nodes {
+			/*columnPrefix := fmt.Sprintf("%s.column.%d", tablePrefix, columnIndex)
+
+			if err := d.Set(columnPrefix + ".name", column.Name); err != nil {
+				return diag.FromErr(err)
+			}
+
+			if err := d.Set(columnPrefix + ".type", column.Type); err != nil {
+				return diag.FromErr(err)
+			}
+
+			if err := d.Set(columnPrefix + ".nullable", column.IsNullable); err != nil {
+				return diag.FromErr(err)
+			}*/
+
+			columns = append(columns, map[string]interface{}{
+				"name":     column.Name,
+				"type":     column.Type,
+				"nullable": column.IsNullable,
+			})
+		}
+
+		tables = append(tables, map[string]interface{}{
+			"name":   table.Name,
+			"column": columns,
+		})
+	}
+
+	if err := d.Set("table", (interface{})(tables)); err != nil {
+		return diag.FromErr(err)
+	}
+
+	return nil
+}
+
+func handleHttpConnectionSettings(_ *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
 	return nil
 }
 
@@ -404,4 +512,59 @@ func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id s
 	}
 
 	return nil
+}
+
+func expandHttpTables(def []interface{}) []pc.HttpDataSourceTableInput {
+	tables := make([]pc.HttpDataSourceTableInput, 0, len(def))
+
+	for _, rawTable := range def {
+		table := rawTable.(map[string]interface{})
+
+		columns := expandHttpColumns(table["column"].([]interface{}))
+
+		tables = append(tables, pc.HttpDataSourceTableInput{
+			Name:    table["name"].(string),
+			Columns: columns,
+		})
+	}
+
+	return tables
+}
+
+func expandHttpColumns(def []interface{}) []pc.HttpDataSourceColumnInput {
+	columns := make([]pc.HttpDataSourceColumnInput, 0, len(def))
+
+	for _, rawColumn := range def {
+		column := rawColumn.(map[string]interface{})
+
+		var columnType pc.ColumnType
+		switch column["type"].(string) {
+		case "BOOLEAN":
+			columnType = pc.ColumnTypeBoolean
+		case "DATE":
+			columnType = pc.ColumnTypeDate
+		case "DOUBLE":
+			columnType = pc.ColumnTypeDouble
+		case "INT8":
+			columnType = pc.ColumnTypeInt8
+		case "INT16":
+			columnType = pc.ColumnTypeInt16
+		case "INT32":
+			columnType = pc.ColumnTypeInt32
+		case "INT64":
+			columnType = pc.ColumnTypeInt64
+		case "STRING":
+			columnType = pc.ColumnTypeString
+		case "TIMESTAMP":
+			columnType = pc.ColumnTypeTimestamp
+		}
+
+		columns = append(columns, pc.HttpDataSourceColumnInput{
+			Name:     column["name"].(string),
+			Type:     columnType,
+			Nullable: column["nullable"].(bool),
+		})
+	}
+
+	return columns
 }

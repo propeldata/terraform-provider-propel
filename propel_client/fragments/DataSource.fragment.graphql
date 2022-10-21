@@ -26,12 +26,7 @@ fragment DataSourceData on DataSource {
     tables (first: 100) {
         nodes {
             name
-            availableTimestamps (first: 100) {
-                nodes {
-                    ...ColumnData
-                }
-            }
-            availableMeasures (first: 100) {
+            columns (first: 100) {
                 nodes {
                     ...ColumnData
                 }

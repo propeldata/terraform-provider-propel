@@ -1117,10 +1117,6 @@ input createDataPoolInput {
   The Data Pool's data retention in days. If not specified, records will be kept undefinitely.
   """
   dataRetentionInDays: Int
-  """
-  An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
-  """
-  tenant: TenantInput
 }
 
 """The fields for modifying a Data Pool."""
