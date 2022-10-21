@@ -22,26 +22,8 @@ type ColumnData struct {
 	Name string `json:"name"`
 	// The column's type.
 	Type string `json:"type"`
-	// Information about the column obtained from Snowflake.
-	Kind string `json:"kind"`
 	// Whether the column is nullable, meaning whether it accepts a null value.
 	IsNullable bool `json:"isNullable"`
-	// Information about the column obtained from Snowflake.
-	DefaultValue string `json:"defaultValue"`
-	// Information about the column obtained from Snowflake.
-	IsPrimaryKey bool `json:"isPrimaryKey"`
-	// Information about the column obtained from Snowflake.
-	IsUniqueKey bool `json:"isUniqueKey"`
-	// Information about the column obtained from Snowflake.
-	Comment string `json:"comment"`
-	// Information about the column obtained from Snowflake.
-	PolicyName string `json:"policyName"`
-	// The time at which the column was cached (i.e., the time at which it was introspected).
-	CachedAt time.Time `json:"cachedAt"`
-	// The time at which the column was created. This is the same as its `cachedAt` time.
-	CreatedAt time.Time `json:"createdAt"`
-	// The columns's creator. This corresponds to the initiator of the table introspection. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
-	CreatedBy string `json:"createdBy"`
 }
 
 // GetName returns ColumnData.Name, and is useful for accessing the field via an interface.
@@ -50,35 +32,8 @@ func (v *ColumnData) GetName() string { return v.Name }
 // GetType returns ColumnData.Type, and is useful for accessing the field via an interface.
 func (v *ColumnData) GetType() string { return v.Type }
 
-// GetKind returns ColumnData.Kind, and is useful for accessing the field via an interface.
-func (v *ColumnData) GetKind() string { return v.Kind }
-
 // GetIsNullable returns ColumnData.IsNullable, and is useful for accessing the field via an interface.
 func (v *ColumnData) GetIsNullable() bool { return v.IsNullable }
-
-// GetDefaultValue returns ColumnData.DefaultValue, and is useful for accessing the field via an interface.
-func (v *ColumnData) GetDefaultValue() string { return v.DefaultValue }
-
-// GetIsPrimaryKey returns ColumnData.IsPrimaryKey, and is useful for accessing the field via an interface.
-func (v *ColumnData) GetIsPrimaryKey() bool { return v.IsPrimaryKey }
-
-// GetIsUniqueKey returns ColumnData.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *ColumnData) GetIsUniqueKey() bool { return v.IsUniqueKey }
-
-// GetComment returns ColumnData.Comment, and is useful for accessing the field via an interface.
-func (v *ColumnData) GetComment() string { return v.Comment }
-
-// GetPolicyName returns ColumnData.PolicyName, and is useful for accessing the field via an interface.
-func (v *ColumnData) GetPolicyName() string { return v.PolicyName }
-
-// GetCachedAt returns ColumnData.CachedAt, and is useful for accessing the field via an interface.
-func (v *ColumnData) GetCachedAt() time.Time { return v.CachedAt }
-
-// GetCreatedAt returns ColumnData.CreatedAt, and is useful for accessing the field via an interface.
-func (v *ColumnData) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetCreatedBy returns ColumnData.CreatedBy, and is useful for accessing the field via an interface.
-func (v *ColumnData) GetCreatedBy() string { return v.CreatedBy }
 
 // The Propel data types.
 type ColumnType string
@@ -1352,8 +1307,6 @@ type CreateDataPoolInput struct {
 	Description string `json:"description"`
 	// The Data Pool's data retention in days. If not specified, records will be kept undefinitely.
 	DataRetentionInDays int `json:"dataRetentionInDays"`
-	// An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
-	Tenant TenantInput `json:"tenant"`
 }
 
 // GetDataSource returns CreateDataPoolInput.DataSource, and is useful for accessing the field via an interface.
@@ -1373,9 +1326,6 @@ func (v *CreateDataPoolInput) GetDescription() string { return v.Description }
 
 // GetDataRetentionInDays returns CreateDataPoolInput.DataRetentionInDays, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInput) GetDataRetentionInDays() int { return v.DataRetentionInDays }
-
-// GetTenant returns CreateDataPoolInput.Tenant, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInput) GetTenant() TenantInput { return v.Tenant }
 
 // CreateDataPoolResponse is returned by CreateDataPool on success.
 type CreateDataPoolResponse struct {
@@ -2840,54 +2790,9 @@ func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetType() str
 	return v.ColumnData.Type
 }
 
-// GetKind returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetKind() string {
-	return v.ColumnData.Kind
-}
-
 // GetIsNullable returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
 func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetIsNullable() bool {
 	return v.ColumnData.IsNullable
-}
-
-// GetDefaultValue returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetDefaultValue() string {
-	return v.ColumnData.DefaultValue
-}
-
-// GetIsPrimaryKey returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
-	return v.ColumnData.IsPrimaryKey
-}
-
-// GetIsUniqueKey returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetIsUniqueKey() bool {
-	return v.ColumnData.IsUniqueKey
-}
-
-// GetComment returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetComment() string {
-	return v.ColumnData.Comment
-}
-
-// GetPolicyName returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetPolicyName() string {
-	return v.ColumnData.PolicyName
-}
-
-// GetCachedAt returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetCachedAt() time.Time {
-	return v.ColumnData.CachedAt
-}
-
-// GetCreatedAt returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetCreatedAt() time.Time {
-	return v.ColumnData.CreatedAt
-}
-
-// GetCreatedBy returns DataPoolDataAvailableMeasuresColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
-func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) GetCreatedBy() string {
-	return v.ColumnData.CreatedBy
 }
 
 func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
@@ -2920,25 +2825,7 @@ type __premarshalDataPoolDataAvailableMeasuresColumnConnectionNodesColumn struct
 
 	Type string `json:"type"`
 
-	Kind string `json:"kind"`
-
 	IsNullable bool `json:"isNullable"`
-
-	DefaultValue string `json:"defaultValue"`
-
-	IsPrimaryKey bool `json:"isPrimaryKey"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-
-	Comment string `json:"comment"`
-
-	PolicyName string `json:"policyName"`
-
-	CachedAt time.Time `json:"cachedAt"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
 }
 
 func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
@@ -2954,16 +2841,7 @@ func (v *DataPoolDataAvailableMeasuresColumnConnectionNodesColumn) __premarshalJ
 
 	retval.Name = v.ColumnData.Name
 	retval.Type = v.ColumnData.Type
-	retval.Kind = v.ColumnData.Kind
 	retval.IsNullable = v.ColumnData.IsNullable
-	retval.DefaultValue = v.ColumnData.DefaultValue
-	retval.IsPrimaryKey = v.ColumnData.IsPrimaryKey
-	retval.IsUniqueKey = v.ColumnData.IsUniqueKey
-	retval.Comment = v.ColumnData.Comment
-	retval.PolicyName = v.ColumnData.PolicyName
-	retval.CachedAt = v.ColumnData.CachedAt
-	retval.CreatedAt = v.ColumnData.CreatedAt
-	retval.CreatedBy = v.ColumnData.CreatedBy
 	return &retval, nil
 }
 
@@ -2999,52 +2877,9 @@ func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetName() string { retu
 // GetType returns DataPoolDataColumnsColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
 func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetType() string { return v.ColumnData.Type }
 
-// GetKind returns DataPoolDataColumnsColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetKind() string { return v.ColumnData.Kind }
-
 // GetIsNullable returns DataPoolDataColumnsColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
 func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetIsNullable() bool {
 	return v.ColumnData.IsNullable
-}
-
-// GetDefaultValue returns DataPoolDataColumnsColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetDefaultValue() string {
-	return v.ColumnData.DefaultValue
-}
-
-// GetIsPrimaryKey returns DataPoolDataColumnsColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
-	return v.ColumnData.IsPrimaryKey
-}
-
-// GetIsUniqueKey returns DataPoolDataColumnsColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetIsUniqueKey() bool {
-	return v.ColumnData.IsUniqueKey
-}
-
-// GetComment returns DataPoolDataColumnsColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetComment() string {
-	return v.ColumnData.Comment
-}
-
-// GetPolicyName returns DataPoolDataColumnsColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetPolicyName() string {
-	return v.ColumnData.PolicyName
-}
-
-// GetCachedAt returns DataPoolDataColumnsColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetCachedAt() time.Time {
-	return v.ColumnData.CachedAt
-}
-
-// GetCreatedAt returns DataPoolDataColumnsColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetCreatedAt() time.Time {
-	return v.ColumnData.CreatedAt
-}
-
-// GetCreatedBy returns DataPoolDataColumnsColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
-func (v *DataPoolDataColumnsColumnConnectionNodesColumn) GetCreatedBy() string {
-	return v.ColumnData.CreatedBy
 }
 
 func (v *DataPoolDataColumnsColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
@@ -3077,25 +2912,7 @@ type __premarshalDataPoolDataColumnsColumnConnectionNodesColumn struct {
 
 	Type string `json:"type"`
 
-	Kind string `json:"kind"`
-
 	IsNullable bool `json:"isNullable"`
-
-	DefaultValue string `json:"defaultValue"`
-
-	IsPrimaryKey bool `json:"isPrimaryKey"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-
-	Comment string `json:"comment"`
-
-	PolicyName string `json:"policyName"`
-
-	CachedAt time.Time `json:"cachedAt"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
 }
 
 func (v *DataPoolDataColumnsColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
@@ -3111,16 +2928,7 @@ func (v *DataPoolDataColumnsColumnConnectionNodesColumn) __premarshalJSON() (*__
 
 	retval.Name = v.ColumnData.Name
 	retval.Type = v.ColumnData.Type
-	retval.Kind = v.ColumnData.Kind
 	retval.IsNullable = v.ColumnData.IsNullable
-	retval.DefaultValue = v.ColumnData.DefaultValue
-	retval.IsPrimaryKey = v.ColumnData.IsPrimaryKey
-	retval.IsUniqueKey = v.ColumnData.IsUniqueKey
-	retval.Comment = v.ColumnData.Comment
-	retval.PolicyName = v.ColumnData.PolicyName
-	retval.CachedAt = v.ColumnData.CachedAt
-	retval.CreatedAt = v.ColumnData.CreatedAt
-	retval.CreatedBy = v.ColumnData.CreatedBy
 	return &retval, nil
 }
 
@@ -5153,122 +4961,70 @@ func (v *DataSourceDataTablesTableConnection) GetNodes() []DataSourceDataTablesT
 type DataSourceDataTablesTableConnectionNodesTable struct {
 	// The table's name.
 	Name string `json:"name"`
-	// The table's columns which can be used as a timestamp for a Data Pool.
-	AvailableTimestamps DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection `json:"availableTimestamps"`
-	// The table's columns which can be used as a measure for a Metric.
-	AvailableMeasures DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection `json:"availableMeasures"`
+	// The table's columns.
+	Columns DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection `json:"columns"`
 }
 
 // GetName returns DataSourceDataTablesTableConnectionNodesTable.Name, and is useful for accessing the field via an interface.
 func (v *DataSourceDataTablesTableConnectionNodesTable) GetName() string { return v.Name }
 
-// GetAvailableTimestamps returns DataSourceDataTablesTableConnectionNodesTable.AvailableTimestamps, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTable) GetAvailableTimestamps() DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection {
-	return v.AvailableTimestamps
+// GetColumns returns DataSourceDataTablesTableConnectionNodesTable.Columns, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTable) GetColumns() DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection {
+	return v.Columns
 }
 
-// GetAvailableMeasures returns DataSourceDataTablesTableConnectionNodesTable.AvailableMeasures, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTable) GetAvailableMeasures() DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection {
-	return v.AvailableMeasures
-}
-
-// DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
+// DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
 // The GraphQL type's documentation follows.
 //
 // The column connection object.
 //
 // Learn more about [pagination in GraphQL](/docs/api/pagination).
-type DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection struct {
+type DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection struct {
 	// The connection's nodes.
-	Nodes []DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn `json:"nodes"`
+	Nodes []DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn `json:"nodes"`
 }
 
-// GetNodes returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnection) GetNodes() []DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn {
+// GetNodes returns DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection) GetNodes() []DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn {
 	return v.Nodes
 }
 
-// DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
+// DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
 // The GraphQL type's documentation follows.
 //
 // The column object.
 //
 // Once a table introspection succeeds, it creates a new table object for every table it introspected. Within each table object, it also creates a column object for every column it introspected.
-type DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn struct {
+type DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn struct {
 	ColumnData `json:"-"`
 }
 
-// GetName returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetName() string {
+// GetName returns DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn) GetName() string {
 	return v.ColumnData.Name
 }
 
-// GetType returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetType() string {
+// GetType returns DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn) GetType() string {
 	return v.ColumnData.Type
 }
 
-// GetKind returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetKind() string {
-	return v.ColumnData.Kind
-}
-
-// GetIsNullable returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetIsNullable() bool {
+// GetIsNullable returns DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn) GetIsNullable() bool {
 	return v.ColumnData.IsNullable
 }
 
-// GetDefaultValue returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetDefaultValue() string {
-	return v.ColumnData.DefaultValue
-}
-
-// GetIsPrimaryKey returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
-	return v.ColumnData.IsPrimaryKey
-}
-
-// GetIsUniqueKey returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetIsUniqueKey() bool {
-	return v.ColumnData.IsUniqueKey
-}
-
-// GetComment returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetComment() string {
-	return v.ColumnData.Comment
-}
-
-// GetPolicyName returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetPolicyName() string {
-	return v.ColumnData.PolicyName
-}
-
-// GetCachedAt returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetCachedAt() time.Time {
-	return v.ColumnData.CachedAt
-}
-
-// GetCreatedAt returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetCreatedAt() time.Time {
-	return v.ColumnData.CreatedAt
-}
-
-// GetCreatedBy returns DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) GetCreatedBy() string {
-	return v.ColumnData.CreatedBy
-}
-
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
+func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
 
 	if string(b) == "null" {
 		return nil
 	}
 
 	var firstPass struct {
-		*DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn
+		*DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn
 		graphql.NoUnmarshalJSON
 	}
-	firstPass.DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn = v
+	firstPass.DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn = v
 
 	err := json.Unmarshal(b, &firstPass)
 	if err != nil {
@@ -5283,33 +5039,15 @@ func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnCon
 	return nil
 }
 
-type __premarshalDataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn struct {
+type __premarshalDataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn struct {
 	Name string `json:"name"`
 
 	Type string `json:"type"`
 
-	Kind string `json:"kind"`
-
 	IsNullable bool `json:"isNullable"`
-
-	DefaultValue string `json:"defaultValue"`
-
-	IsPrimaryKey bool `json:"isPrimaryKey"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-
-	Comment string `json:"comment"`
-
-	PolicyName string `json:"policyName"`
-
-	CachedAt time.Time `json:"cachedAt"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
 }
 
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
+func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
 	premarshaled, err := v.__premarshalJSON()
 	if err != nil {
 		return nil, err
@@ -5317,184 +5055,12 @@ func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnCon
 	return json.Marshal(premarshaled)
 }
 
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn) __premarshalJSON() (*__premarshalDataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn, error) {
-	var retval __premarshalDataSourceDataTablesTableConnectionNodesTableAvailableMeasuresColumnConnectionNodesColumn
+func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn) __premarshalJSON() (*__premarshalDataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn, error) {
+	var retval __premarshalDataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNodesColumn
 
 	retval.Name = v.ColumnData.Name
 	retval.Type = v.ColumnData.Type
-	retval.Kind = v.ColumnData.Kind
 	retval.IsNullable = v.ColumnData.IsNullable
-	retval.DefaultValue = v.ColumnData.DefaultValue
-	retval.IsPrimaryKey = v.ColumnData.IsPrimaryKey
-	retval.IsUniqueKey = v.ColumnData.IsUniqueKey
-	retval.Comment = v.ColumnData.Comment
-	retval.PolicyName = v.ColumnData.PolicyName
-	retval.CachedAt = v.ColumnData.CachedAt
-	retval.CreatedAt = v.ColumnData.CreatedAt
-	retval.CreatedBy = v.ColumnData.CreatedBy
-	return &retval, nil
-}
-
-// DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection includes the requested fields of the GraphQL type ColumnConnection.
-// The GraphQL type's documentation follows.
-//
-// The column connection object.
-//
-// Learn more about [pagination in GraphQL](/docs/api/pagination).
-type DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection struct {
-	// The connection's nodes.
-	Nodes []DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn `json:"nodes"`
-}
-
-// GetNodes returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnection) GetNodes() []DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn {
-	return v.Nodes
-}
-
-// DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn includes the requested fields of the GraphQL type Column.
-// The GraphQL type's documentation follows.
-//
-// The column object.
-//
-// Once a table introspection succeeds, it creates a new table object for every table it introspected. Within each table object, it also creates a column object for every column it introspected.
-type DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn struct {
-	ColumnData `json:"-"`
-}
-
-// GetName returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Name, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetName() string {
-	return v.ColumnData.Name
-}
-
-// GetType returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Type, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetType() string {
-	return v.ColumnData.Type
-}
-
-// GetKind returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Kind, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetKind() string {
-	return v.ColumnData.Kind
-}
-
-// GetIsNullable returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.IsNullable, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetIsNullable() bool {
-	return v.ColumnData.IsNullable
-}
-
-// GetDefaultValue returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.DefaultValue, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetDefaultValue() string {
-	return v.ColumnData.DefaultValue
-}
-
-// GetIsPrimaryKey returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.IsPrimaryKey, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetIsPrimaryKey() bool {
-	return v.ColumnData.IsPrimaryKey
-}
-
-// GetIsUniqueKey returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.IsUniqueKey, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetIsUniqueKey() bool {
-	return v.ColumnData.IsUniqueKey
-}
-
-// GetComment returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.Comment, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetComment() string {
-	return v.ColumnData.Comment
-}
-
-// GetPolicyName returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.PolicyName, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetPolicyName() string {
-	return v.ColumnData.PolicyName
-}
-
-// GetCachedAt returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.CachedAt, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetCachedAt() time.Time {
-	return v.ColumnData.CachedAt
-}
-
-// GetCreatedAt returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.CreatedAt, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetCreatedAt() time.Time {
-	return v.ColumnData.CreatedAt
-}
-
-// GetCreatedBy returns DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn.CreatedBy, and is useful for accessing the field via an interface.
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) GetCreatedBy() string {
-	return v.ColumnData.CreatedBy
-}
-
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.ColumnData)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalDataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn struct {
-	Name string `json:"name"`
-
-	Type string `json:"type"`
-
-	Kind string `json:"kind"`
-
-	IsNullable bool `json:"isNullable"`
-
-	DefaultValue string `json:"defaultValue"`
-
-	IsPrimaryKey bool `json:"isPrimaryKey"`
-
-	IsUniqueKey bool `json:"isUniqueKey"`
-
-	Comment string `json:"comment"`
-
-	PolicyName string `json:"policyName"`
-
-	CachedAt time.Time `json:"cachedAt"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-}
-
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *DataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn) __premarshalJSON() (*__premarshalDataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn, error) {
-	var retval __premarshalDataSourceDataTablesTableConnectionNodesTableAvailableTimestampsColumnConnectionNodesColumn
-
-	retval.Name = v.ColumnData.Name
-	retval.Type = v.ColumnData.Type
-	retval.Kind = v.ColumnData.Kind
-	retval.IsNullable = v.ColumnData.IsNullable
-	retval.DefaultValue = v.ColumnData.DefaultValue
-	retval.IsPrimaryKey = v.ColumnData.IsPrimaryKey
-	retval.IsUniqueKey = v.ColumnData.IsUniqueKey
-	retval.Comment = v.ColumnData.Comment
-	retval.PolicyName = v.ColumnData.PolicyName
-	retval.CachedAt = v.ColumnData.CachedAt
-	retval.CreatedAt = v.ColumnData.CreatedAt
-	retval.CreatedBy = v.ColumnData.CreatedBy
 	return &retval, nil
 }
 
@@ -9699,17 +9265,6 @@ const (
 	TableIntrospectionStatusFailed TableIntrospectionStatus = "FAILED"
 )
 
-// Fields for specifying a Data Pool's Tenant ID.
-//
-// The Tenant ID can be used for partitioning and restricting access between customers (Tenants) within a Data Pool.
-type TenantInput struct {
-	// The name of the column that represents the Tenant ID.
-	ColumnName string `json:"columnName"`
-}
-
-// GetColumnName returns TenantInput.ColumnName, and is useful for accessing the field via an interface.
-func (v *TenantInput) GetColumnName() string { return v.ColumnName }
-
 // __CreateCountDistinctMetricInput is used internally by genqlient
 type __CreateCountDistinctMetricInput struct {
 	Input CreateCountDistinctMetricInput `json:"input"`
@@ -10091,12 +9646,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -10122,16 +9672,7 @@ fragment DataSourceData on DataSource {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -10334,12 +9875,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -10365,16 +9901,7 @@ fragment DataSourceData on DataSource {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -10533,12 +10060,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -10570,16 +10092,7 @@ fragment DimensionData on Dimension {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -10672,12 +10185,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -10717,16 +10225,7 @@ fragment CommonData on Common {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
@@ -10809,12 +10308,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -10858,16 +10352,7 @@ fragment CommonData on Common {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
@@ -11052,12 +10537,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -11083,16 +10563,7 @@ fragment DataSourceData on DataSource {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -11237,12 +10708,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -11274,16 +10740,7 @@ fragment DimensionData on Dimension {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -11428,12 +10885,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -11465,16 +10917,7 @@ fragment DimensionData on Dimension {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -11635,12 +11078,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -11672,16 +11110,7 @@ fragment DimensionData on Dimension {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -11775,12 +11204,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -11820,16 +11244,7 @@ fragment CommonData on Common {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
@@ -11902,12 +11317,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -11947,16 +11357,7 @@ fragment CommonData on Common {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
@@ -12045,12 +11446,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -12090,16 +11486,7 @@ fragment CommonData on Common {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment TableIntrospectionData on TableIntrospection {
 	dataSource {
@@ -12464,12 +11851,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -12495,16 +11877,7 @@ fragment DataSourceData on DataSource {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -12704,12 +12077,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -12735,16 +12103,7 @@ fragment DataSourceData on DataSource {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -12964,12 +12323,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -12995,16 +12349,7 @@ fragment DataSourceData on DataSource {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -13166,12 +12511,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -13203,16 +12543,7 @@ fragment DimensionData on Dimension {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -13415,12 +12746,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -13446,16 +12772,7 @@ fragment DataSourceData on DataSource {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment SyncData on Sync {
 	id
@@ -13556,12 +12873,7 @@ fragment DataSourceData on DataSource {
 	tables(first: 100) {
 		nodes {
 			name
-			availableTimestamps(first: 100) {
-				nodes {
-					... ColumnData
-				}
-			}
-			availableMeasures(first: 100) {
+			columns(first: 100) {
 				nodes {
 					... ColumnData
 				}
@@ -13605,16 +12917,7 @@ fragment CommonData on Common {
 fragment ColumnData on Column {
 	name
 	type
-	kind
 	isNullable
-	defaultValue
-	isPrimaryKey
-	isUniqueKey
-	comment
-	policyName
-	cachedAt
-	createdAt
-	createdBy
 }
 fragment TableIntrospectionData on TableIntrospection {
 	dataSource {

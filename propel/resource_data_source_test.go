@@ -49,10 +49,10 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 			},
 			{
 				Config:      testAccCheckPropelDataSourceConfigBroken(ctxInvalid),
-				ExpectError: regexp.MustCompile(`DataSource in BROKEN status`),
+				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.foo"),
-					resource.TestCheckResourceAttr("propel_data_source.new", "type", "Snowflake"),
+					resource.TestCheckResourceAttr("propel_data_source.foo", "type", "Snowflake"),
 					resource.TestCheckResourceAttr("propel_data_source.foo", "status", "BROKEN"),
 				),
 			},
@@ -65,6 +65,16 @@ func testAccCheckPropelDataSourceConfigBasic(ctx map[string]interface{}) string 
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
 		type = "Http"
+
+		table {
+			name = "CLUSTER_TEST_TABLE_1"
+
+			column {
+				name = "timestamp_tz"
+				type = "TIMESTAMP"
+				nullable = false
+			}
+		}
 	}`, ctx)
 }
 
