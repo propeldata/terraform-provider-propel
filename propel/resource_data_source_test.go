@@ -16,12 +16,17 @@ import (
 )
 
 func TestAccPropelDataSourceBasic(t *testing.T) {
-	ctx := map[string]interface{}{
+	httpCtx := map[string]interface{}{
 		"resource_name": "new",
 		"unique_name":   acctest.RandString(10),
 	}
 
-	ctxInvalid := map[string]interface{}{
+	s3CtxInvalid := map[string]interface{}{
+		"resource_name": "fizz",
+		"unique_name":   acctest.RandString(10),
+	}
+
+	snowflakeCtxInvalid := map[string]interface{}{
 		"resource_name":       "foo",
 		"unique_name":         acctest.RandString(10),
 		"snowflake_account":   "invalid-account",
@@ -39,7 +44,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 		CheckDestroy:      testAccCheckPropelDataSourceDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCheckPropelDataSourceConfigBasic(ctx),
+				Config: testAccCheckPropelDataSourceConfigBasic(httpCtx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.new"),
 					resource.TestCheckResourceAttr("propel_data_source.new", "description", ""),
@@ -48,7 +53,16 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				),
 			},
 			{
-				Config:      testAccCheckPropelDataSourceConfigBroken(ctxInvalid),
+				Config:      testAccCheckPropelDataSourceS3ConfigBroken(s3CtxInvalid),
+				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckPropelDataSourceExists("propel_data_source.fizz"),
+					resource.TestCheckResourceAttr("propel_data_source.fizz", "type", "S3"),
+					resource.TestCheckResourceAttr("propel_data_source.fizz", "status", "BROKEN"),
+				),
+			},
+			{
+				Config:      testAccCheckPropelDataSourceSnowflakeConfigBroken(snowflakeCtxInvalid),
 				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.foo"),
@@ -78,7 +92,31 @@ func testAccCheckPropelDataSourceConfigBasic(ctx map[string]interface{}) string 
 	}`, ctx)
 }
 
-func testAccCheckPropelDataSourceConfigBroken(ctx map[string]interface{}) string {
+func testAccCheckPropelDataSourceS3ConfigBroken(ctx map[string]interface{}) string {
+	return Nprintf(`
+	resource "propel_data_source" "%{resource_name}" {
+		unique_name = "%{unique_name}"
+		type = "S3"
+
+		s3_connection_settings {
+			bucket = "whatever"
+			aws_access_key_id = "whatever"
+			aws_secret_access_key = "whatever"
+		}
+
+		table {
+			name = "CLUSTER_TEST_TABLE_1"
+
+			column {
+				name = "timestamp_tz"
+				type = "TIMESTAMP"
+				nullable = false
+			}
+		}
+	}`, ctx)
+}
+
+func testAccCheckPropelDataSourceSnowflakeConfigBroken(ctx map[string]interface{}) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
