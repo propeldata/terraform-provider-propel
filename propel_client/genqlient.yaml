@@ -1,6 +1,8 @@
 # Default genqlient config; for full documentation see:
 # https://github.com/Khan/genqlient/blob/main/docs/genqlient.yaml
 schema: schema.graphql
+optional: pointer
+use_struct_references: true
 operations:
 #- fragments/Application.fragment.graphql
 - fragments/Column.fragment.graphql

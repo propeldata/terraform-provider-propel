@@ -106,6 +106,7 @@ func testAccCheckPropelDataSourceS3ConfigBroken(ctx map[string]interface{}) stri
 
 		table {
 			name = "CLUSTER_TEST_TABLE_1"
+			path = "foo/*.parquet"
 
 			column {
 				name = "timestamp_tz"

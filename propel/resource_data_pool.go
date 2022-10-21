@@ -74,14 +74,17 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 
 	var diags diag.Diagnostics
 
-	response, err := pc.CreateDataPool(ctx, c, pc.CreateDataPoolInput{
-		UniqueName:  d.Get("unique_name").(string),
-		Description: d.Get("description").(string),
-		DataSource: pc.IdOrUniqueName{
-			Id: d.Get("data_source").(string),
+	id := d.Get("data_source").(string)
+	uniqueName := d.Get("unique_name").(string)
+	description := d.Get("description").(string)
+	response, err := pc.CreateDataPool(ctx, c, &pc.CreateDataPoolInput{
+		UniqueName:  &uniqueName,
+		Description: &description,
+		DataSource: &pc.IdOrUniqueName{
+			Id: &id,
 		},
 		Table: d.Get("table").(string),
-		Timestamp: pc.DimensionInput{
+		Timestamp: &pc.DimensionInput{
 			ColumnName: d.Get("timestamp").(string),
 		},
 	})
@@ -90,7 +93,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 		return diag.FromErr(err)
 	}
 
-	switch r := response.GetCreateDataPool().(type) {
+	switch r := (*response.GetCreateDataPool()).(type) {
 	case *pc.CreateDataPoolCreateDataPoolDataPoolResponse:
 		d.SetId(r.DataPool.Id)
 
@@ -162,12 +165,15 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m inter
 	c := m.(graphql.Client)
 
 	if d.HasChanges("unique_name", "description") {
-		input := pc.ModifyDataPoolInput{
-			IdOrUniqueName: pc.IdOrUniqueName{
-				Id: d.Id(),
+		id := d.Id()
+		uniqueName := d.Get("unique_name").(string)
+		description := d.Get("descriptionunique_name").(string)
+		input := &pc.ModifyDataPoolInput{
+			IdOrUniqueName: &pc.IdOrUniqueName{
+				Id: &id,
 			},
-			UniqueName:  d.Get("unique_name").(string),
-			Description: d.Get("description").(string),
+			UniqueName:  &uniqueName,
+			Description: &description,
 		}
 
 		_, err := pc.ModifyDataPool(ctx, c, input)
