@@ -22,6 +22,10 @@ fragment DataSourceData on DataSource {
                 password
             }
         }
+        ... on S3ConnectionSettings {
+            bucket
+            awsAccessKeyId
+        }
     }
     tables (first: 100) {
         nodes {

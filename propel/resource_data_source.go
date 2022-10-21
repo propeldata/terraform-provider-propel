@@ -41,6 +41,11 @@ func resourceDataSource() *schema.Resource {
 			"type": {
 				Type:     schema.TypeString,
 				Required: true,
+				ValidateFunc: validation.StringInSlice([]string{
+					"Snowflake",
+					"S3",
+					"Http",
+				}, true),
 			},
 			"status": {
 				Type:     schema.TypeString,
@@ -79,7 +84,7 @@ func resourceDataSource() *schema.Resource {
 			"snowflake_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"http_connection_settings"},
+				ConflictsWith: []string{"http_connection_settings", "s3_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -118,7 +123,7 @@ func resourceDataSource() *schema.Resource {
 			"http_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings"},
+				ConflictsWith: []string{"snowflake_connection_settings", "s3_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -143,6 +148,28 @@ func resourceDataSource() *schema.Resource {
 								},
 							},
 						}, */
+					},
+				},
+			},
+			"s3_connection_settings": {
+				Type:          schema.TypeList,
+				Optional:      true,
+				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings"},
+				MaxItems:      1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"bucket": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"aws_access_key_id": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"aws_secret_access_key": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
 					},
 				},
 			},
@@ -213,6 +240,8 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 		return resourceSnowflakeDataSourceCreate(ctx, d, meta)
 	case "HTTP":
 		return resourceHttpDataSourceCreate(ctx, d, meta)
+	case "S3":
+		return resourceS3DataSourceCreate(ctx, d, meta)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
@@ -301,6 +330,45 @@ func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, m
 	return resourceDataSourceRead(ctx, d, meta)
 }
 
+func resourceS3DataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	c := meta.(graphql.Client)
+
+	tables := make([]pc.S3DataSourceTableInput, 0)
+	if def, ok := d.Get("table").([]interface{}); ok && len(def) > 0 {
+		tables = expandS3Tables(def)
+	}
+
+	connectionSettings := d.Get("s3_connection_settings").([]interface{})[0].(map[string]interface{})
+
+	input := pc.CreateS3DataSourceInput{
+		UniqueName:  d.Get("unique_name").(string),
+		Description: d.Get("description").(string),
+		ConnectionSettings: pc.S3ConnectionSettingsInput{
+			Bucket:             connectionSettings["bucket"].(string),
+			AwsAccessKeyId:     connectionSettings["aws_access_key_id"].(string),
+			AwsSecretAccessKey: connectionSettings["aws_secret_access_key"].(string),
+			Tables:             tables,
+		},
+	}
+
+	response, err := pc.CreateS3DataSource(ctx, c, input)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	r := response.CreateS3DataSource
+	d.SetId(r.DataSource.Id)
+
+	timeout := d.Timeout(schema.TimeoutCreate)
+
+	err = waitForDataSourceConnected(ctx, c, d.Id(), timeout)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	return resourceDataSourceRead(ctx, d, meta)
+}
+
 func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
@@ -360,6 +428,11 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 			return diags
 		}
 		return handleHttpConnectionSettings(response, d)
+	case "S3":
+		if diags := handleS3Tables(response, d); diags != nil {
+			return diags
+		}
+		return handleS3ConnectionSettings(response, d)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
@@ -396,30 +469,10 @@ func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) d
 
 	// FIXME(mroberts): This is only going to work for the first page of results.
 	for _, table := range response.DataSource.Tables.Nodes {
-		/*tablePrefix := fmt.Sprintf("table.%d", tableIndex)
-
-		if err := d.Set(tablePrefix + ".name", table.Name); err != nil {
-			return diag.FromErr(err)
-		}*/
-
 		columns := make([]interface{}, 0, len(table.Columns.Nodes))
 
 		// FIXME(mroberts): This is only going to work for the first page of results.
 		for _, column := range table.Columns.Nodes {
-			/*columnPrefix := fmt.Sprintf("%s.column.%d", tablePrefix, columnIndex)
-
-			if err := d.Set(columnPrefix + ".name", column.Name); err != nil {
-				return diag.FromErr(err)
-			}
-
-			if err := d.Set(columnPrefix + ".type", column.Type); err != nil {
-				return diag.FromErr(err)
-			}
-
-			if err := d.Set(columnPrefix + ".nullable", column.IsNullable); err != nil {
-				return diag.FromErr(err)
-			}*/
-
 			columns = append(columns, map[string]interface{}{
 				"name":     column.Name,
 				"type":     column.Type,
@@ -440,7 +493,55 @@ func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) d
 	return nil
 }
 
+func handleS3Tables(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	tables := make([]interface{}, 0, len(response.DataSource.Tables.Nodes))
+
+	// FIXME(mroberts): This is only going to work for the first page of results.
+	for _, table := range response.DataSource.Tables.Nodes {
+		columns := make([]interface{}, 0, len(table.Columns.Nodes))
+
+		// FIXME(mroberts): This is only going to work for the first page of results.
+		for _, column := range table.Columns.Nodes {
+			columns = append(columns, map[string]interface{}{
+				"name": column.Name,
+				// FIXME(mroberts): What about `path`?
+				"type":     column.Type,
+				"nullable": column.IsNullable,
+			})
+		}
+
+		tables = append(tables, map[string]interface{}{
+			"name":   table.Name,
+			"column": columns,
+		})
+	}
+
+	if err := d.Set("table", (interface{})(tables)); err != nil {
+		return diag.FromErr(err)
+	}
+
+	return nil
+}
+
 func handleHttpConnectionSettings(_ *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	return nil
+}
+
+func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	cs := d.Get("s3_connection_settings").([]interface{})[0].(map[string]interface{})
+
+	settings := map[string]interface{}{
+		"aws_secret_access_key": cs["awsSecretAccessKey"],
+	}
+
+	switch s := response.DataSource.GetConnectionSettings().(type) {
+	case *pc.DataSourceDataConnectionSettingsS3ConnectionSettings:
+		settings["bucket"] = s.GetBucket()
+		settings["aws_access_key_id"] = s.GetAwsAccessKeyId()
+	default:
+		return diag.Errorf("Missing S3ConnectionSettings")
+	}
+
 	return nil
 }
 
@@ -560,6 +661,61 @@ func expandHttpColumns(def []interface{}) []pc.HttpDataSourceColumnInput {
 		}
 
 		columns = append(columns, pc.HttpDataSourceColumnInput{
+			Name:     column["name"].(string),
+			Type:     columnType,
+			Nullable: column["nullable"].(bool),
+		})
+	}
+
+	return columns
+}
+
+func expandS3Tables(def []interface{}) []pc.S3DataSourceTableInput {
+	tables := make([]pc.S3DataSourceTableInput, 0, len(def))
+
+	for _, rawTable := range def {
+		table := rawTable.(map[string]interface{})
+
+		columns := expandS3Columns(table["column"].([]interface{}))
+
+		tables = append(tables, pc.S3DataSourceTableInput{
+			Name:    table["name"].(string),
+			Columns: columns,
+		})
+	}
+
+	return tables
+}
+
+func expandS3Columns(def []interface{}) []pc.S3DataSourceColumnInput {
+	columns := make([]pc.S3DataSourceColumnInput, 0, len(def))
+
+	for _, rawColumn := range def {
+		column := rawColumn.(map[string]interface{})
+
+		var columnType pc.ColumnType
+		switch column["type"].(string) {
+		case "BOOLEAN":
+			columnType = pc.ColumnTypeBoolean
+		case "DATE":
+			columnType = pc.ColumnTypeDate
+		case "DOUBLE":
+			columnType = pc.ColumnTypeDouble
+		case "INT8":
+			columnType = pc.ColumnTypeInt8
+		case "INT16":
+			columnType = pc.ColumnTypeInt16
+		case "INT32":
+			columnType = pc.ColumnTypeInt32
+		case "INT64":
+			columnType = pc.ColumnTypeInt64
+		case "STRING":
+			columnType = pc.ColumnTypeString
+		case "TIMESTAMP":
+			columnType = pc.ColumnTypeTimestamp
+		}
+
+		columns = append(columns, pc.S3DataSourceColumnInput{
 			Name:     column["name"].(string),
 			Type:     columnType,
 			Nullable: column["nullable"].(bool),

@@ -618,7 +618,7 @@ enum DataSourceStatus {
   DELETING
 }
 
-union ConnectionSettings = SnowflakeConnectionSettings | HttpConnectionSettings
+union ConnectionSettings = SnowflakeConnectionSettings | HttpConnectionSettings | S3ConnectionSettings
 
 """The Snowflake Data Source connection settings."""
 type SnowflakeConnectionSettings {
@@ -665,6 +665,40 @@ type HttpConnectionSettings {
   While it's OK to test without HTTP Basic authentication, we recommend enabling it.
   """
   basicAuth: HttpBasicAuthSettings
+}
+
+"""
+The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, and the tables
+(along with their paths). We do not allow fetching the AWS secret access key ID after it has been set.
+"""
+type S3ConnectionSettings {
+  """The name of the S3 bucket."""
+  bucket: String!
+  """
+  The AWS access key ID for an IAM user with sufficient access to the S3 bucket.
+  """
+  awsAccessKeyId: String!
+  """The Data Source's tables."""
+  tables: [S3DataSourceTable!]
+}
+
+"""
+The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, the AWS secret
+access key, and the tables (along with their paths).
+"""
+input S3ConnectionSettingsInput {
+  """The name of the S3 bucket."""
+  bucket: String!
+  """
+  The AWS access key ID for an IAM user with sufficient access to the S3 bucket.
+  """
+  awsAccessKeyId: String!
+  """
+  The AWS secret access key for an IAM user with sufficient access to the S3 bucket.
+  """
+  awsSecretAccessKey: String!
+  """The S3 Data Source's tables."""
+  tables: [S3DataSourceTableInput!]!
 }
 
 """The fields for creating a Snowflake Data Source."""
@@ -867,6 +901,53 @@ input HttpDataSourceColumnInput {
   nullable: Boolean!
 }
 
+input CreateS3DataSourceInput {
+  """
+  The Data Source's unique name. If not specified, Propel will set the ID as unique name.
+  """
+  uniqueName: String
+  """The Data Source's description."""
+  description: String
+  """The S3 Data Source connection settings."""
+  connectionSettings: S3ConnectionSettingsInput
+}
+
+type S3DataSourceTable {
+  """The name of the table"""
+  name: String!
+  """The path to the table's files in S3."""
+  path: String
+  """All the columns that will be present in the table"""
+  columns: [S3DataSourceColumn!]!
+}
+
+input S3DataSourceTableInput {
+  """The name of the table"""
+  name: String!
+  """The path to the table's files in S3."""
+  path: String
+  """All the columns that will be present in the table"""
+  columns: [S3DataSourceColumnInput!]!
+}
+
+type S3DataSourceColumn {
+  """The column name."""
+  name: String!
+  """The column type."""
+  type: ColumnType!
+  """Whether the column's type is nullable or not."""
+  nullable: Boolean!
+}
+
+input S3DataSourceColumnInput {
+  """The column name. It has to be unique within a Table."""
+  name: String!
+  """The column type."""
+  type: ColumnType!
+  """Whether the column's type is nullable or not."""
+  nullable: Boolean!
+}
+
 """
 The result of a mutation which creates or modifies a DataSource.
 
@@ -948,6 +1029,9 @@ type DataPool implements Node & Common {
   syncing: DataPoolSyncStatus
   syncs(first: Int, after: String, last: Int, before: String): SyncConnection
   metrics(first: Int, after: String, last: Int, before: String): MetricConnection
+  """ A list of columns to exclude from the Data Pool. The specified columns from the underlying table will not be synced to the Data Pool. 
+  """
+  excludedColumns(first: Int, after: String, last: Int, before: String): ColumnConnection
 }
 
 """
@@ -2227,6 +2311,12 @@ type Mutation {
   If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
   """
   modifyHttpDataSource(input: ModifyHttpDataSourceInput!): DataSourceResponse!
+  """
+  This mutation creates a new Data Source, pointed at the specified S3 bucket.
+  
+  The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+  """
+  createS3DataSource(input: CreateS3DataSourceInput!): DataSourceResponse!
   """
   This mutation attempts to reconnect to the Data Source identified by the given ID or unique name. The mutation then returns the Data Source.
   

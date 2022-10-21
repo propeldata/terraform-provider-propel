@@ -1,0 +1,7 @@
+mutation CreateS3DataSource($input: CreateS3DataSourceInput!) {
+    createS3DataSource(input: $input) {
+        dataSource {
+            ...DataSourceData
+        }
+    }
+}
