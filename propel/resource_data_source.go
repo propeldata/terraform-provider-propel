@@ -222,6 +222,9 @@ func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, m
 	input := pc.CreateHttpDataSourceInput{
 		UniqueName:  d.Get("unique_name").(string),
 		Description: d.Get("description").(string),
+		ConnectionSettings: pc.HttpConnectionSettingsInput{
+			Tables: []pc.HttpDataSourceTableInput{},
+		},
 	}
 
 	response, err := pc.CreateHttpDataSource(ctx, c, input)

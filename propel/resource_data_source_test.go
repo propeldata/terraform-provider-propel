@@ -17,8 +17,8 @@ import (
 
 func TestAccPropelDataSourceBasic(t *testing.T) {
 	ctx := map[string]interface{}{
-		"resource_name":       "new",
-		"unique_name":         acctest.RandString(10),
+		"resource_name": "new",
+		"unique_name":   acctest.RandString(10),
 	}
 
 	ctxInvalid := map[string]interface{}{
@@ -43,7 +43,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.new"),
 					resource.TestCheckResourceAttr("propel_data_source.new", "description", ""),
-					resource.TestCheckResourceAttr("propel_data_source.new", "type", "Snowflake"),
+					resource.TestCheckResourceAttr("propel_data_source.new", "type", "Http"),
 					resource.TestCheckResourceAttr("propel_data_source.new", "status", "CONNECTED"),
 				),
 			},
@@ -64,7 +64,7 @@ func testAccCheckPropelDataSourceConfigBasic(ctx map[string]interface{}) string 
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "HTTP"
+		type = "Http"
 	}`, ctx)
 }
 
