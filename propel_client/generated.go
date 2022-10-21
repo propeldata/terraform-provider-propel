@@ -1352,10 +1352,6 @@ type CreateDataPoolInput struct {
 	Description string `json:"description"`
 	// The Data Pool's data retention in days. If not specified, records will be kept undefinitely.
 	DataRetentionInDays int `json:"dataRetentionInDays"`
-	// The list of columns to exclude from the Data Pool. The specified columns from the underlying table will not be synced to the Data Pool.
-	//
-	// You may not exclude the timestamp column. Additionally, if you specify a `tenant`, that column may not be excluded.
-	ExcludedColumns []string `json:"excludedColumns"`
 	// An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
 	Tenant TenantInput `json:"tenant"`
 }
@@ -1377,9 +1373,6 @@ func (v *CreateDataPoolInput) GetDescription() string { return v.Description }
 
 // GetDataRetentionInDays returns CreateDataPoolInput.DataRetentionInDays, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInput) GetDataRetentionInDays() int { return v.DataRetentionInDays }
-
-// GetExcludedColumns returns CreateDataPoolInput.ExcludedColumns, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInput) GetExcludedColumns() []string { return v.ExcludedColumns }
 
 // GetTenant returns CreateDataPoolInput.Tenant, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInput) GetTenant() TenantInput { return v.Tenant }

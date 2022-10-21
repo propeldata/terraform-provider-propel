@@ -4,11 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"testing"
-
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"testing"
 
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
@@ -35,12 +34,12 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 func testAccCheckPropelDataPoolConfigBasic(ctx map[string]interface{}) string {
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
-		unique_name = "test"
-		type = "HTTP"
+		unique_name = "terraform-test"
+		type = "Http"
 	}
 
 	resource "propel_data_pool" "bar" {
-		unique_name = "test"
+		unique_name = "terraform-test"
 		table = "CLUSTER_TEST_TABLE_1"
 		timestamp = "timestamp_tz"
 		data_source = "${propel_data_source.foo.id}"

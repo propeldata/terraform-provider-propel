@@ -948,9 +948,6 @@ type DataPool implements Node & Common {
   syncing: DataPoolSyncStatus
   syncs(first: Int, after: String, last: Int, before: String): SyncConnection
   metrics(first: Int, after: String, last: Int, before: String): MetricConnection
-  """ A list of columns to exclude from the Data Pool. The specified columns from the underlying table will not be synced to the Data Pool. 
-  """
-  excludedColumns(first: Int, after: String, last: Int, before: String): ColumnConnection
 }
 
 """
@@ -1120,12 +1117,6 @@ input createDataPoolInput {
   The Data Pool's data retention in days. If not specified, records will be kept undefinitely.
   """
   dataRetentionInDays: Int
-  """
-  The list of columns to exclude from the Data Pool. The specified columns from the underlying table will not be synced to the Data Pool.
-  
-  You may not exclude the timestamp column. Additionally, if you specify a `tenant`, that column may not be excluded.
-  """
-  excludedColumns: [String!]
   """
   An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
   """
