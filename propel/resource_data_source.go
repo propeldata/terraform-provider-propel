@@ -297,6 +297,15 @@ func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceDa
 func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
+	var basicAuth *pc.HttpBasicAuthInput
+	if d.Get("http_connection_settings") != nil && len(d.Get("http_connection_settings").([]interface{})) > 0 {
+		cs := d.Get("http_connection_settings").([]interface{})[0].(map[string]interface{})
+
+		if def, ok := cs["basic_auth"]; ok {
+			basicAuth = expandBasicAuth(def.([]interface{}))
+		}
+	}
+
 	tables := make([]*pc.HttpDataSourceTableInput, 0)
 	if def, ok := d.Get("table").([]interface{}); ok && len(def) > 0 {
 		tables = expandHttpTables(def)
@@ -308,7 +317,7 @@ func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, m
 		UniqueName:  &uniqueName,
 		Description: &description,
 		ConnectionSettings: &pc.HttpConnectionSettingsInput{
-			BasicAuth: nil,
+			BasicAuth: basicAuth,
 			Tables:    tables,
 		},
 	}
@@ -536,7 +545,25 @@ func handleS3Tables(response *pc.DataSourceResponse, d *schema.ResourceData) dia
 	return nil
 }
 
-func handleHttpConnectionSettings(_ *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+func handleHttpConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	if d.Get("http_connection_settings") == nil || len(d.Get("http_connection_settings").([]interface{})) == 0 {
+		return nil
+	}
+
+	cs := d.Get("http_connection_settings").([]interface{})[0].(map[string]interface{})
+
+	switch s := response.DataSource.GetConnectionSettings().(type) {
+	case *pc.DataSourceDataConnectionSettingsHttpConnectionSettings:
+		if s.BasicAuth == nil {
+			cs["basic_auth"] = nil
+		} else if cs["basic_auth"] != nil && len(cs["basic_auth"].([]interface{})) > 0 {
+			basicAuth := cs["basic_auth"].([]interface{})[0].(map[string]interface{})
+			basicAuth["username"] = s.BasicAuth.Username
+		}
+	default:
+		return diag.Errorf("Missing HttpConnectionSettings")
+	}
+
 	return nil
 }
 
@@ -741,4 +768,13 @@ func expandS3Columns(def []interface{}) []*pc.S3DataSourceColumnInput {
 	}
 
 	return columns
+}
+
+func expandBasicAuth(def []interface{}) *pc.HttpBasicAuthInput {
+	basicAuth := def[0].(map[string]interface{})
+
+	return &pc.HttpBasicAuthInput{
+		Username: basicAuth["username"].(string),
+		Password: basicAuth["password"].(string),
+	}
 }

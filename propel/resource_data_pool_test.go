@@ -34,8 +34,15 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 func testAccCheckPropelDataPoolConfigBasic(ctx map[string]interface{}) string {
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
-		unique_name = "terraform-test"
+		unique_name = "terraform-test-3"
 		type = "Http"
+
+		http_connection_settings {
+			basic_auth {
+				username = "foo"
+				password = "bar"
+			}
+		}
 
 		table {
 			name = "CLUSTER_TEST_TABLE_1"
@@ -49,7 +56,7 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]interface{}) string {
 	}
 
 	resource "propel_data_pool" "bar" {
-		unique_name = "terraform-test"
+		unique_name = "terraform-test-3"
 		table = "${propel_data_source.foo.table[0].name}"
 		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
 		data_source = "${propel_data_source.foo.id}"
