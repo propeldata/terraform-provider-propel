@@ -29,7 +29,7 @@ $ make release
 First, build and install the provider.
 
 ```shell
-$ make install
+$ make install_macos
 ```
 
 Then, navigate to the `examples` directory. 

@@ -1,9 +1,9 @@
 TEST?=$$(go list ./... | grep -v 'vendor')
-HOSTNAME=propeldata.com
+HOSTNAME=registry.terraform.io
 NAMESPACE=propeldata
 NAME=propel
 BINARY=terraform-provider-${NAME}
-VERSION=0.0.2
+VERSION=0.0.3
 OS_ARCH=darwin_arm64
 
 default: install
@@ -14,9 +14,12 @@ build:
 release:
 	goreleaser release --rm-dist --snapshot --skip-publish  --skip-sign
 
-install: build
-	mkdir -p ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
-	mv ${BINARY} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
+install_macos: build
+	mkdir -p ~/Library/Application\ Support/io.terraform/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
+	cp ${BINARY}  ~/Library/Application\ Support/io.terraform/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
+
+uninstall_macos:
+	rm -r ~/Library/Application\ Support/io.terraform/plugins/registry.terraform.io/propeldata
 
 test:
 	go test $(TEST) || exit 1

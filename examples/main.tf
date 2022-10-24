@@ -2,7 +2,7 @@ terraform {
   required_providers {
     propel = {
       source = "propeldata/propel"
-      version = "0.0.1"
+      version = "0.0.3"
     }
   }
 }
@@ -31,12 +31,13 @@ resource "propel_data_source" "snowflake_data_source" {
 resource "propel_data_source" "http_data_source" {
   unique_name = "My HTTP Data Source"
   description = "This is an example of an HTTP Data Source"
+  type = "Http"
 }
 
 resource "propel_data_pool" "data_pool" {
   unique_name = "My Data Pool"
   description = "Data Pool Description"
-  data_source = propel_data_source.data_source.id
+  data_source = propel_data_source.snowflake_data_source.id
 
   table = "sample"
   timestamp = "date"
@@ -96,8 +97,12 @@ resource "propel_metric" "count_distinct_metric" {
   dimensions = ["column_1", "column_2"]
 }
 
-output "data_source_id" {
-  value = propel_data_source.data_source.id
+output "snowflake_data_source_id" {
+  value = propel_data_source.snowflake_data_source.id
+}
+
+output "http_data_source_id" {
+  value = propel_data_source.http_data_source.id
 }
 
 output "data_pool_id" {

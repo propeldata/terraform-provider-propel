@@ -25,18 +25,19 @@ func resourceDataSource() *schema.Resource {
 			StateContext: schema.ImportStatePassthroughContext,
 		},
 		SchemaVersion: 1,
+		Description:   "Provides a Propel Data Source resource. This can be used to create and manage Propel Data Sources.",
 		Schema: map[string]*schema.Schema{
 			"unique_name": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "The Data Source name",
+				Description: "The Data Source's name.",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "The Data Source description",
+				Description: "The Data Source's description.",
 			},
 			"type": {
 				Type:     schema.TypeString,
@@ -46,15 +47,17 @@ func resourceDataSource() *schema.Resource {
 					"S3",
 					"Http",
 				}, true),
+				Description: "The Data Source's type. Depending on this, you will need to specify one of `http_connection_settings`, `s3_connection_settings`, or `snowflake_connection_settings`.",
 			},
 			"status": {
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The Data Source's status.",
 			},
 			"account": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The Account that the Data Source belongs to",
+				Description: "The Account that the Data Source belongs to.",
 			},
 			"environment": {
 				Type:        schema.TypeString,
@@ -64,58 +67,66 @@ func resourceDataSource() *schema.Resource {
 			"created_at": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The date and time of when the Data Source was created",
+				Description: "The date and time of when the Data Source was created.",
 			},
 			"modified_at": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The date and time of when the Data Source was modified",
+				Description: "The date and time of when the Data Source was modified.",
 			},
 			"created_by": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The user who created the Data Source",
+				Description: "The user who created the Data Source.",
 			},
 			"modified_by": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "The user who modified the Data Source",
+				Description: "The user who modified the Data Source.",
 			},
 			"snowflake_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
 				ConflictsWith: []string{"http_connection_settings", "s3_connection_settings"},
 				MaxItems:      1,
+				Description:   "Snowflake connection settings. Specify these for Snowflake Data Sources.",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"account": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The Snowflake account. Only include the part before the \"snowflakecomputing.com\" part of your Snowflake URL (make sure you are in classic console, not Snowsight). For AWS-based accounts, this looks like \"znXXXXX.us-east-2.aws\". For Google Cloud-based accounts, this looks like \"ffXXXXX.us-central1.gcp\".",
 						},
 						"database": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The Snowflake database name.",
 						},
 						"warehouse": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The Snowflake warehouse name. It should be \"PROPELLING\" if you used the default name in the setup script.",
 						},
 						"schema": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The Snowflake schema.",
 						},
 						"role": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The Snowflake role. It should be \"PROPELLER\" if you used the default name in the setup script.",
 						},
 						"username": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The Snowflake username. It should be \"PROPEL\" if you used the default name in the setup script.",
 						},
 						"password": {
-							Type:      schema.TypeString,
-							Required:  true,
-							Sensitive: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Sensitive:   true,
+							Description: "The Snowflake password.",
 						},
 					},
 				},
@@ -126,20 +137,24 @@ func resourceDataSource() *schema.Resource {
 				ConflictsWith: []string{"snowflake_connection_settings", "s3_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
+					Description: "HTTP connection settings. Specify these for HTTP Data Sources.",
 					Schema: map[string]*schema.Schema{
 						"basic_auth": {
-							Type:     schema.TypeList,
-							Optional: true,
-							MaxItems: 1,
+							Type:        schema.TypeList,
+							Optional:    true,
+							MaxItems:    1,
+							Description: "The HTTP Basic authentication settings for uploading new data.\n\nIf this parameter is not provided, anyone with the URL to your tables will be able to upload data. While it's OK to test without HTTP Basic authentication, we recommend enabling it.",
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"username": {
-										Type:     schema.TypeString,
-										Required: true,
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: "The username for HTTP Basic authentication that must be included in the Authorization header when uploading new data.",
 									},
 									"password": {
-										Type:     schema.TypeString,
-										Required: true,
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: "The password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.",
 									},
 								},
 							},
@@ -153,18 +168,22 @@ func resourceDataSource() *schema.Resource {
 				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
+					Description: "The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, the AWS secret access key, and the tables (along with their paths).",
 					Schema: map[string]*schema.Schema{
 						"bucket": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The name of the S3 bucket.",
 						},
 						"aws_access_key_id": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The AWS access key ID for an IAM user with sufficient access to the S3 bucket.",
 						},
 						"aws_secret_access_key": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The AWS secret access key for an IAM user with sufficient access to the S3 bucket.",
 						},
 					},
 				},
@@ -174,28 +193,34 @@ func resourceDataSource() *schema.Resource {
 				Optional: true,
 				ForceNew: true,
 				Elem: &schema.Resource{
+					Description: "Specify an HTTP or S3 Data Source's tables with this. You do not need to use this for Snowflake Data Sources, since Snowflake Data Sources' tables are automatically introspected.",
 					Schema: map[string]*schema.Schema{
 						"name": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The name of the table.",
 						},
 						"path": {
-							Type:     schema.TypeString,
-							Optional: true,
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "The path to the table's files in S3.",
 						},
 						"column": {
-							Type:     schema.TypeList,
-							Required: true,
-							ForceNew: true,
+							Type:        schema.TypeList,
+							Required:    true,
+							ForceNew:    true,
+							Description: "Specify a table's columns.",
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"name": {
-										Type:     schema.TypeString,
-										Required: true,
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: "The column name.",
 									},
 									"type": {
-										Type:     schema.TypeString,
-										Required: true,
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: "The column type.",
 										ValidateFunc: validation.StringInSlice([]string{
 											"BOOLEAN",
 											"DATE",
@@ -210,8 +235,9 @@ func resourceDataSource() *schema.Resource {
 										}, false),
 									},
 									"nullable": {
-										Type:     schema.TypeBool,
-										Required: true,
+										Type:        schema.TypeBool,
+										Required:    true,
+										Description: "Whether the column's type is nullable or not.",
 									},
 								},
 							},

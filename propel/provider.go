@@ -21,14 +21,14 @@ func Provider() *schema.Provider {
 				Required:    true,
 				Sensitive:   false,
 				DefaultFunc: schema.EnvDefaultFunc("PROPEL_CLIENT_ID", nil),
-				Description: "The CLIENT_ID for API operations.",
+				Description: "Your Propel Application's ID.",
 			},
 			"client_secret": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Sensitive:   true,
 				DefaultFunc: schema.EnvDefaultFunc("PROPEL_CLIENT_SECRET", nil),
-				Description: "The CLIENT_SECRET for API operations.",
+				Description: "Your Propel Application's secret.",
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{

@@ -20,18 +20,19 @@ func resourceMetric() *schema.Resource {
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
+		Description: "Provides a Propel Metric resource. This can be used to create and manage Propel Metrics.",
 		Schema: map[string]*schema.Schema{
 			"unique_name": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "The Metric name",
+				Description: "The Metric's name.",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "The Metric description",
+				Description: "The Metric's description.",
 			},
 			"type": {
 				Type:     schema.TypeString,
@@ -45,10 +46,11 @@ func resourceMetric() *schema.Resource {
 				Description: "The Metric type. The different Metric types determine how the values are calculated.",
 			},
 			"measure": {
-				Type:     schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-				Computed: true,
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Computed:    true,
+				Description: "The Dimension to be summed, taken the minimum of, taken the maximum of, averaged, etc. Only valid for SUM, MIN, MAX and AVERAGE Metrics.",
 			},
 			"data_pool": {
 				Type:        schema.TypeString,
@@ -56,18 +58,21 @@ func resourceMetric() *schema.Resource {
 				Description: "The Data Pool that powers this Metric.",
 			},
 			"filter": {
-				Type:     schema.TypeList,
-				Optional: true,
-				ForceNew: true,
+				Type:        schema.TypeList,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"column": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The name of the column to filter on.",
 						},
 						"operator": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The operation to perform when comparing the column and filter values.",
 							ValidateFunc: validation.StringInSlice([]string{
 								"EQUALS",
 								"NOT_EQUALS",
@@ -78,24 +83,27 @@ func resourceMetric() *schema.Resource {
 							}, false),
 						},
 						"value": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The value to compare the column to.",
 						},
 					},
 				},
 			},
 			"dimensions": {
-				Type:     schema.TypeSet,
-				Optional: true,
-				Computed: true,
-				ForceNew: true,
-				Elem:     &schema.Schema{Type: schema.TypeString},
+				Type:        schema.TypeSet,
+				Optional:    true,
+				Computed:    true,
+				ForceNew:    true,
+				Description: "The Metric's Dimensions. These Dimensions are available to Query Filters.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 			"dimension": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				ForceNew: true,
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
+				ForceNew:    true,
+				Description: "The Dimension where the count distinct operation is going to be performed. Only valid for COUNT_DISTINCT Metrics.",
 			},
 		},
 	}
