@@ -67,3 +67,22 @@ Command to run the acceptance tests:
 ```
 make testacc
 ```
+
+## Releasing 
+
+Assuming you want to release version x.y.z, you must
+
+1. Update the versions in the following files:
+
+    * Makefile
+    * examples/main.tf
+    * examples/provider/provider.tf
+
+2. Then, create a tag and push it to main:
+
+    ```
+    git tag vx.y.z
+    git push origin main vx.y.z
+    ```
+
+3. Finally, goreleaser should run and upload artifacts to the GitHub release.
