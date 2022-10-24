@@ -1,29 +1,31 @@
-TEST?=$$(go list ./... | grep -v 'vendor')
-HOSTNAME=registry.terraform.io
-NAMESPACE=propeldata
-NAME=propel
-BINARY=terraform-provider-${NAME}
+.PHONY: build lint release install_macos uninstall_macos test testacc
+
+GO_FILES=$(wildcard */*.go)
+
 VERSION=0.0.3
-OS_ARCH=darwin_arm64
 
-default: install
+build: terraform-provider-propel
 
-build:
-	go build -o ${BINARY}
+terraform-provider-propel: $(GO_FILES)
+	echo $(GO_FILES)
+	go build -o $@
+
+lint: $(GO_FILES)
+	goimports -l -w .
+	go mod tidy
 
 release:
 	goreleaser release --rm-dist --snapshot --skip-publish  --skip-sign
 
-install_macos: build
-	mkdir -p ~/Library/Application\ Support/io.terraform/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
-	cp ${BINARY}  ~/Library/Application\ Support/io.terraform/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
+install_macos: $(BINARY)
+	mkdir -p ~/Library/Application\ Support/io.terraform/plugins/registry.terraform.io/propeldata/propel/${VERSION}/darwin_arm64
+	cp ${BINARY}  ~/Library/Application\ Support/io.terraform/plugins/registry.terraform.io/propeldata/propel/${VERSION}/darwin_arm64
 
 uninstall_macos:
 	rm -r ~/Library/Application\ Support/io.terraform/plugins/registry.terraform.io/propeldata
 
-test:
-	go test $(TEST) || exit 1
-	echo $(TEST) | xargs -t -n4 go test $(TESTARGS) -timeout=30s -parallel=4
+test: $(GO_FILES)
+	go test ./... || exit 1
 
-testacc:
-	TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m
+testacc: $(GO_FILES)
+	TF_ACC=1 go test ./... -timeout 120m
