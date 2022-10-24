@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"flag"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 
 	"github.com/propeldata/terraform-provider-propel/propel"
@@ -11,9 +12,16 @@ import (
 //go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 
 func main() {
-	plugin.Serve(&plugin.ServeOpts{
-		ProviderFunc: func() *schema.Provider {
-			return propel.Provider()
-		},
-	})
+	var debugMode bool
+
+	flag.BoolVar(&debugMode, "debug", false, "set to true to run the provider with support for debuggers like delve")
+	flag.Parse()
+
+	opts := &plugin.ServeOpts{
+		Debug:        debugMode,
+		ProviderAddr: "registry.terraform.io/propeldata/propel",
+		ProviderFunc: propel.Provider,
+	}
+
+	plugin.Serve(opts)
 }
