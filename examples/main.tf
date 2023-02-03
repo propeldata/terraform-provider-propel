@@ -1,37 +1,37 @@
 terraform {
   required_providers {
     propel = {
-      source = "propeldata/propel"
+      source  = "propeldata/propel"
       version = "0.0.3"
     }
   }
 }
 
 provider "propel" {
-  client_id = var.client_id
+  client_id     = var.client_id
   client_secret = var.client_secret
 }
 
 resource "propel_data_source" "snowflake_data_source" {
   unique_name = "My Snowflake Data Source"
   description = "This is an example of a Snowflake Data Source"
-  type = "SNOWFLAKE"
+  type        = "SNOWFLAKE"
 
   snowflake_connection_settings {
-    account = "Snowflake Account"
-    database = "Snowflake Database"
+    account   = "Snowflake Account"
+    database  = "Snowflake Database"
     warehouse = "Snowflake Warehouse"
-    schema = "Snowflake Schema"
-    role = "Snowflake Role"
-    username = "Snowflake Username"
-    password = var.snowflake_password
+    schema    = "Snowflake Schema"
+    role      = "Snowflake Role"
+    username  = "Snowflake Username"
+    password  = var.snowflake_password
   }
 }
 
 resource "propel_data_source" "http_data_source" {
   unique_name = "My HTTP Data Source"
   description = "This is an example of an HTTP Data Source"
-  type = "Http"
+  type        = "Http"
 }
 
 resource "propel_data_pool" "data_pool" {
@@ -39,27 +39,33 @@ resource "propel_data_pool" "data_pool" {
   description = "Data Pool Description"
   data_source = propel_data_source.snowflake_data_source.id
 
-  table = "sample"
+  table     = "sample"
   timestamp = "date"
+
+  column {
+    name     = "date"
+    type     = "TIMESTAMP"
+    nullable = false
+  }
 }
 
 resource "propel_metric" "count_metric" {
   unique_name = "My Count Metric"
   description = "Metric Description"
-  data_pool = propel_data_pool.data_pool.id
+  data_pool   = propel_data_pool.data_pool.id
 
   type = "COUNT"
 
   filter {
-    column = "column_3"
+    column   = "column_3"
     operator = "EQUALS"
-    value = "value"
+    value    = "value"
   }
 
   filter {
-    column = "column_4"
+    column   = "column_4"
     operator = "EQUALS"
-    value = "value"
+    value    = "value"
   }
 
   dimensions = ["column_1", "column_2"]
@@ -67,15 +73,15 @@ resource "propel_metric" "count_metric" {
 
 resource "propel_metric" "sum_metric" {
   unique_name = "My Sum Metric"
-  data_pool = propel_data_pool.data_pool.id
+  data_pool   = propel_data_pool.data_pool.id
 
-  type = "SUM"
+  type    = "SUM"
   measure = "column_1"
 
   filter {
-    column = "column_3"
+    column   = "column_3"
     operator = "EQUALS"
-    value = "value"
+    value    = "value"
   }
 
   dimensions = ["column_1", "column_2"]
@@ -83,15 +89,15 @@ resource "propel_metric" "sum_metric" {
 
 resource "propel_metric" "count_distinct_metric" {
   unique_name = "My Count Distinct Metric"
-  data_pool = propel_data_pool.data_pool.id
+  data_pool   = propel_data_pool.data_pool.id
 
-  type = "COUNT_DISTINCT"
+  type      = "COUNT_DISTINCT"
   dimension = "column_1"
 
   filter {
-    column = "column_4"
+    column   = "column_4"
     operator = "EQUALS"
-    value = "value"
+    value    = "value"
   }
 
   dimensions = ["column_1", "column_2"]

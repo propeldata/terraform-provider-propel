@@ -19,6 +19,20 @@ resource "propel_data_pool" "my_data_pool" {
   data_source = propel_data_source.my_data_source.id
   table       = "events"
   timestamp   = "date"
+
+  column {
+    name = "date"
+    type = "TIMESTAMP"
+    nullable = false
+  }
+
+  column {
+    name = "account_id"
+    type = "STRING"
+    nullable = false
+  }
+
+  tenant_id = "account_id"
 }
 ```
 
@@ -30,11 +44,13 @@ resource "propel_data_pool" "my_data_pool" {
 - `data_source` (String) The Data Source that the Data Pool belongs to.
 - `table` (String) The name of the Data Pool's table.
 - `timestamp` (String) The Data Pool's timestamp column.
+- `column` (List) The Data Pool's columns
 
 ### Optional
 
 - `description` (String) The Data Pool's description.
 - `unique_name` (String) The Data Pool's name.
+- `tenant_id` (String) The name of the column used for tenancy partitioning.
 
 ### Read-Only
 
