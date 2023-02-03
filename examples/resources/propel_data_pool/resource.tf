@@ -4,4 +4,16 @@ resource "propel_data_pool" "my_data_pool" {
   data_source = propel_data_source.my_data_source.id
   table       = "events"
   timestamp   = "date"
+
+  column {
+    name     = "date"
+    type     = "TIMESTAMP"
+    nullable = false
+  }
+  column {
+    name     = "account_id"
+    type     = "STRING"
+    nullable = false
+  }
+  tenant_id = "account_id"
 }

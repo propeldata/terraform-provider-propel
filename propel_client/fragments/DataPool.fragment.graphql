@@ -1,3 +1,8 @@
+fragment DataPoolColumnData on DataPoolColumn {
+  columnName
+  type
+  isNullable
+}
 fragment DataPoolData on DataPool {
     id
     ...CommonData
@@ -10,16 +15,16 @@ fragment DataPoolData on DataPool {
     }
     table
     timestamp {
-      ...DimensionData
+      ...TimestampData
     }
     columns {
         nodes {
-            ...ColumnData
+            ...DataPoolColumnData
         }
     }
     availableMeasures {
         nodes {
-            ...ColumnData
+            ...DataPoolColumnData
         }
     }
     setupTasks {

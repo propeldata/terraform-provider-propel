@@ -2,7 +2,7 @@
 
 GO_FILES=$(wildcard */*.go)
 
-VERSION=0.0.3
+VERSION=0.1.1
 
 build: terraform-provider-propel
 
@@ -20,6 +20,13 @@ release:
 install_macos: $(BINARY)
 	mkdir -p ~/Library/Application\ Support/io.terraform/plugins/registry.terraform.io/propeldata/propel/${VERSION}/darwin_arm64
 	cp ${BINARY}  ~/Library/Application\ Support/io.terraform/plugins/registry.terraform.io/propeldata/propel/${VERSION}/darwin_arm64
+
+install_linux_amd64:
+	mkdir -p ~/.terraform.d/plugins/registry.terraform.io/propeldata/propel/${VERSION}/linux_amd64
+	cp terraform-provider-propel  ~/.terraform.d/plugins/registry.terraform.io/propeldata/propel/${VERSION}/linux_amd64
+
+uninstall_linux_amd64:
+	rm -rf ~/.terraform.d/plugins/registry.terraform.io/propeldata/propel/${VERSION}/linux_amd64
 
 uninstall_macos:
 	rm -r ~/Library/Application\ Support/io.terraform/plugins/registry.terraform.io/propeldata

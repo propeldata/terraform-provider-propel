@@ -1,0 +1,4 @@
+fragment TimestampData on Timestamp {
+  columnName
+  type
+}

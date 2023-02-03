@@ -26,6 +26,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataPoolExists("propel_data_pool.bar"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "table", "CLUSTER_TEST_TABLE_1"),
+					resource.TestCheckResourceAttr("propel_data_pool.bar", "tenant_id", "account_id"),
 				),
 			},
 		},
@@ -53,12 +54,30 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]interface{}) string {
 				type = "TIMESTAMP"
 				nullable = false
 			}
+
+			column {
+				name = "account_id"
+				type = "STRING"
+				nullable = false
+			}
 		}
 	}
 
 	resource "propel_data_pool" "bar" {
 		unique_name = "terraform-test-3"
 		table = "${propel_data_source.foo.table[0].name}"
+
+		column {
+			name = "timestamp_tz"
+			type = "TIMESTAMP"
+			nullable = false
+		}
+		column {
+			name = "account_id"
+			type = "STRING"
+			nullable = false
+		}
+		tenant_id = "account_id"
 		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
 		data_source = "${propel_data_source.foo.id}"
 	}`, ctx)
