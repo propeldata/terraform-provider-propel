@@ -91,20 +91,12 @@ func resourceDataPool() *schema.Resource {
 					},
 				},
 			},
-			// "tenant": {
-			// 	Type:        schema.TypeMap,
-			// 	Optional:    true,
-			// 	ForceNew:    true,
-			// 	Description: "The tenant ID for restricting access between customers.",
-			// 	Elem: &schema.Resource{
-			// 		Schema: map[string]*schema.Schema{
-			// 			"columnName": {
-			// 				Type:     schema.TypeString,
-			// 				Required: true,
-			// 			},
-			// 		},
-			// 	},
-			// },
+			"tenant_id": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "The tenant ID for restricting access between customers.",
+			},
 			"timestamp": {
 				Type:        schema.TypeString,
 				Required:    true,
@@ -167,7 +159,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 		columns = expandPoolColumns(def)
 	}
 
-	response, err := pc.CreateDataPool(ctx, c, &pc.CreateDataPoolInputV2{
+	input := &pc.CreateDataPoolInputV2{
 		UniqueName:  &uniqueName,
 		Description: &description,
 		DataSource:  id,
@@ -176,8 +168,14 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 			ColumnName: d.Get("timestamp").(string),
 		},
 		Columns: columns,
-	})
+	}
+	if _, exists := d.GetOk("tenant_id"); exists {
+		input.Tenant = &pc.TenantInput{
+			ColumnName: d.Get("tenant_id").(string),
+		}
+	}
 
+	response, err := pc.CreateDataPool(ctx, c, input)
 	if err != nil {
 		return diag.FromErr(err)
 	}
