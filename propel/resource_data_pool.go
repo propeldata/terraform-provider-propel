@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
+	"github.com/propeldata/terraform-provider-propel/propel/internal/utils"
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
@@ -64,6 +65,46 @@ func resourceDataPool() *schema.Resource {
 				ForceNew:    true,
 				Description: "The name of the Data Pool's table.",
 			},
+			"column": {
+				Type:        schema.TypeList,
+				Required:    true,
+				ForceNew:    false,
+				Description: "The list of columns, their types and nullability.",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"name": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The column name.",
+						},
+						"type": {
+							Type:         schema.TypeString,
+							Required:     true,
+							Description:  "The column type.",
+							ValidateFunc: utils.IsValidColumnType,
+						},
+						"nullable": {
+							Type:        schema.TypeBool,
+							Required:    true,
+							Description: "Whether the column's type is nullable or not.",
+						},
+					},
+				},
+			},
+			// "tenant": {
+			// 	Type:        schema.TypeMap,
+			// 	Optional:    true,
+			// 	ForceNew:    true,
+			// 	Description: "The tenant ID for restricting access between customers.",
+			// 	Elem: &schema.Resource{
+			// 		Schema: map[string]*schema.Schema{
+			// 			"columnName": {
+			// 				Type:     schema.TypeString,
+			// 				Required: true,
+			// 			},
+			// 		},
+			// 	},
+			// },
 			"timestamp": {
 				Type:        schema.TypeString,
 				Required:    true,
@@ -74,6 +115,44 @@ func resourceDataPool() *schema.Resource {
 	}
 }
 
+func expandPoolColumns(def []interface{}) []*pc.DataPoolColumnInput {
+	columns := make([]*pc.DataPoolColumnInput, 0, len(def))
+
+	for _, rawColumn := range def {
+		column := rawColumn.(map[string]interface{})
+
+		var columnType pc.ColumnType
+		switch column["type"].(string) {
+		case "BOOLEAN":
+			columnType = pc.ColumnTypeBoolean
+		case "DATE":
+			columnType = pc.ColumnTypeDate
+		case "DOUBLE":
+			columnType = pc.ColumnTypeDouble
+		case "INT8":
+			columnType = pc.ColumnTypeInt8
+		case "INT16":
+			columnType = pc.ColumnTypeInt16
+		case "INT32":
+			columnType = pc.ColumnTypeInt32
+		case "INT64":
+			columnType = pc.ColumnTypeInt64
+		case "STRING":
+			columnType = pc.ColumnTypeString
+		case "TIMESTAMP":
+			columnType = pc.ColumnTypeTimestamp
+		}
+
+		columns = append(columns, &pc.DataPoolColumnInput{
+			ColumnName: column["name"].(string),
+			Type:       columnType,
+			IsNullable: column["nullable"].(bool),
+		})
+	}
+
+	return columns
+}
+
 func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
@@ -82,40 +161,37 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 	id := d.Get("data_source").(string)
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
-	response, err := pc.CreateDataPool(ctx, c, &pc.CreateDataPoolInput{
+
+	columns := make([]*pc.DataPoolColumnInput, 0)
+	if def, ok := d.Get("column").([]interface{}); ok && len(def) > 0 {
+		columns = expandPoolColumns(def)
+	}
+
+	response, err := pc.CreateDataPool(ctx, c, &pc.CreateDataPoolInputV2{
 		UniqueName:  &uniqueName,
 		Description: &description,
-		DataSource: &pc.IdOrUniqueName{
-			Id: &id,
-		},
-		Table: d.Get("table").(string),
-		Timestamp: &pc.DimensionInput{
+		DataSource:  id,
+		Table:       d.Get("table").(string),
+		Timestamp: &pc.TimestampInput{
 			ColumnName: d.Get("timestamp").(string),
 		},
+		Columns: columns,
 	})
 
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	switch r := (*response.GetCreateDataPool()).(type) {
-	case *pc.CreateDataPoolCreateDataPoolDataPoolResponse:
-		d.SetId(r.DataPool.Id)
+	d.SetId(response.CreateDataPoolV2.DataPool.Id)
 
-		timeout := d.Timeout(schema.TimeoutCreate)
+	timeout := d.Timeout(schema.TimeoutCreate)
 
-		err = waitForDataPoolLive(ctx, c, d.Id(), timeout)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-
-		resourceDataPoolRead(ctx, d, meta)
-	case *pc.CreateDataPoolCreateDataPoolFailureResponse:
-		diags = append(diags, diag.Diagnostic{
-			Severity: diag.Error,
-			Summary:  "Failed to create Data Pool",
-		})
+	err = waitForDataPoolLive(ctx, c, d.Id(), timeout)
+	if err != nil {
+		return diag.FromErr(err)
 	}
+
+	resourceDataPoolRead(ctx, d, meta)
 
 	return diags
 }

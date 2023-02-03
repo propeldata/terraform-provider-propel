@@ -59,6 +59,12 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]interface{}) string {
 	resource "propel_data_pool" "bar" {
 		unique_name = "terraform-test-3"
 		table = "${propel_data_source.foo.table[0].name}"
+
+		column {
+			name = "timestamp_tz"
+			type = "TIMESTAMP"
+			nullable = false
+		}
 		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
 		data_source = "${propel_data_source.foo.id}"
 	}`, ctx)

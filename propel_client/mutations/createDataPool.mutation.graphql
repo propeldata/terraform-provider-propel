@@ -1,14 +1,9 @@
-mutation CreateDataPool($input: createDataPoolInput!) {
-    createDataPool(input: $input) {
+mutation CreateDataPool($input: CreateDataPoolInputV2!) {
+    createDataPoolV2(input: $input) {
         __typename
         ... on DataPoolResponse {
             dataPool {
                 ...DataPoolData
-            }
-        }
-        ... on FailureResponse {
-            error {
-                ...GqlError
             }
         }
     }
