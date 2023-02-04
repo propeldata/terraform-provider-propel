@@ -193,7 +193,7 @@ func resourceDataSource() *schema.Resource {
 			"table": {
 				Type:     schema.TypeList,
 				Optional: true,
-				ForceNew: true,
+				ForceNew: false,
 				Elem: &schema.Resource{
 					Description: "Specify an HTTP or S3 Data Source's tables with this. You do not need to use this for Snowflake Data Sources, since Snowflake Data Sources' tables are automatically introspected.",
 					Schema: map[string]*schema.Schema{
