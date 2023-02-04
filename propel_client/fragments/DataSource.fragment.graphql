@@ -21,6 +21,14 @@ fragment DataSourceData on DataSource {
                 username
                 password
             }
+            tables {
+                name
+                columns {
+                    name
+                    type
+                    nullable
+                }
+            }
         }
         ... on S3ConnectionSettings {
             bucket

@@ -13,3 +13,11 @@ mutation ModifySnowflakeDataSource($input: modifySnowflakeDataSourceInput!) {
         }
     }
 }
+
+mutation ModifyHttpDataSource($input: ModifyHttpDataSourceInput!) {
+    modifyHttpDataSource(input: $input) {
+        dataSource {
+            ...DataSourceData
+        }
+    }
+}
