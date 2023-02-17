@@ -196,6 +196,12 @@ func resourceDataSource() *schema.Resource {
 				Elem: &schema.Resource{
 					Description: "Specify an HTTP or S3 Data Source's tables with this. You do not need to use this for Snowflake Data Sources, since Snowflake Data Sources' tables are automatically introspected.",
 					Schema: map[string]*schema.Schema{
+						"id": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							Description: "The table's ID.",
+						},
 						"name": {
 							Type:        schema.TypeString,
 							Required:    true,
@@ -525,6 +531,7 @@ func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) d
 		}
 
 		tables = append(tables, map[string]interface{}{
+			"id":     table.Id,
 			"name":   table.Name,
 			"column": columns,
 		})

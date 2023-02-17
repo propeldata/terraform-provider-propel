@@ -5039,11 +5039,16 @@ func (v *DataSourceDataTablesTableConnection) GetNodes() []*DataSourceDataTables
 //
 // Once a table introspection succeeds, it creates a new table object for every table it introspected.
 type DataSourceDataTablesTableConnectionNodesTable struct {
+	// The table's ID.
+	Id string `json:"id"`
 	// The table's name.
 	Name string `json:"name"`
 	// The table's columns.
 	Columns *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection `json:"columns"`
 }
+
+// GetId returns DataSourceDataTablesTableConnectionNodesTable.Id, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTable) GetId() string { return v.Id }
 
 // GetName returns DataSourceDataTablesTableConnectionNodesTable.Name, and is useful for accessing the field via an interface.
 func (v *DataSourceDataTablesTableConnectionNodesTable) GetName() string { return v.Name }
@@ -9845,6 +9850,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10087,6 +10093,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10276,6 +10283,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10408,6 +10416,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10527,6 +10536,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10654,6 +10664,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10887,6 +10898,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11071,6 +11083,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11255,6 +11268,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11455,6 +11469,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11588,6 +11603,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11705,6 +11721,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11838,6 +11855,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -12247,6 +12265,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -12486,6 +12505,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -12745,6 +12765,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -12946,6 +12967,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -13188,6 +13210,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -13328,6 +13351,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
