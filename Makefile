@@ -1,14 +1,14 @@
 .PHONY: build lint release install_macos uninstall_macos test testacc
 
 GO_FILES=$(wildcard */*.go)
-
+BINARY=terraform-provider-propel
 VERSION=0.1.1
 
 build: terraform-provider-propel
 
 terraform-provider-propel: $(GO_FILES)
 	echo $(GO_FILES)
-	go build -o $@
+	go build -o ${BINARY}
 
 lint: $(GO_FILES)
 	goimports -l -w .
@@ -23,7 +23,7 @@ install_macos: $(BINARY)
 
 install_linux_amd64:
 	mkdir -p ~/.terraform.d/plugins/registry.terraform.io/propeldata/propel/${VERSION}/linux_amd64
-	cp terraform-provider-propel  ~/.terraform.d/plugins/registry.terraform.io/propeldata/propel/${VERSION}/linux_amd64
+	cp ${BINARY} ~/.terraform.d/plugins/registry.terraform.io/propeldata/propel/${VERSION}/linux_amd64
 
 uninstall_linux_amd64:
 	rm -rf ~/.terraform.d/plugins/registry.terraform.io/propeldata/propel/${VERSION}/linux_amd64
