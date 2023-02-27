@@ -29,6 +29,7 @@ fragment DataSourceData on DataSource {
     }
     tables (first: 100) {
         nodes {
+            id
             name
             columns (first: 100) {
                 nodes {

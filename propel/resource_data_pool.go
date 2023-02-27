@@ -246,7 +246,7 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m inter
 	if d.HasChanges("unique_name", "description") {
 		id := d.Id()
 		uniqueName := d.Get("unique_name").(string)
-		description := d.Get("descriptionunique_name").(string)
+		description := d.Get("description").(string)
 		input := &pc.ModifyDataPoolInput{
 			IdOrUniqueName: &pc.IdOrUniqueName{
 				Id: &id,

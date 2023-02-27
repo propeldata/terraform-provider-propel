@@ -641,8 +641,6 @@ type CreateCountDistinctMetricInput struct {
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The Dimension over which the count distinct operation is going to be performed.
 	Dimension *DimensionInput `json:"dimension,omitempty"`
-	// Employee-only API for overriding a Metric's querySource.
-	QuerySource *TableLocationInput `json:"querySource,omitempty"`
 }
 
 // GetDataPool returns CreateCountDistinctMetricInput.DataPool, and is useful for accessing the field via an interface.
@@ -662,9 +660,6 @@ func (v *CreateCountDistinctMetricInput) GetDimensions() []*DimensionInput { ret
 
 // GetDimension returns CreateCountDistinctMetricInput.Dimension, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricInput) GetDimension() *DimensionInput { return v.Dimension }
-
-// GetQuerySource returns CreateCountDistinctMetricInput.QuerySource, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricInput) GetQuerySource() *TableLocationInput { return v.QuerySource }
 
 // CreateCountDistinctMetricResponse is returned by CreateCountDistinctMetric on success.
 type CreateCountDistinctMetricResponse struct {
@@ -893,8 +888,6 @@ type CreateCountMetricInput struct {
 	Filters []*FilterInput `json:"filters,omitempty"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
-	// Employee-only API for overriding a Metric's querySource.
-	QuerySource *TableLocationInput `json:"querySource,omitempty"`
 }
 
 // GetDataPool returns CreateCountMetricInput.DataPool, and is useful for accessing the field via an interface.
@@ -911,9 +904,6 @@ func (v *CreateCountMetricInput) GetFilters() []*FilterInput { return v.Filters 
 
 // GetDimensions returns CreateCountMetricInput.Dimensions, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
-
-// GetQuerySource returns CreateCountMetricInput.QuerySource, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricInput) GetQuerySource() *TableLocationInput { return v.QuerySource }
 
 // CreateCountMetricResponse is returned by CreateCountMetric on success.
 type CreateCountMetricResponse struct {
@@ -1159,8 +1149,6 @@ type CreateDataPoolInputV2 struct {
 	Columns []*DataPoolColumnInput `json:"columns,omitempty"`
 	// An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
 	Tenant *TenantInput `json:"tenant,omitempty"`
-	// Employee-only API for overriding a Data Pool's syncDestination.
-	SyncDestination *TableLocationInput `json:"syncDestination,omitempty"`
 }
 
 // GetDataSource returns CreateDataPoolInputV2.DataSource, and is useful for accessing the field via an interface.
@@ -1183,9 +1171,6 @@ func (v *CreateDataPoolInputV2) GetColumns() []*DataPoolColumnInput { return v.C
 
 // GetTenant returns CreateDataPoolInputV2.Tenant, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInputV2) GetTenant() *TenantInput { return v.Tenant }
-
-// GetSyncDestination returns CreateDataPoolInputV2.SyncDestination, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInputV2) GetSyncDestination() *TableLocationInput { return v.SyncDestination }
 
 // CreateDataPoolResponse is returned by CreateDataPool on success.
 type CreateDataPoolResponse struct {
@@ -2372,8 +2357,6 @@ type CreateSumMetricInput struct {
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The column to be summed.
 	Measure *DimensionInput `json:"measure,omitempty"`
-	// Employee-only API for overriding a Metric's querySource.
-	QuerySource *TableLocationInput `json:"querySource,omitempty"`
 }
 
 // GetDataPool returns CreateSumMetricInput.DataPool, and is useful for accessing the field via an interface.
@@ -2393,9 +2376,6 @@ func (v *CreateSumMetricInput) GetDimensions() []*DimensionInput { return v.Dime
 
 // GetMeasure returns CreateSumMetricInput.Measure, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricInput) GetMeasure() *DimensionInput { return v.Measure }
-
-// GetQuerySource returns CreateSumMetricInput.QuerySource, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricInput) GetQuerySource() *TableLocationInput { return v.QuerySource }
 
 // CreateSumMetricResponse is returned by CreateSumMetric on success.
 type CreateSumMetricResponse struct {
@@ -4513,9 +4493,7 @@ func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return 
 //
 // DataSourceDataConnectionSettings is implemented by the following types:
 // DataSourceDataConnectionSettingsSnowflakeConnectionSettings
-// DataSourceDataConnectionSettingsBigQueryConnectionSettings
 // DataSourceDataConnectionSettingsHttpConnectionSettings
-// DataSourceDataConnectionSettingsRedshiftConnectionSettings
 // DataSourceDataConnectionSettingsS3ConnectionSettings
 type DataSourceDataConnectionSettings interface {
 	implementsGraphQLInterfaceDataSourceDataConnectionSettings()
@@ -4525,11 +4503,7 @@ type DataSourceDataConnectionSettings interface {
 
 func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
-func (v *DataSourceDataConnectionSettingsBigQueryConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
-}
 func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
-}
-func (v *DataSourceDataConnectionSettingsRedshiftConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
@@ -4551,14 +4525,8 @@ func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConn
 	case "SnowflakeConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsSnowflakeConnectionSettings)
 		return json.Unmarshal(b, *v)
-	case "BigQueryConnectionSettings":
-		*v = new(DataSourceDataConnectionSettingsBigQueryConnectionSettings)
-		return json.Unmarshal(b, *v)
 	case "HttpConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsHttpConnectionSettings)
-		return json.Unmarshal(b, *v)
-	case "RedshiftConnectionSettings":
-		*v = new(DataSourceDataConnectionSettingsRedshiftConnectionSettings)
 		return json.Unmarshal(b, *v)
 	case "S3ConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsS3ConnectionSettings)
@@ -4584,28 +4552,12 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 			*DataSourceDataConnectionSettingsSnowflakeConnectionSettings
 		}{typename, v}
 		return json.Marshal(result)
-	case *DataSourceDataConnectionSettingsBigQueryConnectionSettings:
-		typename = "BigQueryConnectionSettings"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*DataSourceDataConnectionSettingsBigQueryConnectionSettings
-		}{typename, v}
-		return json.Marshal(result)
 	case *DataSourceDataConnectionSettingsHttpConnectionSettings:
 		typename = "HttpConnectionSettings"
 
 		result := struct {
 			TypeName string `json:"__typename"`
 			*DataSourceDataConnectionSettingsHttpConnectionSettings
-		}{typename, v}
-		return json.Marshal(result)
-	case *DataSourceDataConnectionSettingsRedshiftConnectionSettings:
-		typename = "RedshiftConnectionSettings"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*DataSourceDataConnectionSettingsRedshiftConnectionSettings
 		}{typename, v}
 		return json.Marshal(result)
 	case *DataSourceDataConnectionSettingsS3ConnectionSettings:
@@ -4622,19 +4574,6 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 		return nil, fmt.Errorf(
 			`unexpected concrete type for DataSourceDataConnectionSettings: "%T"`, v)
 	}
-}
-
-// DataSourceDataConnectionSettingsBigQueryConnectionSettings includes the requested fields of the GraphQL type BigQueryConnectionSettings.
-// The GraphQL type's documentation follows.
-//
-// The BigQuery Data Source connection settings.
-type DataSourceDataConnectionSettingsBigQueryConnectionSettings struct {
-	Typename *string `json:"__typename"`
-}
-
-// GetTypename returns DataSourceDataConnectionSettingsBigQueryConnectionSettings.Typename, and is useful for accessing the field via an interface.
-func (v *DataSourceDataConnectionSettingsBigQueryConnectionSettings) GetTypename() *string {
-	return v.Typename
 }
 
 // DataSourceDataConnectionSettingsHttpConnectionSettings includes the requested fields of the GraphQL type HttpConnectionSettings.
@@ -4678,19 +4617,6 @@ func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasi
 // GetPassword returns DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings.Password, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings) GetPassword() string {
 	return v.Password
-}
-
-// DataSourceDataConnectionSettingsRedshiftConnectionSettings includes the requested fields of the GraphQL type RedshiftConnectionSettings.
-// The GraphQL type's documentation follows.
-//
-// The connection settings for a Redshift Data Source. These include the Redshift username and password. We do not allow fetching the Redshift password after it has been set.
-type DataSourceDataConnectionSettingsRedshiftConnectionSettings struct {
-	Typename *string `json:"__typename"`
-}
-
-// GetTypename returns DataSourceDataConnectionSettingsRedshiftConnectionSettings.Typename, and is useful for accessing the field via an interface.
-func (v *DataSourceDataConnectionSettingsRedshiftConnectionSettings) GetTypename() *string {
-	return v.Typename
 }
 
 // DataSourceDataConnectionSettingsS3ConnectionSettings includes the requested fields of the GraphQL type S3ConnectionSettings.
@@ -5113,11 +5039,16 @@ func (v *DataSourceDataTablesTableConnection) GetNodes() []*DataSourceDataTables
 //
 // Once a table introspection succeeds, it creates a new table object for every table it introspected.
 type DataSourceDataTablesTableConnectionNodesTable struct {
+	// The table's ID.
+	Id string `json:"id"`
 	// The table's name.
 	Name string `json:"name"`
 	// The table's columns.
 	Columns *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnection `json:"columns"`
 }
+
+// GetId returns DataSourceDataTablesTableConnectionNodesTable.Id, and is useful for accessing the field via an interface.
+func (v *DataSourceDataTablesTableConnectionNodesTable) GetId() string { return v.Id }
 
 // GetName returns DataSourceDataTablesTableConnectionNodesTable.Name, and is useful for accessing the field via an interface.
 func (v *DataSourceDataTablesTableConnectionNodesTable) GetName() string { return v.Name }
@@ -7942,9 +7873,6 @@ type ModifyDataPoolInput struct {
 	Description *string `json:"description"`
 	// The Data Pool's new data retention in days.
 	DataRetentionInDays *int `json:"dataRetentionInDays"`
-	// Employee-only API for updating a Data Pool's syncDestination. If you change this, you need to take care to migrate
-	// historical data to the new syncDestination yourself. You will also need to update the Data Pool's Metrics.
-	SyncDestination *TableLocationInput `json:"syncDestination,omitempty"`
 }
 
 // GetIdOrUniqueName returns ModifyDataPoolInput.IdOrUniqueName, and is useful for accessing the field via an interface.
@@ -7958,9 +7886,6 @@ func (v *ModifyDataPoolInput) GetDescription() *string { return v.Description }
 
 // GetDataRetentionInDays returns ModifyDataPoolInput.DataRetentionInDays, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolInput) GetDataRetentionInDays() *int { return v.DataRetentionInDays }
-
-// GetSyncDestination returns ModifyDataPoolInput.SyncDestination, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolInput) GetSyncDestination() *TableLocationInput { return v.SyncDestination }
 
 // ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse includes the requested fields of the GraphQL interface DataPoolOrFailureResponse.
 //
@@ -8430,8 +8355,6 @@ type ModifyMetricInput struct {
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The Metric's new Filters. Used to add or remove Metric Filters.
 	Filters []*FilterInput `json:"filters,omitempty"`
-	// Employee-only API for updating a Metric's querySource.
-	QuerySource *TableLocationInput `json:"querySource,omitempty"`
 	// Enables or disables access control for the Metric.
 	AccessControlEnabled *bool `json:"accessControlEnabled"`
 }
@@ -8450,9 +8373,6 @@ func (v *ModifyMetricInput) GetDimensions() []*DimensionInput { return v.Dimensi
 
 // GetFilters returns ModifyMetricInput.Filters, and is useful for accessing the field via an interface.
 func (v *ModifyMetricInput) GetFilters() []*FilterInput { return v.Filters }
-
-// GetQuerySource returns ModifyMetricInput.QuerySource, and is useful for accessing the field via an interface.
-func (v *ModifyMetricInput) GetQuerySource() *TableLocationInput { return v.QuerySource }
 
 // GetAccessControlEnabled returns ModifyMetricInput.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *ModifyMetricInput) GetAccessControlEnabled() *bool { return v.AccessControlEnabled }
@@ -9501,63 +9421,6 @@ const (
 	TableIntrospectionStatusFailed TableIntrospectionStatus = "FAILED"
 )
 
-type TableLocationFlavorInput struct {
-	Type TableLocationFlavorType `json:"type"`
-	// Required when type is REPLACING or COLLAPSING.
-	PrimaryKey *string `json:"primaryKey"`
-	// Optional when type is REPLACING.
-	Ver *string `json:"ver"`
-	// Required when type is COLLAPSING.
-	Sign *string `json:"sign"`
-	// Optional when type is COLLAPSING.
-	Version *string `json:"version"`
-}
-
-// GetType returns TableLocationFlavorInput.Type, and is useful for accessing the field via an interface.
-func (v *TableLocationFlavorInput) GetType() TableLocationFlavorType { return v.Type }
-
-// GetPrimaryKey returns TableLocationFlavorInput.PrimaryKey, and is useful for accessing the field via an interface.
-func (v *TableLocationFlavorInput) GetPrimaryKey() *string { return v.PrimaryKey }
-
-// GetVer returns TableLocationFlavorInput.Ver, and is useful for accessing the field via an interface.
-func (v *TableLocationFlavorInput) GetVer() *string { return v.Ver }
-
-// GetSign returns TableLocationFlavorInput.Sign, and is useful for accessing the field via an interface.
-func (v *TableLocationFlavorInput) GetSign() *string { return v.Sign }
-
-// GetVersion returns TableLocationFlavorInput.Version, and is useful for accessing the field via an interface.
-func (v *TableLocationFlavorInput) GetVersion() *string { return v.Version }
-
-type TableLocationFlavorType string
-
-const (
-	// Our classic, MergeTree-based implementation.
-	TableLocationFlavorTypeClassic TableLocationFlavorType = "CLASSIC"
-	// Our ReplacingMergeTree-based implementation.
-	TableLocationFlavorTypeReplacing TableLocationFlavorType = "REPLACING"
-	// Our CollapsingMergeTree-based implementation.
-	TableLocationFlavorTypeCollapsing TableLocationFlavorType = "COLLAPSING"
-)
-
-// Override the TableLocation to sync a Data Pool to. Optional fields have sensible defaults.
-type TableLocationInput struct {
-	// The name of the table.
-	Table *string `json:"table"`
-	// The schema version of the table.
-	SchemaVersion *int `json:"schemaVersion"`
-	// The TableLocation's flavor. Defaults to CLASSIC.
-	Flavor *TableLocationFlavorInput `json:"flavor,omitempty"`
-}
-
-// GetTable returns TableLocationInput.Table, and is useful for accessing the field via an interface.
-func (v *TableLocationInput) GetTable() *string { return v.Table }
-
-// GetSchemaVersion returns TableLocationInput.SchemaVersion, and is useful for accessing the field via an interface.
-func (v *TableLocationInput) GetSchemaVersion() *int { return v.SchemaVersion }
-
-// GetFlavor returns TableLocationInput.Flavor, and is useful for accessing the field via an interface.
-func (v *TableLocationInput) GetFlavor() *TableLocationFlavorInput { return v.Flavor }
-
 // Fields for specifying a Data Pool's Tenant ID.
 //
 // The Tenant ID can be used for partitioning and restricting access between customers (Tenants) within a Data Pool.
@@ -9987,6 +9850,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10229,6 +10093,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10418,6 +10283,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10550,6 +10416,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10669,6 +10536,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -10796,6 +10664,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11029,6 +10898,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11213,6 +11083,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11397,6 +11268,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11597,6 +11469,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11730,6 +11603,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11847,6 +11721,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -11980,6 +11855,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -12389,6 +12265,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -12628,6 +12505,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -12887,6 +12765,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -13088,6 +12967,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -13330,6 +13210,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
@@ -13470,6 +13351,7 @@ fragment DataSourceData on DataSource {
 	}
 	tables(first: 100) {
 		nodes {
+			id
 			name
 			columns(first: 100) {
 				nodes {
