@@ -166,8 +166,12 @@ type Application implements Node & Common {
 
 """The API operations an Application is authorized to perform."""
 enum ApplicationScope {
-  """Grant read/write access to Data Sources, Data Pools and Metrics."""
+  """
+  Grant read/write access to Data Sources, Data Pools, Metrics and Policies.
+  """
   ADMIN
+  """Grant read/write access to Applications."""
+  APPLICATION_ADMIN
   """Grant read access to query Data Pools."""
   DATA_POOL_QUERY
   """Grant read access to fetch column statistics from Data Pools."""
@@ -176,6 +180,52 @@ enum ApplicationScope {
   METRIC_QUERY
   """Grant read access to fetch Dimension statistics from Metrics."""
   METRIC_STATS
+}
+
+"""The fields for creating an Application."""
+input createApplicationInput {
+  """
+  The Application's unique name. If not specified, Propel will set the ID as unique name.
+  """
+  uniqueName: String
+  """The Application's description."""
+  description: String
+  """
+  The Application's Propeller. If no Propeller is provided, Propel will set the Propeller to `P1_X_SMALL`.
+  """
+  propeller: Propeller
+  """
+  The Application's API authorization scopes. If specified, at least one scope must be provided; otherwise, all scopes will be granted to the Application by default.
+  """
+  scopes: [ApplicationScope!]
+}
+
+"""The fields for modifying an Application."""
+input modifyApplicationInput {
+  """The ID or unique name of the Application to modify."""
+  idOrUniqueName: idOrUniqueName!
+  """The Application's new unique name."""
+  uniqueName: String
+  """The Application's new description. """
+  description: String
+  """The Application's new Propeller. """
+  propeller: Propeller
+  """The Application's new API authorization scopes. """
+  scopes: [ApplicationScope!]
+}
+
+"""
+The result of a mutation which creates or modifies an Application.
+
+If successful, an `ApplicationResponse` will be returned; otherwise, a
+`FailureResponse` will be returned.
+"""
+union ApplicationOrFailureResponse = ApplicationResponse | FailureResponse
+
+"""The result of a mutation which creates or modifies an Application."""
+type ApplicationResponse {
+  """ The Application which was created or modified. """
+  application: Application
 }
 
 """
@@ -426,6 +476,8 @@ type Column {
 
 """The types of Data Sources."""
 enum DataSourceType {
+  """Indicates a Webhook Data Source."""
+  WEBHOOK
   """Indicates an S3 Data Source."""
   S3
   """Indicates a Redshift Data Source."""
@@ -604,6 +656,8 @@ enum ColumnType {
   DATE
   """A date with a timestamp. For example, "yyy-MM-dd HH:mm:ss"."""
   TIMESTAMP
+  """A JavaScript Object Notation (JSON) document."""
+  JSON
 }
 
 """
@@ -757,6 +811,10 @@ type DataPool implements Node & Common {
   timestamp: Timestamp!
   """The Data Pool's Tenant ID, if configured."""
   tenant: Tenant
+  """
+  The Data Pool's cursor column. The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`.
+  """
+  cursor: Cursor
   """ The number of records in the Data Pool. """
   recordCount: String
   """ The amount of storage in terabytes used by the Data Pool. """
@@ -776,11 +834,11 @@ type DataPool implements Node & Common {
   """ A list of setup tasks performed on the Data Pool during its most recent setup attempt.
   """
   setupTasks: [DataPoolSetupTask!]
-  """ Indicates whether or not syncing records is enabled for the Data Pool.
-  """
-  syncing: DataPoolSyncStatus
-  syncs(first: Int, after: String, last: Int, before: String): SyncConnection
+  """ Settings related to Data Pool syncing. """
+  syncing: DataPoolSyncing!
+  syncs(filter: SyncsFilter, first: Int, after: String, last: Int, before: String): SyncConnection
   metrics(first: Int, after: String, last: Int, before: String): MetricConnection
+  deletionJobs(first: Int, after: String, last: Int, before: String): DeletionJobConnection
 }
 
 """
@@ -920,6 +978,36 @@ input TenantInput {
   columnName: String!
 }
 
+"""The cursor fields."""
+type Cursor {
+  """ The name of the column that represents the cursor. """
+  columnName: String!
+  """ The cursor column's type. """
+  type: ColumnType!
+}
+
+"""The fields for specifying the Data Pool's Cursor."""
+input CursorInput {
+  """ The name of the column that represents the Cursor. """
+  columnName: String!
+}
+
+"""
+The available Data Pool sync intervals. Specify unit of time between attempts to sync data from your data warehouse.
+
+Note that the syncing interval is approximate. For example, setting the syncing interval to `EVERY_1_HOUR` does not mean that syncing will occur exactly on the hour. Instead, the syncing interval starts relative to when the Data Pool goes `LIVE`, and Propel will attempt to sync approximately every hour. Additionally, if you pause or resume syncing, this too can shift the syncing interval around.
+"""
+enum DataPoolSyncInterval {
+  EVERY_1_MINUTE
+  EVERY_5_MINUTES
+  EVERY_15_MINUTES
+  EVERY_30_MINUTES
+  EVERY_1_HOUR
+  EVERY_4_HOURS
+  EVERY_12_HOURS
+  EVERY_24_HOURS
+}
+
 type DataPoolColumn {
   """
   The name of the Data Source column that this Data Pool column derives from.
@@ -974,6 +1062,12 @@ input CreateDataPoolInputV2 {
   An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
   """
   tenant: TenantInput
+  """
+  The table's cursor column. The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`.
+  """
+  cursor: CursorInput
+  """ The Data Pool's syncing settings. """
+  syncing: DataPoolSyncingInput
 }
 
 """The fields for modifying a Data Pool."""
@@ -986,6 +1080,8 @@ input modifyDataPoolInput {
   description: String
   """The Data Pool's new data retention in days. """
   dataRetentionInDays: Int
+  """ The Data Pool's new syncing settings. """
+  syncing: DataPoolSyncingInput
 }
 
 """
@@ -1012,8 +1108,28 @@ enum DataPoolSyncStatus {
   DISABLING
   """ Syncing is disabled for the Data Pool. """
   DISABLED
-  """ Propel is re-enabling syncing for the Data Pool. """
-  ENABLING
+}
+
+"""Settings related to Data Pool syncing."""
+type DataPoolSyncing {
+  """ Indicates whether syncing is enabled or disabled. """
+  status: DataPoolSyncStatus!
+  """
+  The syncing interval.
+
+  Note that the syncing interval is approximate. For example, setting the syncing interval to `EVERY_1_HOUR`
+  does not mean that syncing will occur exactly on the hour. Instead, the syncing interval starts relative to
+  when the Data Pool goes `LIVE`, and Propel will attempt to sync approximately every hour. Additionally,
+  if you pause or resume syncing, this too can shift the syncing interval around.
+  """
+  interval: DataPoolSyncInterval!
+  """ The date and time of the most recent Sync in UTC. """
+  lastSyncedAt: DateTime
+}
+
+"""The fields for modifying the Data Pool syncing."""
+input DataPoolSyncingInput {
+  interval: DataPoolSyncInterval!
 }
 
 """
@@ -1082,27 +1198,38 @@ enum SyncStatus {
   """
   FAILED
   """ Propel is deleting the Sync. """
-  DELETING
+  DELETING @deprecated(reason: "No longer used")
+}
+
+"""The filter to apply when listing the Syncs for a Data Pool."""
+enum SyncsFilter {
+  """ Returns only Syncs with empty records. """
+  EMPTY
+  """ Returns only Syncs that contain one or more records. """
+  NOT_EMPTY
+  """ Returns all Syncs, regardless of whether they contain records or not.
+  """
+  ALL
 }
 
 """
-The fields for querying a report.
+The fields for querying a Metric Report.
 
-A report is a table whose columns include dimensions and Metric values, calculated over a given time range.
+A Metric Report is a table whose columns include dimensions and Metric values, calculated over a given time range.
 """
 input MetricReportInput {
   """ Optionally specifies the Propeller to use. Applications may not set this value. Instead, Application Queries always use the Propeller configured on the Application.
   """
   propeller: Propeller
-  """ The time range for calculating the report."""
+  """ The time range for calculating the Metric Report."""
   timeRange: TimeRangeInput!
   """ One or many dimensions to group the Metric values by. Typically, dimensions in a report are what you want to compare and rank.
   """
   dimensions: [MetricReportDimensionInput!]!
-  """ One or more Metrics to include in the report. These will be broken down by `dimensions`.
+  """ One or more Metrics to include in the Metric Report. These will be broken down by `dimensions`.
   """
   metrics: [MetricReportMetricInput!]!
-  """ The index of the column to order the report by. The index is 1-based and defaults to the first Metric column. In other words, by default, reports are ordered by the first Metric; however, you can order by the second Metric, third Metric, etc., by overriding the `orderByColumn` input. You can also order by dimensions this way.
+  """ The index of the column to order the Metric Report by. The index is 1-based and defaults to the first Metric column. In other words, by default, reports are ordered by the first Metric; however, you can order by the second Metric, third Metric, etc., by overriding the `orderByColumn` input. You can also order by dimensions this way.
   """
   orderByColumn: Int
   """ The number of rows to be returned when paging forward. It can be a number between 1 and 1,000.
@@ -1117,9 +1244,9 @@ input MetricReportInput {
   before: String
 }
 
-"""The fields for specifying a dimension to include in a report."""
+"""The fields for specifying a dimension to include in a Metric Report."""
 input MetricReportDimensionInput {
-  """ The column name of the dimension to include in a report. This must match the name of a Data Pool column.
+  """ The column name of the dimension to include in a Metric Report. This must match the name of a Data Pool column.
   """
   columnName: String!
   """ The name to display in the `headers` array when displaying the report. This defaults to the column name if unspecified.
@@ -1130,7 +1257,7 @@ input MetricReportDimensionInput {
   sort: Sort
 }
 
-"""The fields for specifying a Metric to include in a report."""
+"""The fields for specifying a Metric to include in a Metric Report."""
 input MetricReportMetricInput {
   """ The Metric's unique name. If not specified, Propel will lookup the Metric by ID.
   """
@@ -1149,7 +1276,7 @@ input MetricReportMetricInput {
 }
 
 """
-The report connection object.
+The Metric Report connection object.
 
 It includes `headers` and `rows` for a single page of a report. It also allows paging forward and backward to other
 pages of the report.
@@ -1176,7 +1303,7 @@ type MetricReportConnection {
 }
 
 """
-The report edge object.
+The Metric Report edge object.
 
 Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
 """
@@ -1188,7 +1315,7 @@ type MetricReportEdge {
 }
 
 """
-The report node object.
+The Metric Report node object.
 
 This type represents a single row of a report.
 
@@ -1911,6 +2038,8 @@ enum QueryType {
   STATS
   """Indicates a Report Query."""
   REPORT
+  """Indicates a Record Table Query."""
+  RECORDS
 }
 
 """The Query subtype."""
@@ -2083,7 +2212,58 @@ type PolicyResponse {
   policy: Policy
 }
 
+enum DeletionJobStatus {
+  CREATED
+  IN_PROGRESS
+  SUCCEEDED
+  FAILED
+}
+
+type DeletionJob implements Node {
+  id: ID!
+  createdAt: DateTime!
+  createdBy: String!
+  modifiedAt: DateTime!
+  modifiedBy: String!
+  account: Account!
+  environment: Environment!
+  dataPool: DataPool!
+  status: DeletionJobStatus!
+  condition: [Filter!]!
+  error: Error
+  progress: Float!
+  startedAt: DateTime
+  succeededAt: DateTime
+  failedAt: DateTime
+}
+
 type Mutation {
+  """
+  This mutation creates a new Application and returns the newly created Application (or an error message if creating the Application fails).
+
+  [Learn more about Applications](https://www.propeldata.com/docs/applications).
+  """
+  createApplication(input: createApplicationInput!): ApplicationOrFailureResponse
+  """
+  This mutation selects an Application by its ID or unique name and modifies it to have the given unique name, description, Propeller, and scopes.
+
+  If any of the optional arguments are omitted, those properties will be unchanged on the Application.
+
+  [Learn more about Applications](https://www.propeldata.com/docs/applications).
+  """
+  modifyApplication(input: modifyApplicationInput!): ApplicationOrFailureResponse
+  """
+  This mutation deletes the specified Application by ID and then returns the same ID if the Application was deleted successfully.
+
+  [Learn more about Applications](https://www.propeldata.com/docs/applications).
+  """
+  deleteApplication(id: ID!): ID
+  """
+  This mutation deletes the specified Application by name and then returns the Application's ID if the Application was deleted successfully.
+
+  [Learn more about Applications](https://www.propeldata.com/docs/applications).
+  """
+  deleteApplicationByName(uniqueName: String!): ID
   """
   This mutation creates a new Data Source from the given Snowflake database using the specified Snowflake account, warehouse, schema, username, and role.
 
@@ -2573,6 +2753,32 @@ type DataSourceEdge {
   cursor: String!
   """The edge's node."""
   node: DataSource!
+}
+
+"""
+The Data Source connection object.
+
+Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+"""
+type DeletionJobConnection {
+  """The Data Source connection's edges."""
+  edges: [DeletionJobEdge!]!
+  """The Data Source connection's nodes."""
+  nodes: [DeletionJob!]!
+  """The Data Source connection's page info."""
+  pageInfo: PageInfo!
+}
+
+"""
+The Data Source edge object.
+
+Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+"""
+type DeletionJobEdge {
+  """The edge's cursor."""
+  cursor: String!
+  """The edge's node."""
+  node: DeletionJob!
 }
 
 """

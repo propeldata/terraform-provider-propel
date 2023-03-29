@@ -59,6 +59,8 @@ const (
 	ColumnTypeDate ColumnType = "DATE"
 	// A date with a timestamp. For example, "yyy-MM-dd HH:mm:ss".
 	ColumnTypeTimestamp ColumnType = "TIMESTAMP"
+	// A JavaScript Object Notation (JSON) document.
+	ColumnTypeJson ColumnType = "JSON"
 )
 
 // CommonData includes the GraphQL fields of Common requested by the fragment CommonData.
@@ -1149,6 +1151,10 @@ type CreateDataPoolInputV2 struct {
 	Columns []*DataPoolColumnInput `json:"columns,omitempty"`
 	// An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
 	Tenant *TenantInput `json:"tenant,omitempty"`
+	// The table's cursor column. The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`.
+	Cursor *CursorInput `json:"cursor,omitempty"`
+	// The Data Pool's syncing settings.
+	Syncing *DataPoolSyncingInput `json:"syncing,omitempty"`
 }
 
 // GetDataSource returns CreateDataPoolInputV2.DataSource, and is useful for accessing the field via an interface.
@@ -1171,6 +1177,12 @@ func (v *CreateDataPoolInputV2) GetColumns() []*DataPoolColumnInput { return v.C
 
 // GetTenant returns CreateDataPoolInputV2.Tenant, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInputV2) GetTenant() *TenantInput { return v.Tenant }
+
+// GetCursor returns CreateDataPoolInputV2.Cursor, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolInputV2) GetCursor() *CursorInput { return v.Cursor }
+
+// GetSyncing returns CreateDataPoolInputV2.Syncing, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolInputV2) GetSyncing() *DataPoolSyncingInput { return v.Syncing }
 
 // CreateDataPoolResponse is returned by CreateDataPool on success.
 type CreateDataPoolResponse struct {
@@ -2389,6 +2401,15 @@ type CreateSumMetricResponse struct {
 func (v *CreateSumMetricResponse) GetCreateSumMetric() *CreateSumMetricCreateSumMetricMetricResponse {
 	return v.CreateSumMetric
 }
+
+// The fields for specifying the Data Pool's Cursor.
+type CursorInput struct {
+	// The name of the column that represents the Cursor.
+	ColumnName string `json:"columnName"`
+}
+
+// GetColumnName returns CursorInput.ColumnName, and is useful for accessing the field via an interface.
+func (v *CursorInput) GetColumnName() string { return v.ColumnName }
 
 // DataPoolByNameDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
@@ -3697,6 +3718,30 @@ const (
 	// Propel is deleting the Data Pool and all of its associated data.
 	DataPoolStatusDeleting DataPoolStatus = "DELETING"
 )
+
+// The available Data Pool sync intervals. Specify unit of time between attempts to sync data from your data warehouse.
+//
+// Note that the syncing interval is approximate. For example, setting the syncing interval to `EVERY_1_HOUR` does not mean that syncing will occur exactly on the hour. Instead, the syncing interval starts relative to when the Data Pool goes `LIVE`, and Propel will attempt to sync approximately every hour. Additionally, if you pause or resume syncing, this too can shift the syncing interval around.
+type DataPoolSyncInterval string
+
+const (
+	DataPoolSyncIntervalEvery1Minute   DataPoolSyncInterval = "EVERY_1_MINUTE"
+	DataPoolSyncIntervalEvery5Minutes  DataPoolSyncInterval = "EVERY_5_MINUTES"
+	DataPoolSyncIntervalEvery15Minutes DataPoolSyncInterval = "EVERY_15_MINUTES"
+	DataPoolSyncIntervalEvery30Minutes DataPoolSyncInterval = "EVERY_30_MINUTES"
+	DataPoolSyncIntervalEvery1Hour     DataPoolSyncInterval = "EVERY_1_HOUR"
+	DataPoolSyncIntervalEvery4Hours    DataPoolSyncInterval = "EVERY_4_HOURS"
+	DataPoolSyncIntervalEvery12Hours   DataPoolSyncInterval = "EVERY_12_HOURS"
+	DataPoolSyncIntervalEvery24Hours   DataPoolSyncInterval = "EVERY_24_HOURS"
+)
+
+// The fields for modifying the Data Pool syncing.
+type DataPoolSyncingInput struct {
+	Interval DataPoolSyncInterval `json:"interval"`
+}
+
+// GetInterval returns DataPoolSyncingInput.Interval, and is useful for accessing the field via an interface.
+func (v *DataPoolSyncingInput) GetInterval() DataPoolSyncInterval { return v.Interval }
 
 // DataPoolsDataPoolsDataPoolConnection includes the requested fields of the GraphQL type DataPoolConnection.
 // The GraphQL type's documentation follows.
@@ -5180,6 +5225,8 @@ const (
 type DataSourceType string
 
 const (
+	// Indicates a Webhook Data Source.
+	DataSourceTypeWebhook DataSourceType = "WEBHOOK"
 	// Indicates an S3 Data Source.
 	DataSourceTypeS3 DataSourceType = "S3"
 	// Indicates a Redshift Data Source.
@@ -7873,6 +7920,8 @@ type ModifyDataPoolInput struct {
 	Description *string `json:"description"`
 	// The Data Pool's new data retention in days.
 	DataRetentionInDays *int `json:"dataRetentionInDays"`
+	// The Data Pool's new syncing settings.
+	Syncing *DataPoolSyncingInput `json:"syncing,omitempty"`
 }
 
 // GetIdOrUniqueName returns ModifyDataPoolInput.IdOrUniqueName, and is useful for accessing the field via an interface.
@@ -7886,6 +7935,9 @@ func (v *ModifyDataPoolInput) GetDescription() *string { return v.Description }
 
 // GetDataRetentionInDays returns ModifyDataPoolInput.DataRetentionInDays, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolInput) GetDataRetentionInDays() *int { return v.DataRetentionInDays }
+
+// GetSyncing returns ModifyDataPoolInput.Syncing, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolInput) GetSyncing() *DataPoolSyncingInput { return v.Syncing }
 
 // ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse includes the requested fields of the GraphQL interface DataPoolOrFailureResponse.
 //
