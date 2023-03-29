@@ -129,6 +129,8 @@ func expandPoolColumns(def []interface{}) []*pc.DataPoolColumnInput {
 			columnType = pc.ColumnTypeInt32
 		case "INT64":
 			columnType = pc.ColumnTypeInt64
+		case "JSON":
+			columnType = pc.ColumnTypeJson
 		case "STRING":
 			columnType = pc.ColumnTypeString
 		case "TIMESTAMP":
