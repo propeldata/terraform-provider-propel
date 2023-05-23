@@ -112,7 +112,7 @@ func resourceDataPool() *schema.Resource {
 			"syncing": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				ForceNew:    false,
+				Computed:    true,
 				Description: "The Data Pool's syncing settings.",
 				MaxItems:    1,
 				Elem: &schema.Resource{
@@ -293,10 +293,15 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 	}
 
 	syncing := map[string]any{
-		"status":         response.DataPool.Syncing.GetStatus(),
-		"interval":       response.DataPool.Syncing.GetInterval(),
-		"last_synced_at": response.DataPool.Syncing.GetLastSyncedAt().Format(time.RFC3339),
+		"status":   response.DataPool.Syncing.GetStatus(),
+		"interval": response.DataPool.Syncing.GetInterval(),
 	}
+
+	lastSyncedAt := response.DataPool.Syncing.GetLastSyncedAt()
+	if lastSyncedAt != nil {
+		syncing["last_synced_at"] = lastSyncedAt.Format(time.RFC3339)
+	}
+
 	if err := d.Set("syncing", []map[string]any{syncing}); err != nil {
 		return diag.FromErr(err)
 	}
