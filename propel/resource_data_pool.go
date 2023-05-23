@@ -110,11 +110,30 @@ func resourceDataPool() *schema.Resource {
 				Description: "The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`",
 			},
 			"syncing": {
-				Type:        schema.TypeMap,
+				Type:        schema.TypeList,
 				Optional:    true,
 				ForceNew:    false,
 				Description: "The Data Pool's syncing settings.",
-				Elem:        &schema.Schema{Type: schema.TypeString},
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"status": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Indicates whether syncing is enabled or disabled.",
+						},
+						"interval": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The syncing interval.",
+						},
+						"last_synced_at": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The date and time of the most recent Sync in UTC.",
+						},
+					},
+				},
 			},
 		},
 	}
@@ -198,10 +217,10 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 	}
 
 	if _, exists := d.GetOk("syncing"); exists {
-		syncing := d.Get("syncing").(map[string]any)
+		syncing := d.Get("syncing").([]any)[0].(map[string]any)
 
 		input.Syncing = &pc.DataPoolSyncingInput{
-			Interval: syncing["interval"].(pc.DataPoolSyncInterval),
+			Interval: pc.DataPoolSyncInterval(syncing["interval"].(string)),
 		}
 	}
 
@@ -278,7 +297,7 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 		"interval":       response.DataPool.Syncing.GetInterval(),
 		"last_synced_at": response.DataPool.Syncing.GetLastSyncedAt().Format(time.RFC3339),
 	}
-	if err := d.Set("syncing", syncing); err != nil {
+	if err := d.Set("syncing", []map[string]any{syncing}); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -288,7 +307,7 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	if d.HasChanges("unique_name", "description") {
+	if d.HasChanges("unique_name", "description", "syncing") {
 		id := d.Id()
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
@@ -298,6 +317,14 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m inter
 			},
 			UniqueName:  &uniqueName,
 			Description: &description,
+		}
+
+		if _, exists := d.GetOk("syncing"); exists {
+			syncing := d.Get("syncing").([]any)[0].(map[string]any)
+
+			input.Syncing = &pc.DataPoolSyncingInput{
+				Interval: pc.DataPoolSyncInterval(syncing["interval"].(string)),
+			}
 		}
 
 		_, err := pc.ModifyDataPool(ctx, c, input)
