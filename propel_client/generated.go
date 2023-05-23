@@ -5679,7 +5679,35 @@ func (v *DimensionInput) GetColumnName() string { return v.ColumnName }
 // FilterData includes the GraphQL fields of Filter requested by the fragment FilterData.
 // The GraphQL type's documentation follows.
 //
-// The fields of a Filter.
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
 type FilterData struct {
 	// The name of the column to filter on.
 	Column string `json:"column"`
@@ -5698,7 +5726,35 @@ func (v *FilterData) GetOperator() FilterOperator { return v.Operator }
 // GetValue returns FilterData.Value, and is useful for accessing the field via an interface.
 func (v *FilterData) GetValue() string { return v.Value }
 
-// The fields for defining a Filter.
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
 type FilterInput struct {
 	// The name of the column to filter on.
 	Column string `json:"column"`
@@ -5706,6 +5762,10 @@ type FilterInput struct {
 	Operator FilterOperator `json:"operator"`
 	// The value to compare the column to.
 	Value string `json:"value"`
+	// Additional filters to AND with this one. AND takes precedence over OR.
+	And []*FilterInput `json:"and,omitempty"`
+	// Additional filters to OR with this one. AND takes precedence over OR.
+	Or []*FilterInput `json:"or,omitempty"`
 }
 
 // GetColumn returns FilterInput.Column, and is useful for accessing the field via an interface.
@@ -5716,6 +5776,12 @@ func (v *FilterInput) GetOperator() FilterOperator { return v.Operator }
 
 // GetValue returns FilterInput.Value, and is useful for accessing the field via an interface.
 func (v *FilterInput) GetValue() string { return v.Value }
+
+// GetAnd returns FilterInput.And, and is useful for accessing the field via an interface.
+func (v *FilterInput) GetAnd() []*FilterInput { return v.And }
+
+// GetOr returns FilterInput.Or, and is useful for accessing the field via an interface.
+func (v *FilterInput) GetOr() []*FilterInput { return v.Or }
 
 // The available Filter operators.
 type FilterOperator string
@@ -6643,7 +6709,35 @@ func (v *MetricDataSettingsCountDistinctMetricSettingsDimension) __premarshalJSO
 // MetricDataSettingsCountDistinctMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
 // The GraphQL type's documentation follows.
 //
-// The fields of a Filter.
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
 type MetricDataSettingsCountDistinctMetricSettingsFiltersFilter struct {
 	FilterData `json:"-"`
 }
@@ -6734,7 +6828,35 @@ func (v *MetricDataSettingsCountMetricSettings) GetFilters() []*MetricDataSettin
 // MetricDataSettingsCountMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
 // The GraphQL type's documentation follows.
 //
-// The fields of a Filter.
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
 type MetricDataSettingsCountMetricSettingsFiltersFilter struct {
 	FilterData `json:"-"`
 }
@@ -6986,7 +7108,35 @@ func (v *MetricDataSettingsSumMetricSettings) GetMeasure() *MetricDataSettingsSu
 // MetricDataSettingsSumMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
 // The GraphQL type's documentation follows.
 //
-// The fields of a Filter.
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
 type MetricDataSettingsSumMetricSettingsFiltersFilter struct {
 	FilterData `json:"-"`
 }
