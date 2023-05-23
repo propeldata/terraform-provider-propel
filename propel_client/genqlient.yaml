@@ -7,6 +7,7 @@ operations:
 #- fragments/Application.fragment.graphql
 - fragments/Column.fragment.graphql
 - fragments/Common.fragment.graphql
+- fragments/Cursor.fragment.graphql
 - fragments/DataPool.fragment.graphql
 - fragments/DataSource.fragment.graphql
 - fragments/Dimension.fragment.graphql
@@ -16,6 +17,7 @@ operations:
 - fragments/Metric.fragment.graphql
 - fragments/PageInfo.fragment.graphql
 - fragments/Sync.fragment.graphql
+- fragments/DataPoolSyncing.fragment.graphql
 - fragments/TableIntrospection.fragment.graphql
 #- mutations/createApplication.mutation.graphql
 - mutations/createCountDistinctMetric.mutation.graphql

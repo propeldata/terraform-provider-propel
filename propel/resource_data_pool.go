@@ -103,6 +103,19 @@ func resourceDataPool() *schema.Resource {
 				ForceNew:    true,
 				Description: "The Data Pool's timestamp column.",
 			},
+			"cursor": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`",
+			},
+			"syncing": {
+				Type:        schema.TypeMap,
+				Optional:    true,
+				ForceNew:    false,
+				Description: "The Data Pool's syncing settings.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
 		},
 	}
 }
@@ -171,9 +184,24 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 		},
 		Columns: columns,
 	}
+
 	if _, exists := d.GetOk("tenant_id"); exists {
 		input.Tenant = &pc.TenantInput{
 			ColumnName: d.Get("tenant_id").(string),
+		}
+	}
+
+	if _, exists := d.GetOk("cursor"); exists {
+		input.Cursor = &pc.CursorInput{
+			ColumnName: d.Get("cursor").(string),
+		}
+	}
+
+	if _, exists := d.GetOk("syncing"); exists {
+		syncing := d.Get("syncing").(map[string]any)
+
+		input.Syncing = &pc.DataPoolSyncingInput{
+			Interval: syncing["interval"].(pc.DataPoolSyncInterval),
 		}
 	}
 
@@ -236,6 +264,21 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 	}
 
 	if err := d.Set("timestamp", response.DataPool.Timestamp.ColumnName); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if response.DataPool.Cursor != nil {
+		if err := d.Set("cursor", response.DataPool.Cursor.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	syncing := map[string]any{
+		"status":         response.DataPool.Syncing.GetStatus(),
+		"interval":       response.DataPool.Syncing.GetInterval(),
+		"last_synced_at": response.DataPool.Syncing.GetLastSyncedAt().Format(time.RFC3339),
+	}
+	if err := d.Set("syncing", syncing); err != nil {
 		return diag.FromErr(err)
 	}
 

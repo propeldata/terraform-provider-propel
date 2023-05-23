@@ -985,6 +985,16 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetColumns() *D
 	return v.DataPoolData.Columns
 }
 
+// GetCursor returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.Cursor, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetCursor() *DataPoolDataCursor {
+	return v.DataPoolData.Cursor
+}
+
+// GetSyncing returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.Syncing, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetSyncing() *DataPoolDataSyncingDataPoolSyncing {
+	return v.DataPoolData.Syncing
+}
+
 // GetAvailableMeasures returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetAvailableMeasures() *DataPoolDataAvailableMeasuresDataPoolColumnConnection {
 	return v.DataPoolData.AvailableMeasures
@@ -1080,6 +1090,10 @@ type __premarshalCreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
+	Cursor *DataPoolDataCursor `json:"cursor"`
+
+	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
+
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
@@ -1121,6 +1135,8 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
+	retval.Cursor = v.DataPoolData.Cursor
+	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
@@ -2402,6 +2418,23 @@ func (v *CreateSumMetricResponse) GetCreateSumMetric() *CreateSumMetricCreateSum
 	return v.CreateSumMetric
 }
 
+// CursorData includes the GraphQL fields of Cursor requested by the fragment CursorData.
+// The GraphQL type's documentation follows.
+//
+// The cursor fields.
+type CursorData struct {
+	// The name of the column that represents the cursor.
+	ColumnName string `json:"columnName"`
+	// The cursor column's type.
+	Type ColumnType `json:"type"`
+}
+
+// GetColumnName returns CursorData.ColumnName, and is useful for accessing the field via an interface.
+func (v *CursorData) GetColumnName() string { return v.ColumnName }
+
+// GetType returns CursorData.Type, and is useful for accessing the field via an interface.
+func (v *CursorData) GetType() ColumnType { return v.Type }
+
 // The fields for specifying the Data Pool's Cursor.
 type CursorInput struct {
 	// The name of the column that represents the Cursor.
@@ -2448,6 +2481,14 @@ func (v *DataPoolByNameDataPool) GetTimestamp() *DataPoolDataTimestamp {
 // GetColumns returns DataPoolByNameDataPool.Columns, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetColumns() *DataPoolDataColumnsDataPoolColumnConnection {
 	return v.DataPoolData.Columns
+}
+
+// GetCursor returns DataPoolByNameDataPool.Cursor, and is useful for accessing the field via an interface.
+func (v *DataPoolByNameDataPool) GetCursor() *DataPoolDataCursor { return v.DataPoolData.Cursor }
+
+// GetSyncing returns DataPoolByNameDataPool.Syncing, and is useful for accessing the field via an interface.
+func (v *DataPoolByNameDataPool) GetSyncing() *DataPoolDataSyncingDataPoolSyncing {
+	return v.DataPoolData.Syncing
 }
 
 // GetAvailableMeasures returns DataPoolByNameDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
@@ -2545,6 +2586,10 @@ type __premarshalDataPoolByNameDataPool struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
+	Cursor *DataPoolDataCursor `json:"cursor"`
+
+	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
+
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
@@ -2586,6 +2631,8 @@ func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByName
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
+	retval.Cursor = v.DataPoolData.Cursor
+	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
@@ -2673,6 +2720,10 @@ type DataPoolData struct {
 	//
 	// This list does not include any excluded columns.
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
+	// The Data Pool's cursor column. The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`.
+	Cursor *DataPoolDataCursor `json:"cursor"`
+	// Settings related to Data Pool syncing.
+	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
 	// A list of measures (numeric columns) available to Metrics.
 	//
 	// This list does not include any excluded columns.
@@ -2702,6 +2753,12 @@ func (v *DataPoolData) GetTimestamp() *DataPoolDataTimestamp { return v.Timestam
 
 // GetColumns returns DataPoolData.Columns, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetColumns() *DataPoolDataColumnsDataPoolColumnConnection { return v.Columns }
+
+// GetCursor returns DataPoolData.Cursor, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetCursor() *DataPoolDataCursor { return v.Cursor }
+
+// GetSyncing returns DataPoolData.Syncing, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetSyncing() *DataPoolDataSyncingDataPoolSyncing { return v.Syncing }
 
 // GetAvailableMeasures returns DataPoolData.AvailableMeasures, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetAvailableMeasures() *DataPoolDataAvailableMeasuresDataPoolColumnConnection {
@@ -2782,6 +2839,10 @@ type __premarshalDataPoolData struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
+	Cursor *DataPoolDataCursor `json:"cursor"`
+
+	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
+
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
@@ -2823,6 +2884,8 @@ func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
 	retval.Table = v.Table
 	retval.Timestamp = v.Timestamp
 	retval.Columns = v.Columns
+	retval.Cursor = v.Cursor
+	retval.Syncing = v.Syncing
 	retval.AvailableMeasures = v.AvailableMeasures
 	retval.SetupTasks = v.SetupTasks
 	retval.Syncs = v.Syncs
@@ -3006,6 +3069,67 @@ func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) __prema
 	retval.ColumnName = v.DataPoolColumnData.ColumnName
 	retval.Type = v.DataPoolColumnData.Type
 	retval.IsNullable = v.DataPoolColumnData.IsNullable
+	return &retval, nil
+}
+
+// DataPoolDataCursor includes the requested fields of the GraphQL type Cursor.
+// The GraphQL type's documentation follows.
+//
+// The cursor fields.
+type DataPoolDataCursor struct {
+	CursorData `json:"-"`
+}
+
+// GetColumnName returns DataPoolDataCursor.ColumnName, and is useful for accessing the field via an interface.
+func (v *DataPoolDataCursor) GetColumnName() string { return v.CursorData.ColumnName }
+
+// GetType returns DataPoolDataCursor.Type, and is useful for accessing the field via an interface.
+func (v *DataPoolDataCursor) GetType() ColumnType { return v.CursorData.Type }
+
+func (v *DataPoolDataCursor) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolDataCursor
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolDataCursor = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.CursorData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolDataCursor struct {
+	ColumnName string `json:"columnName"`
+
+	Type ColumnType `json:"type"`
+}
+
+func (v *DataPoolDataCursor) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolDataCursor) __premarshalJSON() (*__premarshalDataPoolDataCursor, error) {
+	var retval __premarshalDataPoolDataCursor
+
+	retval.ColumnName = v.CursorData.ColumnName
+	retval.Type = v.CursorData.Type
 	return &retval, nil
 }
 
@@ -3240,6 +3364,14 @@ func (v *DataPoolDataPool) GetColumns() *DataPoolDataColumnsDataPoolColumnConnec
 	return v.DataPoolData.Columns
 }
 
+// GetCursor returns DataPoolDataPool.Cursor, and is useful for accessing the field via an interface.
+func (v *DataPoolDataPool) GetCursor() *DataPoolDataCursor { return v.DataPoolData.Cursor }
+
+// GetSyncing returns DataPoolDataPool.Syncing, and is useful for accessing the field via an interface.
+func (v *DataPoolDataPool) GetSyncing() *DataPoolDataSyncingDataPoolSyncing {
+	return v.DataPoolData.Syncing
+}
+
 // GetAvailableMeasures returns DataPoolDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetAvailableMeasures() *DataPoolDataAvailableMeasuresDataPoolColumnConnection {
 	return v.DataPoolData.AvailableMeasures
@@ -3331,6 +3463,10 @@ type __premarshalDataPoolDataPool struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
+	Cursor *DataPoolDataCursor `json:"cursor"`
+
+	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
+
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
@@ -3372,6 +3508,8 @@ func (v *DataPoolDataPool) __premarshalJSON() (*__premarshalDataPoolDataPool, er
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
+	retval.Cursor = v.DataPoolData.Cursor
+	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
@@ -3442,6 +3580,79 @@ func (v *DataPoolDataSetupTasksDataPoolSetupTaskError) GetCode() *int { return v
 
 // GetMessage returns DataPoolDataSetupTasksDataPoolSetupTaskError.Message, and is useful for accessing the field via an interface.
 func (v *DataPoolDataSetupTasksDataPoolSetupTaskError) GetMessage() string { return v.Message }
+
+// DataPoolDataSyncingDataPoolSyncing includes the requested fields of the GraphQL type DataPoolSyncing.
+// The GraphQL type's documentation follows.
+//
+// Settings related to Data Pool syncing.
+type DataPoolDataSyncingDataPoolSyncing struct {
+	DataPoolSyncingData `json:"-"`
+}
+
+// GetStatus returns DataPoolDataSyncingDataPoolSyncing.Status, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncingDataPoolSyncing) GetStatus() DataPoolSyncStatus {
+	return v.DataPoolSyncingData.Status
+}
+
+// GetInterval returns DataPoolDataSyncingDataPoolSyncing.Interval, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncingDataPoolSyncing) GetInterval() DataPoolSyncInterval {
+	return v.DataPoolSyncingData.Interval
+}
+
+// GetLastSyncedAt returns DataPoolDataSyncingDataPoolSyncing.LastSyncedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataSyncingDataPoolSyncing) GetLastSyncedAt() *time.Time {
+	return v.DataPoolSyncingData.LastSyncedAt
+}
+
+func (v *DataPoolDataSyncingDataPoolSyncing) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolDataSyncingDataPoolSyncing
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolDataSyncingDataPoolSyncing = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataPoolSyncingData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolDataSyncingDataPoolSyncing struct {
+	Status DataPoolSyncStatus `json:"status"`
+
+	Interval DataPoolSyncInterval `json:"interval"`
+
+	LastSyncedAt *time.Time `json:"lastSyncedAt"`
+}
+
+func (v *DataPoolDataSyncingDataPoolSyncing) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolDataSyncingDataPoolSyncing) __premarshalJSON() (*__premarshalDataPoolDataSyncingDataPoolSyncing, error) {
+	var retval __premarshalDataPoolDataSyncingDataPoolSyncing
+
+	retval.Status = v.DataPoolSyncingData.Status
+	retval.Interval = v.DataPoolSyncingData.Interval
+	retval.LastSyncedAt = v.DataPoolSyncingData.LastSyncedAt
+	return &retval, nil
+}
 
 // DataPoolDataSyncsSyncConnection includes the requested fields of the GraphQL type SyncConnection.
 // The GraphQL type's documentation follows.
@@ -3735,6 +3946,45 @@ const (
 	DataPoolSyncIntervalEvery24Hours   DataPoolSyncInterval = "EVERY_24_HOURS"
 )
 
+// The Data Pool Sync Status. It indicates whether a Data Pool is syncing data or not.
+type DataPoolSyncStatus string
+
+const (
+	// Syncing is enabled for the Data Pool.
+	DataPoolSyncStatusEnabled DataPoolSyncStatus = "ENABLED"
+	// Propel is disabling syncing for the Data Pool.
+	DataPoolSyncStatusDisabling DataPoolSyncStatus = "DISABLING"
+	// Syncing is disabled for the Data Pool.
+	DataPoolSyncStatusDisabled DataPoolSyncStatus = "DISABLED"
+)
+
+// DataPoolSyncingData includes the GraphQL fields of DataPoolSyncing requested by the fragment DataPoolSyncingData.
+// The GraphQL type's documentation follows.
+//
+// Settings related to Data Pool syncing.
+type DataPoolSyncingData struct {
+	// Indicates whether syncing is enabled or disabled.
+	Status DataPoolSyncStatus `json:"status"`
+	// The syncing interval.
+	//
+	// Note that the syncing interval is approximate. For example, setting the syncing interval to `EVERY_1_HOUR`
+	// does not mean that syncing will occur exactly on the hour. Instead, the syncing interval starts relative to
+	// when the Data Pool goes `LIVE`, and Propel will attempt to sync approximately every hour. Additionally,
+	// if you pause or resume syncing, this too can shift the syncing interval around.
+	Interval DataPoolSyncInterval `json:"interval"`
+	// The date and time of the most recent Sync in UTC.
+	LastSyncedAt *time.Time `json:"lastSyncedAt"`
+}
+
+// GetStatus returns DataPoolSyncingData.Status, and is useful for accessing the field via an interface.
+func (v *DataPoolSyncingData) GetStatus() DataPoolSyncStatus { return v.Status }
+
+// GetInterval returns DataPoolSyncingData.Interval, and is useful for accessing the field via an interface.
+func (v *DataPoolSyncingData) GetInterval() DataPoolSyncInterval { return v.Interval }
+
+// GetLastSyncedAt returns DataPoolSyncingData.LastSyncedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolSyncingData) GetLastSyncedAt() *time.Time { return v.LastSyncedAt }
+
 // The fields for modifying the Data Pool syncing.
 type DataPoolSyncingInput struct {
 	Interval DataPoolSyncInterval `json:"interval"`
@@ -3827,6 +4077,16 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetT
 // GetColumns returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Columns, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetColumns() *DataPoolDataColumnsDataPoolColumnConnection {
 	return v.DataPoolData.Columns
+}
+
+// GetCursor returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Cursor, and is useful for accessing the field via an interface.
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetCursor() *DataPoolDataCursor {
+	return v.DataPoolData.Cursor
+}
+
+// GetSyncing returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Syncing, and is useful for accessing the field via an interface.
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSyncing() *DataPoolDataSyncingDataPoolSyncing {
+	return v.DataPoolData.Syncing
 }
 
 // GetAvailableMeasures returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
@@ -3924,6 +4184,10 @@ type __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPo
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
+	Cursor *DataPoolDataCursor `json:"cursor"`
+
+	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
+
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
@@ -3965,6 +4229,8 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) __pr
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
+	retval.Cursor = v.DataPoolData.Cursor
+	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
@@ -6295,6 +6561,14 @@ func (v *MetricDataDataPool) GetColumns() *DataPoolDataColumnsDataPoolColumnConn
 	return v.DataPoolData.Columns
 }
 
+// GetCursor returns MetricDataDataPool.Cursor, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetCursor() *DataPoolDataCursor { return v.DataPoolData.Cursor }
+
+// GetSyncing returns MetricDataDataPool.Syncing, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetSyncing() *DataPoolDataSyncingDataPoolSyncing {
+	return v.DataPoolData.Syncing
+}
+
 // GetAvailableMeasures returns MetricDataDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetAvailableMeasures() *DataPoolDataAvailableMeasuresDataPoolColumnConnection {
 	return v.DataPoolData.AvailableMeasures
@@ -6388,6 +6662,10 @@ type __premarshalMetricDataDataPool struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
+	Cursor *DataPoolDataCursor `json:"cursor"`
+
+	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
+
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
@@ -6429,6 +6707,8 @@ func (v *MetricDataDataPool) __premarshalJSON() (*__premarshalMetricDataDataPool
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
+	retval.Cursor = v.DataPoolData.Cursor
+	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
@@ -8233,6 +8513,16 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetColumns() *Dat
 	return v.DataPoolData.Columns
 }
 
+// GetCursor returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Cursor, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetCursor() *DataPoolDataCursor {
+	return v.DataPoolData.Cursor
+}
+
+// GetSyncing returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Syncing, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSyncing() *DataPoolDataSyncingDataPoolSyncing {
+	return v.DataPoolData.Syncing
+}
+
 // GetAvailableMeasures returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.AvailableMeasures, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAvailableMeasures() *DataPoolDataAvailableMeasuresDataPoolColumnConnection {
 	return v.DataPoolData.AvailableMeasures
@@ -8328,6 +8618,10 @@ type __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
+	Cursor *DataPoolDataCursor `json:"cursor"`
+
+	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
+
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
@@ -8369,6 +8663,8 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON(
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
+	retval.Cursor = v.DataPoolData.Cursor
+	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
@@ -9989,6 +10285,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -10085,6 +10387,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -10232,6 +10543,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -10329,6 +10646,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
+}
 fragment SyncData on Sync {
 	id
 	status
@@ -10418,6 +10744,12 @@ fragment DataPoolData on DataPool {
 		nodes {
 			... DataPoolColumnData
 		}
+	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
 	}
 	availableMeasures {
 		nodes {
@@ -10518,6 +10850,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -11037,6 +11378,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -11134,6 +11481,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
+}
 fragment SyncData on Sync {
 	id
 	status
@@ -11218,6 +11574,12 @@ fragment DataPoolData on DataPool {
 		nodes {
 			... DataPoolColumnData
 		}
+	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
 	}
 	availableMeasures {
 		nodes {
@@ -11318,6 +11680,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -11404,6 +11775,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -11503,6 +11880,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -11605,6 +11991,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -11704,6 +12096,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -12404,6 +12805,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -12500,6 +12907,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -12644,6 +13060,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -12740,6 +13162,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -12904,6 +13335,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -13000,6 +13437,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -13098,6 +13544,12 @@ fragment DataPoolData on DataPool {
 		nodes {
 			... DataPoolColumnData
 		}
+	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
 	}
 	availableMeasures {
 		nodes {
@@ -13202,6 +13654,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -13349,6 +13810,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -13445,6 +13912,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
