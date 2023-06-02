@@ -1,0 +1,8 @@
+mutation CreateAverageMetric($input: CreateAverageMetricInput) {
+    createAverageMetric(input: $input) {
+        __typename
+        metric {
+            ...MetricData
+        }
+    }
+}

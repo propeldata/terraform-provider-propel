@@ -18,10 +18,13 @@ operations:
 - fragments/Sync.fragment.graphql
 - fragments/TableIntrospection.fragment.graphql
 #- mutations/createApplication.mutation.graphql
+- mutations/createAverageMetric.mutation.graphql
 - mutations/createCountDistinctMetric.mutation.graphql
 - mutations/createCountMetric.mutation.graphql
 - mutations/createDataPool.mutation.graphql
 - mutations/createHttpDataSource.mutation.graphql
+- mutations/createMaxMetric.mutation.graphql
+- mutations/createMinMetric.mutation.graphql
 - mutations/createS3DataSource.mutation.graphql
 - mutations/createSnowflakeDataSource.mutation.graphql
 - mutations/createSumMetric.mutation.graphql

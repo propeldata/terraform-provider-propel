@@ -1,0 +1,8 @@
+mutation CreateMaxMetric($input: CreateMaxMetricInput) {
+    createMaxMetric(input: $input) {
+        __typename
+        metric {
+            ...MetricData
+        }
+    }
+}
