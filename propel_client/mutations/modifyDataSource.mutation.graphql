@@ -21,3 +21,11 @@ mutation ModifyHttpDataSource($input: ModifyHttpDataSourceInput!) {
         }
     }
 }
+
+mutation ModifyS3DataSource($input: ModifyS3DataSourceInput!) {
+    modifyS3DataSource(input: $input) {
+        dataSource {
+            ...DataSourceData
+        }
+    }
+}

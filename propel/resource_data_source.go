@@ -6,12 +6,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
 	"github.com/propeldata/terraform-provider-propel/propel/internal/utils"
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
@@ -199,7 +198,6 @@ func resourceDataSource() *schema.Resource {
 					Schema: map[string]*schema.Schema{
 						"id": {
 							Type:        schema.TypeString,
-							Optional:    true,
 							Computed:    true,
 							Description: "The table's ID.",
 						},
@@ -500,65 +498,34 @@ func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schem
 }
 
 func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	if response.DataSource.Tables == nil {
+		return nil
+	}
 
-	if response.DataSource.GetConnectionSettings().GetTypename() != nil {
+	tables := make([]interface{}, 0, len(response.DataSource.Tables.Nodes))
 
-		switch s := response.DataSource.GetConnectionSettings().(type) {
-
-		case *pc.DataSourceDataConnectionSettingsHttpConnectionSettings:
-
-			tables := make([]interface{}, 0, len(s.Tables))
-
-			for _, table := range s.Tables {
-				columns := make([]interface{}, 0, len(table.Columns))
-				for _, column := range table.Columns {
-					columns = append(columns, map[string]interface{}{
-						"name":     column.Name,
-						"type":     column.Type,
-						"nullable": column.Nullable,
-					})
-				}
-				tables = append(tables, map[string]interface{}{
-					"name":   table.Name,
-					"column": columns,
-				})
-			}
-
-			if err := d.Set("table", (interface{})(tables)); err != nil {
-				return diag.FromErr(err)
-			}
-
-		}
-
-	} else if response.DataSource.Tables != nil {
-		tables := make([]interface{}, 0, len(response.DataSource.Tables.Nodes))
+	// FIXME(mroberts): This is only going to work for the first page of results.
+	for _, table := range response.DataSource.Tables.Nodes {
+		columns := make([]interface{}, 0, len(table.Columns.Nodes))
 
 		// FIXME(mroberts): This is only going to work for the first page of results.
-		for _, table := range response.DataSource.Tables.Nodes {
-			columns := make([]interface{}, 0, len(table.Columns.Nodes))
-
-			// FIXME(mroberts): This is only going to work for the first page of results.
-			for _, column := range table.Columns.Nodes {
-				columns = append(columns, map[string]interface{}{
-					"name":     column.Name,
-					"type":     column.Type,
-					"nullable": column.IsNullable,
-				})
-			}
-
-			tables = append(tables, map[string]interface{}{
-				"id":     table.Id,
-				"name":   table.Name,
-				"column": columns,
+		for _, column := range table.Columns.Nodes {
+			columns = append(columns, map[string]interface{}{
+				"name":     column.Name,
+				"type":     column.Type,
+				"nullable": column.IsNullable,
 			})
 		}
 
-		if err := d.Set("table", (interface{})(tables)); err != nil {
-			return diag.FromErr(err)
-		}
-	} else {
-		// FIXME(mroberts): We need to handle the case where tables is not yet populated.
-		return nil
+		tables = append(tables, map[string]interface{}{
+			"id":     table.Id,
+			"name":   table.Name,
+			"column": columns,
+		})
+	}
+
+	if err := d.Set("table", (interface{})(tables)); err != nil {
+		return diag.FromErr(err)
 	}
 
 	return nil
@@ -701,7 +668,59 @@ func resourceHttpDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m
 		if _, err := pc.ModifyHttpDataSource(ctx, c, input); err != nil {
 			return diag.FromErr(err)
 		}
+	}
+	return resourceDataSourceRead(ctx, d, m)
+}
 
+func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	c := m.(graphql.Client)
+
+	if d.HasChanges("unique_name", "description", "table", "s3_connection_settings") {
+		id := d.Id()
+		uniqueName := d.Get("unique_name").(string)
+		description := d.Get("description").(string)
+
+		tables := make([]*pc.S3DataSourceTableInput, 0)
+		if _, ok := d.GetOk("table"); ok {
+			tables = expandS3Tables(d.Get("table").([]interface{}))
+		}
+
+		csPartialInput := &pc.PartialS3ConnectionSettingsInput{Tables: tables}
+
+		connectionSettings := d.Get("s3_connection_settings").([]interface{})[0].(map[string]interface{})
+
+		if def, ok := connectionSettings["bucket"]; ok {
+			bucket := def.(string)
+			csPartialInput.Bucket = &bucket
+		}
+
+		if def, ok := connectionSettings["aws_access_key_id"]; ok {
+			accessKeyID := def.(string)
+			csPartialInput.AwsAccessKeyId = &accessKeyID
+		}
+
+		if def, ok := connectionSettings["aws_access_key_id"]; ok {
+			accessKeyID := def.(string)
+			csPartialInput.AwsAccessKeyId = &accessKeyID
+		}
+
+		if def, ok := connectionSettings["aws_secret_access_key"]; ok {
+			secretAccessKey := def.(string)
+			csPartialInput.AwsSecretAccessKey = &secretAccessKey
+		}
+
+		input := &pc.ModifyS3DataSourceInput{
+			IdOrUniqueName: &pc.IdOrUniqueName{
+				Id: &id,
+			},
+			UniqueName:         &uniqueName,
+			Description:        &description,
+			ConnectionSettings: csPartialInput,
+		}
+
+		if _, err := pc.ModifyS3DataSource(ctx, c, input); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 	return resourceDataSourceRead(ctx, d, m)
 }
@@ -715,8 +734,7 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta 
 	case "HTTP":
 		return resourceHttpDataSourceUpdate(ctx, d, meta)
 	case "S3":
-		// return resourceS3DataSourceCreate(ctx, d, meta)
-		return diag.Errorf("S3 data source update not implemented")
+		return resourceS3DataSourceUpdate(ctx, d, meta)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
