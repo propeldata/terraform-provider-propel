@@ -425,6 +425,257 @@ func (v *CommonDataMetric) GetCreatedBy() string { return v.CreatedBy }
 // GetModifiedBy returns CommonDataMetric.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *CommonDataMetric) GetModifiedBy() string { return v.ModifiedBy }
 
+// CreateAverageMetricCreateAverageMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Metric.
+type CreateAverageMetricCreateAverageMetricMetricResponse struct {
+	Typename *string `json:"__typename"`
+	// The Metric which was created or modified.
+	Metric *CreateAverageMetricCreateAverageMetricMetricResponseMetric `json:"metric"`
+}
+
+// GetTypename returns CreateAverageMetricCreateAverageMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponse) GetTypename() *string {
+	return v.Typename
+}
+
+// GetMetric returns CreateAverageMetricCreateAverageMetricMetricResponse.Metric, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponse) GetMetric() *CreateAverageMetricCreateAverageMetricMetricResponseMetric {
+	return v.Metric
+}
+
+// CreateAverageMetricCreateAverageMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
+type CreateAverageMetricCreateAverageMetricMetricResponseMetric struct {
+	MetricData `json:"-"`
+}
+
+// GetId returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetId() string {
+	return v.MetricData.Id
+}
+
+// GetDataPool returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
+	return v.MetricData.DataPool
+}
+
+// GetDimensions returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetDimensions() []*MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
+}
+
+// GetTimestamp returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetTimestamp() *MetricDataTimestampDimension {
+	return v.MetricData.Timestamp
+}
+
+// GetMeasure returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetMeasure() *MetricDataMeasureDimension {
+	return v.MetricData.Measure
+}
+
+// GetSettings returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
+	return v.MetricData.Settings
+}
+
+// GetType returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetType() MetricType {
+	return v.MetricData.Type
+}
+
+// GetUniqueName returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetUniqueName() string {
+	return v.MetricData.CommonDataMetric.UniqueName
+}
+
+// GetDescription returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Description, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetDescription() string {
+	return v.MetricData.CommonDataMetric.Description
+}
+
+// GetAccount returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetAccount() *CommonDataAccount {
+	return v.MetricData.CommonDataMetric.Account
+}
+
+// GetEnvironment returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetEnvironment() *CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
+}
+
+// GetCreatedAt returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetCreatedAt() time.Time {
+	return v.MetricData.CommonDataMetric.CreatedAt
+}
+
+// GetModifiedAt returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetModifiedAt() time.Time {
+	return v.MetricData.CommonDataMetric.ModifiedAt
+}
+
+// GetCreatedBy returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetCreatedBy() string {
+	return v.MetricData.CommonDataMetric.CreatedBy
+}
+
+// GetModifiedBy returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetModifiedBy() string {
+	return v.MetricData.CommonDataMetric.ModifiedBy
+}
+
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateAverageMetricCreateAverageMetricMetricResponseMetric
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateAverageMetricCreateAverageMetricMetricResponseMetric = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.MetricData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateAverageMetricCreateAverageMetricMetricResponseMetric struct {
+	Id string `json:"id"`
+
+	DataPool *MetricDataDataPool `json:"dataPool"`
+
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
+
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
+
+	Measure *MetricDataMeasureDimension `json:"measure"`
+
+	Settings json.RawMessage `json:"settings"`
+
+	Type MetricType `json:"type"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) __premarshalJSON() (*__premarshalCreateAverageMetricCreateAverageMetricMetricResponseMetric, error) {
+	var retval __premarshalCreateAverageMetricCreateAverageMetricMetricResponseMetric
+
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
+	{
+
+		dst := &retval.Settings
+		src := v.MetricData.Settings
+		var err error
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"Unable to marshal CreateAverageMetricCreateAverageMetricMetricResponseMetric.MetricData.Settings: %w", err)
+		}
+	}
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
+	return &retval, nil
+}
+
+// The fields for creating a new Average Metric.
+type CreateAverageMetricInput struct {
+	// The Data Pool that powers this Metric.
+	DataPool string `json:"dataPool"`
+	// The Metric's unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Metric's description.
+	Description *string `json:"description"`
+	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
+	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
+	// The column to be averaged.
+	Measure *DimensionInput `json:"measure,omitempty"`
+}
+
+// GetDataPool returns CreateAverageMetricInput.DataPool, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricInput) GetDataPool() string { return v.DataPool }
+
+// GetUniqueName returns CreateAverageMetricInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricInput) GetUniqueName() *string { return v.UniqueName }
+
+// GetDescription returns CreateAverageMetricInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricInput) GetDescription() *string { return v.Description }
+
+// GetFilters returns CreateAverageMetricInput.Filters, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetDimensions returns CreateAverageMetricInput.Dimensions, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
+
+// GetMeasure returns CreateAverageMetricInput.Measure, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricInput) GetMeasure() *DimensionInput { return v.Measure }
+
+// CreateAverageMetricResponse is returned by CreateAverageMetric on success.
+type CreateAverageMetricResponse struct {
+	// This mutation creates a new Average Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	//
+	// A Metric is a business indicator measured over time. An Average Metric returns the average of the underlying data over a specific time period.
+	CreateAverageMetric *CreateAverageMetricCreateAverageMetricMetricResponse `json:"createAverageMetric"`
+}
+
+// GetCreateAverageMetric returns CreateAverageMetricResponse.CreateAverageMetric, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricResponse) GetCreateAverageMetric() *CreateAverageMetricCreateAverageMetricMetricResponse {
+	return v.CreateAverageMetric
+}
+
 // CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
 // The GraphQL type's documentation follows.
 //
@@ -1436,6 +1687,500 @@ type CreateHttpDataSourceResponse struct {
 // GetCreateHttpDataSource returns CreateHttpDataSourceResponse.CreateHttpDataSource, and is useful for accessing the field via an interface.
 func (v *CreateHttpDataSourceResponse) GetCreateHttpDataSource() *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse {
 	return v.CreateHttpDataSource
+}
+
+// CreateMaxMetricCreateMaxMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Metric.
+type CreateMaxMetricCreateMaxMetricMetricResponse struct {
+	Typename *string `json:"__typename"`
+	// The Metric which was created or modified.
+	Metric *CreateMaxMetricCreateMaxMetricMetricResponseMetric `json:"metric"`
+}
+
+// GetTypename returns CreateMaxMetricCreateMaxMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponse) GetTypename() *string { return v.Typename }
+
+// GetMetric returns CreateMaxMetricCreateMaxMetricMetricResponse.Metric, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponse) GetMetric() *CreateMaxMetricCreateMaxMetricMetricResponseMetric {
+	return v.Metric
+}
+
+// CreateMaxMetricCreateMaxMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
+type CreateMaxMetricCreateMaxMetricMetricResponseMetric struct {
+	MetricData `json:"-"`
+}
+
+// GetId returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetId() string { return v.MetricData.Id }
+
+// GetDataPool returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
+	return v.MetricData.DataPool
+}
+
+// GetDimensions returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetDimensions() []*MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
+}
+
+// GetTimestamp returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetTimestamp() *MetricDataTimestampDimension {
+	return v.MetricData.Timestamp
+}
+
+// GetMeasure returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetMeasure() *MetricDataMeasureDimension {
+	return v.MetricData.Measure
+}
+
+// GetSettings returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
+	return v.MetricData.Settings
+}
+
+// GetType returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetType() MetricType {
+	return v.MetricData.Type
+}
+
+// GetUniqueName returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetUniqueName() string {
+	return v.MetricData.CommonDataMetric.UniqueName
+}
+
+// GetDescription returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Description, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetDescription() string {
+	return v.MetricData.CommonDataMetric.Description
+}
+
+// GetAccount returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetAccount() *CommonDataAccount {
+	return v.MetricData.CommonDataMetric.Account
+}
+
+// GetEnvironment returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetEnvironment() *CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
+}
+
+// GetCreatedAt returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetCreatedAt() time.Time {
+	return v.MetricData.CommonDataMetric.CreatedAt
+}
+
+// GetModifiedAt returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetModifiedAt() time.Time {
+	return v.MetricData.CommonDataMetric.ModifiedAt
+}
+
+// GetCreatedBy returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetCreatedBy() string {
+	return v.MetricData.CommonDataMetric.CreatedBy
+}
+
+// GetModifiedBy returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetModifiedBy() string {
+	return v.MetricData.CommonDataMetric.ModifiedBy
+}
+
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateMaxMetricCreateMaxMetricMetricResponseMetric
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateMaxMetricCreateMaxMetricMetricResponseMetric = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.MetricData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateMaxMetricCreateMaxMetricMetricResponseMetric struct {
+	Id string `json:"id"`
+
+	DataPool *MetricDataDataPool `json:"dataPool"`
+
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
+
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
+
+	Measure *MetricDataMeasureDimension `json:"measure"`
+
+	Settings json.RawMessage `json:"settings"`
+
+	Type MetricType `json:"type"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) __premarshalJSON() (*__premarshalCreateMaxMetricCreateMaxMetricMetricResponseMetric, error) {
+	var retval __premarshalCreateMaxMetricCreateMaxMetricMetricResponseMetric
+
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
+	{
+
+		dst := &retval.Settings
+		src := v.MetricData.Settings
+		var err error
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"Unable to marshal CreateMaxMetricCreateMaxMetricMetricResponseMetric.MetricData.Settings: %w", err)
+		}
+	}
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
+	return &retval, nil
+}
+
+// The fields for creating a new Maximum (Max) Metric.
+type CreateMaxMetricInput struct {
+	// The Data Pool that powers this Metric.
+	DataPool string `json:"dataPool"`
+	// The Metric's unique name. If not specified, Propel will set the ID as unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Metric's description.
+	Description *string `json:"description"`
+	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
+	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
+	// The column to calculate the maximum from.
+	Measure *DimensionInput `json:"measure,omitempty"`
+}
+
+// GetDataPool returns CreateMaxMetricInput.DataPool, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricInput) GetDataPool() string { return v.DataPool }
+
+// GetUniqueName returns CreateMaxMetricInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricInput) GetUniqueName() *string { return v.UniqueName }
+
+// GetDescription returns CreateMaxMetricInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricInput) GetDescription() *string { return v.Description }
+
+// GetFilters returns CreateMaxMetricInput.Filters, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetDimensions returns CreateMaxMetricInput.Dimensions, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
+
+// GetMeasure returns CreateMaxMetricInput.Measure, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricInput) GetMeasure() *DimensionInput { return v.Measure }
+
+// CreateMaxMetricResponse is returned by CreateMaxMetric on success.
+type CreateMaxMetricResponse struct {
+	// This mutation creates a new Max Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	//
+	// A Metric is a business indicator measured over time. A Max Metric returns the maximum value found in the underlying data during a specific time period.
+	CreateMaxMetric *CreateMaxMetricCreateMaxMetricMetricResponse `json:"createMaxMetric"`
+}
+
+// GetCreateMaxMetric returns CreateMaxMetricResponse.CreateMaxMetric, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricResponse) GetCreateMaxMetric() *CreateMaxMetricCreateMaxMetricMetricResponse {
+	return v.CreateMaxMetric
+}
+
+// CreateMinMetricCreateMinMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Metric.
+type CreateMinMetricCreateMinMetricMetricResponse struct {
+	Typename *string `json:"__typename"`
+	// The Metric which was created or modified.
+	Metric *CreateMinMetricCreateMinMetricMetricResponseMetric `json:"metric"`
+}
+
+// GetTypename returns CreateMinMetricCreateMinMetricMetricResponse.Typename, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponse) GetTypename() *string { return v.Typename }
+
+// GetMetric returns CreateMinMetricCreateMinMetricMetricResponse.Metric, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponse) GetMetric() *CreateMinMetricCreateMinMetricMetricResponseMetric {
+	return v.Metric
+}
+
+// CreateMinMetricCreateMinMetricMetricResponseMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
+type CreateMinMetricCreateMinMetricMetricResponseMetric struct {
+	MetricData `json:"-"`
+}
+
+// GetId returns CreateMinMetricCreateMinMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetId() string { return v.MetricData.Id }
+
+// GetDataPool returns CreateMinMetricCreateMinMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
+	return v.MetricData.DataPool
+}
+
+// GetDimensions returns CreateMinMetricCreateMinMetricMetricResponseMetric.Dimensions, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetDimensions() []*MetricDataDimensionsDimension {
+	return v.MetricData.Dimensions
+}
+
+// GetTimestamp returns CreateMinMetricCreateMinMetricMetricResponseMetric.Timestamp, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetTimestamp() *MetricDataTimestampDimension {
+	return v.MetricData.Timestamp
+}
+
+// GetMeasure returns CreateMinMetricCreateMinMetricMetricResponseMetric.Measure, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetMeasure() *MetricDataMeasureDimension {
+	return v.MetricData.Measure
+}
+
+// GetSettings returns CreateMinMetricCreateMinMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
+	return v.MetricData.Settings
+}
+
+// GetType returns CreateMinMetricCreateMinMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetType() MetricType {
+	return v.MetricData.Type
+}
+
+// GetUniqueName returns CreateMinMetricCreateMinMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetUniqueName() string {
+	return v.MetricData.CommonDataMetric.UniqueName
+}
+
+// GetDescription returns CreateMinMetricCreateMinMetricMetricResponseMetric.Description, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetDescription() string {
+	return v.MetricData.CommonDataMetric.Description
+}
+
+// GetAccount returns CreateMinMetricCreateMinMetricMetricResponseMetric.Account, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetAccount() *CommonDataAccount {
+	return v.MetricData.CommonDataMetric.Account
+}
+
+// GetEnvironment returns CreateMinMetricCreateMinMetricMetricResponseMetric.Environment, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetEnvironment() *CommonDataEnvironment {
+	return v.MetricData.CommonDataMetric.Environment
+}
+
+// GetCreatedAt returns CreateMinMetricCreateMinMetricMetricResponseMetric.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetCreatedAt() time.Time {
+	return v.MetricData.CommonDataMetric.CreatedAt
+}
+
+// GetModifiedAt returns CreateMinMetricCreateMinMetricMetricResponseMetric.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetModifiedAt() time.Time {
+	return v.MetricData.CommonDataMetric.ModifiedAt
+}
+
+// GetCreatedBy returns CreateMinMetricCreateMinMetricMetricResponseMetric.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetCreatedBy() string {
+	return v.MetricData.CommonDataMetric.CreatedBy
+}
+
+// GetModifiedBy returns CreateMinMetricCreateMinMetricMetricResponseMetric.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetModifiedBy() string {
+	return v.MetricData.CommonDataMetric.ModifiedBy
+}
+
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateMinMetricCreateMinMetricMetricResponseMetric
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateMinMetricCreateMinMetricMetricResponseMetric = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.MetricData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateMinMetricCreateMinMetricMetricResponseMetric struct {
+	Id string `json:"id"`
+
+	DataPool *MetricDataDataPool `json:"dataPool"`
+
+	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
+
+	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
+
+	Measure *MetricDataMeasureDimension `json:"measure"`
+
+	Settings json.RawMessage `json:"settings"`
+
+	Type MetricType `json:"type"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) __premarshalJSON() (*__premarshalCreateMinMetricCreateMinMetricMetricResponseMetric, error) {
+	var retval __premarshalCreateMinMetricCreateMinMetricMetricResponseMetric
+
+	retval.Id = v.MetricData.Id
+	retval.DataPool = v.MetricData.DataPool
+	retval.Dimensions = v.MetricData.Dimensions
+	retval.Timestamp = v.MetricData.Timestamp
+	retval.Measure = v.MetricData.Measure
+	{
+
+		dst := &retval.Settings
+		src := v.MetricData.Settings
+		var err error
+		*dst, err = __marshalMetricDataSettingsMetricSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"Unable to marshal CreateMinMetricCreateMinMetricMetricResponseMetric.MetricData.Settings: %w", err)
+		}
+	}
+	retval.Type = v.MetricData.Type
+	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
+	retval.Description = v.MetricData.CommonDataMetric.Description
+	retval.Account = v.MetricData.CommonDataMetric.Account
+	retval.Environment = v.MetricData.CommonDataMetric.Environment
+	retval.CreatedAt = v.MetricData.CommonDataMetric.CreatedAt
+	retval.ModifiedAt = v.MetricData.CommonDataMetric.ModifiedAt
+	retval.CreatedBy = v.MetricData.CommonDataMetric.CreatedBy
+	retval.ModifiedBy = v.MetricData.CommonDataMetric.ModifiedBy
+	return &retval, nil
+}
+
+// The fields for creating a new Minimum (Min) Metric.
+type CreateMinMetricInput struct {
+	// The Data Pool that powers this Metric.
+	DataPool string `json:"dataPool"`
+	// The Metric's unique name. If not specified, Propel will set the ID as unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Metric's description.
+	Description *string `json:"description"`
+	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
+	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
+	// The column to calculate the minimum from.
+	Measure *DimensionInput `json:"measure,omitempty"`
+}
+
+// GetDataPool returns CreateMinMetricInput.DataPool, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricInput) GetDataPool() string { return v.DataPool }
+
+// GetUniqueName returns CreateMinMetricInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricInput) GetUniqueName() *string { return v.UniqueName }
+
+// GetDescription returns CreateMinMetricInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricInput) GetDescription() *string { return v.Description }
+
+// GetFilters returns CreateMinMetricInput.Filters, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetDimensions returns CreateMinMetricInput.Dimensions, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
+
+// GetMeasure returns CreateMinMetricInput.Measure, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricInput) GetMeasure() *DimensionInput { return v.Measure }
+
+// CreateMinMetricResponse is returned by CreateMinMetric on success.
+type CreateMinMetricResponse struct {
+	// This mutation creates a new Min Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	//
+	// A Metric is a business indicator measured over time. A Min Metric returns the minimum value found in the underlying data during a specific time period.
+	CreateMinMetric *CreateMinMetricCreateMinMetricMetricResponse `json:"createMinMetric"`
+}
+
+// GetCreateMinMetric returns CreateMinMetricResponse.CreateMinMetric, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricResponse) GetCreateMinMetric() *CreateMinMetricCreateMinMetricMetricResponse {
+	return v.CreateMinMetric
 }
 
 // CreateS3DataSourceCreateS3DataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
@@ -9510,6 +10255,14 @@ type TimestampInput struct {
 // GetColumnName returns TimestampInput.ColumnName, and is useful for accessing the field via an interface.
 func (v *TimestampInput) GetColumnName() string { return v.ColumnName }
 
+// __CreateAverageMetricInput is used internally by genqlient
+type __CreateAverageMetricInput struct {
+	Input *CreateAverageMetricInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateAverageMetricInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateAverageMetricInput) GetInput() *CreateAverageMetricInput { return v.Input }
+
 // __CreateCountDistinctMetricInput is used internally by genqlient
 type __CreateCountDistinctMetricInput struct {
 	Input *CreateCountDistinctMetricInput `json:"input,omitempty"`
@@ -9541,6 +10294,22 @@ type __CreateHttpDataSourceInput struct {
 
 // GetInput returns __CreateHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateHttpDataSourceInput) GetInput() *CreateHttpDataSourceInput { return v.Input }
+
+// __CreateMaxMetricInput is used internally by genqlient
+type __CreateMaxMetricInput struct {
+	Input *CreateMaxMetricInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateMaxMetricInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateMaxMetricInput) GetInput() *CreateMaxMetricInput { return v.Input }
+
+// __CreateMinMetricInput is used internally by genqlient
+type __CreateMinMetricInput struct {
+	Input *CreateMinMetricInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateMinMetricInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateMinMetricInput) GetInput() *CreateMinMetricInput { return v.Input }
 
 // __CreateS3DataSourceInput is used internally by genqlient
 type __CreateS3DataSourceInput struct {
@@ -9745,6 +10514,249 @@ type __ModifySnowflakeDataSourceInput struct {
 
 // GetInput returns __ModifySnowflakeDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifySnowflakeDataSourceInput) GetInput() *ModifySnowflakeDataSourceInput { return v.Input }
+
+func CreateAverageMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateAverageMetricInput,
+) (*CreateAverageMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateAverageMetric",
+		Query: `
+mutation CreateAverageMetric ($input: CreateAverageMetricInput) {
+	createAverageMetric(input: $input) {
+		__typename
+		metric {
+			... MetricData
+		}
+	}
+}
+fragment MetricData on Metric {
+	... CommonData
+	id
+	dataPool {
+		... DataPoolData
+	}
+	dimensions {
+		... DimensionData
+	}
+	timestamp {
+		... DimensionData
+	}
+	measure {
+		... DimensionData
+	}
+	settings {
+		__typename
+		... on CountMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+		}
+		... on SumMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on CountDistinctMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			dimension {
+				... DimensionData
+			}
+		}
+	}
+	type
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment DataPoolData on DataPool {
+	id
+	... CommonData
+	dataSource {
+		... DataSourceData
+	}
+	status
+	error {
+		message
+	}
+	table
+	timestamp {
+		... TimestampData
+	}
+	columns {
+		nodes {
+			... DataPoolColumnData
+		}
+	}
+	availableMeasures {
+		nodes {
+			... DataPoolColumnData
+		}
+	}
+	setupTasks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		completedAt
+	}
+	syncs {
+		nodes {
+			... SyncData
+		}
+	}
+}
+fragment DimensionData on Dimension {
+	columnName
+	type
+	isNullable
+	isUniqueKey
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment DataPoolColumnData on DataPoolColumn {
+	columnName
+	type
+	isNullable
+}
+fragment SyncData on Sync {
+	id
+	status
+	newRecords
+	updatedRecords
+	deletedRecords
+	invalidRecords
+	startedAt
+	succeededAt
+	failedAt
+	error {
+		message
+	}
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`,
+		Variables: &__CreateAverageMetricInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateAverageMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
 
 func CreateCountDistinctMetric(
 	ctx context.Context,
@@ -10531,6 +11543,492 @@ fragment TableIntrospectionData on TableIntrospection {
 	var err error
 
 	var data CreateHttpDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+func CreateMaxMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateMaxMetricInput,
+) (*CreateMaxMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateMaxMetric",
+		Query: `
+mutation CreateMaxMetric ($input: CreateMaxMetricInput) {
+	createMaxMetric(input: $input) {
+		__typename
+		metric {
+			... MetricData
+		}
+	}
+}
+fragment MetricData on Metric {
+	... CommonData
+	id
+	dataPool {
+		... DataPoolData
+	}
+	dimensions {
+		... DimensionData
+	}
+	timestamp {
+		... DimensionData
+	}
+	measure {
+		... DimensionData
+	}
+	settings {
+		__typename
+		... on CountMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+		}
+		... on SumMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on CountDistinctMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			dimension {
+				... DimensionData
+			}
+		}
+	}
+	type
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment DataPoolData on DataPool {
+	id
+	... CommonData
+	dataSource {
+		... DataSourceData
+	}
+	status
+	error {
+		message
+	}
+	table
+	timestamp {
+		... TimestampData
+	}
+	columns {
+		nodes {
+			... DataPoolColumnData
+		}
+	}
+	availableMeasures {
+		nodes {
+			... DataPoolColumnData
+		}
+	}
+	setupTasks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		completedAt
+	}
+	syncs {
+		nodes {
+			... SyncData
+		}
+	}
+}
+fragment DimensionData on Dimension {
+	columnName
+	type
+	isNullable
+	isUniqueKey
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment DataPoolColumnData on DataPoolColumn {
+	columnName
+	type
+	isNullable
+}
+fragment SyncData on Sync {
+	id
+	status
+	newRecords
+	updatedRecords
+	deletedRecords
+	invalidRecords
+	startedAt
+	succeededAt
+	failedAt
+	error {
+		message
+	}
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`,
+		Variables: &__CreateMaxMetricInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateMaxMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+func CreateMinMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateMinMetricInput,
+) (*CreateMinMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateMinMetric",
+		Query: `
+mutation CreateMinMetric ($input: CreateMinMetricInput) {
+	createMinMetric(input: $input) {
+		__typename
+		metric {
+			... MetricData
+		}
+	}
+}
+fragment MetricData on Metric {
+	... CommonData
+	id
+	dataPool {
+		... DataPoolData
+	}
+	dimensions {
+		... DimensionData
+	}
+	timestamp {
+		... DimensionData
+	}
+	measure {
+		... DimensionData
+	}
+	settings {
+		__typename
+		... on CountMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+		}
+		... on SumMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on CountDistinctMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			dimension {
+				... DimensionData
+			}
+		}
+	}
+	type
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment DataPoolData on DataPool {
+	id
+	... CommonData
+	dataSource {
+		... DataSourceData
+	}
+	status
+	error {
+		message
+	}
+	table
+	timestamp {
+		... TimestampData
+	}
+	columns {
+		nodes {
+			... DataPoolColumnData
+		}
+	}
+	availableMeasures {
+		nodes {
+			... DataPoolColumnData
+		}
+	}
+	setupTasks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		completedAt
+	}
+	syncs {
+		nodes {
+			... SyncData
+		}
+	}
+}
+fragment DimensionData on Dimension {
+	columnName
+	type
+	isNullable
+	isUniqueKey
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment DataPoolColumnData on DataPoolColumn {
+	columnName
+	type
+	isNullable
+}
+fragment SyncData on Sync {
+	id
+	status
+	newRecords
+	updatedRecords
+	deletedRecords
+	invalidRecords
+	startedAt
+	succeededAt
+	failedAt
+	error {
+		message
+	}
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`,
+		Variables: &__CreateMinMetricInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateMinMetricResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
