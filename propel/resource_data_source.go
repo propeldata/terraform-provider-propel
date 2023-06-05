@@ -184,6 +184,7 @@ func resourceDataSource() *schema.Resource {
 						"aws_secret_access_key": {
 							Type:        schema.TypeString,
 							Required:    true,
+							Sensitive:   true,
 							Description: "The AWS secret access key for an IAM user with sufficient access to the S3 bucket.",
 						},
 					},
@@ -498,69 +499,66 @@ func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schem
 }
 
 func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	if response.DataSource.Tables == nil {
+	if response.DataSource.GetConnectionSettings().GetTypename() == nil {
 		return nil
 	}
 
-	tables := make([]interface{}, 0, len(response.DataSource.Tables.Nodes))
+	switch s := response.DataSource.GetConnectionSettings().(type) {
+	case *pc.DataSourceDataConnectionSettingsHttpConnectionSettings:
+		tables := make([]interface{}, 0, len(s.Tables))
 
-	// FIXME(mroberts): This is only going to work for the first page of results.
-	for _, table := range response.DataSource.Tables.Nodes {
-		columns := make([]interface{}, 0, len(table.Columns.Nodes))
-
-		// FIXME(mroberts): This is only going to work for the first page of results.
-		for _, column := range table.Columns.Nodes {
-			columns = append(columns, map[string]interface{}{
-				"name":     column.Name,
-				"type":     column.Type,
-				"nullable": column.IsNullable,
+		for _, table := range s.Tables {
+			columns := make([]interface{}, 0, len(table.Columns))
+			for _, column := range table.Columns {
+				columns = append(columns, map[string]interface{}{
+					"name":     column.Name,
+					"type":     column.Type,
+					"nullable": column.Nullable,
+				})
+			}
+			tables = append(tables, map[string]interface{}{
+				"id":     table.Id,
+				"name":   table.Name,
+				"column": columns,
 			})
 		}
 
-		tables = append(tables, map[string]interface{}{
-			"id":     table.Id,
-			"name":   table.Name,
-			"column": columns,
-		})
-	}
-
-	if err := d.Set("table", (interface{})(tables)); err != nil {
-		return diag.FromErr(err)
+		if err := d.Set("table", (interface{})(tables)); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	return nil
 }
 
 func handleS3Tables(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	// FIXME(mroberts): We need to handle the case where tables is not yet populated.
-	if response.DataSource.Tables == nil {
+	if response.DataSource.GetConnectionSettings().GetTypename() == nil {
 		return nil
 	}
 
-	tables := make([]interface{}, 0, len(response.DataSource.Tables.Nodes))
+	switch s := response.DataSource.GetConnectionSettings().(type) {
+	case *pc.DataSourceDataConnectionSettingsS3ConnectionSettings:
+		tables := make([]interface{}, 0, len(s.Tables))
 
-	// FIXME(mroberts): This is only going to work for the first page of results.
-	for _, table := range response.DataSource.Tables.Nodes {
-		columns := make([]interface{}, 0, len(table.Columns.Nodes))
-
-		// FIXME(mroberts): This is only going to work for the first page of results.
-		for _, column := range table.Columns.Nodes {
-			columns = append(columns, map[string]interface{}{
-				"name": column.Name,
-				// FIXME(mroberts): What about `path`?
-				"type":     column.Type,
-				"nullable": column.IsNullable,
+		for _, table := range s.Tables {
+			columns := make([]interface{}, 0, len(table.Columns))
+			for _, column := range table.Columns {
+				columns = append(columns, map[string]interface{}{
+					"name":     column.Name,
+					"type":     column.Type,
+					"nullable": column.Nullable,
+				})
+			}
+			tables = append(tables, map[string]interface{}{
+				"id":     table.Id,
+				"name":   table.Name,
+				"column": columns,
 			})
 		}
 
-		tables = append(tables, map[string]interface{}{
-			"name":   table.Name,
-			"column": columns,
-		})
-	}
-
-	if err := d.Set("table", (interface{})(tables)); err != nil {
-		return diag.FromErr(err)
+		if err := d.Set("table", (interface{})(tables)); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	return nil

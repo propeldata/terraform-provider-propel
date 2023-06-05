@@ -34,6 +34,15 @@ fragment DataSourceData on DataSource {
         ... on S3ConnectionSettings {
             bucket
             awsAccessKeyId
+            tables {
+                id
+                name
+                columns {
+                    name
+                    type
+                    nullable
+                }
+            }
         }
     }
     tables (first: 100) {

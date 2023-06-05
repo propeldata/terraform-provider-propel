@@ -5748,6 +5748,8 @@ type DataSourceDataConnectionSettingsS3ConnectionSettings struct {
 	Bucket string `json:"bucket"`
 	// The AWS access key ID for an IAM user with sufficient access to the S3 bucket.
 	AwsAccessKeyId string `json:"awsAccessKeyId"`
+	// The S3 Data Source's tables.
+	Tables []*DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable `json:"tables"`
 }
 
 // GetTypename returns DataSourceDataConnectionSettingsS3ConnectionSettings.Typename, and is useful for accessing the field via an interface.
@@ -5761,6 +5763,67 @@ func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) GetBucket() strin
 // GetAwsAccessKeyId returns DataSourceDataConnectionSettingsS3ConnectionSettings.AwsAccessKeyId, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) GetAwsAccessKeyId() string {
 	return v.AwsAccessKeyId
+}
+
+// GetTables returns DataSourceDataConnectionSettingsS3ConnectionSettings.Tables, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) GetTables() []*DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable {
+	return v.Tables
+}
+
+// DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable includes the requested fields of the GraphQL type S3DataSourceTable.
+// The GraphQL type's documentation follows.
+//
+// An S3 Data Source's table.
+type DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable struct {
+	// The ID of the table
+	Id string `json:"id"`
+	// The name of the table
+	Name string `json:"name"`
+	// All the columns present in the table
+	Columns []*DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn `json:"columns"`
+}
+
+// GetId returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable.Id, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable) GetId() string {
+	return v.Id
+}
+
+// GetName returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable) GetName() string {
+	return v.Name
+}
+
+// GetColumns returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable.Columns, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable) GetColumns() []*DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn {
+	return v.Columns
+}
+
+// DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn includes the requested fields of the GraphQL type S3DataSourceColumn.
+// The GraphQL type's documentation follows.
+//
+// A column in an S3 Data Source's table.
+type DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn struct {
+	// The column name.
+	Name string `json:"name"`
+	// The column type.
+	Type ColumnType `json:"type"`
+	// Whether the column's type is nullable or not.
+	Nullable bool `json:"nullable"`
+}
+
+// GetName returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn) GetName() string {
+	return v.Name
+}
+
+// GetType returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn.Type, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn) GetType() ColumnType {
+	return v.Type
+}
+
+// GetNullable returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn.Nullable, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn) GetNullable() bool {
+	return v.Nullable
 }
 
 // DataSourceDataConnectionSettingsSnowflakeConnectionSettings includes the requested fields of the GraphQL type SnowflakeConnectionSettings.
@@ -11742,6 +11805,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12009,6 +12081,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12276,6 +12357,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12490,6 +12580,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12641,6 +12740,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12886,6 +12994,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13153,6 +13270,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13304,6 +13430,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13441,6 +13576,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13690,6 +13834,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13899,6 +14052,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -14108,6 +14270,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -14333,6 +14504,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -14485,6 +14665,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -14612,6 +14801,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -14755,6 +14953,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -15180,6 +15387,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -15444,6 +15660,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -15728,6 +15953,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -15954,6 +16188,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -16105,6 +16348,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -16350,6 +16602,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -16501,6 +16762,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -16638,6 +16908,15 @@ fragment DataSourceData on DataSource {
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
