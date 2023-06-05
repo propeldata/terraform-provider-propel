@@ -103,6 +103,38 @@ func resourceDataPool() *schema.Resource {
 				ForceNew:    true,
 				Description: "The Data Pool's timestamp column.",
 			},
+			"cursor": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`",
+			},
+			"syncing": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Computed:    true,
+				Description: "The Data Pool's syncing settings.",
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"status": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Indicates whether syncing is enabled or disabled.",
+						},
+						"interval": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The syncing interval.",
+						},
+						"last_synced_at": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The date and time of the most recent Sync in UTC.",
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -171,9 +203,24 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 		},
 		Columns: columns,
 	}
+
 	if _, exists := d.GetOk("tenant_id"); exists {
 		input.Tenant = &pc.TenantInput{
 			ColumnName: d.Get("tenant_id").(string),
+		}
+	}
+
+	if _, exists := d.GetOk("cursor"); exists {
+		input.Cursor = &pc.CursorInput{
+			ColumnName: d.Get("cursor").(string),
+		}
+	}
+
+	if _, exists := d.GetOk("syncing"); exists {
+		syncing := d.Get("syncing").([]any)[0].(map[string]any)
+
+		input.Syncing = &pc.DataPoolSyncingInput{
+			Interval: pc.DataPoolSyncInterval(syncing["interval"].(string)),
 		}
 	}
 
@@ -239,13 +286,33 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
+	if response.DataPool.Cursor != nil {
+		if err := d.Set("cursor", response.DataPool.Cursor.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	syncing := map[string]any{
+		"status":   response.DataPool.Syncing.GetStatus(),
+		"interval": response.DataPool.Syncing.GetInterval(),
+	}
+
+	lastSyncedAt := response.DataPool.Syncing.GetLastSyncedAt()
+	if lastSyncedAt != nil {
+		syncing["last_synced_at"] = lastSyncedAt.Format(time.RFC3339)
+	}
+
+	if err := d.Set("syncing", []map[string]any{syncing}); err != nil {
+		return diag.FromErr(err)
+	}
+
 	return diags
 }
 
 func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	if d.HasChanges("unique_name", "description") {
+	if d.HasChanges("unique_name", "description", "syncing") {
 		id := d.Id()
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
@@ -255,6 +322,14 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m inter
 			},
 			UniqueName:  &uniqueName,
 			Description: &description,
+		}
+
+		if _, exists := d.GetOk("syncing"); exists {
+			syncing := d.Get("syncing").([]any)[0].(map[string]any)
+
+			input.Syncing = &pc.DataPoolSyncingInput{
+				Interval: pc.DataPoolSyncInterval(syncing["interval"].(string)),
+			}
 		}
 
 		_, err := pc.ModifyDataPool(ctx, c, input)

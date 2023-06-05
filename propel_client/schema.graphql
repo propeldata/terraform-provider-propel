@@ -838,6 +838,7 @@ type DataPool implements Node & Common {
   syncing: DataPoolSyncing!
   syncs(filter: SyncsFilter, first: Int, after: String, last: Int, before: String): SyncConnection
   metrics(first: Int, after: String, last: Int, before: String): MetricConnection
+  " The Deletion Jobs that where historically issued to this Data Pool, sorted by creation time, in descending order. "
   deletionJobs(first: Int, after: String, last: Int, before: String): DeletionJobConnection
 }
 
@@ -904,7 +905,37 @@ type DimensionStatistics {
   query: QueryInfo!
 }
 
-"""The fields of a Filter."""
+"""
+The fields of a filter.
+
+You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+
+```
+(value > 0 AND value <= 100) OR status = "confirmed"
+```
+
+you could write
+
+```
+{
+"column": "value",
+"operator": "GREATER_THAN",
+"value": "0",
+"and": [{
+"column": "value",
+"operator": "LESS_THAN_OR_EQUAL_TO",
+"value": "0"
+}],
+"or": [{
+"column": "status",
+"operator": "EQUALS",
+"value": "confirmed"
+}]
+}
+```
+
+Note that `and` takes precedence over `or`.
+"""
 type Filter {
   """ The name of the column to filter on. """
   column: String!
@@ -913,6 +944,12 @@ type Filter {
   operator: FilterOperator!
   """ The value to compare the column to. """
   value: String!
+  """ Additional filters to AND with this one. AND takes precedence over OR.
+  """
+  and: [Filter!]
+  """ Additional filters to OR with this one. AND takes precedence over OR.
+  """
+  or: [Filter!]
 }
 
 """The fields for creating or modifying a Dimension."""
@@ -1229,6 +1266,9 @@ input MetricReportInput {
   """ One or more Metrics to include in the Metric Report. These will be broken down by `dimensions`.
   """
   metrics: [MetricReportMetricInput!]!
+  """ The Query Filters to apply when building the Metric Report. These can be used to filter out rows.
+  """
+  filters: [FilterInput!]
   """ The index of the column to order the Metric Report by. The index is 1-based and defaults to the first Metric column. In other words, by default, reports are ordered by the first Metric; however, you can order by the second Metric, third Metric, etc., by overriding the `orderByColumn` input. You can also order by dimensions this way.
   """
   orderByColumn: Int
@@ -1922,7 +1962,37 @@ enum TimeSeriesGranularity {
   YEAR
 }
 
-"""The fields for defining a Filter."""
+"""
+The fields of a filter.
+
+You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+
+```
+(value > 0 AND value <= 100) OR status = "confirmed"
+```
+
+you could write
+
+```
+{
+"column": "value",
+"operator": "GREATER_THAN",
+"value": "0",
+"and": [{
+"column": "value",
+"operator": "LESS_THAN_OR_EQUAL_TO",
+"value": "0"
+}],
+"or": [{
+"column": "status",
+"operator": "EQUALS",
+"value": "confirmed"
+}]
+}
+```
+
+Note that `and` takes precedence over `or`.
+"""
 input FilterInput {
   """ The name of the column to filter on. """
   column: String!
@@ -1931,6 +2001,12 @@ input FilterInput {
   operator: FilterOperator!
   """ The value to compare the column to. """
   value: String!
+  """ Additional filters to AND with this one. AND takes precedence over OR.
+  """
+  and: [FilterInput!]
+  """ Additional filters to OR with this one. AND takes precedence over OR.
+  """
+  or: [FilterInput!]
 }
 
 """The available Filter operators."""
@@ -2213,28 +2289,66 @@ type PolicyResponse {
 }
 
 enum DeletionJobStatus {
+  "The Deletion Job was created, but is not yet being executed."
   CREATED
+  "The Deletion Job is executing."
   IN_PROGRESS
+  "The Deletion Job succeeded."
   SUCCEEDED
+  "The Deletion Job failed. Check the error message."
   FAILED
 }
 
+"""
+Deletion Job scheduled for a specific Data Pool.
+
+The Deletion Job represents the asynchronous process of deleting data
+given some filters inside a Data Pool. It tracks the deletion process
+until it is finished, showing the progress and the outcome when it is finished.
+"""
 type DeletionJob implements Node {
+  "The Deletion Job's ID"
   id: ID!
+  "The Deletion Job's creation date and time in UTC"
   createdAt: DateTime!
+  "Who created the Deletion Job"
   createdBy: String!
+  "The Deletion Job's last modification date and time in UTC"
   modifiedAt: DateTime!
+  "Who last modified the Deletion Job"
   modifiedBy: String!
+  "Account to which the Deletion Job belongs"
   account: Account!
+  "Environment to which the Deletion Job belongs"
   environment: Environment!
+  "The Data Pool whose records will be deleted by the Deletion Job"
   dataPool: DataPool!
+  "The current Deletion Job's status"
   status: DeletionJobStatus!
-  condition: [Filter!]!
+  "The list of filters that will be used for deleting data. Data matching the filters will be deleted."
+  filters: [Filter!]!
+  "The error that occurred while deleting data, if any."
   error: Error
+  "The current progress of the Deletion Job, from 0.0 to 1.0."
   progress: Float!
+  "The time at which the Deletion Job started."
   startedAt: DateTime
+  "The time at which the Deletion Job succeeded."
   succeededAt: DateTime
+  "The time at which the Deletion Job failed."
   failedAt: DateTime
+}
+
+type RequestDeleteResponse {
+  "The Deletion Job that was just created."
+  job: DeletionJob!
+}
+
+input DeletionRequestInput {
+  "The Data Pool that is going to get the data deleted"
+  dataPool: ID!
+  "The list of filters that will be used for deleting data. Data matching these filters will be deleted."
+  filters: [FilterInput!]!
 }
 
 type Mutation {
@@ -2435,6 +2549,8 @@ type Mutation {
   Deletes a Policy. The associated Application will no longer have access to the Metric's data.
   """
   deletePolicy(id: ID!): ID
+  """Schedules a new Deletion Job on the specified Data Pool."""
+  requestDelete(input: DeletionRequestInput!): RequestDeleteResponse!
   """
   This mutation creates a new HTTP Data Source from the given settings.
 
@@ -2593,6 +2709,13 @@ type Query {
   Query a Metric in leaderboard format. A table (array of rows) with the selected dimensions and corresponding Metric values for the given time range and filters.
   """
   leaderboard(input: LeaderboardInput!): LeaderboardResponse
+  """
+  This query returns the Deletion Job specified by the given ID.
+
+  The Deletion Job represents the asynchronous process of deleting data
+  given some filters inside a Data Pool.
+  """
+  deletionJob(id: ID!): DeletionJob
 }
 
 """

@@ -16,4 +16,8 @@ resource "propel_data_pool" "my_data_pool" {
     nullable = false
   }
   tenant_id = "account_id"
+
+  syncing {
+    interval = "EVERY_1_HOUR"
+  }
 }

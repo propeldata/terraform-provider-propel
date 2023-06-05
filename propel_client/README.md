@@ -8,6 +8,9 @@ Download the client generation tool:
 go get github.com/Khan/genqlient
 ```
 
+Copy the Propel API schema from:
+https://studio.apollographql.com/public/Propel-API/variant/production/schema/sdl to the file `schema.graphql`
+
 In this folder:
 
 ```shell
