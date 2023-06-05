@@ -145,33 +145,9 @@ func expandPoolColumns(def []interface{}) []*pc.DataPoolColumnInput {
 	for _, rawColumn := range def {
 		column := rawColumn.(map[string]interface{})
 
-		var columnType pc.ColumnType
-		switch column["type"].(string) {
-		case "BOOLEAN":
-			columnType = pc.ColumnTypeBoolean
-		case "DATE":
-			columnType = pc.ColumnTypeDate
-		case "DOUBLE":
-			columnType = pc.ColumnTypeDouble
-		case "INT8":
-			columnType = pc.ColumnTypeInt8
-		case "INT16":
-			columnType = pc.ColumnTypeInt16
-		case "INT32":
-			columnType = pc.ColumnTypeInt32
-		case "INT64":
-			columnType = pc.ColumnTypeInt64
-		case "JSON":
-			columnType = pc.ColumnTypeJson
-		case "STRING":
-			columnType = pc.ColumnTypeString
-		case "TIMESTAMP":
-			columnType = pc.ColumnTypeTimestamp
-		}
-
 		columns = append(columns, &pc.DataPoolColumnInput{
 			ColumnName: column["name"].(string),
-			Type:       columnType,
+			Type:       pc.ColumnType(column["type"].(string)),
 			IsNullable: column["nullable"].(bool),
 		})
 	}

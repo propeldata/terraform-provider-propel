@@ -795,33 +795,9 @@ func expandHttpColumns(def []interface{}) []*pc.HttpDataSourceColumnInput {
 	for _, rawColumn := range def {
 		column := rawColumn.(map[string]interface{})
 
-		var columnType pc.ColumnType
-		switch column["type"].(string) {
-		case "BOOLEAN":
-			columnType = pc.ColumnTypeBoolean
-		case "DATE":
-			columnType = pc.ColumnTypeDate
-		case "DOUBLE":
-			columnType = pc.ColumnTypeDouble
-		case "INT8":
-			columnType = pc.ColumnTypeInt8
-		case "INT16":
-			columnType = pc.ColumnTypeInt16
-		case "INT32":
-			columnType = pc.ColumnTypeInt32
-		case "INT64":
-			columnType = pc.ColumnTypeInt64
-		case "JSON":
-			columnType = pc.ColumnTypeJson
-		case "STRING":
-			columnType = pc.ColumnTypeString
-		case "TIMESTAMP":
-			columnType = pc.ColumnTypeTimestamp
-		}
-
 		columns = append(columns, &pc.HttpDataSourceColumnInput{
 			Name:     column["name"].(string),
-			Type:     columnType,
+			Type:     pc.ColumnType(column["type"].(string)),
 			Nullable: column["nullable"].(bool),
 		})
 	}
@@ -854,31 +830,9 @@ func expandS3Columns(def []interface{}) []*pc.S3DataSourceColumnInput {
 	for _, rawColumn := range def {
 		column := rawColumn.(map[string]interface{})
 
-		var columnType pc.ColumnType
-		switch column["type"].(string) {
-		case "BOOLEAN":
-			columnType = pc.ColumnTypeBoolean
-		case "DATE":
-			columnType = pc.ColumnTypeDate
-		case "DOUBLE":
-			columnType = pc.ColumnTypeDouble
-		case "INT8":
-			columnType = pc.ColumnTypeInt8
-		case "INT16":
-			columnType = pc.ColumnTypeInt16
-		case "INT32":
-			columnType = pc.ColumnTypeInt32
-		case "INT64":
-			columnType = pc.ColumnTypeInt64
-		case "STRING":
-			columnType = pc.ColumnTypeString
-		case "TIMESTAMP":
-			columnType = pc.ColumnTypeTimestamp
-		}
-
 		columns = append(columns, &pc.S3DataSourceColumnInput{
 			Name:     column["name"].(string),
-			Type:     columnType,
+			Type:     pc.ColumnType(column["type"].(string)),
 			Nullable: column["nullable"].(bool),
 		})
 	}
