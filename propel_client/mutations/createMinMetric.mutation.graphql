@@ -1,0 +1,8 @@
+mutation CreateMinMetric($input: CreateMinMetricInput) {
+    createMinMetric(input: $input) {
+        __typename
+        metric {
+            ...MetricData
+        }
+    }
+}

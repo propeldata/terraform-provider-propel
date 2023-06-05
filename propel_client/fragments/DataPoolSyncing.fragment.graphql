@@ -1,0 +1,5 @@
+fragment DataPoolSyncingData on DataPoolSyncing {
+    status
+    interval
+    lastSyncedAt
+}

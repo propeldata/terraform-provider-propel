@@ -22,6 +22,12 @@ fragment DataPoolData on DataPool {
             ...DataPoolColumnData
         }
     }
+    cursor {
+        ...CursorData
+    }
+    syncing {
+        ...DataPoolSyncingData
+    }
     availableMeasures {
         nodes {
             ...DataPoolColumnData

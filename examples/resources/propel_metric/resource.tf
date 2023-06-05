@@ -53,3 +53,55 @@ resource "propel_metric" "my_count_distinct_metric" {
 
   dimensions = ["store"]
 }
+
+
+resource "propel_metric" "my_average_metric" {
+  unique_name = "my_average_metric"
+  description = "This is an example of a Average Metric"
+  data_pool   = propel_data_pool.my_data_pool.id
+
+  type      = "AVERAGE"
+  measure   = "price"
+
+  filter {
+    column   = "product_name"
+    operator = "EQUALS"
+    value    = "foo"
+  }
+
+  dimensions = ["store"]
+}
+
+resource "propel_metric" "my_min_metric" {
+  unique_name = "my_min_metric"
+  description = "This is an example of a Min Metric"
+  data_pool   = propel_data_pool.my_data_pool.id
+
+  type      = "MIN"
+  measure   = "price"
+
+  filter {
+    column   = "product_name"
+    operator = "EQUALS"
+    value    = "foo"
+  }
+
+  dimensions = ["store"]
+}
+
+resource "propel_metric" "my_max_metric" {
+  unique_name = "my_max_metric"
+  description = "This is an example of a Max Metric"
+  data_pool   = propel_data_pool.my_data_pool.id
+
+  type      = "MAX"
+  measure   = "price"
+
+  filter {
+    column   = "product_name"
+    operator = "EQUALS"
+    value    = "foo"
+  }
+
+  dimensions = ["store"]
+}

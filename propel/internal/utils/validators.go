@@ -13,6 +13,7 @@ var IsValidColumnType = validation.StringInSlice([]string{
 	"INT16",
 	"INT32",
 	"INT64",
+	"JSON",
 	"STRING",
 	"TIMESTAMP",
 }, false)

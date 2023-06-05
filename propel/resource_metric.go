@@ -42,6 +42,9 @@ func resourceMetric() *schema.Resource {
 					"SUM",
 					"COUNT",
 					"COUNT_DISTINCT",
+					"AVERAGE",
+					"MIN",
+					"MAX",
 				}, false),
 				Description: "The Metric type. The different Metric types determine how the values are calculated.",
 			},
@@ -124,13 +127,14 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 		dimensions = expandMetricDimensions(def.(*schema.Set).List())
 	}
 
+	dataPool := d.Get("data_pool").(string)
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
 
 	switch d.Get("type") {
 	case "SUM":
 		input := &pc.CreateSumMetricInput{
-			DataPool:    d.Get("data_pool").(string),
+			DataPool:    dataPool,
 			UniqueName:  &uniqueName,
 			Description: &description,
 			Filters:     filters,
@@ -148,7 +152,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 		d.SetId(response.GetCreateSumMetric().Metric.Id)
 	case "COUNT":
 		input := &pc.CreateCountMetricInput{
-			DataPool:    d.Get("data_pool").(string),
+			DataPool:    dataPool,
 			UniqueName:  &uniqueName,
 			Description: &description,
 			Filters:     filters,
@@ -163,7 +167,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 		d.SetId(response.GetCreateCountMetric().Metric.Id)
 	case "COUNT_DISTINCT":
 		input := &pc.CreateCountDistinctMetricInput{
-			DataPool:    d.Get("data_pool").(string),
+			DataPool:    dataPool,
 			UniqueName:  &uniqueName,
 			Description: &description,
 			Filters:     filters,
@@ -179,6 +183,60 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 		}
 
 		d.SetId(response.GetCreateCountDistinctMetric().Metric.Id)
+	case "AVERAGE":
+		input := &pc.CreateAverageMetricInput{
+			DataPool:    dataPool,
+			UniqueName:  &uniqueName,
+			Description: &description,
+			Filters:     filters,
+			Dimensions:  dimensions,
+			Measure: &pc.DimensionInput{
+				ColumnName: d.Get("measure").(string),
+			},
+		}
+
+		response, err := pc.CreateAverageMetric(ctx, c, input)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		d.SetId(response.GetCreateAverageMetric().Metric.Id)
+	case "MAX":
+		input := &pc.CreateMaxMetricInput{
+			DataPool:    dataPool,
+			UniqueName:  &uniqueName,
+			Description: &description,
+			Filters:     filters,
+			Dimensions:  dimensions,
+			Measure: &pc.DimensionInput{
+				ColumnName: d.Get("measure").(string),
+			},
+		}
+
+		response, err := pc.CreateMaxMetric(ctx, c, input)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		d.SetId(response.GetCreateMaxMetric().Metric.Id)
+	case "MIN":
+		input := &pc.CreateMinMetricInput{
+			DataPool:    dataPool,
+			UniqueName:  &uniqueName,
+			Description: &description,
+			Filters:     filters,
+			Dimensions:  dimensions,
+			Measure: &pc.DimensionInput{
+				ColumnName: d.Get("measure").(string),
+			},
+		}
+
+		response, err := pc.CreateMinMetric(ctx, c, input)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		d.SetId(response.GetCreateMinMetric().Metric.Id)
 	}
 
 	return diags

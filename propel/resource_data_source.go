@@ -197,6 +197,12 @@ func resourceDataSource() *schema.Resource {
 				Elem: &schema.Resource{
 					Description: "Specify an HTTP or S3 Data Source's tables with this. You do not need to use this for Snowflake Data Sources, since Snowflake Data Sources' tables are automatically introspected.",
 					Schema: map[string]*schema.Schema{
+						"id": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							Description: "The table's ID.",
+						},
 						"name": {
 							Type:        schema.TypeString,
 							Required:    true,
@@ -541,6 +547,7 @@ func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) d
 			}
 
 			tables = append(tables, map[string]interface{}{
+				"id":     table.Id,
 				"name":   table.Name,
 				"column": columns,
 			})
@@ -550,9 +557,7 @@ func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) d
 			return diag.FromErr(err)
 		}
 	} else {
-
 		// FIXME(mroberts): We need to handle the case where tables is not yet populated.
-
 		return nil
 	}
 
@@ -806,6 +811,8 @@ func expandHttpColumns(def []interface{}) []*pc.HttpDataSourceColumnInput {
 			columnType = pc.ColumnTypeInt32
 		case "INT64":
 			columnType = pc.ColumnTypeInt64
+		case "JSON":
+			columnType = pc.ColumnTypeJson
 		case "STRING":
 			columnType = pc.ColumnTypeString
 		case "TIMESTAMP":
