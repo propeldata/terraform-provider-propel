@@ -103,6 +103,54 @@ resource "propel_metric" "count_distinct_metric" {
   dimensions = ["column_1", "column_2"]
 }
 
+resource "propel_metric" "average_metric" {
+  unique_name = "My Average Metric"
+  data_pool   = propel_data_pool.data_pool.id
+
+  type      = "AVERAGE"
+  measure   = "column_1"
+
+  filter {
+    column   = "column_3"
+    operator = "EQUALS"
+    value    = "value"
+  }
+
+  dimensions = ["column_1", "column_2"]
+}
+
+resource "propel_metric" "min_metric" {
+  unique_name = "My MIN Metric"
+  data_pool   = propel_data_pool.data_pool.id
+
+  type      = "MIN"
+  measure   = "column_1"
+
+  filter {
+     column   = "column_3"
+     operator = "EQUALS"
+     value    = "value"
+  }
+
+  dimensions = ["column_1", "column_2"]
+}
+
+resource "propel_metric" "max_metric" {
+  unique_name = "My MAX Metric"
+  data_pool   = propel_data_pool.data_pool.id
+
+  type      = "MAX"
+  measure   = "column_1"
+
+  filter {
+    column   = "column_3"
+    operator = "EQUALS"
+    value    = "value"
+  }
+
+  dimensions = ["column_1", "column_2"]
+}
+
 output "snowflake_data_source_id" {
   value = propel_data_source.snowflake_data_source.id
 }
@@ -125,4 +173,16 @@ output "sum_metric_id" {
 
 output "count_distinct_metric_id" {
   value = propel_metric.count_distinct_metric.id
+}
+
+output "average_metric_id" {
+  value = propel_metric.average_metric.id
+}
+
+output "min_metric_id" {
+  value = propel_metric.min_metric.id
+}
+
+output "max_metric_id" {
+  value = propel_metric.max_metric.id
 }
