@@ -5642,6 +5642,8 @@ type DataSourceDataConnectionSettingsHttpConnectionSettings struct {
 	//
 	// If this parameter is not provided, anyone with the URL to your tables will be able to upload data. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
 	BasicAuth *DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings `json:"basicAuth"`
+	// The HTTP Data Source's tables.
+	Tables []*DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTable `json:"tables"`
 }
 
 // GetTypename returns DataSourceDataConnectionSettingsHttpConnectionSettings.Typename, and is useful for accessing the field via an interface.
@@ -5652,6 +5654,11 @@ func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) GetTypename() *
 // GetBasicAuth returns DataSourceDataConnectionSettingsHttpConnectionSettings.BasicAuth, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) GetBasicAuth() *DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings {
 	return v.BasicAuth
+}
+
+// GetTables returns DataSourceDataConnectionSettingsHttpConnectionSettings.Tables, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) GetTables() []*DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTable {
+	return v.Tables
 }
 
 // DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasicAuthSettings includes the requested fields of the GraphQL type HttpBasicAuthSettings.
@@ -5675,6 +5682,62 @@ func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsBasicAuthHttpBasi
 	return v.Password
 }
 
+// DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTable includes the requested fields of the GraphQL type HttpDataSourceTable.
+// The GraphQL type's documentation follows.
+//
+// An HTTP Data Source's table.
+type DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTable struct {
+	// The ID of the table
+	Id string `json:"id"`
+	// The name of the table
+	Name string `json:"name"`
+	// All the columns present in the table
+	Columns []*DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn `json:"columns"`
+}
+
+// GetId returns DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTable.Id, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTable) GetId() string {
+	return v.Id
+}
+
+// GetName returns DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTable.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTable) GetName() string {
+	return v.Name
+}
+
+// GetColumns returns DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTable.Columns, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTable) GetColumns() []*DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn {
+	return v.Columns
+}
+
+// DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn includes the requested fields of the GraphQL type HttpDataSourceColumn.
+// The GraphQL type's documentation follows.
+//
+// A column in an HTTP Data Source's table.
+type DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn struct {
+	// The column name. It has to be unique within a Table.
+	Name string `json:"name"`
+	// The column type.
+	Type ColumnType `json:"type"`
+	// Whether the column's type is nullable or not.
+	Nullable bool `json:"nullable"`
+}
+
+// GetName returns DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn) GetName() string {
+	return v.Name
+}
+
+// GetType returns DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn.Type, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn) GetType() ColumnType {
+	return v.Type
+}
+
+// GetNullable returns DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn.Nullable, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn) GetNullable() bool {
+	return v.Nullable
+}
+
 // DataSourceDataConnectionSettingsS3ConnectionSettings includes the requested fields of the GraphQL type S3ConnectionSettings.
 // The GraphQL type's documentation follows.
 //
@@ -5685,6 +5748,8 @@ type DataSourceDataConnectionSettingsS3ConnectionSettings struct {
 	Bucket string `json:"bucket"`
 	// The AWS access key ID for an IAM user with sufficient access to the S3 bucket.
 	AwsAccessKeyId string `json:"awsAccessKeyId"`
+	// The S3 Data Source's tables.
+	Tables []*DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable `json:"tables"`
 }
 
 // GetTypename returns DataSourceDataConnectionSettingsS3ConnectionSettings.Typename, and is useful for accessing the field via an interface.
@@ -5698,6 +5763,67 @@ func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) GetBucket() strin
 // GetAwsAccessKeyId returns DataSourceDataConnectionSettingsS3ConnectionSettings.AwsAccessKeyId, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) GetAwsAccessKeyId() string {
 	return v.AwsAccessKeyId
+}
+
+// GetTables returns DataSourceDataConnectionSettingsS3ConnectionSettings.Tables, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) GetTables() []*DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable {
+	return v.Tables
+}
+
+// DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable includes the requested fields of the GraphQL type S3DataSourceTable.
+// The GraphQL type's documentation follows.
+//
+// An S3 Data Source's table.
+type DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable struct {
+	// The ID of the table
+	Id string `json:"id"`
+	// The name of the table
+	Name string `json:"name"`
+	// All the columns present in the table
+	Columns []*DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn `json:"columns"`
+}
+
+// GetId returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable.Id, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable) GetId() string {
+	return v.Id
+}
+
+// GetName returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable) GetName() string {
+	return v.Name
+}
+
+// GetColumns returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable.Columns, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable) GetColumns() []*DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn {
+	return v.Columns
+}
+
+// DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn includes the requested fields of the GraphQL type S3DataSourceColumn.
+// The GraphQL type's documentation follows.
+//
+// A column in an S3 Data Source's table.
+type DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn struct {
+	// The column name.
+	Name string `json:"name"`
+	// The column type.
+	Type ColumnType `json:"type"`
+	// Whether the column's type is nullable or not.
+	Nullable bool `json:"nullable"`
+}
+
+// GetName returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn) GetName() string {
+	return v.Name
+}
+
+// GetType returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn.Type, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn) GetType() ColumnType {
+	return v.Type
+}
+
+// GetNullable returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn.Nullable, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn) GetNullable() bool {
+	return v.Nullable
 }
 
 // DataSourceDataConnectionSettingsSnowflakeConnectionSettings includes the requested fields of the GraphQL type SnowflakeConnectionSettings.
@@ -9586,6 +9712,250 @@ func (v *ModifyDataPoolResponse) __premarshalJSON() (*__premarshalModifyDataPool
 	return &retval, nil
 }
 
+type ModifyHttpDataSourceInput struct {
+	// The HTTP Data Source's new connection settings. If not provided this property will not be modified.
+	ConnectionSettings *PartialHttpConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The HTTP Data Source's new description. If not provided this property will not be modified.
+	Description *string `json:"description"`
+	// The ID or unique name of the HTTP Data Source to modify.
+	IdOrUniqueName *IdOrUniqueName `json:"idOrUniqueName,omitempty"`
+	// The HTTP Data Source's new unique name. If not provided this property will not be modified.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns ModifyHttpDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceInput) GetConnectionSettings() *PartialHttpConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns ModifyHttpDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetIdOrUniqueName returns ModifyHttpDataSourceInput.IdOrUniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceInput) GetIdOrUniqueName() *IdOrUniqueName { return v.IdOrUniqueName }
+
+// GetUniqueName returns ModifyHttpDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponse) GetDataSource() *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetConnectionSettings returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"Unable to marshal ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyHttpDataSourceResponse is returned by ModifyHttpDataSource on success.
+type ModifyHttpDataSourceResponse struct {
+	// This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
+	//
+	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+	ModifyHttpDataSource *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponse `json:"modifyHttpDataSource"`
+}
+
+// GetModifyHttpDataSource returns ModifyHttpDataSourceResponse.ModifyHttpDataSource, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceResponse) GetModifyHttpDataSource() *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponse {
+	return v.ModifyHttpDataSource
+}
+
 // The fields for modifying a Metric.
 type ModifyMetricInput struct {
 	// The ID of the Metric to modify.
@@ -9831,6 +10201,250 @@ type ModifyMetricResponse struct {
 // GetModifyMetric returns ModifyMetricResponse.ModifyMetric, and is useful for accessing the field via an interface.
 func (v *ModifyMetricResponse) GetModifyMetric() *ModifyMetricModifyMetricMetricResponse {
 	return v.ModifyMetric
+}
+
+type ModifyS3DataSourceInput struct {
+	// The S3 Data Source's new connection settings. If not provided this property will not be modified.
+	ConnectionSettings *PartialS3ConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The S3 Data Source's new description. If not provided this property will not be modified.
+	Description *string `json:"description"`
+	// The ID or unique name of the S3 Data Source to modify.
+	IdOrUniqueName *IdOrUniqueName `json:"idOrUniqueName,omitempty"`
+	// The S3 Data Source's new unique name. If not provided this property will not be modified.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns ModifyS3DataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceInput) GetConnectionSettings() *PartialS3ConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns ModifyS3DataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceInput) GetDescription() *string { return v.Description }
+
+// GetIdOrUniqueName returns ModifyS3DataSourceInput.IdOrUniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceInput) GetIdOrUniqueName() *IdOrUniqueName { return v.IdOrUniqueName }
+
+// GetUniqueName returns ModifyS3DataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// ModifyS3DataSourceModifyS3DataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type ModifyS3DataSourceModifyS3DataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponse) GetDataSource() *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetConnectionSettings returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"Unable to marshal ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyS3DataSourceResponse is returned by ModifyS3DataSource on success.
+type ModifyS3DataSourceResponse struct {
+	// This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
+	//
+	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+	ModifyS3DataSource *ModifyS3DataSourceModifyS3DataSourceDataSourceResponse `json:"modifyS3DataSource"`
+}
+
+// GetModifyS3DataSource returns ModifyS3DataSourceResponse.ModifyS3DataSource, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceResponse) GetModifyS3DataSource() *ModifyS3DataSourceModifyS3DataSourceDataSourceResponse {
+	return v.ModifyS3DataSource
 }
 
 // The fields for modifying a Snowflake Data Source.
@@ -10342,6 +10956,53 @@ func (v *PageInfoData) GetHasNextPage() bool { return v.HasNextPage }
 
 // GetHasPreviousPage returns PageInfoData.HasPreviousPage, and is useful for accessing the field via an interface.
 func (v *PageInfoData) GetHasPreviousPage() bool { return v.HasPreviousPage }
+
+// The HTTP Data Source connection settings.
+type PartialHttpConnectionSettingsInput struct {
+	// The HTTP Basic authentication settings for uploading new data.
+	//
+	// If this parameter is not provided, anyone with the URL to your tables will be able to upload data. While it's OK to test without HTTP Basic authentication, we recommend enabling it. If not provided this property will not be modified.
+	BasicAuth *HttpBasicAuthInput `json:"basicAuth,omitempty"`
+	// Set this to `false` to disable HTTP Basic authentication. Any previously stored HTTP Basic authentication settings will be cleared out. If not provided this property will not be modified.
+	BasicAuthEnabled *bool `json:"basicAuthEnabled"`
+	// The HTTP Data Source's tables. If not provided this property will not be modified.
+	Tables []*HttpDataSourceTableInput `json:"tables,omitempty"`
+}
+
+// GetBasicAuth returns PartialHttpConnectionSettingsInput.BasicAuth, and is useful for accessing the field via an interface.
+func (v *PartialHttpConnectionSettingsInput) GetBasicAuth() *HttpBasicAuthInput { return v.BasicAuth }
+
+// GetBasicAuthEnabled returns PartialHttpConnectionSettingsInput.BasicAuthEnabled, and is useful for accessing the field via an interface.
+func (v *PartialHttpConnectionSettingsInput) GetBasicAuthEnabled() *bool { return v.BasicAuthEnabled }
+
+// GetTables returns PartialHttpConnectionSettingsInput.Tables, and is useful for accessing the field via an interface.
+func (v *PartialHttpConnectionSettingsInput) GetTables() []*HttpDataSourceTableInput { return v.Tables }
+
+// The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, and the tables (along with their paths). We do not allow fetching the AWS secret access key after it has been set.
+type PartialS3ConnectionSettingsInput struct {
+	// The AWS access key ID for an IAM user with sufficient access to the S3 bucket. If not provided this property will not be modified.
+	AwsAccessKeyId *string `json:"awsAccessKeyId"`
+	// The AWS secret access key for an IAM user with sufficient access to the S3 bucket. If not provided this property will not be modified.
+	AwsSecretAccessKey *string `json:"awsSecretAccessKey"`
+	// The name of the S3 bucket. If not provided this property will not be modified.
+	Bucket *string `json:"bucket"`
+	// The S3 Data Source's tables. If not provided this property will not be modified.
+	Tables []*S3DataSourceTableInput `json:"tables,omitempty"`
+}
+
+// GetAwsAccessKeyId returns PartialS3ConnectionSettingsInput.AwsAccessKeyId, and is useful for accessing the field via an interface.
+func (v *PartialS3ConnectionSettingsInput) GetAwsAccessKeyId() *string { return v.AwsAccessKeyId }
+
+// GetAwsSecretAccessKey returns PartialS3ConnectionSettingsInput.AwsSecretAccessKey, and is useful for accessing the field via an interface.
+func (v *PartialS3ConnectionSettingsInput) GetAwsSecretAccessKey() *string {
+	return v.AwsSecretAccessKey
+}
+
+// GetBucket returns PartialS3ConnectionSettingsInput.Bucket, and is useful for accessing the field via an interface.
+func (v *PartialS3ConnectionSettingsInput) GetBucket() *string { return v.Bucket }
+
+// GetTables returns PartialS3ConnectionSettingsInput.Tables, and is useful for accessing the field via an interface.
+func (v *PartialS3ConnectionSettingsInput) GetTables() []*S3DataSourceTableInput { return v.Tables }
 
 // The fields for modifying a Snowflake Data Source's connection settings.
 type PartialSnowflakeConnectionSettingsInput struct {
@@ -10945,6 +11606,14 @@ type __ModifyDataPoolInput struct {
 // GetInput returns __ModifyDataPoolInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifyDataPoolInput) GetInput() *ModifyDataPoolInput { return v.Input }
 
+// __ModifyHttpDataSourceInput is used internally by genqlient
+type __ModifyHttpDataSourceInput struct {
+	Input *ModifyHttpDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyHttpDataSourceInput) GetInput() *ModifyHttpDataSourceInput { return v.Input }
+
 // __ModifyMetricInput is used internally by genqlient
 type __ModifyMetricInput struct {
 	Input *ModifyMetricInput `json:"input,omitempty"`
@@ -10952,6 +11621,14 @@ type __ModifyMetricInput struct {
 
 // GetInput returns __ModifyMetricInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifyMetricInput) GetInput() *ModifyMetricInput { return v.Input }
+
+// __ModifyS3DataSourceInput is used internally by genqlient
+type __ModifyS3DataSourceInput struct {
+	Input *ModifyS3DataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyS3DataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyS3DataSourceInput) GetInput() *ModifyS3DataSourceInput { return v.Input }
 
 // __ModifySnowflakeDataSourceInput is used internally by genqlient
 type __ModifySnowflakeDataSourceInput struct {
@@ -11054,6 +11731,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -11109,10 +11792,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -11150,6 +11851,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -11358,10 +12068,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -11616,10 +12344,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -11821,10 +12567,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -11963,10 +12727,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12138,6 +12920,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -12193,10 +12981,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12234,6 +13040,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -12381,6 +13196,12 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
+	cursor {
+		... CursorData
+	}
+	syncing {
+		... DataPoolSyncingData
+	}
 	availableMeasures {
 		nodes {
 			... DataPoolColumnData
@@ -12436,10 +13257,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12477,6 +13316,15 @@ fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
 	isNullable
+}
+fragment CursorData on Cursor {
+	columnName
+	type
+}
+fragment DataPoolSyncingData on DataPoolSyncing {
+	status
+	interval
+	lastSyncedAt
 }
 fragment SyncData on Sync {
 	id
@@ -12569,10 +13417,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12697,10 +13563,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -12937,10 +13821,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13137,10 +14039,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13337,10 +14257,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13553,10 +14491,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13696,10 +14652,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13814,10 +14788,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -13948,10 +14940,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -14364,10 +15374,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -14619,10 +15647,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -14894,10 +15940,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -15111,10 +16175,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -15204,6 +16286,144 @@ fragment TableIntrospectionData on TableIntrospection {
 	var err error
 
 	var data ModifyDataPoolResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+func ModifyHttpDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyHttpDataSourceInput,
+) (*ModifyHttpDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyHttpDataSource",
+		Query: `
+mutation ModifyHttpDataSource ($input: ModifyHttpDataSourceInput!) {
+	modifyHttpDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`,
+		Variables: &__ModifyHttpDataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyHttpDataSourceResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -15369,10 +16589,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {
@@ -15473,6 +16711,144 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
+func ModifyS3DataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyS3DataSourceInput,
+) (*ModifyS3DataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyS3DataSource",
+		Query: `
+mutation ModifyS3DataSource ($input: ModifyS3DataSourceInput!) {
+	modifyS3DataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`,
+		Variables: &__ModifyS3DataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyS3DataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
 func ModifySnowflakeDataSource(
 	ctx context.Context,
 	client graphql.Client,
@@ -15519,10 +16895,28 @@ fragment DataSourceData on DataSource {
 				username
 				password
 			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 		... on S3ConnectionSettings {
 			bucket
 			awsAccessKeyId
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
 		}
 	}
 	tables(first: 100) {

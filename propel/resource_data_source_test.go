@@ -43,6 +43,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckPropelDataSourceDestroy,
 		Steps: []resource.TestStep{
+			// should create the data source
 			{
 				Config: testAccCheckPropelDataSourceConfigBasic(httpCtx),
 				Check: resource.ComposeTestCheckFunc(
@@ -50,6 +51,15 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					resource.TestCheckResourceAttr("propel_data_source.new", "description", ""),
 					resource.TestCheckResourceAttr("propel_data_source.new", "type", "Http"),
 					resource.TestCheckResourceAttr("propel_data_source.new", "status", "CONNECTED"),
+					resource.TestCheckResourceAttr("propel_data_source.new", "table.0.column.#", "1"),
+				),
+			},
+			// should apply an update to the data source table schema
+			{
+				Config: testAccUpdatePropelDataSourceConfigBasic(httpCtx),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckPropelDataSourceExists("propel_data_source.new"),
+					resource.TestCheckResourceAttr("propel_data_source.new", "table.0.column.#", "2"),
 				),
 			},
 			{
@@ -86,6 +96,30 @@ func testAccCheckPropelDataSourceConfigBasic(ctx map[string]interface{}) string 
 			column {
 				name = "timestamp_tz"
 				type = "TIMESTAMP"
+				nullable = false
+			}
+		}
+	}`, ctx)
+}
+
+func testAccUpdatePropelDataSourceConfigBasic(ctx map[string]interface{}) string {
+	return Nprintf(`
+	resource "propel_data_source" "%{resource_name}" {
+		unique_name = "%{unique_name}"
+		type = "Http"
+
+		table {
+			name = "CLUSTER_TEST_TABLE_1"
+
+			column {
+				name = "timestamp_tz"
+				type = "TIMESTAMP"
+				nullable = false
+			}
+
+			column {
+				name = "id"
+				type = "STRING"
 				nullable = false
 			}
 		}
