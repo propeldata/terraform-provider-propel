@@ -7746,10 +7746,206 @@ func (v *MetricDataMeasureDimension) __premarshalJSON() (*__premarshalMetricData
 // Settings for Average Metrics.
 type MetricDataSettingsAverageMetricSettings struct {
 	Typename *string `json:"__typename"`
+	// Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.
+	Filters []*MetricDataSettingsAverageMetricSettingsFiltersFilter `json:"filters"`
+	// The Dimension to be averaged.
+	Measure *MetricDataSettingsAverageMetricSettingsMeasureDimension `json:"measure"`
 }
 
 // GetTypename returns MetricDataSettingsAverageMetricSettings.Typename, and is useful for accessing the field via an interface.
 func (v *MetricDataSettingsAverageMetricSettings) GetTypename() *string { return v.Typename }
+
+// GetFilters returns MetricDataSettingsAverageMetricSettings.Filters, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettings) GetFilters() []*MetricDataSettingsAverageMetricSettingsFiltersFilter {
+	return v.Filters
+}
+
+// GetMeasure returns MetricDataSettingsAverageMetricSettings.Measure, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettings) GetMeasure() *MetricDataSettingsAverageMetricSettingsMeasureDimension {
+	return v.Measure
+}
+
+// MetricDataSettingsAverageMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
+// The GraphQL type's documentation follows.
+//
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
+type MetricDataSettingsAverageMetricSettingsFiltersFilter struct {
+	FilterData `json:"-"`
+}
+
+// GetColumn returns MetricDataSettingsAverageMetricSettingsFiltersFilter.Column, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) GetColumn() string {
+	return v.FilterData.Column
+}
+
+// GetOperator returns MetricDataSettingsAverageMetricSettingsFiltersFilter.Operator, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) GetOperator() FilterOperator {
+	return v.FilterData.Operator
+}
+
+// GetValue returns MetricDataSettingsAverageMetricSettingsFiltersFilter.Value, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) GetValue() string {
+	return v.FilterData.Value
+}
+
+func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsAverageMetricSettingsFiltersFilter
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsAverageMetricSettingsFiltersFilter = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.FilterData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsAverageMetricSettingsFiltersFilter struct {
+	Column string `json:"column"`
+
+	Operator FilterOperator `json:"operator"`
+
+	Value string `json:"value"`
+}
+
+func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) __premarshalJSON() (*__premarshalMetricDataSettingsAverageMetricSettingsFiltersFilter, error) {
+	var retval __premarshalMetricDataSettingsAverageMetricSettingsFiltersFilter
+
+	retval.Column = v.FilterData.Column
+	retval.Operator = v.FilterData.Operator
+	retval.Value = v.FilterData.Value
+	return &retval, nil
+}
+
+// MetricDataSettingsAverageMetricSettingsMeasureDimension includes the requested fields of the GraphQL type Dimension.
+// The GraphQL type's documentation follows.
+//
+// The Dimension object that represents a column in a table.
+type MetricDataSettingsAverageMetricSettingsMeasureDimension struct {
+	DimensionData `json:"-"`
+}
+
+// GetColumnName returns MetricDataSettingsAverageMetricSettingsMeasureDimension.ColumnName, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettingsMeasureDimension) GetColumnName() string {
+	return v.DimensionData.ColumnName
+}
+
+// GetType returns MetricDataSettingsAverageMetricSettingsMeasureDimension.Type, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettingsMeasureDimension) GetType() string {
+	return v.DimensionData.Type
+}
+
+// GetIsNullable returns MetricDataSettingsAverageMetricSettingsMeasureDimension.IsNullable, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettingsMeasureDimension) GetIsNullable() *bool {
+	return v.DimensionData.IsNullable
+}
+
+// GetIsUniqueKey returns MetricDataSettingsAverageMetricSettingsMeasureDimension.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettingsMeasureDimension) GetIsUniqueKey() *bool {
+	return v.DimensionData.IsUniqueKey
+}
+
+func (v *MetricDataSettingsAverageMetricSettingsMeasureDimension) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsAverageMetricSettingsMeasureDimension
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsAverageMetricSettingsMeasureDimension = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DimensionData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsAverageMetricSettingsMeasureDimension struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+
+	IsNullable *bool `json:"isNullable"`
+
+	IsUniqueKey *bool `json:"isUniqueKey"`
+}
+
+func (v *MetricDataSettingsAverageMetricSettingsMeasureDimension) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsAverageMetricSettingsMeasureDimension) __premarshalJSON() (*__premarshalMetricDataSettingsAverageMetricSettingsMeasureDimension, error) {
+	var retval __premarshalMetricDataSettingsAverageMetricSettingsMeasureDimension
+
+	retval.ColumnName = v.DimensionData.ColumnName
+	retval.Type = v.DimensionData.Type
+	retval.IsNullable = v.DimensionData.IsNullable
+	retval.IsUniqueKey = v.DimensionData.IsUniqueKey
+	return &retval, nil
+}
 
 // MetricDataSettingsCountDistinctMetricSettings includes the requested fields of the GraphQL type CountDistinctMetricSettings.
 // The GraphQL type's documentation follows.
@@ -8083,10 +8279,206 @@ func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) __premarshalJSON() 
 // Settings for Max Metrics.
 type MetricDataSettingsMaxMetricSettings struct {
 	Typename *string `json:"__typename"`
+	// Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.
+	Filters []*MetricDataSettingsMaxMetricSettingsFiltersFilter `json:"filters"`
+	// The Dimension to select the maximum from.
+	Measure *MetricDataSettingsMaxMetricSettingsMeasureDimension `json:"measure"`
 }
 
 // GetTypename returns MetricDataSettingsMaxMetricSettings.Typename, and is useful for accessing the field via an interface.
 func (v *MetricDataSettingsMaxMetricSettings) GetTypename() *string { return v.Typename }
+
+// GetFilters returns MetricDataSettingsMaxMetricSettings.Filters, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettings) GetFilters() []*MetricDataSettingsMaxMetricSettingsFiltersFilter {
+	return v.Filters
+}
+
+// GetMeasure returns MetricDataSettingsMaxMetricSettings.Measure, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettings) GetMeasure() *MetricDataSettingsMaxMetricSettingsMeasureDimension {
+	return v.Measure
+}
+
+// MetricDataSettingsMaxMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
+// The GraphQL type's documentation follows.
+//
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
+type MetricDataSettingsMaxMetricSettingsFiltersFilter struct {
+	FilterData `json:"-"`
+}
+
+// GetColumn returns MetricDataSettingsMaxMetricSettingsFiltersFilter.Column, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) GetColumn() string {
+	return v.FilterData.Column
+}
+
+// GetOperator returns MetricDataSettingsMaxMetricSettingsFiltersFilter.Operator, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) GetOperator() FilterOperator {
+	return v.FilterData.Operator
+}
+
+// GetValue returns MetricDataSettingsMaxMetricSettingsFiltersFilter.Value, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) GetValue() string {
+	return v.FilterData.Value
+}
+
+func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsMaxMetricSettingsFiltersFilter
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsMaxMetricSettingsFiltersFilter = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.FilterData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsMaxMetricSettingsFiltersFilter struct {
+	Column string `json:"column"`
+
+	Operator FilterOperator `json:"operator"`
+
+	Value string `json:"value"`
+}
+
+func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) __premarshalJSON() (*__premarshalMetricDataSettingsMaxMetricSettingsFiltersFilter, error) {
+	var retval __premarshalMetricDataSettingsMaxMetricSettingsFiltersFilter
+
+	retval.Column = v.FilterData.Column
+	retval.Operator = v.FilterData.Operator
+	retval.Value = v.FilterData.Value
+	return &retval, nil
+}
+
+// MetricDataSettingsMaxMetricSettingsMeasureDimension includes the requested fields of the GraphQL type Dimension.
+// The GraphQL type's documentation follows.
+//
+// The Dimension object that represents a column in a table.
+type MetricDataSettingsMaxMetricSettingsMeasureDimension struct {
+	DimensionData `json:"-"`
+}
+
+// GetColumnName returns MetricDataSettingsMaxMetricSettingsMeasureDimension.ColumnName, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettingsMeasureDimension) GetColumnName() string {
+	return v.DimensionData.ColumnName
+}
+
+// GetType returns MetricDataSettingsMaxMetricSettingsMeasureDimension.Type, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettingsMeasureDimension) GetType() string {
+	return v.DimensionData.Type
+}
+
+// GetIsNullable returns MetricDataSettingsMaxMetricSettingsMeasureDimension.IsNullable, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettingsMeasureDimension) GetIsNullable() *bool {
+	return v.DimensionData.IsNullable
+}
+
+// GetIsUniqueKey returns MetricDataSettingsMaxMetricSettingsMeasureDimension.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettingsMeasureDimension) GetIsUniqueKey() *bool {
+	return v.DimensionData.IsUniqueKey
+}
+
+func (v *MetricDataSettingsMaxMetricSettingsMeasureDimension) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsMaxMetricSettingsMeasureDimension
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsMaxMetricSettingsMeasureDimension = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DimensionData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsMaxMetricSettingsMeasureDimension struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+
+	IsNullable *bool `json:"isNullable"`
+
+	IsUniqueKey *bool `json:"isUniqueKey"`
+}
+
+func (v *MetricDataSettingsMaxMetricSettingsMeasureDimension) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsMaxMetricSettingsMeasureDimension) __premarshalJSON() (*__premarshalMetricDataSettingsMaxMetricSettingsMeasureDimension, error) {
+	var retval __premarshalMetricDataSettingsMaxMetricSettingsMeasureDimension
+
+	retval.ColumnName = v.DimensionData.ColumnName
+	retval.Type = v.DimensionData.Type
+	retval.IsNullable = v.DimensionData.IsNullable
+	retval.IsUniqueKey = v.DimensionData.IsUniqueKey
+	return &retval, nil
+}
 
 // MetricDataSettingsMetricSettings includes the requested fields of the GraphQL interface MetricSettings.
 //
@@ -8226,10 +8618,206 @@ func __marshalMetricDataSettingsMetricSettings(v *MetricDataSettingsMetricSettin
 // Settings for Min Metrics.
 type MetricDataSettingsMinMetricSettings struct {
 	Typename *string `json:"__typename"`
+	// Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.
+	Filters []*MetricDataSettingsMinMetricSettingsFiltersFilter `json:"filters"`
+	// The Dimension to select the minimum from.
+	Measure *MetricDataSettingsMinMetricSettingsMeasureDimension `json:"measure"`
 }
 
 // GetTypename returns MetricDataSettingsMinMetricSettings.Typename, and is useful for accessing the field via an interface.
 func (v *MetricDataSettingsMinMetricSettings) GetTypename() *string { return v.Typename }
+
+// GetFilters returns MetricDataSettingsMinMetricSettings.Filters, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettings) GetFilters() []*MetricDataSettingsMinMetricSettingsFiltersFilter {
+	return v.Filters
+}
+
+// GetMeasure returns MetricDataSettingsMinMetricSettings.Measure, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettings) GetMeasure() *MetricDataSettingsMinMetricSettingsMeasureDimension {
+	return v.Measure
+}
+
+// MetricDataSettingsMinMetricSettingsFiltersFilter includes the requested fields of the GraphQL type Filter.
+// The GraphQL type's documentation follows.
+//
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
+type MetricDataSettingsMinMetricSettingsFiltersFilter struct {
+	FilterData `json:"-"`
+}
+
+// GetColumn returns MetricDataSettingsMinMetricSettingsFiltersFilter.Column, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) GetColumn() string {
+	return v.FilterData.Column
+}
+
+// GetOperator returns MetricDataSettingsMinMetricSettingsFiltersFilter.Operator, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) GetOperator() FilterOperator {
+	return v.FilterData.Operator
+}
+
+// GetValue returns MetricDataSettingsMinMetricSettingsFiltersFilter.Value, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) GetValue() string {
+	return v.FilterData.Value
+}
+
+func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsMinMetricSettingsFiltersFilter
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsMinMetricSettingsFiltersFilter = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.FilterData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsMinMetricSettingsFiltersFilter struct {
+	Column string `json:"column"`
+
+	Operator FilterOperator `json:"operator"`
+
+	Value string `json:"value"`
+}
+
+func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) __premarshalJSON() (*__premarshalMetricDataSettingsMinMetricSettingsFiltersFilter, error) {
+	var retval __premarshalMetricDataSettingsMinMetricSettingsFiltersFilter
+
+	retval.Column = v.FilterData.Column
+	retval.Operator = v.FilterData.Operator
+	retval.Value = v.FilterData.Value
+	return &retval, nil
+}
+
+// MetricDataSettingsMinMetricSettingsMeasureDimension includes the requested fields of the GraphQL type Dimension.
+// The GraphQL type's documentation follows.
+//
+// The Dimension object that represents a column in a table.
+type MetricDataSettingsMinMetricSettingsMeasureDimension struct {
+	DimensionData `json:"-"`
+}
+
+// GetColumnName returns MetricDataSettingsMinMetricSettingsMeasureDimension.ColumnName, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettingsMeasureDimension) GetColumnName() string {
+	return v.DimensionData.ColumnName
+}
+
+// GetType returns MetricDataSettingsMinMetricSettingsMeasureDimension.Type, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettingsMeasureDimension) GetType() string {
+	return v.DimensionData.Type
+}
+
+// GetIsNullable returns MetricDataSettingsMinMetricSettingsMeasureDimension.IsNullable, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettingsMeasureDimension) GetIsNullable() *bool {
+	return v.DimensionData.IsNullable
+}
+
+// GetIsUniqueKey returns MetricDataSettingsMinMetricSettingsMeasureDimension.IsUniqueKey, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettingsMeasureDimension) GetIsUniqueKey() *bool {
+	return v.DimensionData.IsUniqueKey
+}
+
+func (v *MetricDataSettingsMinMetricSettingsMeasureDimension) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MetricDataSettingsMinMetricSettingsMeasureDimension
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MetricDataSettingsMinMetricSettingsMeasureDimension = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DimensionData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMetricDataSettingsMinMetricSettingsMeasureDimension struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+
+	IsNullable *bool `json:"isNullable"`
+
+	IsUniqueKey *bool `json:"isUniqueKey"`
+}
+
+func (v *MetricDataSettingsMinMetricSettingsMeasureDimension) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MetricDataSettingsMinMetricSettingsMeasureDimension) __premarshalJSON() (*__premarshalMetricDataSettingsMinMetricSettingsMeasureDimension, error) {
+	var retval __premarshalMetricDataSettingsMinMetricSettingsMeasureDimension
+
+	retval.ColumnName = v.DimensionData.ColumnName
+	retval.Type = v.DimensionData.Type
+	retval.IsNullable = v.DimensionData.IsNullable
+	retval.IsUniqueKey = v.DimensionData.IsUniqueKey
+	return &retval, nil
+}
 
 // MetricDataSettingsSumMetricSettings includes the requested fields of the GraphQL type SumMetricSettings.
 // The GraphQL type's documentation follows.
@@ -11695,6 +12283,33 @@ fragment MetricData on Metric {
 				... DimensionData
 			}
 		}
+		... on AverageMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MinMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MaxMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
 	}
 	type
 }
@@ -11971,6 +12586,33 @@ fragment MetricData on Metric {
 				... DimensionData
 			}
 		}
+		... on AverageMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MinMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MaxMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
 	}
 	type
 }
@@ -12244,6 +12886,33 @@ fragment MetricData on Metric {
 				... FilterData
 			}
 			dimension {
+				... DimensionData
+			}
+		}
+		... on AverageMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MinMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MaxMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
 				... DimensionData
 			}
 		}
@@ -12884,6 +13553,33 @@ fragment MetricData on Metric {
 				... DimensionData
 			}
 		}
+		... on AverageMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MinMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MaxMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
 	}
 	type
 }
@@ -13157,6 +13853,33 @@ fragment MetricData on Metric {
 				... FilterData
 			}
 			dimension {
+				... DimensionData
+			}
+		}
+		... on AverageMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MinMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MaxMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
 				... DimensionData
 			}
 		}
@@ -13721,6 +14444,33 @@ fragment MetricData on Metric {
 				... FilterData
 			}
 			dimension {
+				... DimensionData
+			}
+		}
+		... on AverageMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MinMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MaxMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
 				... DimensionData
 			}
 		}
@@ -15277,6 +16027,33 @@ fragment MetricData on Metric {
 				... DimensionData
 			}
 		}
+		... on AverageMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MinMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MaxMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
 	}
 	type
 }
@@ -15547,6 +16324,33 @@ fragment MetricData on Metric {
 				... FilterData
 			}
 			dimension {
+				... DimensionData
+			}
+		}
+		... on AverageMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MinMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MaxMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
 				... DimensionData
 			}
 		}
@@ -15840,6 +16644,33 @@ fragment MetricData on Metric {
 				... FilterData
 			}
 			dimension {
+				... DimensionData
+			}
+		}
+		... on AverageMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MinMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MaxMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
 				... DimensionData
 			}
 		}
@@ -16489,6 +17320,33 @@ fragment MetricData on Metric {
 				... FilterData
 			}
 			dimension {
+				... DimensionData
+			}
+		}
+		... on AverageMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MinMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
+				... DimensionData
+			}
+		}
+		... on MaxMetricSettings {
+			__typename
+			filters {
+				... FilterData
+			}
+			measure {
 				... DimensionData
 			}
 		}

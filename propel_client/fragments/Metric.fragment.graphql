@@ -29,12 +29,43 @@ fragment MetricData on Metric {
                 ...DimensionData
             }
         }
+
         ... on CountDistinctMetricSettings {
             __typename
             filters {
                 ...FilterData
             }
             dimension {
+                ...DimensionData
+            }
+        }
+
+        ... on AverageMetricSettings {
+            __typename
+            filters {
+                ...FilterData
+            }
+            measure {
+                ...DimensionData
+            }
+        }
+
+        ... on MinMetricSettings {
+            __typename
+            filters {
+                ...FilterData
+            }
+            measure {
+                ...DimensionData
+            }
+        }
+
+        ... on MaxMetricSettings {
+            __typename
+            filters {
+                ...FilterData
+            }
+            measure {
                 ...DimensionData
             }
         }
