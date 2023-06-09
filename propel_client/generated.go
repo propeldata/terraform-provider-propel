@@ -5779,6 +5779,8 @@ type DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable
 	Id string `json:"id"`
 	// The name of the table
 	Name string `json:"name"`
+	// The path to the table's files in S3.
+	Path *string `json:"path"`
 	// All the columns present in the table
 	Columns []*DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTableColumnsS3DataSourceColumn `json:"columns"`
 }
@@ -5791,6 +5793,11 @@ func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceT
 // GetName returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable.Name, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable) GetName() string {
 	return v.Name
+}
+
+// GetPath returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable.Path, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable) GetPath() *string {
+	return v.Path
 }
 
 // GetColumns returns DataSourceDataConnectionSettingsS3ConnectionSettingsTablesS3DataSourceTable.Columns, and is useful for accessing the field via an interface.
@@ -12423,6 +12430,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -12726,6 +12734,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -13029,6 +13038,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -13252,6 +13262,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -13412,6 +13423,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -13693,6 +13705,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -13996,6 +14009,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -14156,6 +14170,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -14302,6 +14317,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -14587,6 +14603,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -14805,6 +14822,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -15023,6 +15041,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -15257,6 +15276,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -15418,6 +15438,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -15554,6 +15575,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -15706,6 +15728,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -16167,6 +16190,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -16467,6 +16491,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -16787,6 +16812,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -17022,6 +17048,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -17182,6 +17209,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -17463,6 +17491,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -17623,6 +17652,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type
@@ -17769,6 +17799,7 @@ fragment DataSourceData on DataSource {
 			tables {
 				id
 				name
+				path
 				columns {
 					name
 					type

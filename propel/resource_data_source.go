@@ -552,6 +552,7 @@ func handleS3Tables(response *pc.DataSourceResponse, d *schema.ResourceData) dia
 			tables = append(tables, map[string]interface{}{
 				"id":     table.Id,
 				"name":   table.Name,
+				"path":   table.Path,
 				"column": columns,
 			})
 		}
