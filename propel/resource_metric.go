@@ -63,7 +63,6 @@ func resourceMetric() *schema.Resource {
 			"filter": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				ForceNew:    true,
 				Description: "Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -97,7 +96,6 @@ func resourceMetric() *schema.Resource {
 				Type:        schema.TypeSet,
 				Optional:    true,
 				Computed:    true,
-				ForceNew:    true,
 				Description: "The Metric's Dimensions. These Dimensions are available to Query Filters.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
@@ -373,13 +371,26 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	if d.HasChanges("unique_name", "description") {
+	if d.HasChanges("unique_name", "description", "dimensions", "filter") {
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
+
+		filters := make([]*pc.FilterInput, 0)
+		if def, ok := d.Get("filter").([]interface{}); ok && len(def) > 0 {
+			filters = expandMetricFilters(def)
+		}
+
+		dimensions := make([]*pc.DimensionInput, 0)
+		if def, ok := d.GetOk("dimensions"); ok {
+			dimensions = expandMetricDimensions(def.(*schema.Set).List())
+		}
+
 		modifyMetric := &pc.ModifyMetricInput{
 			Metric:      d.Id(),
 			UniqueName:  &uniqueName,
 			Description: &description,
+			Filters:     filters,
+			Dimensions:  dimensions,
 		}
 
 		_, err := pc.ModifyMetric(ctx, c, modifyMetric)
