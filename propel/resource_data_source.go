@@ -609,16 +609,56 @@ func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.Resou
 func resourceSnowflakeDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	if d.HasChanges("unique_name", "description") {
+	if d.HasChanges("unique_name", "description", "snowflake_connection_settings") {
 		id := d.Id()
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
+
+		connectionSettings := d.Get("snowflake_connection_settings").([]interface{})[0].(map[string]interface{})
+		connectionSettingsInput := &pc.PartialSnowflakeConnectionSettingsInput{}
+
+		if def, ok := connectionSettings["account"]; ok {
+			account := def.(string)
+			connectionSettingsInput.Account = &account
+		}
+
+		if def, ok := connectionSettings["database"]; ok {
+			database := def.(string)
+			connectionSettingsInput.Database = &database
+		}
+
+		if def, ok := connectionSettings["warehouse"]; ok {
+			warehouse := def.(string)
+			connectionSettingsInput.Warehouse = &warehouse
+		}
+
+		if def, ok := connectionSettings["schema"]; ok {
+			schemaF := def.(string)
+			connectionSettingsInput.Schema = &schemaF
+		}
+
+		if def, ok := connectionSettings["role"]; ok {
+			role := def.(string)
+			connectionSettingsInput.Role = &role
+		}
+
+		if def, ok := connectionSettings["username"]; ok {
+			username := def.(string)
+			connectionSettingsInput.Username = &username
+		}
+
+		if def, ok := connectionSettings["password"]; ok {
+			password := def.(string)
+			connectionSettingsInput.Password = &password
+		}
+
 		modifyDataSource := &pc.ModifySnowflakeDataSourceInput{
 			IdOrUniqueName: &pc.IdOrUniqueName{
 				Id: &id,
 			},
-			UniqueName:  &uniqueName,
-			Description: &description,
+			UniqueName:         &uniqueName,
+			Description:        &description,
+			ConnectionSettings: connectionSettingsInput,
 		}
 
 		_, err := pc.ModifySnowflakeDataSource(ctx, c, modifyDataSource)
