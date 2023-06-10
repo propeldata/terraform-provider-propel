@@ -2199,6 +2199,127 @@ func (v *CreateMinMetricResponse) GetCreateMinMetric() *CreateMinMetricCreateMin
 	return v.CreateMinMetric
 }
 
+// CreatePolicyCreatePolicyPolicyResponse includes the requested fields of the GraphQL type PolicyResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Policy.
+type CreatePolicyCreatePolicyPolicyResponse struct {
+	// The Policy which was created or modified.
+	Policy *CreatePolicyCreatePolicyPolicyResponsePolicy `json:"policy"`
+}
+
+// GetPolicy returns CreatePolicyCreatePolicyPolicyResponse.Policy, and is useful for accessing the field via an interface.
+func (v *CreatePolicyCreatePolicyPolicyResponse) GetPolicy() *CreatePolicyCreatePolicyPolicyResponsePolicy {
+	return v.Policy
+}
+
+// CreatePolicyCreatePolicyPolicyResponsePolicy includes the requested fields of the GraphQL type Policy.
+// The GraphQL type's documentation follows.
+//
+// The Policy type. It governs an Application's access to a Metric's data.
+type CreatePolicyCreatePolicyPolicyResponsePolicy struct {
+	PolicyData `json:"-"`
+}
+
+// GetId returns CreatePolicyCreatePolicyPolicyResponsePolicy.Id, and is useful for accessing the field via an interface.
+func (v *CreatePolicyCreatePolicyPolicyResponsePolicy) GetId() string { return v.PolicyData.Id }
+
+// GetType returns CreatePolicyCreatePolicyPolicyResponsePolicy.Type, and is useful for accessing the field via an interface.
+func (v *CreatePolicyCreatePolicyPolicyResponsePolicy) GetType() PolicyType { return v.PolicyData.Type }
+
+// GetMetric returns CreatePolicyCreatePolicyPolicyResponsePolicy.Metric, and is useful for accessing the field via an interface.
+func (v *CreatePolicyCreatePolicyPolicyResponsePolicy) GetMetric() *PolicyDataMetric {
+	return v.PolicyData.Metric
+}
+
+// GetApplication returns CreatePolicyCreatePolicyPolicyResponsePolicy.Application, and is useful for accessing the field via an interface.
+func (v *CreatePolicyCreatePolicyPolicyResponsePolicy) GetApplication() *PolicyDataApplication {
+	return v.PolicyData.Application
+}
+
+func (v *CreatePolicyCreatePolicyPolicyResponsePolicy) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreatePolicyCreatePolicyPolicyResponsePolicy
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreatePolicyCreatePolicyPolicyResponsePolicy = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.PolicyData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreatePolicyCreatePolicyPolicyResponsePolicy struct {
+	Id string `json:"id"`
+
+	Type PolicyType `json:"type"`
+
+	Metric *PolicyDataMetric `json:"metric"`
+
+	Application *PolicyDataApplication `json:"application"`
+}
+
+func (v *CreatePolicyCreatePolicyPolicyResponsePolicy) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreatePolicyCreatePolicyPolicyResponsePolicy) __premarshalJSON() (*__premarshalCreatePolicyCreatePolicyPolicyResponsePolicy, error) {
+	var retval __premarshalCreatePolicyCreatePolicyPolicyResponsePolicy
+
+	retval.Id = v.PolicyData.Id
+	retval.Type = v.PolicyData.Type
+	retval.Metric = v.PolicyData.Metric
+	retval.Application = v.PolicyData.Application
+	return &retval, nil
+}
+
+// The fields for creating a Policy.
+type CreatePolicyInput struct {
+	// The Metric to which the Policy will be applied.
+	Metric string `json:"metric"`
+	// The type of Policy to create.
+	Type PolicyType `json:"type"`
+	// The Application that will be granted access to the Metric.
+	Application string `json:"application"`
+}
+
+// GetMetric returns CreatePolicyInput.Metric, and is useful for accessing the field via an interface.
+func (v *CreatePolicyInput) GetMetric() string { return v.Metric }
+
+// GetType returns CreatePolicyInput.Type, and is useful for accessing the field via an interface.
+func (v *CreatePolicyInput) GetType() PolicyType { return v.Type }
+
+// GetApplication returns CreatePolicyInput.Application, and is useful for accessing the field via an interface.
+func (v *CreatePolicyInput) GetApplication() string { return v.Application }
+
+// CreatePolicyResponse is returned by CreatePolicy on success.
+type CreatePolicyResponse struct {
+	// Creates a new Policy granting an Application access to a Metric's data.
+	CreatePolicy *CreatePolicyCreatePolicyPolicyResponse `json:"createPolicy"`
+}
+
+// GetCreatePolicy returns CreatePolicyResponse.CreatePolicy, and is useful for accessing the field via an interface.
+func (v *CreatePolicyResponse) GetCreatePolicy() *CreatePolicyCreatePolicyPolicyResponse {
+	return v.CreatePolicy
+}
+
 // CreateS3DataSourceCreateS3DataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
 // The GraphQL type's documentation follows.
 //
@@ -6777,6 +6898,15 @@ type DeleteMetricResponse struct {
 // GetDeleteMetric returns DeleteMetricResponse.DeleteMetric, and is useful for accessing the field via an interface.
 func (v *DeleteMetricResponse) GetDeleteMetric() *string { return v.DeleteMetric }
 
+// DeletePolicyResponse is returned by DeletePolicy on success.
+type DeletePolicyResponse struct {
+	// Deletes a Policy. The associated Application will no longer have access to the Metric's data.
+	DeletePolicy *string `json:"deletePolicy"`
+}
+
+// GetDeletePolicy returns DeletePolicyResponse.DeletePolicy, and is useful for accessing the field via an interface.
+func (v *DeletePolicyResponse) GetDeletePolicy() *string { return v.DeletePolicy }
+
 // DimensionData includes the GraphQL fields of Dimension requested by the fragment DimensionData.
 // The GraphQL type's documentation follows.
 //
@@ -10203,6 +10333,122 @@ func (v *ModifyMetricResponse) GetModifyMetric() *ModifyMetricModifyMetricMetric
 	return v.ModifyMetric
 }
 
+// The fields for modifying a Policy.
+type ModifyPolicyInput struct {
+	// The Policy's unique identifier.
+	Policy string `json:"policy"`
+	// The type of Policy.
+	Type PolicyType `json:"type"`
+}
+
+// GetPolicy returns ModifyPolicyInput.Policy, and is useful for accessing the field via an interface.
+func (v *ModifyPolicyInput) GetPolicy() string { return v.Policy }
+
+// GetType returns ModifyPolicyInput.Type, and is useful for accessing the field via an interface.
+func (v *ModifyPolicyInput) GetType() PolicyType { return v.Type }
+
+// ModifyPolicyModifyPolicyPolicyResponse includes the requested fields of the GraphQL type PolicyResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Policy.
+type ModifyPolicyModifyPolicyPolicyResponse struct {
+	// The Policy which was created or modified.
+	Policy *ModifyPolicyModifyPolicyPolicyResponsePolicy `json:"policy"`
+}
+
+// GetPolicy returns ModifyPolicyModifyPolicyPolicyResponse.Policy, and is useful for accessing the field via an interface.
+func (v *ModifyPolicyModifyPolicyPolicyResponse) GetPolicy() *ModifyPolicyModifyPolicyPolicyResponsePolicy {
+	return v.Policy
+}
+
+// ModifyPolicyModifyPolicyPolicyResponsePolicy includes the requested fields of the GraphQL type Policy.
+// The GraphQL type's documentation follows.
+//
+// The Policy type. It governs an Application's access to a Metric's data.
+type ModifyPolicyModifyPolicyPolicyResponsePolicy struct {
+	PolicyData `json:"-"`
+}
+
+// GetId returns ModifyPolicyModifyPolicyPolicyResponsePolicy.Id, and is useful for accessing the field via an interface.
+func (v *ModifyPolicyModifyPolicyPolicyResponsePolicy) GetId() string { return v.PolicyData.Id }
+
+// GetType returns ModifyPolicyModifyPolicyPolicyResponsePolicy.Type, and is useful for accessing the field via an interface.
+func (v *ModifyPolicyModifyPolicyPolicyResponsePolicy) GetType() PolicyType { return v.PolicyData.Type }
+
+// GetMetric returns ModifyPolicyModifyPolicyPolicyResponsePolicy.Metric, and is useful for accessing the field via an interface.
+func (v *ModifyPolicyModifyPolicyPolicyResponsePolicy) GetMetric() *PolicyDataMetric {
+	return v.PolicyData.Metric
+}
+
+// GetApplication returns ModifyPolicyModifyPolicyPolicyResponsePolicy.Application, and is useful for accessing the field via an interface.
+func (v *ModifyPolicyModifyPolicyPolicyResponsePolicy) GetApplication() *PolicyDataApplication {
+	return v.PolicyData.Application
+}
+
+func (v *ModifyPolicyModifyPolicyPolicyResponsePolicy) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyPolicyModifyPolicyPolicyResponsePolicy
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyPolicyModifyPolicyPolicyResponsePolicy = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.PolicyData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyPolicyModifyPolicyPolicyResponsePolicy struct {
+	Id string `json:"id"`
+
+	Type PolicyType `json:"type"`
+
+	Metric *PolicyDataMetric `json:"metric"`
+
+	Application *PolicyDataApplication `json:"application"`
+}
+
+func (v *ModifyPolicyModifyPolicyPolicyResponsePolicy) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyPolicyModifyPolicyPolicyResponsePolicy) __premarshalJSON() (*__premarshalModifyPolicyModifyPolicyPolicyResponsePolicy, error) {
+	var retval __premarshalModifyPolicyModifyPolicyPolicyResponsePolicy
+
+	retval.Id = v.PolicyData.Id
+	retval.Type = v.PolicyData.Type
+	retval.Metric = v.PolicyData.Metric
+	retval.Application = v.PolicyData.Application
+	return &retval, nil
+}
+
+// ModifyPolicyResponse is returned by ModifyPolicy on success.
+type ModifyPolicyResponse struct {
+	// Modifies an existing Policy. You can modify the Application's level of access to the Metric's data.
+	ModifyPolicy *ModifyPolicyModifyPolicyPolicyResponse `json:"modifyPolicy"`
+}
+
+// GetModifyPolicy returns ModifyPolicyResponse.ModifyPolicy, and is useful for accessing the field via an interface.
+func (v *ModifyPolicyResponse) GetModifyPolicy() *ModifyPolicyModifyPolicyPolicyResponse {
+	return v.ModifyPolicy
+}
+
 type ModifyS3DataSourceInput struct {
 	// The S3 Data Source's new connection settings. If not provided this property will not be modified.
 	ConnectionSettings *PartialS3ConnectionSettingsInput `json:"connectionSettings,omitempty"`
@@ -11043,6 +11289,75 @@ func (v *PartialSnowflakeConnectionSettingsInput) GetPassword() *string { return
 // GetRole returns PartialSnowflakeConnectionSettingsInput.Role, and is useful for accessing the field via an interface.
 func (v *PartialSnowflakeConnectionSettingsInput) GetRole() *string { return v.Role }
 
+// PolicyData includes the GraphQL fields of Policy requested by the fragment PolicyData.
+// The GraphQL type's documentation follows.
+//
+// The Policy type. It governs an Application's access to a Metric's data.
+type PolicyData struct {
+	// The Policy's unique identifier.
+	Id string `json:"id"`
+	// The type of Policy.
+	Type PolicyType `json:"type"`
+	// The Metric that the Application is granted access to.
+	Metric *PolicyDataMetric `json:"metric"`
+	// The Application that is granted access.
+	Application *PolicyDataApplication `json:"application"`
+}
+
+// GetId returns PolicyData.Id, and is useful for accessing the field via an interface.
+func (v *PolicyData) GetId() string { return v.Id }
+
+// GetType returns PolicyData.Type, and is useful for accessing the field via an interface.
+func (v *PolicyData) GetType() PolicyType { return v.Type }
+
+// GetMetric returns PolicyData.Metric, and is useful for accessing the field via an interface.
+func (v *PolicyData) GetMetric() *PolicyDataMetric { return v.Metric }
+
+// GetApplication returns PolicyData.Application, and is useful for accessing the field via an interface.
+func (v *PolicyData) GetApplication() *PolicyDataApplication { return v.Application }
+
+// PolicyDataApplication includes the requested fields of the GraphQL type Application.
+// The GraphQL type's documentation follows.
+//
+// The Application object.
+//
+// Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
+//
+// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+type PolicyDataApplication struct {
+	// The Application's unique identifier.
+	Id string `json:"id"`
+}
+
+// GetId returns PolicyDataApplication.Id, and is useful for accessing the field via an interface.
+func (v *PolicyDataApplication) GetId() string { return v.Id }
+
+// PolicyDataMetric includes the requested fields of the GraphQL type Metric.
+// The GraphQL type's documentation follows.
+//
+// The Metric object.
+//
+// A Metric is a business indicator measured over time.
+//
+// [Learn more about Metrics](/docs/key-concepts#metric).
+type PolicyDataMetric struct {
+	// The Metric's unique identifier.
+	Id string `json:"id"`
+}
+
+// GetId returns PolicyDataMetric.Id, and is useful for accessing the field via an interface.
+func (v *PolicyDataMetric) GetId() string { return v.Id }
+
+// The types of Policies that can be applied to a Metric.
+type PolicyType string
+
+const (
+	// Grants access to all Metric data.
+	PolicyTypeAllAccess PolicyType = "ALL_ACCESS"
+	// Grants access to a specified tenant's Metric data.
+	PolicyTypeTenantAccess PolicyType = "TENANT_ACCESS"
+)
+
 // The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, and the tables (along with their paths). We do not allow fetching the AWS secret access key after it has been set.
 type S3ConnectionSettingsInput struct {
 	// The AWS access key ID for an IAM user with sufficient access to the S3 bucket.
@@ -11418,6 +11733,14 @@ type __CreateMinMetricInput struct {
 // GetInput returns __CreateMinMetricInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateMinMetricInput) GetInput() *CreateMinMetricInput { return v.Input }
 
+// __CreatePolicyInput is used internally by genqlient
+type __CreatePolicyInput struct {
+	Input *CreatePolicyInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreatePolicyInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreatePolicyInput) GetInput() *CreatePolicyInput { return v.Input }
+
 // __CreateS3DataSourceInput is used internally by genqlient
 type __CreateS3DataSourceInput struct {
 	Input *CreateS3DataSourceInput `json:"input,omitempty"`
@@ -11562,6 +11885,14 @@ type __DeleteMetricInput struct {
 // GetId returns __DeleteMetricInput.Id, and is useful for accessing the field via an interface.
 func (v *__DeleteMetricInput) GetId() string { return v.Id }
 
+// __DeletePolicyInput is used internally by genqlient
+type __DeletePolicyInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __DeletePolicyInput.Id, and is useful for accessing the field via an interface.
+func (v *__DeletePolicyInput) GetId() string { return v.Id }
+
 // __MetricByNameInput is used internally by genqlient
 type __MetricByNameInput struct {
 	UniqueName string `json:"uniqueName"`
@@ -11621,6 +11952,14 @@ type __ModifyMetricInput struct {
 
 // GetInput returns __ModifyMetricInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifyMetricInput) GetInput() *ModifyMetricInput { return v.Input }
+
+// __ModifyPolicyInput is used internally by genqlient
+type __ModifyPolicyInput struct {
+	Input *ModifyPolicyInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyPolicyInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyPolicyInput) GetInput() *ModifyPolicyInput { return v.Input }
 
 // __ModifyS3DataSourceInput is used internally by genqlient
 type __ModifyS3DataSourceInput struct {
@@ -13368,6 +13707,50 @@ fragment TableIntrospectionData on TableIntrospection {
 	var err error
 
 	var data CreateMinMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+func CreatePolicy(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreatePolicyInput,
+) (*CreatePolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreatePolicy",
+		Query: `
+mutation CreatePolicy ($input: CreatePolicyInput!) {
+	createPolicy(input: $input) {
+		policy {
+			... PolicyData
+		}
+	}
+}
+fragment PolicyData on Policy {
+	id
+	type
+	metric {
+		id
+	}
+	application {
+		id
+	}
+}
+`,
+		Variables: &__CreatePolicyInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreatePolicyResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -15223,6 +15606,36 @@ mutation DeleteMetricByName ($uniqueName: String!) {
 	return &data, err
 }
 
+func DeletePolicy(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*DeletePolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "DeletePolicy",
+		Query: `
+mutation DeletePolicy ($id: ID!) {
+	deletePolicy(id: $id)
+}
+`,
+		Variables: &__DeletePolicyInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data DeletePolicyResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
 func Metric(
 	ctx context.Context,
 	client graphql.Client,
@@ -16700,6 +17113,50 @@ fragment TableIntrospectionData on TableIntrospection {
 	var err error
 
 	var data ModifyMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+func ModifyPolicy(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyPolicyInput,
+) (*ModifyPolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyPolicy",
+		Query: `
+mutation ModifyPolicy ($input: ModifyPolicyInput!) {
+	modifyPolicy(input: $input) {
+		policy {
+			... PolicyData
+		}
+	}
+}
+fragment PolicyData on Policy {
+	id
+	type
+	metric {
+		id
+	}
+	application {
+		id
+	}
+}
+`,
+		Variables: &__ModifyPolicyInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyPolicyResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(

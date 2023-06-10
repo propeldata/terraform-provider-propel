@@ -1,0 +1,7 @@
+mutation ModifyPolicy($input: ModifyPolicyInput!) {
+    modifyPolicy(input: $input) {
+        policy {
+            ...PolicyData
+        }
+    }
+}

@@ -15,6 +15,7 @@ operations:
 - fragments/Error.fragment.graphql
 - fragments/Filter.fragment.graphql
 - fragments/Metric.fragment.graphql
+- fragments/Policy.fragment.graphql
 - fragments/PageInfo.fragment.graphql
 - fragments/Sync.fragment.graphql
 - fragments/DataPoolSyncing.fragment.graphql
@@ -27,6 +28,7 @@ operations:
 - mutations/createHttpDataSource.mutation.graphql
 - mutations/createMaxMetric.mutation.graphql
 - mutations/createMinMetric.mutation.graphql
+- mutations/createPolicy.mutation.graphql
 - mutations/createS3DataSource.mutation.graphql
 - mutations/createSnowflakeDataSource.mutation.graphql
 - mutations/createSumMetric.mutation.graphql
@@ -38,11 +40,13 @@ operations:
 - mutations/deleteDataSourceByName.mutation.graphql
 - mutations/deleteMetric.mutation.graphql
 - mutations/deleteMetricByName.mutation.graphql
+- mutations/deletePolicy.mutation.graphql
 #- mutations/introspectTables.mutation.graphql
 #- mutations/modifyApplication.mutation.graphql
 - mutations/modifyDataPool.mutation.graphql
 - mutations/modifyDataSource.mutation.graphql
 - mutations/modifyMetric.mutation.graphql
+- mutations/modifyPolicy.mutation.graphql
 #- mutations/reconnectDataPool.mutation.graphql
 #- mutations/reconnectDataSource.mutation.graphql
 #- queries/application.query.graphql
