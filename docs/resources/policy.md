@@ -33,4 +33,10 @@ resource "propel_policy" "my_policy" {
 
 - `id` (String) The ID of this resource.
 
+## Import
 
+Import is supported using the following syntax:
+
+```shell
+terraform import propel_policy.my_policy POL00000000000000000000000000
+```

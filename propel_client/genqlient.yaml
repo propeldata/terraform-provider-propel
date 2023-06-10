@@ -65,6 +65,7 @@ operations:
 - queries/metric.query.graphql
 - queries/metricByName.query.graphql
 - queries/metrics.query.graphql
+- queries/policy.query.graphql
 #- queries/sync.query.graphql
 #- queries/timeSeries.query.graphql
 generated: generated.go

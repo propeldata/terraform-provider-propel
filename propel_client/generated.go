@@ -462,6 +462,16 @@ func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetId() str
 	return v.MetricData.Id
 }
 
+// GetType returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetType() MetricType {
+	return v.MetricData.Type
+}
+
+// GetAccessControlEnabled returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetAccessControlEnabled() bool {
+	return v.MetricData.AccessControlEnabled
+}
+
 // GetDataPool returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
@@ -485,11 +495,6 @@ func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetMeasure(
 // GetSettings returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
 func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
 	return v.MetricData.Settings
-}
-
-// GetType returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
-func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) GetType() MetricType {
-	return v.MetricData.Type
 }
 
 // GetUniqueName returns CreateAverageMetricCreateAverageMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
@@ -560,6 +565,10 @@ func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) UnmarshalJS
 type __premarshalCreateAverageMetricCreateAverageMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -569,8 +578,6 @@ type __premarshalCreateAverageMetricCreateAverageMetricMetricResponseMetric stru
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -601,6 +608,8 @@ func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) __premarsha
 	var retval __premarshalCreateAverageMetricCreateAverageMetricMetricResponseMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -617,7 +626,6 @@ func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) __premarsha
 				"Unable to marshal CreateAverageMetricCreateAverageMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -713,6 +721,16 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 	return v.MetricData.Id
 }
 
+// GetType returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetType() MetricType {
+	return v.MetricData.Type
+}
+
+// GetAccessControlEnabled returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetAccessControlEnabled() bool {
+	return v.MetricData.AccessControlEnabled
+}
+
 // GetDataPool returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
@@ -736,11 +754,6 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 // GetSettings returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
 	return v.MetricData.Settings
-}
-
-// GetType returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
-func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric) GetType() MetricType {
-	return v.MetricData.Type
 }
 
 // GetUniqueName returns CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
@@ -811,6 +824,10 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 type __premarshalCreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -820,8 +837,6 @@ type __premarshalCreateCountDistinctMetricCreateCountDistinctMetricMetricRespons
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -852,6 +867,8 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 	var retval __premarshalCreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -868,7 +885,6 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 				"Unable to marshal CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -962,6 +978,16 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetId() string 
 	return v.MetricData.Id
 }
 
+// GetType returns CreateCountMetricCreateCountMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetType() MetricType {
+	return v.MetricData.Type
+}
+
+// GetAccessControlEnabled returns CreateCountMetricCreateCountMetricMetricResponseMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetAccessControlEnabled() bool {
+	return v.MetricData.AccessControlEnabled
+}
+
 // GetDataPool returns CreateCountMetricCreateCountMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
@@ -985,11 +1011,6 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetMeasure() *M
 // GetSettings returns CreateCountMetricCreateCountMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
 	return v.MetricData.Settings
-}
-
-// GetType returns CreateCountMetricCreateCountMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
-func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) GetType() MetricType {
-	return v.MetricData.Type
 }
 
 // GetUniqueName returns CreateCountMetricCreateCountMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
@@ -1060,6 +1081,10 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) UnmarshalJSON(b
 type __premarshalCreateCountMetricCreateCountMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -1069,8 +1094,6 @@ type __premarshalCreateCountMetricCreateCountMetricMetricResponseMetric struct {
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -1101,6 +1124,8 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) __premarshalJSO
 	var retval __premarshalCreateCountMetricCreateCountMetricMetricResponseMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -1117,7 +1142,6 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) __premarshalJSO
 				"Unable to marshal CreateCountMetricCreateCountMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -1738,6 +1762,16 @@ type CreateMaxMetricCreateMaxMetricMetricResponseMetric struct {
 // GetId returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
 func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetId() string { return v.MetricData.Id }
 
+// GetType returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetType() MetricType {
+	return v.MetricData.Type
+}
+
+// GetAccessControlEnabled returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetAccessControlEnabled() bool {
+	return v.MetricData.AccessControlEnabled
+}
+
 // GetDataPool returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
@@ -1761,11 +1795,6 @@ func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetMeasure() *Metri
 // GetSettings returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
 func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
 	return v.MetricData.Settings
-}
-
-// GetType returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
-func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) GetType() MetricType {
-	return v.MetricData.Type
 }
 
 // GetUniqueName returns CreateMaxMetricCreateMaxMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
@@ -1836,6 +1865,10 @@ func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) UnmarshalJSON(b []b
 type __premarshalCreateMaxMetricCreateMaxMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -1845,8 +1878,6 @@ type __premarshalCreateMaxMetricCreateMaxMetricMetricResponseMetric struct {
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -1877,6 +1908,8 @@ func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) __premarshalJSON() 
 	var retval __premarshalCreateMaxMetricCreateMaxMetricMetricResponseMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -1893,7 +1926,6 @@ func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) __premarshalJSON() 
 				"Unable to marshal CreateMaxMetricCreateMaxMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -1985,6 +2017,16 @@ type CreateMinMetricCreateMinMetricMetricResponseMetric struct {
 // GetId returns CreateMinMetricCreateMinMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
 func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetId() string { return v.MetricData.Id }
 
+// GetType returns CreateMinMetricCreateMinMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetType() MetricType {
+	return v.MetricData.Type
+}
+
+// GetAccessControlEnabled returns CreateMinMetricCreateMinMetricMetricResponseMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetAccessControlEnabled() bool {
+	return v.MetricData.AccessControlEnabled
+}
+
 // GetDataPool returns CreateMinMetricCreateMinMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
@@ -2008,11 +2050,6 @@ func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetMeasure() *Metri
 // GetSettings returns CreateMinMetricCreateMinMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
 func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
 	return v.MetricData.Settings
-}
-
-// GetType returns CreateMinMetricCreateMinMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
-func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) GetType() MetricType {
-	return v.MetricData.Type
 }
 
 // GetUniqueName returns CreateMinMetricCreateMinMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
@@ -2083,6 +2120,10 @@ func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) UnmarshalJSON(b []b
 type __premarshalCreateMinMetricCreateMinMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -2092,8 +2133,6 @@ type __premarshalCreateMinMetricCreateMinMetricMetricResponseMetric struct {
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -2124,6 +2163,8 @@ func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) __premarshalJSON() 
 	var retval __premarshalCreateMinMetricCreateMinMetricMetricResponseMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -2140,7 +2181,6 @@ func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) __premarshalJSON() 
 				"Unable to marshal CreateMinMetricCreateMinMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -3070,6 +3110,16 @@ type CreateSumMetricCreateSumMetricMetricResponseMetric struct {
 // GetId returns CreateSumMetricCreateSumMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetId() string { return v.MetricData.Id }
 
+// GetType returns CreateSumMetricCreateSumMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetType() MetricType {
+	return v.MetricData.Type
+}
+
+// GetAccessControlEnabled returns CreateSumMetricCreateSumMetricMetricResponseMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetAccessControlEnabled() bool {
+	return v.MetricData.AccessControlEnabled
+}
+
 // GetDataPool returns CreateSumMetricCreateSumMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
@@ -3093,11 +3143,6 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetMeasure() *Metri
 // GetSettings returns CreateSumMetricCreateSumMetricMetricResponseMetric.Settings, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
 	return v.MetricData.Settings
-}
-
-// GetType returns CreateSumMetricCreateSumMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
-func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) GetType() MetricType {
-	return v.MetricData.Type
 }
 
 // GetUniqueName returns CreateSumMetricCreateSumMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
@@ -3168,6 +3213,10 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) UnmarshalJSON(b []b
 type __premarshalCreateSumMetricCreateSumMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -3177,8 +3226,6 @@ type __premarshalCreateSumMetricCreateSumMetricMetricResponseMetric struct {
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -3209,6 +3256,8 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) __premarshalJSON() 
 	var retval __premarshalCreateSumMetricCreateSumMetricMetricResponseMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -3225,7 +3274,6 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) __premarshalJSON() 
 				"Unable to marshal CreateSumMetricCreateSumMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -7179,6 +7227,12 @@ type MetricByNameMetric struct {
 // GetId returns MetricByNameMetric.Id, and is useful for accessing the field via an interface.
 func (v *MetricByNameMetric) GetId() string { return v.MetricData.Id }
 
+// GetType returns MetricByNameMetric.Type, and is useful for accessing the field via an interface.
+func (v *MetricByNameMetric) GetType() MetricType { return v.MetricData.Type }
+
+// GetAccessControlEnabled returns MetricByNameMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *MetricByNameMetric) GetAccessControlEnabled() bool { return v.MetricData.AccessControlEnabled }
+
 // GetDataPool returns MetricByNameMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *MetricByNameMetric) GetDataPool() *MetricDataDataPool { return v.MetricData.DataPool }
 
@@ -7199,9 +7253,6 @@ func (v *MetricByNameMetric) GetMeasure() *MetricDataMeasureDimension { return v
 func (v *MetricByNameMetric) GetSettings() MetricDataSettingsMetricSettings {
 	return v.MetricData.Settings
 }
-
-// GetType returns MetricByNameMetric.Type, and is useful for accessing the field via an interface.
-func (v *MetricByNameMetric) GetType() MetricType { return v.MetricData.Type }
 
 // GetUniqueName returns MetricByNameMetric.UniqueName, and is useful for accessing the field via an interface.
 func (v *MetricByNameMetric) GetUniqueName() string { return v.MetricData.CommonDataMetric.UniqueName }
@@ -7263,6 +7314,10 @@ func (v *MetricByNameMetric) UnmarshalJSON(b []byte) error {
 type __premarshalMetricByNameMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -7272,8 +7327,6 @@ type __premarshalMetricByNameMetric struct {
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -7304,6 +7357,8 @@ func (v *MetricByNameMetric) __premarshalJSON() (*__premarshalMetricByNameMetric
 	var retval __premarshalMetricByNameMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -7320,7 +7375,6 @@ func (v *MetricByNameMetric) __premarshalJSON() (*__premarshalMetricByNameMetric
 				"Unable to marshal MetricByNameMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -7355,6 +7409,10 @@ type MetricData struct {
 	CommonDataMetric `json:"-"`
 	// The Metric's unique identifier.
 	Id string `json:"id"`
+	// The Metric's type. The different Metric types determine how the values are calculated.
+	Type MetricType `json:"type"`
+	// Whether or not access control is enabled for the Metric.
+	AccessControlEnabled bool `json:"accessControlEnabled"`
 	// The Data Pool that powers this Metric.
 	DataPool *MetricDataDataPool `json:"dataPool"`
 	// The Metric's Dimensions. These Dimensions are available to Query Filters.
@@ -7365,12 +7423,16 @@ type MetricData struct {
 	Measure *MetricDataMeasureDimension `json:"measure"`
 	// The settings for the Metric. The settings are specific to the Metric's type.
 	Settings MetricDataSettingsMetricSettings `json:"-"`
-	// The Metric's type. The different Metric types determine how the values are calculated.
-	Type MetricType `json:"type"`
 }
 
 // GetId returns MetricData.Id, and is useful for accessing the field via an interface.
 func (v *MetricData) GetId() string { return v.Id }
+
+// GetType returns MetricData.Type, and is useful for accessing the field via an interface.
+func (v *MetricData) GetType() MetricType { return v.Type }
+
+// GetAccessControlEnabled returns MetricData.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *MetricData) GetAccessControlEnabled() bool { return v.AccessControlEnabled }
 
 // GetDataPool returns MetricData.DataPool, and is useful for accessing the field via an interface.
 func (v *MetricData) GetDataPool() *MetricDataDataPool { return v.DataPool }
@@ -7386,9 +7448,6 @@ func (v *MetricData) GetMeasure() *MetricDataMeasureDimension { return v.Measure
 
 // GetSettings returns MetricData.Settings, and is useful for accessing the field via an interface.
 func (v *MetricData) GetSettings() MetricDataSettingsMetricSettings { return v.Settings }
-
-// GetType returns MetricData.Type, and is useful for accessing the field via an interface.
-func (v *MetricData) GetType() MetricType { return v.Type }
 
 // GetUniqueName returns MetricData.UniqueName, and is useful for accessing the field via an interface.
 func (v *MetricData) GetUniqueName() string { return v.CommonDataMetric.UniqueName }
@@ -7456,6 +7515,10 @@ func (v *MetricData) UnmarshalJSON(b []byte) error {
 type __premarshalMetricData struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -7465,8 +7528,6 @@ type __premarshalMetricData struct {
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -7497,6 +7558,8 @@ func (v *MetricData) __premarshalJSON() (*__premarshalMetricData, error) {
 	var retval __premarshalMetricData
 
 	retval.Id = v.Id
+	retval.Type = v.Type
+	retval.AccessControlEnabled = v.AccessControlEnabled
 	retval.DataPool = v.DataPool
 	retval.Dimensions = v.Dimensions
 	retval.Timestamp = v.Timestamp
@@ -7513,7 +7576,6 @@ func (v *MetricData) __premarshalJSON() (*__premarshalMetricData, error) {
 				"Unable to marshal MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.Type
 	retval.UniqueName = v.CommonDataMetric.UniqueName
 	retval.Description = v.CommonDataMetric.Description
 	retval.Account = v.CommonDataMetric.Account
@@ -8656,6 +8718,12 @@ type MetricMetric struct {
 // GetId returns MetricMetric.Id, and is useful for accessing the field via an interface.
 func (v *MetricMetric) GetId() string { return v.MetricData.Id }
 
+// GetType returns MetricMetric.Type, and is useful for accessing the field via an interface.
+func (v *MetricMetric) GetType() MetricType { return v.MetricData.Type }
+
+// GetAccessControlEnabled returns MetricMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *MetricMetric) GetAccessControlEnabled() bool { return v.MetricData.AccessControlEnabled }
+
 // GetDataPool returns MetricMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *MetricMetric) GetDataPool() *MetricDataDataPool { return v.MetricData.DataPool }
 
@@ -8672,9 +8740,6 @@ func (v *MetricMetric) GetMeasure() *MetricDataMeasureDimension { return v.Metri
 
 // GetSettings returns MetricMetric.Settings, and is useful for accessing the field via an interface.
 func (v *MetricMetric) GetSettings() MetricDataSettingsMetricSettings { return v.MetricData.Settings }
-
-// GetType returns MetricMetric.Type, and is useful for accessing the field via an interface.
-func (v *MetricMetric) GetType() MetricType { return v.MetricData.Type }
 
 // GetUniqueName returns MetricMetric.UniqueName, and is useful for accessing the field via an interface.
 func (v *MetricMetric) GetUniqueName() string { return v.MetricData.CommonDataMetric.UniqueName }
@@ -8730,6 +8795,10 @@ func (v *MetricMetric) UnmarshalJSON(b []byte) error {
 type __premarshalMetricMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -8739,8 +8808,6 @@ type __premarshalMetricMetric struct {
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -8771,6 +8838,8 @@ func (v *MetricMetric) __premarshalJSON() (*__premarshalMetricMetric, error) {
 	var retval __premarshalMetricMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -8787,7 +8856,6 @@ func (v *MetricMetric) __premarshalJSON() (*__premarshalMetricMetric, error) {
 				"Unable to marshal MetricMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -8896,6 +8964,16 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetId() string
 	return v.MetricData.Id
 }
 
+// GetType returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Type, and is useful for accessing the field via an interface.
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetType() MetricType {
+	return v.MetricData.Type
+}
+
+// GetAccessControlEnabled returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetAccessControlEnabled() bool {
+	return v.MetricData.AccessControlEnabled
+}
+
 // GetDataPool returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
@@ -8919,11 +8997,6 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetMeasure() *
 // GetSettings returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Settings, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetSettings() MetricDataSettingsMetricSettings {
 	return v.MetricData.Settings
-}
-
-// GetType returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.Type, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) GetType() MetricType {
-	return v.MetricData.Type
 }
 
 // GetUniqueName returns MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.UniqueName, and is useful for accessing the field via an interface.
@@ -8994,6 +9067,10 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) UnmarshalJSON(
 type __premarshalMetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -9003,8 +9080,6 @@ type __premarshalMetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric struct 
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -9035,6 +9110,8 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) __premarshalJS
 	var retval __premarshalMetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -9051,7 +9128,6 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) __premarshalJS
 				"Unable to marshal MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -9078,6 +9154,14 @@ type MetricsMetricsMetricConnectionNodesMetric struct {
 // GetId returns MetricsMetricsMetricConnectionNodesMetric.Id, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetId() string { return v.MetricData.Id }
 
+// GetType returns MetricsMetricsMetricConnectionNodesMetric.Type, and is useful for accessing the field via an interface.
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetType() MetricType { return v.MetricData.Type }
+
+// GetAccessControlEnabled returns MetricsMetricsMetricConnectionNodesMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *MetricsMetricsMetricConnectionNodesMetric) GetAccessControlEnabled() bool {
+	return v.MetricData.AccessControlEnabled
+}
+
 // GetDataPool returns MetricsMetricsMetricConnectionNodesMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
@@ -9102,9 +9186,6 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) GetMeasure() *MetricDataMeas
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetSettings() MetricDataSettingsMetricSettings {
 	return v.MetricData.Settings
 }
-
-// GetType returns MetricsMetricsMetricConnectionNodesMetric.Type, and is useful for accessing the field via an interface.
-func (v *MetricsMetricsMetricConnectionNodesMetric) GetType() MetricType { return v.MetricData.Type }
 
 // GetUniqueName returns MetricsMetricsMetricConnectionNodesMetric.UniqueName, and is useful for accessing the field via an interface.
 func (v *MetricsMetricsMetricConnectionNodesMetric) GetUniqueName() string {
@@ -9174,6 +9255,10 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) UnmarshalJSON(b []byte) erro
 type __premarshalMetricsMetricsMetricConnectionNodesMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -9183,8 +9268,6 @@ type __premarshalMetricsMetricsMetricConnectionNodesMetric struct {
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -9215,6 +9298,8 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) __premarshalJSON() (*__prema
 	var retval __premarshalMetricsMetricsMetricConnectionNodesMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -9231,7 +9316,6 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) __premarshalJSON() (*__prema
 				"Unable to marshal MetricsMetricsMetricConnectionNodesMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -10153,6 +10237,14 @@ type ModifyMetricModifyMetricMetricResponseMetric struct {
 // GetId returns ModifyMetricModifyMetricMetricResponseMetric.Id, and is useful for accessing the field via an interface.
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetId() string { return v.MetricData.Id }
 
+// GetType returns ModifyMetricModifyMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetType() MetricType { return v.MetricData.Type }
+
+// GetAccessControlEnabled returns ModifyMetricModifyMetricMetricResponseMetric.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *ModifyMetricModifyMetricMetricResponseMetric) GetAccessControlEnabled() bool {
+	return v.MetricData.AccessControlEnabled
+}
+
 // GetDataPool returns ModifyMetricModifyMetricMetricResponseMetric.DataPool, and is useful for accessing the field via an interface.
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetDataPool() *MetricDataDataPool {
 	return v.MetricData.DataPool
@@ -10177,9 +10269,6 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) GetMeasure() *MetricDataM
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetSettings() MetricDataSettingsMetricSettings {
 	return v.MetricData.Settings
 }
-
-// GetType returns ModifyMetricModifyMetricMetricResponseMetric.Type, and is useful for accessing the field via an interface.
-func (v *ModifyMetricModifyMetricMetricResponseMetric) GetType() MetricType { return v.MetricData.Type }
 
 // GetUniqueName returns ModifyMetricModifyMetricMetricResponseMetric.UniqueName, and is useful for accessing the field via an interface.
 func (v *ModifyMetricModifyMetricMetricResponseMetric) GetUniqueName() string {
@@ -10249,6 +10338,10 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) UnmarshalJSON(b []byte) e
 type __premarshalModifyMetricModifyMetricMetricResponseMetric struct {
 	Id string `json:"id"`
 
+	Type MetricType `json:"type"`
+
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	DataPool *MetricDataDataPool `json:"dataPool"`
 
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
@@ -10258,8 +10351,6 @@ type __premarshalModifyMetricModifyMetricMetricResponseMetric struct {
 	Measure *MetricDataMeasureDimension `json:"measure"`
 
 	Settings json.RawMessage `json:"settings"`
-
-	Type MetricType `json:"type"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -10290,6 +10381,8 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) __premarshalJSON() (*__pr
 	var retval __premarshalModifyMetricModifyMetricMetricResponseMetric
 
 	retval.Id = v.MetricData.Id
+	retval.Type = v.MetricData.Type
+	retval.AccessControlEnabled = v.MetricData.AccessControlEnabled
 	retval.DataPool = v.MetricData.DataPool
 	retval.Dimensions = v.MetricData.Dimensions
 	retval.Timestamp = v.MetricData.Timestamp
@@ -10306,7 +10399,6 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) __premarshalJSON() (*__pr
 				"Unable to marshal ModifyMetricModifyMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
-	retval.Type = v.MetricData.Type
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
 	retval.Description = v.MetricData.CommonDataMetric.Description
 	retval.Account = v.MetricData.CommonDataMetric.Account
@@ -11348,6 +11440,88 @@ type PolicyDataMetric struct {
 // GetId returns PolicyDataMetric.Id, and is useful for accessing the field via an interface.
 func (v *PolicyDataMetric) GetId() string { return v.Id }
 
+// PolicyPolicy includes the requested fields of the GraphQL type Policy.
+// The GraphQL type's documentation follows.
+//
+// The Policy type. It governs an Application's access to a Metric's data.
+type PolicyPolicy struct {
+	PolicyData `json:"-"`
+}
+
+// GetId returns PolicyPolicy.Id, and is useful for accessing the field via an interface.
+func (v *PolicyPolicy) GetId() string { return v.PolicyData.Id }
+
+// GetType returns PolicyPolicy.Type, and is useful for accessing the field via an interface.
+func (v *PolicyPolicy) GetType() PolicyType { return v.PolicyData.Type }
+
+// GetMetric returns PolicyPolicy.Metric, and is useful for accessing the field via an interface.
+func (v *PolicyPolicy) GetMetric() *PolicyDataMetric { return v.PolicyData.Metric }
+
+// GetApplication returns PolicyPolicy.Application, and is useful for accessing the field via an interface.
+func (v *PolicyPolicy) GetApplication() *PolicyDataApplication { return v.PolicyData.Application }
+
+func (v *PolicyPolicy) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*PolicyPolicy
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.PolicyPolicy = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.PolicyData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalPolicyPolicy struct {
+	Id string `json:"id"`
+
+	Type PolicyType `json:"type"`
+
+	Metric *PolicyDataMetric `json:"metric"`
+
+	Application *PolicyDataApplication `json:"application"`
+}
+
+func (v *PolicyPolicy) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *PolicyPolicy) __premarshalJSON() (*__premarshalPolicyPolicy, error) {
+	var retval __premarshalPolicyPolicy
+
+	retval.Id = v.PolicyData.Id
+	retval.Type = v.PolicyData.Type
+	retval.Metric = v.PolicyData.Metric
+	retval.Application = v.PolicyData.Application
+	return &retval, nil
+}
+
+// PolicyResponse is returned by Policy on success.
+type PolicyResponse struct {
+	// Returns a Policy by ID.
+	Policy *PolicyPolicy `json:"policy"`
+}
+
+// GetPolicy returns PolicyResponse.Policy, and is useful for accessing the field via an interface.
+func (v *PolicyResponse) GetPolicy() *PolicyPolicy { return v.Policy }
+
 // The types of Policies that can be applied to a Metric.
 type PolicyType string
 
@@ -11977,6 +12151,14 @@ type __ModifySnowflakeDataSourceInput struct {
 // GetInput returns __ModifySnowflakeDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifySnowflakeDataSourceInput) GetInput() *ModifySnowflakeDataSourceInput { return v.Input }
 
+// __PolicyInput is used internally by genqlient
+type __PolicyInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __PolicyInput.Id, and is useful for accessing the field via an interface.
+func (v *__PolicyInput) GetId() string { return v.Id }
+
 func CreateAverageMetric(
 	ctx context.Context,
 	client graphql.Client,
@@ -11996,6 +12178,8 @@ mutation CreateAverageMetric ($input: CreateAverageMetricInput) {
 fragment MetricData on Metric {
 	... CommonData
 	id
+	type
+	accessControlEnabled
 	dataPool {
 		... DataPoolData
 	}
@@ -12035,7 +12219,6 @@ fragment MetricData on Metric {
 			}
 		}
 	}
-	type
 }
 fragment CommonData on Common {
 	uniqueName
@@ -12272,6 +12455,8 @@ mutation CreateCountDistinctMetric ($input: CreateCountDistinctMetricInput) {
 fragment MetricData on Metric {
 	... CommonData
 	id
+	type
+	accessControlEnabled
 	dataPool {
 		... DataPoolData
 	}
@@ -12311,7 +12496,6 @@ fragment MetricData on Metric {
 			}
 		}
 	}
-	type
 }
 fragment CommonData on Common {
 	uniqueName
@@ -12548,6 +12732,8 @@ mutation CreateCountMetric ($input: CreateCountMetricInput) {
 fragment MetricData on Metric {
 	... CommonData
 	id
+	type
+	accessControlEnabled
 	dataPool {
 		... DataPoolData
 	}
@@ -12587,7 +12773,6 @@ fragment MetricData on Metric {
 			}
 		}
 	}
-	type
 }
 fragment CommonData on Common {
 	uniqueName
@@ -13185,6 +13370,8 @@ mutation CreateMaxMetric ($input: CreateMaxMetricInput) {
 fragment MetricData on Metric {
 	... CommonData
 	id
+	type
+	accessControlEnabled
 	dataPool {
 		... DataPoolData
 	}
@@ -13224,7 +13411,6 @@ fragment MetricData on Metric {
 			}
 		}
 	}
-	type
 }
 fragment CommonData on Common {
 	uniqueName
@@ -13461,6 +13647,8 @@ mutation CreateMinMetric ($input: CreateMinMetricInput) {
 fragment MetricData on Metric {
 	... CommonData
 	id
+	type
+	accessControlEnabled
 	dataPool {
 		... DataPoolData
 	}
@@ -13500,7 +13688,6 @@ fragment MetricData on Metric {
 			}
 		}
 	}
-	type
 }
 fragment CommonData on Common {
 	uniqueName
@@ -14069,6 +14256,8 @@ mutation CreateSumMetric ($input: CreateSumMetricInput) {
 fragment MetricData on Metric {
 	... CommonData
 	id
+	type
+	accessControlEnabled
 	dataPool {
 		... DataPoolData
 	}
@@ -14108,7 +14297,6 @@ fragment MetricData on Metric {
 			}
 		}
 	}
-	type
 }
 fragment CommonData on Common {
 	uniqueName
@@ -15652,6 +15840,8 @@ query Metric ($id: ID!) {
 fragment MetricData on Metric {
 	... CommonData
 	id
+	type
+	accessControlEnabled
 	dataPool {
 		... DataPoolData
 	}
@@ -15691,7 +15881,6 @@ fragment MetricData on Metric {
 			}
 		}
 	}
-	type
 }
 fragment CommonData on Common {
 	uniqueName
@@ -15925,6 +16114,8 @@ query MetricByName ($uniqueName: String!) {
 fragment MetricData on Metric {
 	... CommonData
 	id
+	type
+	accessControlEnabled
 	dataPool {
 		... DataPoolData
 	}
@@ -15964,7 +16155,6 @@ fragment MetricData on Metric {
 			}
 		}
 	}
-	type
 }
 fragment CommonData on Common {
 	uniqueName
@@ -16218,6 +16408,8 @@ fragment PageInfoData on PageInfo {
 fragment MetricData on Metric {
 	... CommonData
 	id
+	type
+	accessControlEnabled
 	dataPool {
 		... DataPoolData
 	}
@@ -16257,7 +16449,6 @@ fragment MetricData on Metric {
 			}
 		}
 	}
-	type
 }
 fragment CommonData on Common {
 	uniqueName
@@ -16867,6 +17058,8 @@ mutation ModifyMetric ($input: ModifyMetricInput) {
 fragment MetricData on Metric {
 	... CommonData
 	id
+	type
+	accessControlEnabled
 	dataPool {
 		... DataPoolData
 	}
@@ -16906,7 +17099,6 @@ fragment MetricData on Metric {
 			}
 		}
 	}
-	type
 }
 fragment CommonData on Common {
 	uniqueName
@@ -17445,6 +17637,48 @@ fragment TableIntrospectionData on TableIntrospection {
 	var err error
 
 	var data ModifySnowflakeDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+func Policy(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*PolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "Policy",
+		Query: `
+query Policy ($id: ID!) {
+	policy(id: $id) {
+		... PolicyData
+	}
+}
+fragment PolicyData on Policy {
+	id
+	type
+	metric {
+		id
+	}
+	application {
+		id
+	}
+}
+`,
+		Variables: &__PolicyInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data PolicyResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(

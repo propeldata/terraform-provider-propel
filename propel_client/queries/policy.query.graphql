@@ -1,0 +1,5 @@
+query Policy($id: ID!) {
+    policy(id: $id) {
+        ...PolicyData
+    }
+}

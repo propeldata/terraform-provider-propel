@@ -14,17 +14,18 @@ import (
 func resourcePolicy() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: resourcePolicyCreate,
+		ReadContext:   resourcePolicyRead,
 		UpdateContext: resourcePolicyUpdate,
 		DeleteContext: resourcePolicyDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
-		Description: "Provides a Propel Policy resource. This can be used to create and manage Propel Policies.",
+		SchemaVersion: 1,
+		Description:   "Provides a Propel Policy resource. This can be used to create and manage Propel Policies.",
 		Schema: map[string]*schema.Schema{
 			"type": {
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
 				ValidateFunc: validation.StringInSlice([]string{
 					"ALL_ACCESS",
 					"TENANT_ACCESS",
@@ -63,22 +64,36 @@ func resourcePolicyCreate(ctx context.Context, d *schema.ResourceData, meta inte
 		return diag.FromErr(err)
 	}
 
-	policy := response.GetCreatePolicy().Policy
-	d.SetId(policy.Id)
+	d.SetId(response.GetCreatePolicy().Policy.Id)
 
-	if err := d.Set("type", policy.Type); err != nil {
-		return diag.FromErr(err)
-	}
-
-	if err := d.Set("application", policy.Application.Id); err != nil {
-		return diag.FromErr(err)
-	}
-
-	if err := d.Set("metric", policy.Metric.Id); err != nil {
-		return diag.FromErr(err)
-	}
+	resourcePolicyRead(ctx, d, meta)
 
 	return diags
+}
+
+func resourcePolicyRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	c := m.(graphql.Client)
+
+	response, err := pc.Policy(ctx, c, d.Id())
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	d.SetId(response.Policy.Id)
+
+	if err := d.Set("type", response.Policy.Type); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("application", response.Policy.Application.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("metric", response.Policy.Metric.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	return nil
 }
 
 func resourcePolicyUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
@@ -90,17 +105,13 @@ func resourcePolicyUpdate(ctx context.Context, d *schema.ResourceData, meta inte
 			Type:   pc.PolicyType(d.Get("type").(string)),
 		}
 
-		response, err := pc.ModifyPolicy(ctx, c, input)
+		_, err := pc.ModifyPolicy(ctx, c, input)
 		if err != nil {
-			return diag.FromErr(err)
-		}
-
-		if err := d.Set("type", response.GetModifyPolicy().Policy.Type); err != nil {
 			return diag.FromErr(err)
 		}
 	}
 
-	return nil
+	return resourcePolicyRead(ctx, d, meta)
 }
 
 func resourcePolicyDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {

@@ -132,6 +132,7 @@ resource "propel_metric" "my_max_metric" {
 
 ### Optional
 
+- `access_control_enabled` (Boolean) Whether or not access control is enabled for the Metric.
 - `description` (String) The Metric's description.
 - `dimension` (String) The Dimension where the count distinct operation is going to be performed. Only valid for COUNT_DISTINCT Metrics.
 - `dimensions` (Set of String) The Metric's Dimensions. These Dimensions are available to Query Filters.
