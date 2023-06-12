@@ -3,12 +3,12 @@
 page_title: "propel_policy Resource - propel"
 subcategory: ""
 description: |-
-  Provides a Propel Policy resource. This can be used to create and manage Propel Policies.
+  Provides a Propel Access Policy resource. This can be used to create and manage Propel Access Policies.
 ---
 
 # propel_policy (Resource)
 
-Provides a Propel Policy resource. This can be used to create and manage Propel Policies.
+Provides a Propel Access Policy resource. This can be used to create and manage Propel Access Policies.
 
 ## Example Usage
 
