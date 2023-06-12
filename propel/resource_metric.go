@@ -63,7 +63,6 @@ func resourceMetric() *schema.Resource {
 			"filter": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				ForceNew:    true,
 				Description: "Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -97,7 +96,6 @@ func resourceMetric() *schema.Resource {
 				Type:        schema.TypeSet,
 				Optional:    true,
 				Computed:    true,
-				ForceNew:    true,
 				Description: "The Metric's Dimensions. These Dimensions are available to Query Filters.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
@@ -329,6 +327,48 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 
 			filters = append(filters, filter)
 		}
+	case *pc.MetricDataSettingsAverageMetricSettings:
+		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
+
+		for _, f := range s.Filters {
+			filter := map[string]interface{}{
+				"column":   f.Column,
+				"operator": f.Operator,
+				"value":    f.Value,
+			}
+
+			filters = append(filters, filter)
+		}
+	case *pc.MetricDataSettingsMinMetricSettings:
+		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
+
+		for _, f := range s.Filters {
+			filter := map[string]interface{}{
+				"column":   f.Column,
+				"operator": f.Operator,
+				"value":    f.Value,
+			}
+
+			filters = append(filters, filter)
+		}
+	case *pc.MetricDataSettingsMaxMetricSettings:
+		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
+
+		for _, f := range s.Filters {
+			filter := map[string]interface{}{
+				"column":   f.Column,
+				"operator": f.Operator,
+				"value":    f.Value,
+			}
+
+			filters = append(filters, filter)
+		}
 	}
 
 	if err := d.Set("filter", filters); err != nil {
@@ -346,7 +386,7 @@ func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 		description := d.Get("description").(string)
 		accessControlEnabled := d.Get("access_control_enabled").(bool)
 
-		modifyMetric := &pc.ModifyMetricInput{
+		modifyMetric := &pc.ModifyMetricInput {
 			Metric:               d.Id(),
 			UniqueName:           &uniqueName,
 			Description:          &description,

@@ -37,6 +37,7 @@ fragment DataSourceData on DataSource {
             tables {
                 id
                 name
+                path
                 columns {
                     name
                     type
