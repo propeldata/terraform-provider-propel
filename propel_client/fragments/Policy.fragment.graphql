@@ -1,0 +1,10 @@
+fragment PolicyData on Policy {
+    id
+    type
+    metric {
+        id
+    }
+    application {
+        id
+    }
+}

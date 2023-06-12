@@ -1,6 +1,8 @@
 fragment MetricData on Metric {
     ...CommonData
     id
+    type
+    accessControlEnabled
     dataPool {
         ...DataPoolData
     }
@@ -70,5 +72,4 @@ fragment MetricData on Metric {
             }
         }
     }
-    type
 }

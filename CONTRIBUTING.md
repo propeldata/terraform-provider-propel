@@ -79,6 +79,14 @@ go get golang.org/x/tools/cmd/goimports
 
 Both commands should create no changes before a pull request can be merged.
 
+### Generate the docs
+
+To regenerate the documentation run the command:
+
+```shell
+go generate
+```
+
 ### Release Procedure
 
 To release a new version of the Terraform provider a binary has to be built for a list of platforms ([more information](https://www.terraform.io/docs/registry/providers/publishing.html#creating-a-github-release)). This process is automated with GoReleaser and GitHub Actions.

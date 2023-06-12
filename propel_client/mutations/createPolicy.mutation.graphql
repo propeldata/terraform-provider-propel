@@ -1,0 +1,7 @@
+mutation CreatePolicy($input: CreatePolicyInput!) {
+    createPolicy(input: $input) {
+        policy {
+            ...PolicyData
+        }
+    }
+}

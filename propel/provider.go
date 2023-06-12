@@ -35,6 +35,7 @@ func Provider() *schema.Provider {
 			"propel_data_source": resourceDataSource(),
 			"propel_data_pool":   resourceDataPool(),
 			"propel_metric":      resourceMetric(),
+			"propel_policy":      resourcePolicy(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}

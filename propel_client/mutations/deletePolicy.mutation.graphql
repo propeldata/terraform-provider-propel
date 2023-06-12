@@ -1,0 +1,3 @@
+mutation DeletePolicy($id: ID!) {
+    deletePolicy(id: $id)
+}
