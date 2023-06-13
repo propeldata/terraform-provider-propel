@@ -2,7 +2,7 @@ terraform {
   required_providers {
     propel = {
       source  = "propeldata/propel"
-      version = "0.1.3"
+      version = "0.1.5"
     }
   }
 }
@@ -32,6 +32,13 @@ resource "propel_data_source" "http_data_source" {
   unique_name = "My HTTP Data Source"
   description = "This is an example of an HTTP Data Source"
   type        = "Http"
+
+  http_connection_settings {
+    basic_auth {
+      username = "foo"
+      password = var.http_basic_auth_password
+    }
+  }
 }
 
 resource "propel_data_pool" "data_pool" {
@@ -151,6 +158,12 @@ resource "propel_metric" "max_metric" {
   dimensions = ["column_1", "column_2"]
 }
 
+resource "propel_policy" "sum_metric_policy" {
+  type = "ALL_ACCESS"
+  metric = propel_metric.sum_metric.id
+  application = var.client_id
+}
+
 output "snowflake_data_source_id" {
   value = propel_data_source.snowflake_data_source.id
 }
@@ -185,4 +198,8 @@ output "min_metric_id" {
 
 output "max_metric_id" {
   value = propel_metric.max_metric.id
+}
+
+output "sum_metric_policy_id" {
+  value = propel_policy.sum_metric_policy.id
 }

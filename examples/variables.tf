@@ -11,3 +11,8 @@ variable "snowflake_password" {
   type      = string
   sensitive = true
 }
+
+variable "http_basic_auth_password" {
+  type      = string
+  sensitive = true
+}
