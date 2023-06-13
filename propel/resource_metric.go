@@ -381,15 +381,28 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	if d.HasChanges("unique_name", "description", "access_control_enabled") {
+	if d.HasChanges("unique_name", "description", "dimensions", "filter", "access_control_enabled") {
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
+
+		filters := make([]*pc.FilterInput, 0)
+		if def, ok := d.Get("filter").([]any); ok && len(def) > 0 {
+			filters = expandMetricFilters(def)
+		}
+
+		dimensions := make([]*pc.DimensionInput, 0)
+		if def, ok := d.GetOk("dimensions"); ok {
+			dimensions = expandMetricDimensions(def.(*schema.Set).List())
+		}
+
 		accessControlEnabled := d.Get("access_control_enabled").(bool)
 
-		modifyMetric := &pc.ModifyMetricInput {
+		modifyMetric := &pc.ModifyMetricInput{
 			Metric:               d.Id(),
 			UniqueName:           &uniqueName,
 			Description:          &description,
+			Filters:              filters,
+			Dimensions:           dimensions,
 			AccessControlEnabled: &accessControlEnabled,
 		}
 
