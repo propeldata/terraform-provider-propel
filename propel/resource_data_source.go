@@ -566,21 +566,28 @@ func handleS3Tables(response *pc.DataSourceResponse, d *schema.ResourceData) dia
 }
 
 func handleHttpConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	if d.Get("http_connection_settings") == nil || len(d.Get("http_connection_settings").([]interface{})) == 0 {
+	if d.Get("http_connection_settings") == nil || len(d.Get("http_connection_settings").([]any)) == 0 {
 		return nil
 	}
 
-	cs := d.Get("http_connection_settings").([]interface{})[0].(map[string]interface{})
-
 	switch s := response.DataSource.GetConnectionSettings().(type) {
 	case *pc.DataSourceDataConnectionSettingsHttpConnectionSettings:
-		if s.BasicAuth == nil {
-			cs["basic_auth"] = nil
-		} else if cs["basic_auth"] != nil && len(cs["basic_auth"].([]interface{})) > 0 {
-			basicAuth := cs["basic_auth"].([]interface{})[0].(map[string]interface{})
-			basicAuth["username"] = s.BasicAuth.Username
+		settings := map[string]any{
+			"basic_auth": nil,
 		}
 
+		if s.BasicAuth != nil {
+			settings["basic_auth"] = []map[string]any{
+				{
+					"username": s.BasicAuth.GetUsername(),
+					"password": s.BasicAuth.GetPassword(),
+				},
+			}
+		}
+
+		if err := d.Set("http_connection_settings", []map[string]any{settings}); err != nil {
+			return diag.FromErr(err)
+		}
 	default:
 		return diag.Errorf("Missing HttpConnectionSettings")
 	}
@@ -589,16 +596,20 @@ func handleHttpConnectionSettings(response *pc.DataSourceResponse, d *schema.Res
 }
 
 func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	cs := d.Get("s3_connection_settings").([]interface{})[0].(map[string]interface{})
+	cs := d.Get("s3_connection_settings").([]any)[0].(map[string]any)
 
-	settings := map[string]interface{}{
-		"aws_secret_access_key": cs["awsSecretAccessKey"],
+	settings := map[string]any{
+		"aws_secret_access_key": cs["aws_secret_access_key"],
 	}
 
 	switch s := response.DataSource.GetConnectionSettings().(type) {
 	case *pc.DataSourceDataConnectionSettingsS3ConnectionSettings:
 		settings["bucket"] = s.GetBucket()
 		settings["aws_access_key_id"] = s.GetAwsAccessKeyId()
+
+		if err := d.Set("s3_connection_settings", []map[string]any{settings}); err != nil {
+			return diag.FromErr(err)
+		}
 	default:
 		return diag.Errorf("Missing S3ConnectionSettings")
 	}
@@ -665,6 +676,12 @@ func resourceSnowflakeDataSourceUpdate(ctx context.Context, d *schema.ResourceDa
 		if err != nil {
 			return diag.FromErr(err)
 		}
+
+		timeout := d.Timeout(schema.TimeoutCreate)
+
+		if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	return resourceDataSourceRead(ctx, d, m)
@@ -673,7 +690,7 @@ func resourceSnowflakeDataSourceUpdate(ctx context.Context, d *schema.ResourceDa
 func resourceHttpDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	if d.HasChanges("unique_name", "description", "table") {
+	if d.HasChanges("unique_name", "description", "table", "http_connection_settings") {
 		id := d.Id()
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
@@ -707,7 +724,14 @@ func resourceHttpDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m
 		if _, err := pc.ModifyHttpDataSource(ctx, c, input); err != nil {
 			return diag.FromErr(err)
 		}
+
+		timeout := d.Timeout(schema.TimeoutCreate)
+
+		if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
+			return diag.FromErr(err)
+		}
 	}
+
 	return resourceDataSourceRead(ctx, d, m)
 }
 
@@ -758,6 +782,12 @@ func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m i
 		}
 
 		if _, err := pc.ModifyS3DataSource(ctx, c, input); err != nil {
+			return diag.FromErr(err)
+		}
+
+		timeout := d.Timeout(schema.TimeoutCreate)
+
+		if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
 			return diag.FromErr(err)
 		}
 	}

@@ -21,7 +21,7 @@ func resourcePolicy() *schema.Resource {
 			StateContext: schema.ImportStatePassthroughContext,
 		},
 		SchemaVersion: 1,
-		Description:   "Provides a Propel Policy resource. This can be used to create and manage Propel Policies.",
+		Description:   "Provides a Propel Policy resource. This can be used to create and manage Propel Access Policies. It governs an Application's access to a Metric's data.",
 		Schema: map[string]*schema.Schema{
 			"type": {
 				Type:     schema.TypeString,

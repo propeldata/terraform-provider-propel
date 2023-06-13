@@ -3,12 +3,12 @@
 page_title: "propel_policy Resource - propel"
 subcategory: ""
 description: |-
-  Provides a Propel Access Policy resource. This can be used to create and manage Propel Access Policies.
+  Provides a Propel Policy resource. This can be used to create and manage Propel Access Policies. It governs an Application's access to a Metric's data.
 ---
 
 # propel_policy (Resource)
 
-Provides a Propel Access Policy resource. This can be used to create and manage Propel Access Policies.
+Provides a Propel Policy resource. This can be used to create and manage Propel Access Policies. It governs an Application's access to a Metric's data.
 
 ## Example Usage
 
