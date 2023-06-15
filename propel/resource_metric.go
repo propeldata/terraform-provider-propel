@@ -470,7 +470,7 @@ func expandMetricFilters(def []interface{}) ([]*pc.FilterInput, diag.Diagnostics
 			Value:    filter["value"].(string),
 		}
 
-		if def, ok := filter["and"]; ok {
+		if def, ok := filter["and"]; ok && def != "" {
 			var andFilterInput []*pc.FilterInput
 			if err := json.Unmarshal([]byte(def.(string)), &andFilterInput); err != nil {
 				return nil, diag.FromErr(err)
@@ -479,7 +479,7 @@ func expandMetricFilters(def []interface{}) ([]*pc.FilterInput, diag.Diagnostics
 			f.And = andFilterInput
 		}
 
-		if def, ok := filter["or"]; ok {
+		if def, ok := filter["or"]; ok && def != "" {
 			var orFilterInput []*pc.FilterInput
 			if err := json.Unmarshal([]byte(def.(string)), &orFilterInput); err != nil {
 				return nil, diag.FromErr(err)

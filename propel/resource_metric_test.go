@@ -24,6 +24,15 @@ func Test_expandMetricFilters(t *testing.T) {
 			},
 		},
 		{
+			name: "With AND and OR as empty strings",
+			def: []any{
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": "", "or": ""},
+			},
+			want: []*pc.FilterInput{
+				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: "2"},
+			},
+		},
+		{
 			name: "With one AND filter",
 			def: []any{
 				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`},
