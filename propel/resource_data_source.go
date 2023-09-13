@@ -47,8 +47,9 @@ func resourceDataSource() *schema.Resource {
 					"Snowflake",
 					"S3",
 					"Http",
+					"Webhook",
 				}, true),
-				Description: "The Data Source's type. Depending on this, you will need to specify one of `http_connection_settings`, `s3_connection_settings`, or `snowflake_connection_settings`.",
+				Description: "The Data Source's type. Depending on this, you will need to specify one of `http_connection_settings`, `s3_connection_settings`, `webhook_connection_settings` or `snowflake_connection_settings`.",
 			},
 			"status": {
 				Type:        schema.TypeString,
@@ -88,7 +89,7 @@ func resourceDataSource() *schema.Resource {
 			"snowflake_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"http_connection_settings", "s3_connection_settings"},
+				ConflictsWith: []string{"http_connection_settings", "s3_connection_settings", "webhook_connection_settings"},
 				MaxItems:      1,
 				Description:   "Snowflake connection settings. Specify these for Snowflake Data Sources.",
 				Elem: &schema.Resource{
@@ -135,7 +136,7 @@ func resourceDataSource() *schema.Resource {
 			"http_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "s3_connection_settings"},
+				ConflictsWith: []string{"snowflake_connection_settings", "s3_connection_settings", "webhook_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Description: "HTTP connection settings. Specify these for HTTP Data Sources.",
@@ -166,7 +167,7 @@ func resourceDataSource() *schema.Resource {
 			"s3_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings"},
+				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "webhook_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Description: "The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, the AWS secret access key, and the tables (along with their paths).",
@@ -190,12 +191,85 @@ func resourceDataSource() *schema.Resource {
 					},
 				},
 			},
+			"webhook_connection_settings": {
+				Type:          schema.TypeList,
+				Optional:      true,
+				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings"},
+				MaxItems:      1,
+				Elem: &schema.Resource{
+					Description: "Webhook connection settings. Specify these for Webhook Data Sources.",
+					Schema: map[string]*schema.Schema{
+						"basic_auth": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							MaxItems:    1,
+							Description: "The HTTP Basic authentication settings for sending new events.\n\nIf this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it",
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"username": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: "The username for Basic authentication that must be included in the Authorization header when uploading new data.",
+									},
+									"password": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: "The password for Basic authentication that must be included in the Authorization header when uploading new data.",
+									},
+								},
+							},
+						},
+						"column": {
+							Type:        schema.TypeList,
+							Required:    true,
+							ForceNew:    false,
+							Description: "The additional column for the Webhook Data Source table.",
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"name": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: "The column name.",
+									},
+									"jsonProperty": {
+										Type:     schema.TypeString,
+										Required: true,
+										Description: `The JSON property that the column will be derived from. For example, if you POST a JSON event like this:
+														{ "greeting": { "message": "hello, world" } }
+													Then you can use the JSON property "greeting.message" to extract "hello, world" to a column.`,
+									},
+									"type": {
+										Type:         schema.TypeString,
+										Required:     true,
+										Description:  "The column type.",
+										ValidateFunc: utils.IsValidColumnType,
+									},
+									"nullable": {
+										Type:        schema.TypeBool,
+										Required:    true,
+										Description: "Whether the column's type is nullable or not.",
+									},
+								},
+							},
+						},
+						"tenant": {
+							Type:        schema.TypeString,
+							Description: "Indicates the Tenant ID column, if configured.",
+						},
+						"timestamp": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "Indicates the timestamp column.",
+						},
+					},
+				},
+			},
 			"table": {
 				Type:     schema.TypeList,
 				Optional: true,
 				ForceNew: false,
 				Elem: &schema.Resource{
-					Description: "Specify an HTTP or S3 Data Source's tables with this. You do not need to use this for Snowflake Data Sources, since Snowflake Data Sources' tables are automatically introspected.",
+					Description: "Specify an HTTP or S3 Data Source's tables with this. You do not need to use this for Snowflake Data Sources, since Snowflake Data Sources' tables are automatically introspected. You do not need to use this for Webhook Data Sources, since table is automatically created.",
 					Schema: map[string]*schema.Schema{
 						"id": {
 							Type:        schema.TypeString,
@@ -396,6 +470,51 @@ func resourceS3DataSourceCreate(ctx context.Context, d *schema.ResourceData, met
 
 	err = waitForDataSourceConnected(ctx, c, d.Id(), timeout)
 	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	return resourceDataSourceRead(ctx, d, meta)
+}
+
+func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
+	c := meta.(graphql.Client)
+
+	var basicAuth *pc.HttpBasicAuthInput
+	if d.Get("webhook_connection_settings") != nil && len(d.Get("webhook_connection_settings").([]any)) > 0 {
+		cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
+
+		if def, ok := cs["basic_auth"]; ok {
+			basicAuth = expandBasicAuth(def.([]any))
+		}
+	}
+
+	tables := make([]*pc.HttpDataSourceTableInput, 0)
+	if def, ok := d.Get("table").([]interface{}); ok && len(def) > 0 {
+		tables = expandHttpTables(def)
+	}
+
+	uniqueName := d.Get("unique_name").(string)
+	description := d.Get("description").(string)
+	input := &pc.CreateHttpDataSourceInput{
+		UniqueName:  &uniqueName,
+		Description: &description,
+		ConnectionSettings: &pc.HttpConnectionSettingsInput{
+			BasicAuth: basicAuth,
+			Tables:    tables,
+		},
+	}
+
+	response, err := pc.CreateHttpDataSource(ctx, c, input)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	r := response.CreateHttpDataSource
+	d.SetId(r.DataSource.Id)
+
+	timeout := d.Timeout(schema.TimeoutCreate)
+
+	if err = waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
 		return diag.FromErr(err)
 	}
 
