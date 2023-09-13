@@ -31,6 +31,7 @@ resource "propel_metric" "my_sum_metric" {
     column   = "country"
     operator = "EQUALS"
     value    = "bar"
+    or       = jsonencode([{"column":"country","operator":"EQUALS","value":"baz"}])
   }
 
   dimensions = ["store"]
@@ -152,6 +153,11 @@ Required:
 - `column` (String) The name of the column to filter on.
 - `operator` (String) The operation to perform when comparing the column and filter values.
 - `value` (String) The value to compare the column to.
+
+Optional:
+
+- `and` (String) Additional filters to AND with this one. AND takes precedence over OR. It is defined as a JSON string value.
+- `or` (String) Additional filters to OR with this one. AND takes precedence over OR. It is defined as a JSON string value.
 
 ## Import
 

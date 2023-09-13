@@ -2,10 +2,12 @@ package propel
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/structure"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
@@ -89,6 +91,26 @@ func resourceMetric() *schema.Resource {
 							Required:    true,
 							Description: "The value to compare the column to.",
 						},
+						"and": {
+							Type:         schema.TypeString,
+							Optional:     true,
+							Description:  "Additional filters to AND with this one. AND takes precedence over OR. It is defined as a JSON string value.",
+							ValidateFunc: validation.StringIsJSON,
+							StateFunc: func(v interface{}) string {
+								nJSON, _ := structure.NormalizeJsonString(v)
+								return nJSON
+							},
+						},
+						"or": {
+							Type:         schema.TypeString,
+							Optional:     true,
+							Description:  "Additional filters to OR with this one. AND takes precedence over OR. It is defined as a JSON string value.",
+							ValidateFunc: validation.StringIsJSON,
+							StateFunc: func(v interface{}) string {
+								nJSON, _ := structure.NormalizeJsonString(v)
+								return nJSON
+							},
+						},
 					},
 				},
 			},
@@ -123,7 +145,10 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 
 	filters := make([]*pc.FilterInput, 0)
 	if def, ok := d.Get("filter").([]interface{}); ok && len(def) > 0 {
-		filters = expandMetricFilters(def)
+		filters, diags = expandMetricFilters(def)
+		if diags != nil {
+			return diags
+		}
 	}
 
 	dimensions := make([]*pc.DimensionInput, 0)
@@ -381,13 +406,18 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
+	var diags diag.Diagnostics
+
 	if d.HasChanges("unique_name", "description", "dimensions", "filter", "access_control_enabled") {
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
 
 		filters := make([]*pc.FilterInput, 0)
 		if def, ok := d.Get("filter").([]any); ok && len(def) > 0 {
-			filters = expandMetricFilters(def)
+			filters, diags = expandMetricFilters(def)
+			if diags != nil {
+				return diags
+			}
 		}
 
 		dimensions := make([]*pc.DimensionInput, 0)
@@ -428,39 +458,40 @@ func resourceMetricDelete(ctx context.Context, d *schema.ResourceData, m interfa
 	return nil
 }
 
-func expandMetricFilters(def []interface{}) []*pc.FilterInput {
+func expandMetricFilters(def []interface{}) ([]*pc.FilterInput, diag.Diagnostics) {
 	filters := make([]*pc.FilterInput, 0, len(def))
 
 	for _, rawFilter := range def {
 		filter := rawFilter.(map[string]interface{})
 
-		var operator pc.FilterOperator
-
-		switch filter["operator"].(string) {
-		case "EQUALS":
-			operator = pc.FilterOperatorEquals
-		case "NOT_EQUALS":
-			operator = pc.FilterOperatorNotEquals
-		case "GREATER_THAN":
-			operator = pc.FilterOperatorGreaterThan
-		case "GREATER_THAN_OR_EQUAL_TO":
-			operator = pc.FilterOperatorGreaterThanOrEqualTo
-		case "LESS_THAN":
-			operator = pc.FilterOperatorLessThan
-		case "LESS_THAN_OR_EQUAL_TO":
-			operator = pc.FilterOperatorLessThanOrEqualTo
-		}
-
 		f := &pc.FilterInput{
 			Column:   filter["column"].(string),
-			Operator: operator,
+			Operator: pc.FilterOperator(filter["operator"].(string)),
 			Value:    filter["value"].(string),
+		}
+
+		if def, ok := filter["and"]; ok && def != "" {
+			var andFilterInput []*pc.FilterInput
+			if err := json.Unmarshal([]byte(def.(string)), &andFilterInput); err != nil {
+				return nil, diag.FromErr(err)
+			}
+
+			f.And = andFilterInput
+		}
+
+		if def, ok := filter["or"]; ok && def != "" {
+			var orFilterInput []*pc.FilterInput
+			if err := json.Unmarshal([]byte(def.(string)), &orFilterInput); err != nil {
+				return nil, diag.FromErr(err)
+			}
+
+			f.Or = orFilterInput
 		}
 
 		filters = append(filters, f)
 	}
 
-	return filters
+	return filters, nil
 }
 
 func expandMetricDimensions(def []interface{}) []*pc.DimensionInput {

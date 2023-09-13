@@ -354,8 +354,7 @@ func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, m
 
 	timeout := d.Timeout(schema.TimeoutCreate)
 
-	err = waitForDataSourceConnected(ctx, c, d.Id(), timeout)
-	if err != nil {
+	if err = waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
 		return diag.FromErr(err)
 	}
 

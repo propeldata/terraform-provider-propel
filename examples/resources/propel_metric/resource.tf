@@ -16,6 +16,7 @@ resource "propel_metric" "my_sum_metric" {
     column   = "country"
     operator = "EQUALS"
     value    = "bar"
+    or = jsonencode([{"column":"country","operator":"EQUALS","value":"baz"}])
   }
 
   dimensions = ["store"]
