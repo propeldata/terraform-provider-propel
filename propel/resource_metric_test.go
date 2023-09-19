@@ -7,6 +7,10 @@ import (
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
+var two = "2"
+var five = "5"
+var abc = "abc"
+
 func Test_expandMetricFilters(t *testing.T) {
 	tests := []struct {
 		name          string
@@ -17,36 +21,36 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "Basic filter",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2"},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two},
 			},
 			want: []*pc.FilterInput{
-				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: "2"},
+				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: &two},
 			},
 		},
 		{
 			name: "With AND and OR as empty strings",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": "", "or": ""},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "and": "", "or": ""},
 			},
 			want: []*pc.FilterInput{
-				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: "2"},
+				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: &two},
 			},
 		},
 		{
 			name: "With one AND filter",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`},
 			},
 			want: []*pc.FilterInput{
 				{
 					Column:   "foo",
 					Operator: pc.FilterOperatorEquals,
-					Value:    "2",
+					Value:    &two,
 					And: []*pc.FilterInput{
 						{
 							Column:   "bar",
 							Operator: pc.FilterOperatorGreaterThan,
-							Value:    "5",
+							Value:    &five,
 						},
 					},
 				},
@@ -55,18 +59,18 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "With one OR filter",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "or": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "or": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`},
 			},
 			want: []*pc.FilterInput{
 				{
 					Column:   "foo",
 					Operator: pc.FilterOperatorEquals,
-					Value:    "2",
+					Value:    &two,
 					Or: []*pc.FilterInput{
 						{
 							Column:   "bar",
 							Operator: pc.FilterOperatorGreaterThan,
-							Value:    "5",
+							Value:    &five,
 						},
 					},
 				},
@@ -75,25 +79,25 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "With one AND and OR filter combined",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`, "or": `[{"column": "baz", "operator": "EQUALS", "value": "abc"}]`},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`, "or": `[{"column": "baz", "operator": "EQUALS", "value": "abc"}]`},
 			},
 			want: []*pc.FilterInput{
 				{
 					Column:   "foo",
 					Operator: pc.FilterOperatorEquals,
-					Value:    "2",
+					Value:    &two,
 					And: []*pc.FilterInput{
 						{
 							Column:   "bar",
 							Operator: pc.FilterOperatorGreaterThan,
-							Value:    "5",
+							Value:    &five,
 						},
 					},
 					Or: []*pc.FilterInput{
 						{
 							Column:   "baz",
 							Operator: pc.FilterOperatorEquals,
-							Value:    "abc",
+							Value:    &abc,
 						},
 					},
 				},
@@ -102,23 +106,23 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "With AND nested filter",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5", "and": [{"column": "baz", "operator": "EQUALS", "value": "abc"}]}]`},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5", "and": [{"column": "baz", "operator": "EQUALS", "value": "abc"}]}]`},
 			},
 			want: []*pc.FilterInput{
 				{
 					Column:   "foo",
 					Operator: pc.FilterOperatorEquals,
-					Value:    "2",
+					Value:    &two,
 					And: []*pc.FilterInput{
 						{
 							Column:   "bar",
 							Operator: pc.FilterOperatorGreaterThan,
-							Value:    "5",
+							Value:    &five,
 							And: []*pc.FilterInput{
 								{
 									Column:   "baz",
 									Operator: pc.FilterOperatorEquals,
-									Value:    "abc",
+									Value:    &abc,
 								},
 							},
 						},
@@ -129,23 +133,23 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "With OR nested filter",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "or": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5", "and": [{"column": "baz", "operator": "EQUALS", "value": "abc"}]}]`},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "or": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5", "and": [{"column": "baz", "operator": "EQUALS", "value": "abc"}]}]`},
 			},
 			want: []*pc.FilterInput{
 				{
 					Column:   "foo",
 					Operator: pc.FilterOperatorEquals,
-					Value:    "2",
+					Value:    &two,
 					Or: []*pc.FilterInput{
 						{
 							Column:   "bar",
 							Operator: pc.FilterOperatorGreaterThan,
-							Value:    "5",
+							Value:    &five,
 							And: []*pc.FilterInput{
 								{
 									Column:   "baz",
 									Operator: pc.FilterOperatorEquals,
-									Value:    "abc",
+									Value:    &abc,
 								},
 							},
 						},
