@@ -47,6 +47,7 @@ func resourceMetric() *schema.Resource {
 					"AVERAGE",
 					"MIN",
 					"MAX",
+					"CUSTOM",
 				}, false),
 				Description: "The Metric type. The different Metric types determine how the values are calculated.",
 			},
@@ -127,6 +128,13 @@ func resourceMetric() *schema.Resource {
 				Computed:    true,
 				ForceNew:    true,
 				Description: "The Dimension where the count distinct operation is going to be performed. Only valid for COUNT_DISTINCT Metrics.",
+			},
+			"expression": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
+				ForceNew:    true,
+				Description: "The custom expression for aggregating data in a Metric. Only valid for CUSTOM Metrics.",
 			},
 			"access_control_enabled": {
 				Type:        schema.TypeBool,
@@ -266,6 +274,22 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 		}
 
 		d.SetId(response.GetCreateMinMetric().Metric.Id)
+
+	case "CUSTOM":
+		input := &pc.CreateCustomMetricInput{
+			DataPool:    dataPool,
+			UniqueName:  &uniqueName,
+			Description: &description,
+			Filters:     filters,
+			Dimensions:  dimensions,
+			Expression:  d.Get("expression").(string),
+		}
+		response, err := pc.CreateCustomMetric(ctx, c, input)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		d.SetId(response.GetCreateCustomMetric().Metric.Id)
 	}
 
 	return diags
