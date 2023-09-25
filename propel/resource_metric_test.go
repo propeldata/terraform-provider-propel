@@ -203,7 +203,7 @@ func TestAccPropelMetricBasic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataPoolExists("propel_metric.baz"),
 					resource.TestCheckResourceAttr("propel_metric.baz", "type", "CUSTOM"),
-					resource.TestCheckResourceAttr("propel_metric.baz", "expression", "SUM(quantity) / COUNT()"),
+					resource.TestCheckResourceAttr("propel_metric.baz", "expression", "COUNT_DISTINCT(account_id) / COUNT()"),
 				),
 			},
 		},
