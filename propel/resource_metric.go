@@ -421,6 +421,20 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 
 			filters = append(filters, filter)
 		}
+	case *pc.MetricDataSettingsCustomMetricSettings:
+		if err := d.Set("expression", s.Expression); err != nil {
+			return diag.FromErr(err)
+		}
+
+		for _, f := range s.Filters {
+			filter := map[string]interface{}{
+				"column":   f.Column,
+				"operator": f.Operator,
+				"value":    f.Value,
+			}
+
+			filters = append(filters, filter)
+		}
 	}
 
 	if err := d.Set("filter", filters); err != nil {
