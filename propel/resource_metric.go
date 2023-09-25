@@ -284,6 +284,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 			Dimensions:  dimensions,
 			Expression:  d.Get("expression").(string),
 		}
+
 		response, err := pc.CreateCustomMetric(ctx, c, input)
 		if err != nil {
 			return diag.FromErr(err)
