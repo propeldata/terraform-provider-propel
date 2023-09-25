@@ -266,10 +266,10 @@ func testAccCheckPropelMetricConfigBasic(ctx map[string]interface{}) string {
 		data_pool   = propel_data_pool.bar.id
 
 		type         = "CUSTOM"
-		expression   = "SUM(quantity) / COUNT()"
+		expression   = "COUNT_DISTINCT(account_id) / COUNT()"
 
 		filter {
-		    column   = "price"
+		    column   = "account_id"
 			operator = "IS_NOT_NULL"
 		}
 	}
