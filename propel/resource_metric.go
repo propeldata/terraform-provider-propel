@@ -89,7 +89,7 @@ func resourceMetric() *schema.Resource {
 						},
 						"value": {
 							Type:        schema.TypeString,
-							Required:    true,
+							Required:    false,
 							Description: "The value to compare the column to.",
 						},
 						"and": {
