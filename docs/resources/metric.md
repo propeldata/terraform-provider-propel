@@ -153,9 +153,9 @@ resource "propel_metric" "my_custom_metric" {
 - `description` (String) The Metric's description.
 - `dimension` (String) The Dimension where the count distinct operation is going to be performed. Only valid for COUNT_DISTINCT Metrics.
 - `dimensions` (Set of String) The Metric's Dimensions. These Dimensions are available to Query Filters.
+- `expression` (String) The custom expression for aggregating data in a Metric. Only valid for CUSTOM Metrics.
 - `filter` (Block List) Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time. (see [below for nested schema](#nestedblock--filter))
 - `measure` (String) The Dimension to be summed, taken the minimum of, taken the maximum of, averaged, etc. Only valid for SUM, MIN, MAX and AVERAGE Metrics.
-- `expression` (String) The custom expression for aggregating data in a Custom Metric.
 - `unique_name` (String) The Metric's name.
 
 ### Read-Only
@@ -169,12 +169,12 @@ Required:
 
 - `column` (String) The name of the column to filter on.
 - `operator` (String) The operation to perform when comparing the column and filter values.
-- `value` (String) The value to compare the column to.
 
 Optional:
 
 - `and` (String) Additional filters to AND with this one. AND takes precedence over OR. It is defined as a JSON string value.
 - `or` (String) Additional filters to OR with this one. AND takes precedence over OR. It is defined as a JSON string value.
+- `value` (String) The value to compare the column to.
 
 ## Import
 
