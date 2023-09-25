@@ -24,6 +24,7 @@ operations:
 - mutations/createAverageMetric.mutation.graphql
 - mutations/createCountDistinctMetric.mutation.graphql
 - mutations/createCountMetric.mutation.graphql
+- mutations/createCustomMetric.mutation.graphql
 - mutations/createDataPool.mutation.graphql
 - mutations/createHttpDataSource.mutation.graphql
 - mutations/createMaxMetric.mutation.graphql

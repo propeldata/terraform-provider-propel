@@ -1,11 +1,19 @@
 package propel
 
 import (
+	"context"
+	"github.com/Khan/genqlient/graphql"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"reflect"
 	"testing"
 
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
+
+var two = "2"
+var five = "5"
+var abc = "abc"
 
 func Test_expandMetricFilters(t *testing.T) {
 	tests := []struct {
@@ -20,7 +28,7 @@ func Test_expandMetricFilters(t *testing.T) {
 				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2"},
 			},
 			want: []*pc.FilterInput{
-				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: "2"},
+				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: &two},
 			},
 		},
 		{
@@ -29,7 +37,7 @@ func Test_expandMetricFilters(t *testing.T) {
 				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": "", "or": ""},
 			},
 			want: []*pc.FilterInput{
-				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: "2"},
+				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: &two},
 			},
 		},
 		{
@@ -41,12 +49,12 @@ func Test_expandMetricFilters(t *testing.T) {
 				{
 					Column:   "foo",
 					Operator: pc.FilterOperatorEquals,
-					Value:    "2",
+					Value:    &two,
 					And: []*pc.FilterInput{
 						{
 							Column:   "bar",
 							Operator: pc.FilterOperatorGreaterThan,
-							Value:    "5",
+							Value:    &five,
 						},
 					},
 				},
@@ -61,12 +69,12 @@ func Test_expandMetricFilters(t *testing.T) {
 				{
 					Column:   "foo",
 					Operator: pc.FilterOperatorEquals,
-					Value:    "2",
+					Value:    &two,
 					Or: []*pc.FilterInput{
 						{
 							Column:   "bar",
 							Operator: pc.FilterOperatorGreaterThan,
-							Value:    "5",
+							Value:    &five,
 						},
 					},
 				},
@@ -81,19 +89,19 @@ func Test_expandMetricFilters(t *testing.T) {
 				{
 					Column:   "foo",
 					Operator: pc.FilterOperatorEquals,
-					Value:    "2",
+					Value:    &two,
 					And: []*pc.FilterInput{
 						{
 							Column:   "bar",
 							Operator: pc.FilterOperatorGreaterThan,
-							Value:    "5",
+							Value:    &five,
 						},
 					},
 					Or: []*pc.FilterInput{
 						{
 							Column:   "baz",
 							Operator: pc.FilterOperatorEquals,
-							Value:    "abc",
+							Value:    &abc,
 						},
 					},
 				},
@@ -108,17 +116,17 @@ func Test_expandMetricFilters(t *testing.T) {
 				{
 					Column:   "foo",
 					Operator: pc.FilterOperatorEquals,
-					Value:    "2",
+					Value:    &two,
 					And: []*pc.FilterInput{
 						{
 							Column:   "bar",
 							Operator: pc.FilterOperatorGreaterThan,
-							Value:    "5",
+							Value:    &five,
 							And: []*pc.FilterInput{
 								{
 									Column:   "baz",
 									Operator: pc.FilterOperatorEquals,
-									Value:    "abc",
+									Value:    &abc,
 								},
 							},
 						},
@@ -135,21 +143,33 @@ func Test_expandMetricFilters(t *testing.T) {
 				{
 					Column:   "foo",
 					Operator: pc.FilterOperatorEquals,
-					Value:    "2",
+					Value:    &two,
 					Or: []*pc.FilterInput{
 						{
 							Column:   "bar",
 							Operator: pc.FilterOperatorGreaterThan,
-							Value:    "5",
+							Value:    &five,
 							And: []*pc.FilterInput{
 								{
 									Column:   "baz",
 									Operator: pc.FilterOperatorEquals,
-									Value:    "abc",
+									Value:    &abc,
 								},
 							},
 						},
 					},
+				},
+			},
+		},
+		{
+			name: "With IS_NULL filter",
+			def: []any{
+				map[string]any{"column": "foo", "operator": "IS_NULL"},
+			},
+			want: []*pc.FilterInput{
+				{
+					Column:   "foo",
+					Operator: pc.FilterOperatorIsNull,
 				},
 			},
 		},
@@ -168,4 +188,109 @@ func Test_expandMetricFilters(t *testing.T) {
 
 		})
 	}
+}
+
+func TestAccPropelMetricBasic(t *testing.T) {
+	ctx := map[string]interface{}{}
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactories,
+		CheckDestroy:      testAccCheckPropelMetricDestroy,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCheckPropelMetricConfigBasic(ctx),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckPropelDataPoolExists("propel_metric.baz"),
+					resource.TestCheckResourceAttr("propel_metric.baz", "type", "CUSTOM"),
+					resource.TestCheckResourceAttr("propel_metric.baz", "expression", "COUNT_DISTINCT(account_id) / COUNT()"),
+				),
+			},
+		},
+	})
+}
+
+func testAccCheckPropelMetricConfigBasic(ctx map[string]interface{}) string {
+	// language=hcl-terraform
+	return Nprintf(`
+		resource "propel_data_source" "foo" {
+		unique_name = "terraform-test-4"
+		type = "Http"
+
+		http_connection_settings {
+			basic_auth {
+				username = "foo"
+				password = "bar"
+			}
+		}
+
+		table {
+			name = "CLUSTER_TEST_TABLE_1"
+
+			column {
+				name = "timestamp_tz"
+				type = "TIMESTAMP"
+				nullable = false
+			}
+
+			column {
+				name = "account_id"
+				type = "STRING"
+				nullable = false
+			}
+		}
+	}
+
+	resource "propel_data_pool" "bar" {
+		unique_name = "terraform-test-4"
+		table = "${propel_data_source.foo.table[0].name}"
+
+		column {
+			name = "timestamp_tz"
+			type = "TIMESTAMP"
+			nullable = false
+		}
+		column {
+			name = "account_id"
+			type = "STRING"
+			nullable = false
+		}
+		tenant_id = "account_id"
+		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
+		data_source = "${propel_data_source.foo.id}"
+	}
+	
+	resource "propel_metric" "baz" {
+		unique_name = "terraform-test-4"
+		description = "This is an example of a Custom Metric"
+		data_pool   = propel_data_pool.bar.id
+
+		type         = "CUSTOM"
+		expression   = "COUNT_DISTINCT(account_id) / COUNT()"
+
+		filter {
+		    column   = "account_id"
+			operator = "IS_NOT_NULL"
+		}
+	}
+	`, ctx)
+}
+
+func testAccCheckPropelMetricDestroy(s *terraform.State) error {
+	c := testAccProvider.Meta().(graphql.Client)
+
+	for _, rs := range s.RootModule().Resources {
+		if rs.Type != "propel_metric" {
+			continue
+		}
+
+		metricID := rs.Primary.ID
+
+		_, err := pc.DeleteMetric(context.Background(), c, metricID)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
