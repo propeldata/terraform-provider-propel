@@ -157,6 +157,18 @@ func Test_expandMetricFilters(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "With IS_NULL filter",
+			def: []any{
+				map[string]any{"column": "foo", "operator": "IS_NULL"},
+			},
+			want: []*pc.FilterInput{
+				{
+					Column:   "foo",
+					Operator: pc.FilterOperatorIsNull,
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
