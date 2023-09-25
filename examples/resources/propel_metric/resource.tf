@@ -106,3 +106,19 @@ resource "propel_metric" "my_max_metric" {
 
   dimensions = ["store"]
 }
+
+resource "propel_metric" "my_custom_metric" {
+  unique_name = "my_custom_metric"
+  description = "This is an example of a Custom Metric"
+  data_pool   = propel_data_pool.my_data_pool.id
+
+  type         = "CUSTOM"
+  expression   = "SUM(price * quantity) / COUNT()"
+
+  filter {
+    column   = "price"
+    operator = "IS_NOT_NULL"
+  }
+
+  dimensions = ["store"]
+}
