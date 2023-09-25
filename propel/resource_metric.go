@@ -85,6 +85,8 @@ func resourceMetric() *schema.Resource {
 								"GREATER_THAN_OR_EQUAL_TO",
 								"LESS_THAN",
 								"LESS_THAN_OR_EQUAL_TO",
+								"IS_NULL",
+								"IS_NOT_NULL",
 							}, false),
 						},
 						"value": {
