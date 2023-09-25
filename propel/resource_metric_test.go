@@ -21,7 +21,7 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "Basic filter",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2"},
 			},
 			want: []*pc.FilterInput{
 				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: &two},
@@ -30,7 +30,7 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "With AND and OR as empty strings",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "and": "", "or": ""},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": "", "or": ""},
 			},
 			want: []*pc.FilterInput{
 				{Column: "foo", Operator: pc.FilterOperatorEquals, Value: &two},
@@ -39,7 +39,7 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "With one AND filter",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`},
 			},
 			want: []*pc.FilterInput{
 				{
@@ -59,7 +59,7 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "With one OR filter",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "or": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "or": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`},
 			},
 			want: []*pc.FilterInput{
 				{
@@ -79,7 +79,7 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "With one AND and OR filter combined",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`, "or": `[{"column": "baz", "operator": "EQUALS", "value": "abc"}]`},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5"}]`, "or": `[{"column": "baz", "operator": "EQUALS", "value": "abc"}]`},
 			},
 			want: []*pc.FilterInput{
 				{
@@ -106,7 +106,7 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "With AND nested filter",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5", "and": [{"column": "baz", "operator": "EQUALS", "value": "abc"}]}]`},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "and": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5", "and": [{"column": "baz", "operator": "EQUALS", "value": "abc"}]}]`},
 			},
 			want: []*pc.FilterInput{
 				{
@@ -133,7 +133,7 @@ func Test_expandMetricFilters(t *testing.T) {
 		{
 			name: "With OR nested filter",
 			def: []any{
-				map[string]any{"column": "foo", "operator": "EQUALS", "value": &two, "or": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5", "and": [{"column": "baz", "operator": "EQUALS", "value": "abc"}]}]`},
+				map[string]any{"column": "foo", "operator": "EQUALS", "value": "2", "or": `[{"column": "bar", "operator": "GREATER_THAN", "value": "5", "and": [{"column": "baz", "operator": "EQUALS", "value": "abc"}]}]`},
 			},
 			want: []*pc.FilterInput{
 				{

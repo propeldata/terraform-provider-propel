@@ -494,8 +494,9 @@ func expandMetricFilters(def []interface{}) ([]*pc.FilterInput, diag.Diagnostics
 			Operator: pc.FilterOperator(filter["operator"].(string)),
 		}
 
-		if value, ok := filter["value"].(*string); ok {
-			f.Value = value
+		if def, ok := filter["value"]; ok {
+			value := def.(string)
+			f.Value = &value
 		}
 
 		if def, ok := filter["and"]; ok && def != "" {
