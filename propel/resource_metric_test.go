@@ -2,18 +2,21 @@ package propel
 
 import (
 	"context"
+	"reflect"
+	"testing"
+
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"reflect"
-	"testing"
 
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
-var two = "2"
-var five = "5"
-var abc = "abc"
+var (
+	two  = "2"
+	five = "5"
+	abc  = "abc"
+)
 
 func Test_expandMetricFilters(t *testing.T) {
 	tests := []struct {
