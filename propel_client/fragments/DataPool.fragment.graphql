@@ -22,8 +22,8 @@ fragment DataPoolData on DataPool {
             ...DataPoolColumnData
         }
     }
-    cursor {
-        ...CursorData
+    uniqueId {
+        columnName
     }
     syncing {
         ...DataPoolSyncingData

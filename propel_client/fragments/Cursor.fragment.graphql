@@ -1,4 +1,0 @@
-fragment CursorData on Cursor {
-    columnName
-    type
-}

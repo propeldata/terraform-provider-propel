@@ -7,7 +7,6 @@ operations:
 #- fragments/Application.fragment.graphql
 - fragments/Column.fragment.graphql
 - fragments/Common.fragment.graphql
-- fragments/Cursor.fragment.graphql
 - fragments/DataPool.fragment.graphql
 - fragments/DataSource.fragment.graphql
 - fragments/Dimension.fragment.graphql

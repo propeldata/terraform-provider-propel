@@ -820,9 +820,11 @@ type DataPool implements Node & Common {
   """The Data Pool's Tenant ID, if configured."""
   tenant: Tenant
   """
-  The Data Pool's cursor column. The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`.
+  The Data Pool's unique ID. Setting this enables support for updates.
+
+  [Learn more about updates](#).
   """
-  cursor: Cursor
+  uniqueId: UniqueId
   """ The number of records in the Data Pool. """
   recordCount: String
   """ The amount of storage in terabytes used by the Data Pool. """
@@ -932,19 +934,19 @@ you could write
 
 ```
 {
-  "column": "value",
-  "operator": "GREATER_THAN",
-  "value": "0",
-  "and": [{
-    "column": "value",
-    "operator": "LESS_THAN_OR_EQUAL_TO",
-    "value": "0"
-  }],
-  "or": [{
-    "column": "status",
-    "operator": "EQUALS",
-    "value": "confirmed"
-  }]
+"column": "value",
+"operator": "GREATER_THAN",
+"value": "0",
+"and": [{
+"column": "value",
+"operator": "LESS_THAN_OR_EQUAL_TO",
+"value": "0"
+}],
+"or": [{
+"column": "status",
+"operator": "EQUALS",
+"value": "confirmed"
+}]
 }
 ```
 
@@ -1029,17 +1031,23 @@ input TenantInput {
   columnName: String!
 }
 
-"""The cursor fields."""
-type Cursor {
-  """ The name of the column that represents the cursor. """
+"""
+A Data Pool's unique ID column. Used to support updates.
+
+[Learn more about updates](#).
+"""
+type UniqueId {
+  """ The name of the column that represents the unique ID. """
   columnName: String!
-  """ The cursor column's type. """
-  type: ColumnType!
 }
 
-"""The fields for specifying the Data Pool's Cursor."""
-input CursorInput {
-  """ The name of the column that represents the Cursor. """
+"""
+A Data Pool's unique ID column. Used to support updates.
+
+[Learn more about updates](#).
+"""
+input UniqueIdInput {
+  """ The name of the column that represents the unique ID. """
   columnName: String!
 }
 
@@ -1114,9 +1122,11 @@ input CreateDataPoolInputV2 {
   """
   tenant: TenantInput
   """
-  The table's cursor column. The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`.
+  The Data Pool's unique ID. Setting this enables support for updates.
+
+  [Learn more about updates](#).
   """
-  cursor: CursorInput
+  uniqueId: UniqueIdInput
   """ The Data Pool's syncing settings. """
   syncing: DataPoolSyncingInput
 }
@@ -2150,19 +2160,19 @@ you could write
 
 ```
 {
-  "column": "value",
-  "operator": "GREATER_THAN",
-  "value": "0",
-  "and": [{
-    "column": "value",
-    "operator": "LESS_THAN_OR_EQUAL_TO",
-    "value": "0"
-  }],
-  "or": [{
-    "column": "status",
-    "operator": "EQUALS",
-    "value": "confirmed"
-  }]
+"column": "value",
+"operator": "GREATER_THAN",
+"value": "0",
+"and": [{
+"column": "value",
+"operator": "LESS_THAN_OR_EQUAL_TO",
+"value": "0"
+}],
+"or": [{
+"column": "status",
+"operator": "EQUALS",
+"value": "confirmed"
+}]
 }
 ```
 
