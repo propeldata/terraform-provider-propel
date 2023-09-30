@@ -107,7 +107,7 @@ func resourceDataPool() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 				ForceNew:    true,
-				Description: "The Data Pool's unique ID. Setting this enables support for updates. Only for Snowflake Data Pools.",
+				Description: "The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool. Only for Snowflake Data Pools.",
 			},
 			"syncing": {
 				Type:        schema.TypeList,

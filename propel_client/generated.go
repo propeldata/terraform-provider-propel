@@ -673,9 +673,9 @@ func (v *CreateAverageMetricInput) GetMeasure() *DimensionInput { return v.Measu
 
 // CreateAverageMetricResponse is returned by CreateAverageMetric on success.
 type CreateAverageMetricResponse struct {
-	// This mutation creates a new Average Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Average Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. An Average Metric returns the average of the underlying data over a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateAverageMetric *CreateAverageMetricCreateAverageMetricMetricResponse `json:"createAverageMetric"`
 }
 
@@ -932,9 +932,9 @@ func (v *CreateCountDistinctMetricInput) GetDimension() *DimensionInput { return
 
 // CreateCountDistinctMetricResponse is returned by CreateCountDistinctMetric on success.
 type CreateCountDistinctMetricResponse struct {
-	// This mutation creates a new Count Distinct Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Count Distinct Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Count Distinct Metric returns the number of distinct items found in the underlying data over a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateCountDistinctMetric *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse `json:"createCountDistinctMetric"`
 }
 
@@ -1184,9 +1184,9 @@ func (v *CreateCountMetricInput) GetDimensions() []*DimensionInput { return v.Di
 
 // CreateCountMetricResponse is returned by CreateCountMetric on success.
 type CreateCountMetricResponse struct {
-	// This mutation creates a new Count Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Count Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Count Metric returns the number of items found in the underlying data over a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateCountMetric *CreateCountMetricCreateCountMetricMetricResponse `json:"createCountMetric"`
 }
 
@@ -1441,9 +1441,9 @@ func (v *CreateCustomMetricInput) GetExpression() string { return v.Expression }
 
 // CreateCustomMetricResponse is returned by CreateCustomMetric on success.
 type CreateCustomMetricResponse struct {
-	// This mutation creates a new Custom Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Custom Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Custom Metric returns the data aggregated given the custom expression provided during a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateCustomMetric *CreateCustomMetricCreateCustomMetricMetricResponse `json:"createCustomMetric"`
 }
 
@@ -1473,11 +1473,9 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponse) GetDataPool() *CreateDa
 // CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -1683,13 +1681,13 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 	return &retval, nil
 }
 
-// Fields for creating a Data Pool.
+// The fields for creating a Data Pool.
 type CreateDataPoolInputV2 struct {
 	// The Data Source that will be used to create the Data Pool.
 	DataSource string `json:"dataSource"`
 	// The table that the Data Pool will sync from.
 	Table string `json:"table"`
-	// The table's primary timestamp column.
+	// The table's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
 	Timestamp *TimestampInput `json:"timestamp,omitempty"`
 	// The Data Pool's unique name. If not specified, Propel will set the ID as the unique name.
 	UniqueName *string `json:"uniqueName"`
@@ -1697,11 +1695,9 @@ type CreateDataPoolInputV2 struct {
 	Description *string `json:"description"`
 	// The list of columns.
 	Columns []*DataPoolColumnInput `json:"columns,omitempty"`
-	// An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
+	// The Data Pool's optional tenant ID column. The tenant ID column is used to control access to your data with access policies.
 	Tenant *TenantInput `json:"tenant,omitempty"`
-	// The Data Pool's unique ID. Setting this enables support for updates.
-	//
-	// [Learn more about updates](#).
+	// The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
 	UniqueId *UniqueIdInput `json:"uniqueId,omitempty"`
 	// The Data Pool's syncing settings.
 	Syncing *DataPoolSyncingInput `json:"syncing,omitempty"`
@@ -1736,11 +1732,11 @@ func (v *CreateDataPoolInputV2) GetSyncing() *DataPoolSyncingInput { return v.Sy
 
 // CreateDataPoolResponse is returned by CreateDataPool on success.
 type CreateDataPoolResponse struct {
-	// This mutation creates a new Data Pool from the given Data Source based on the specified table and using a particular column as the timestamp.
+	// Creates a new Data Pool from the given Data Source based on the specified table and using a particular column as the timestamp.
 	//
-	// The mutation returns the newly created Data Pool (or an error message if creating the Data Pool fails).
+	// Returns the newly created Data Pool (or an error message if creating the Data Pool fails).
 	//
-	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+	// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 	CreateDataPoolV2 *CreateDataPoolCreateDataPoolV2DataPoolResponse `json:"createDataPoolV2"`
 }
 
@@ -1977,9 +1973,9 @@ func (v *CreateHttpDataSourceInput) GetUniqueName() *string { return v.UniqueNam
 
 // CreateHttpDataSourceResponse is returned by CreateHttpDataSource on success.
 type CreateHttpDataSourceResponse struct {
-	// This mutation creates a new HTTP Data Source from the given settings.
+	// Creates a new HTTP Data Source from the given settings.
 	//
-	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+	// Returns the newly created Data Source (or an error message if creating the Data Source fails).
 	CreateHttpDataSource *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse `json:"createHttpDataSource"`
 }
 
@@ -2232,9 +2228,9 @@ func (v *CreateMaxMetricInput) GetMeasure() *DimensionInput { return v.Measure }
 
 // CreateMaxMetricResponse is returned by CreateMaxMetric on success.
 type CreateMaxMetricResponse struct {
-	// This mutation creates a new Max Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Max Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Max Metric returns the maximum value found in the underlying data during a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateMaxMetric *CreateMaxMetricCreateMaxMetricMetricResponse `json:"createMaxMetric"`
 }
 
@@ -2486,9 +2482,9 @@ func (v *CreateMinMetricInput) GetMeasure() *DimensionInput { return v.Measure }
 
 // CreateMinMetricResponse is returned by CreateMinMetric on success.
 type CreateMinMetricResponse struct {
-	// This mutation creates a new Min Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Min Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Min Metric returns the minimum value found in the underlying data during a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateMinMetric *CreateMinMetricCreateMinMetricMetricResponse `json:"createMinMetric"`
 }
 
@@ -2846,9 +2842,9 @@ func (v *CreateS3DataSourceInput) GetUniqueName() *string { return v.UniqueName 
 
 // CreateS3DataSourceResponse is returned by CreateS3DataSource on success.
 type CreateS3DataSourceResponse struct {
-	// This mutation creates a new Data Source, pointed at the specified S3 bucket.
+	// Creates a new Amazon S3 Data Source pointed at the specified S3 bucket.
 	//
-	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+	// Returns the newly created Data Source (or an error message if creating the Data Source fails).
 	CreateS3DataSource *CreateS3DataSourceCreateS3DataSourceDataSourceResponse `json:"createS3DataSource"`
 }
 
@@ -3256,11 +3252,9 @@ func (v *CreateSnowflakeDataSourceInput) GetConnectionSettings() *SnowflakeConne
 
 // CreateSnowflakeDataSourceResponse is returned by CreateSnowflakeDataSource on success.
 type CreateSnowflakeDataSourceResponse struct {
-	// This mutation creates a new Data Source from the given Snowflake database using the specified Snowflake account, warehouse, schema, username, and role.
+	// Creates a new Data Source from the given Snowflake database using the specified Snowflake account, warehouse, schema, username, and role.
 	//
-	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
-	//
-	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+	// Returns the newly created Data Source (or an error message if creating the Data Source fails).
 	CreateSnowflakeDataSource *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse `json:"-"`
 }
 
@@ -3579,9 +3573,9 @@ func (v *CreateSumMetricInput) GetMeasure() *DimensionInput { return v.Measure }
 
 // CreateSumMetricResponse is returned by CreateSumMetric on success.
 type CreateSumMetricResponse struct {
-	// This mutation creates a new Sum Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Sum Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Sum Metric returns the sum of the values found in the underlying data over a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateSumMetric *CreateSumMetricCreateSumMetricMetricResponse `json:"createSumMetric"`
 }
 
@@ -3593,11 +3587,9 @@ func (v *CreateSumMetricResponse) GetCreateSumMetric() *CreateSumMetricCreateSum
 // DataPoolByNameDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolByNameDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -3844,11 +3836,9 @@ func (v *DataPoolColumnInput) GetIsNullable() bool { return v.IsNullable }
 // DataPoolData includes the GraphQL fields of DataPool requested by the fragment DataPoolData.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolData struct {
 	// The Data Pool's unique identifier.
 	Id                 string `json:"id"`
@@ -3860,25 +3850,20 @@ type DataPoolData struct {
 	Error  *DataPoolDataError `json:"error"`
 	// The name of the Data Pool's table.
 	Table string `json:"table"`
-	// The Data Pool's timestamp column.
+	// The Data Pool's primary timestamp column.
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
-	// A list of columns included in the Data Pool. The specified columns from the underlying table will by synced to the Data Pool.
-	//
-	// This list does not include any excluded columns.
+	// The Data Pool's columns.
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
-	// The Data Pool's unique ID. Setting this enables support for updates.
-	//
-	// [Learn more about updates](#).
+	// The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
 	UniqueId *DataPoolDataUniqueId `json:"uniqueId"`
 	// Settings related to Data Pool syncing.
 	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
-	// A list of measures (numeric columns) available to Metrics.
-	//
-	// This list does not include any excluded columns.
+	// The list of measures (numeric columns) in the Data Pool.
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 	// A list of setup tasks performed on the Data Pool during its most recent setup attempt.
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
-	Syncs      *DataPoolDataSyncsSyncConnection           `json:"syncs"`
+	// The list of Syncs of the Data Pool.
+	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 }
 
 // GetId returns DataPoolData.Id, and is useful for accessing the field via an interface.
@@ -4419,11 +4404,9 @@ func (v *DataPoolDataError) GetMessage() string { return v.Message }
 // DataPoolDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -4915,7 +4898,7 @@ func (v *DataPoolDataSyncsSyncConnectionNodesSync) __premarshalJSON() (*__premar
 // DataPoolDataTimestamp includes the requested fields of the GraphQL type Timestamp.
 // The GraphQL type's documentation follows.
 //
-// The Timestamp fields.
+// A Data Pool's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
 type DataPoolDataTimestamp struct {
 	TimestampData `json:"-"`
 }
@@ -4976,9 +4959,7 @@ func (v *DataPoolDataTimestamp) __premarshalJSON() (*__premarshalDataPoolDataTim
 // DataPoolDataUniqueId includes the requested fields of the GraphQL type UniqueId.
 // The GraphQL type's documentation follows.
 //
-// A Data Pool's unique ID column. Used to support updates.
-//
-// [Learn more about updates](#).
+// A Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
 type DataPoolDataUniqueId struct {
 	// The name of the column that represents the unique ID.
 	ColumnName string `json:"columnName"`
@@ -5136,11 +5117,9 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge) GetNode() *DataP
 // DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -7072,9 +7051,7 @@ func (v *DataSourcesResponse) GetDataSources() *DataSourcesDataSourcesDataSource
 
 // DeleteDataPoolByNameResponse is returned by DeleteDataPoolByName on success.
 type DeleteDataPoolByNameResponse struct {
-	// This mutation deletes the specified Data Pool by name and then returns the Data Pool's ID if the Data Pool was deleted successfully.
-	//
-	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+	// Deletes a Data Pool by unique name and returns its ID if the Data Pool was deleted successfully.
 	DeleteDataPoolByName *string `json:"deleteDataPoolByName"`
 }
 
@@ -7085,9 +7062,7 @@ func (v *DeleteDataPoolByNameResponse) GetDeleteDataPoolByName() *string {
 
 // DeleteDataPoolResponse is returned by DeleteDataPool on success.
 type DeleteDataPoolResponse struct {
-	// This mutation deletes the specified Data Pool by ID and then returns the same ID if the Data Pool was deleted successfully.
-	//
-	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+	// Deletes a Data Pool by ID and returns its ID if the Data Pool was deleted successfully.
 	DeleteDataPool *string `json:"deleteDataPool"`
 }
 
@@ -7096,9 +7071,7 @@ func (v *DeleteDataPoolResponse) GetDeleteDataPool() *string { return v.DeleteDa
 
 // DeleteDataSourceByNameResponse is returned by DeleteDataSourceByName on success.
 type DeleteDataSourceByNameResponse struct {
-	// This mutation deletes the specified Data Source by name and then returns the Data Source's ID if the Data Source was deleted successfully.
-	//
-	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+	// Deletes a Data Source by unique name and returns its ID if the Data Source was deleted successfully.
 	DeleteDataSourceByName *string `json:"deleteDataSourceByName"`
 }
 
@@ -7109,9 +7082,7 @@ func (v *DeleteDataSourceByNameResponse) GetDeleteDataSourceByName() *string {
 
 // DeleteDataSourceResponse is returned by DeleteDataSource on success.
 type DeleteDataSourceResponse struct {
-	// This mutation deletes the specified Data Source by ID and then returns the same ID if the Data Source was deleted successfully.
-	//
-	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+	// Deletes a Data Source by ID and returns its ID if the Data Source was deleted successfully.
 	DeleteDataSource *string `json:"deleteDataSource"`
 }
 
@@ -7120,9 +7091,7 @@ func (v *DeleteDataSourceResponse) GetDeleteDataSource() *string { return v.Dele
 
 // DeleteMetricByNameResponse is returned by DeleteMetricByName on success.
 type DeleteMetricByNameResponse struct {
-	// This mutation deletes the specified Metric by name and then returns the Metric's ID if the Data Source was deleted successfully.
-	//
-	// A Metric is a business indicator measured over time.
+	// Deletes a Metric by unique name and returns its ID if the Metric was deleted successfully.
 	DeleteMetricByName *string `json:"deleteMetricByName"`
 }
 
@@ -7131,9 +7100,7 @@ func (v *DeleteMetricByNameResponse) GetDeleteMetricByName() *string { return v.
 
 // DeleteMetricResponse is returned by DeleteMetric on success.
 type DeleteMetricResponse struct {
-	// This mutation deletes the specified Metric by ID and then returns the same ID if the Data Source was deleted successfully.
-	//
-	// A Metric is a business indicator measured over time.
+	// Deletes a Metric by ID and returns its ID if the Metric was deleted successfully.
 	DeleteMetric *string `json:"deleteMetric"`
 }
 
@@ -7788,11 +7755,9 @@ func (v *MetricData) __premarshalJSON() (*__premarshalMetricData, error) {
 // MetricDataDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type MetricDataDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -10480,11 +10445,9 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponse) GetDataPool() *ModifyData
 // ModifyDataPoolModifyDataPoolDataPoolResponseDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type ModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -10773,11 +10736,7 @@ func (v *ModifyDataPoolModifyDataPoolFailureResponseError) __premarshalJSON() (*
 
 // ModifyDataPoolResponse is returned by ModifyDataPool on success.
 type ModifyDataPoolResponse struct {
-	// This mutation selects a Data Pool by its ID or unique name and modifies it to have the given unique name, description, and data retention time.
-	//
-	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool.
-	//
-	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+	// Modifies a Data Pool with the provided unique name, description, and data retention time. If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool.
 	ModifyDataPool *ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse `json:"-"`
 }
 
@@ -11338,11 +11297,7 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) __premarshalJSON() (*__pr
 
 // ModifyMetricResponse is returned by ModifyMetric on success.
 type ModifyMetricResponse struct {
-	// This mutation selects a Metric by its ID and modifies it to have the given unique name, description, and Dimensions.
-	//
-	// If any of the optional arguments are omitted, those properties will be unchanged on the Metric.
-	//
-	// A Metric is a business indicator measured over time.
+	// Modifies a Metric by ID with the provided unique name, description, and Dimensions. If any of the optional arguments are omitted, those properties will be unchanged on the Metric.
 	ModifyMetric *ModifyMetricModifyMetricMetricResponse `json:"modifyMetric"`
 }
 
@@ -12115,11 +12070,7 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError)
 
 // ModifySnowflakeDataSourceResponse is returned by ModifySnowflakeDataSource on success.
 type ModifySnowflakeDataSourceResponse struct {
-	// This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
-	//
-	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
-	//
-	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+	// Modifies a Data Source with the provided unique name, description, and connection settings. If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
 	ModifySnowflakeDataSource *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse `json:"-"`
 }
 
@@ -12740,11 +12691,9 @@ const (
 	TableIntrospectionStatusFailed TableIntrospectionStatus = "FAILED"
 )
 
-// Fields for specifying a Data Pool's Tenant ID.
-//
-// The Tenant ID can be used for partitioning and restricting access between customers (Tenants) within a Data Pool.
+// The fields to specify the Data Pool's tenant ID column. The tenant ID column is used to control access to your data with access policies.
 type TenantInput struct {
-	// The name of the column that represents the Tenant ID.
+	// The name of the column that represents the tenant ID.
 	ColumnName string `json:"columnName"`
 }
 
@@ -12754,11 +12703,11 @@ func (v *TenantInput) GetColumnName() string { return v.ColumnName }
 // TimestampData includes the GraphQL fields of Timestamp requested by the fragment TimestampData.
 // The GraphQL type's documentation follows.
 //
-// The Timestamp fields.
+// A Data Pool's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
 type TimestampData struct {
-	// The name of the column that represents the Timestamp.
+	// The name of the column that represents the primary timestamp.
 	ColumnName string `json:"columnName"`
-	// The Timestamp column's type.
+	// The primary timestamp column's type.
 	Type string `json:"type"`
 }
 
@@ -12768,18 +12717,16 @@ func (v *TimestampData) GetColumnName() string { return v.ColumnName }
 // GetType returns TimestampData.Type, and is useful for accessing the field via an interface.
 func (v *TimestampData) GetType() string { return v.Type }
 
-// The fields for specifying the Data Pool's Timestamp.
+// The fields to specify the Data Pool's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
 type TimestampInput struct {
-	// The name of the column that represents the Timestamp.
+	// The name of the column that represents the primary timestamp.
 	ColumnName string `json:"columnName"`
 }
 
 // GetColumnName returns TimestampInput.ColumnName, and is useful for accessing the field via an interface.
 func (v *TimestampInput) GetColumnName() string { return v.ColumnName }
 
-// A Data Pool's unique ID column. Used to support updates.
-//
-// [Learn more about updates](#).
+// The fields to specify the Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
 type UniqueIdInput struct {
 	// The name of the column that represents the unique ID.
 	ColumnName string `json:"columnName"`
