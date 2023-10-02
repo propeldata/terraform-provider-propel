@@ -623,7 +623,7 @@ func (v *CreateAverageMetricCreateAverageMetricMetricResponseMetric) __premarsha
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateAverageMetricCreateAverageMetricMetricResponseMetric.MetricData.Settings: %w", err)
+				"unable to marshal CreateAverageMetricCreateAverageMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -673,9 +673,9 @@ func (v *CreateAverageMetricInput) GetMeasure() *DimensionInput { return v.Measu
 
 // CreateAverageMetricResponse is returned by CreateAverageMetric on success.
 type CreateAverageMetricResponse struct {
-	// This mutation creates a new Average Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Average Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. An Average Metric returns the average of the underlying data over a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateAverageMetric *CreateAverageMetricCreateAverageMetricMetricResponse `json:"createAverageMetric"`
 }
 
@@ -882,7 +882,7 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric)
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.MetricData.Settings: %w", err)
+				"unable to marshal CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -932,9 +932,9 @@ func (v *CreateCountDistinctMetricInput) GetDimension() *DimensionInput { return
 
 // CreateCountDistinctMetricResponse is returned by CreateCountDistinctMetric on success.
 type CreateCountDistinctMetricResponse struct {
-	// This mutation creates a new Count Distinct Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Count Distinct Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Count Distinct Metric returns the number of distinct items found in the underlying data over a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateCountDistinctMetric *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse `json:"createCountDistinctMetric"`
 }
 
@@ -1139,7 +1139,7 @@ func (v *CreateCountMetricCreateCountMetricMetricResponseMetric) __premarshalJSO
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateCountMetricCreateCountMetricMetricResponseMetric.MetricData.Settings: %w", err)
+				"unable to marshal CreateCountMetricCreateCountMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -1184,9 +1184,9 @@ func (v *CreateCountMetricInput) GetDimensions() []*DimensionInput { return v.Di
 
 // CreateCountMetricResponse is returned by CreateCountMetric on success.
 type CreateCountMetricResponse struct {
-	// This mutation creates a new Count Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Count Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Count Metric returns the number of items found in the underlying data over a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateCountMetric *CreateCountMetricCreateCountMetricMetricResponse `json:"createCountMetric"`
 }
 
@@ -1391,7 +1391,7 @@ func (v *CreateCustomMetricCreateCustomMetricMetricResponseMetric) __premarshalJ
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateCustomMetricCreateCustomMetricMetricResponseMetric.MetricData.Settings: %w", err)
+				"unable to marshal CreateCustomMetricCreateCustomMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -1441,9 +1441,9 @@ func (v *CreateCustomMetricInput) GetExpression() string { return v.Expression }
 
 // CreateCustomMetricResponse is returned by CreateCustomMetric on success.
 type CreateCustomMetricResponse struct {
-	// This mutation creates a new Custom Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Custom Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Custom Metric returns the data aggregated given the custom expression provided during a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateCustomMetric *CreateCustomMetricCreateCustomMetricMetricResponse `json:"createCustomMetric"`
 }
 
@@ -1473,11 +1473,9 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponse) GetDataPool() *CreateDa
 // CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -1517,9 +1515,9 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetColumns() *D
 	return v.DataPoolData.Columns
 }
 
-// GetCursor returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.Cursor, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetCursor() *DataPoolDataCursor {
-	return v.DataPoolData.Cursor
+// GetUniqueId returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.UniqueId, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetUniqueId() *DataPoolDataUniqueId {
+	return v.DataPoolData.UniqueId
 }
 
 // GetSyncing returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.Syncing, and is useful for accessing the field via an interface.
@@ -1622,7 +1620,7 @@ type __premarshalCreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
-	Cursor *DataPoolDataCursor `json:"cursor"`
+	UniqueId *DataPoolDataUniqueId `json:"uniqueId"`
 
 	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
 
@@ -1667,7 +1665,7 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
-	retval.Cursor = v.DataPoolData.Cursor
+	retval.UniqueId = v.DataPoolData.UniqueId
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
@@ -1683,13 +1681,13 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 	return &retval, nil
 }
 
-// Fields for creating a Data Pool.
+// The fields for creating a Data Pool.
 type CreateDataPoolInputV2 struct {
 	// The Data Source that will be used to create the Data Pool.
 	DataSource string `json:"dataSource"`
 	// The table that the Data Pool will sync from.
 	Table string `json:"table"`
-	// The table's primary timestamp column.
+	// The table's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
 	Timestamp *TimestampInput `json:"timestamp,omitempty"`
 	// The Data Pool's unique name. If not specified, Propel will set the ID as the unique name.
 	UniqueName *string `json:"uniqueName"`
@@ -1697,10 +1695,10 @@ type CreateDataPoolInputV2 struct {
 	Description *string `json:"description"`
 	// The list of columns.
 	Columns []*DataPoolColumnInput `json:"columns,omitempty"`
-	// An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
+	// The Data Pool's optional tenant ID column. The tenant ID column is used to control access to your data with access policies.
 	Tenant *TenantInput `json:"tenant,omitempty"`
-	// The table's cursor column. The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`.
-	Cursor *CursorInput `json:"cursor,omitempty"`
+	// The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
+	UniqueId *UniqueIdInput `json:"uniqueId,omitempty"`
 	// The Data Pool's syncing settings.
 	Syncing *DataPoolSyncingInput `json:"syncing,omitempty"`
 }
@@ -1726,19 +1724,19 @@ func (v *CreateDataPoolInputV2) GetColumns() []*DataPoolColumnInput { return v.C
 // GetTenant returns CreateDataPoolInputV2.Tenant, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInputV2) GetTenant() *TenantInput { return v.Tenant }
 
-// GetCursor returns CreateDataPoolInputV2.Cursor, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInputV2) GetCursor() *CursorInput { return v.Cursor }
+// GetUniqueId returns CreateDataPoolInputV2.UniqueId, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolInputV2) GetUniqueId() *UniqueIdInput { return v.UniqueId }
 
 // GetSyncing returns CreateDataPoolInputV2.Syncing, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInputV2) GetSyncing() *DataPoolSyncingInput { return v.Syncing }
 
 // CreateDataPoolResponse is returned by CreateDataPool on success.
 type CreateDataPoolResponse struct {
-	// This mutation creates a new Data Pool from the given Data Source based on the specified table and using a particular column as the timestamp.
+	// Creates a new Data Pool from the given Data Source based on the specified table and using a particular column as the timestamp.
 	//
-	// The mutation returns the newly created Data Pool (or an error message if creating the Data Pool fails).
+	// Returns the newly created Data Pool (or an error message if creating the Data Pool fails).
 	//
-	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+	// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 	CreateDataPoolV2 *CreateDataPoolCreateDataPoolV2DataPoolResponse `json:"createDataPoolV2"`
 }
 
@@ -1936,7 +1934,7 @@ func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) _
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.DataSourceData.Tables
@@ -1975,9 +1973,9 @@ func (v *CreateHttpDataSourceInput) GetUniqueName() *string { return v.UniqueNam
 
 // CreateHttpDataSourceResponse is returned by CreateHttpDataSource on success.
 type CreateHttpDataSourceResponse struct {
-	// This mutation creates a new HTTP Data Source from the given settings.
+	// Creates a new HTTP Data Source from the given settings.
 	//
-	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+	// Returns the newly created Data Source (or an error message if creating the Data Source fails).
 	CreateHttpDataSource *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse `json:"createHttpDataSource"`
 }
 
@@ -2180,7 +2178,7 @@ func (v *CreateMaxMetricCreateMaxMetricMetricResponseMetric) __premarshalJSON() 
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateMaxMetricCreateMaxMetricMetricResponseMetric.MetricData.Settings: %w", err)
+				"unable to marshal CreateMaxMetricCreateMaxMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -2230,9 +2228,9 @@ func (v *CreateMaxMetricInput) GetMeasure() *DimensionInput { return v.Measure }
 
 // CreateMaxMetricResponse is returned by CreateMaxMetric on success.
 type CreateMaxMetricResponse struct {
-	// This mutation creates a new Max Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Max Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Max Metric returns the maximum value found in the underlying data during a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateMaxMetric *CreateMaxMetricCreateMaxMetricMetricResponse `json:"createMaxMetric"`
 }
 
@@ -2435,7 +2433,7 @@ func (v *CreateMinMetricCreateMinMetricMetricResponseMetric) __premarshalJSON() 
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateMinMetricCreateMinMetricMetricResponseMetric.MetricData.Settings: %w", err)
+				"unable to marshal CreateMinMetricCreateMinMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -2484,9 +2482,9 @@ func (v *CreateMinMetricInput) GetMeasure() *DimensionInput { return v.Measure }
 
 // CreateMinMetricResponse is returned by CreateMinMetric on success.
 type CreateMinMetricResponse struct {
-	// This mutation creates a new Min Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Min Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Min Metric returns the minimum value found in the underlying data during a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateMinMetric *CreateMinMetricCreateMinMetricMetricResponse `json:"createMinMetric"`
 }
 
@@ -2805,7 +2803,7 @@ func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) __pre
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.DataSourceData.Tables
@@ -2844,9 +2842,9 @@ func (v *CreateS3DataSourceInput) GetUniqueName() *string { return v.UniqueName 
 
 // CreateS3DataSourceResponse is returned by CreateS3DataSource on success.
 type CreateS3DataSourceResponse struct {
-	// This mutation creates a new Data Source, pointed at the specified S3 bucket.
+	// Creates a new Amazon S3 Data Source pointed at the specified S3 bucket.
 	//
-	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+	// Returns the newly created Data Source (or an error message if creating the Data Source fails).
 	CreateS3DataSource *CreateS3DataSourceCreateS3DataSourceDataSourceResponse `json:"createS3DataSource"`
 }
 
@@ -3129,7 +3127,7 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDat
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.DataSourceData.Tables
@@ -3254,11 +3252,9 @@ func (v *CreateSnowflakeDataSourceInput) GetConnectionSettings() *SnowflakeConne
 
 // CreateSnowflakeDataSourceResponse is returned by CreateSnowflakeDataSource on success.
 type CreateSnowflakeDataSourceResponse struct {
-	// This mutation creates a new Data Source from the given Snowflake database using the specified Snowflake account, warehouse, schema, username, and role.
+	// Creates a new Data Source from the given Snowflake database using the specified Snowflake account, warehouse, schema, username, and role.
 	//
-	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
-	//
-	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+	// Returns the newly created Data Source (or an error message if creating the Data Source fails).
 	CreateSnowflakeDataSource *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceOrFailureResponse `json:"-"`
 }
 
@@ -3294,7 +3290,7 @@ func (v *CreateSnowflakeDataSourceResponse) UnmarshalJSON(b []byte) error {
 				src, *dst)
 			if err != nil {
 				return fmt.Errorf(
-					"Unable to unmarshal CreateSnowflakeDataSourceResponse.CreateSnowflakeDataSource: %w", err)
+					"unable to unmarshal CreateSnowflakeDataSourceResponse.CreateSnowflakeDataSource: %w", err)
 			}
 		}
 	}
@@ -3326,7 +3322,7 @@ func (v *CreateSnowflakeDataSourceResponse) __premarshalJSON() (*__premarshalCre
 				src)
 			if err != nil {
 				return nil, fmt.Errorf(
-					"Unable to marshal CreateSnowflakeDataSourceResponse.CreateSnowflakeDataSource: %w", err)
+					"unable to marshal CreateSnowflakeDataSourceResponse.CreateSnowflakeDataSource: %w", err)
 			}
 		}
 	}
@@ -3527,7 +3523,7 @@ func (v *CreateSumMetricCreateSumMetricMetricResponseMetric) __premarshalJSON() 
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal CreateSumMetricCreateSumMetricMetricResponseMetric.MetricData.Settings: %w", err)
+				"unable to marshal CreateSumMetricCreateSumMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -3577,9 +3573,9 @@ func (v *CreateSumMetricInput) GetMeasure() *DimensionInput { return v.Measure }
 
 // CreateSumMetricResponse is returned by CreateSumMetric on success.
 type CreateSumMetricResponse struct {
-	// This mutation creates a new Sum Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+	// Creates a new Sum Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 	//
-	// A Metric is a business indicator measured over time. A Sum Metric returns the sum of the values found in the underlying data over a specific time period.
+	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateSumMetric *CreateSumMetricCreateSumMetricMetricResponse `json:"createSumMetric"`
 }
 
@@ -3588,40 +3584,12 @@ func (v *CreateSumMetricResponse) GetCreateSumMetric() *CreateSumMetricCreateSum
 	return v.CreateSumMetric
 }
 
-// CursorData includes the GraphQL fields of Cursor requested by the fragment CursorData.
-// The GraphQL type's documentation follows.
-//
-// The cursor fields.
-type CursorData struct {
-	// The name of the column that represents the cursor.
-	ColumnName string `json:"columnName"`
-	// The cursor column's type.
-	Type ColumnType `json:"type"`
-}
-
-// GetColumnName returns CursorData.ColumnName, and is useful for accessing the field via an interface.
-func (v *CursorData) GetColumnName() string { return v.ColumnName }
-
-// GetType returns CursorData.Type, and is useful for accessing the field via an interface.
-func (v *CursorData) GetType() ColumnType { return v.Type }
-
-// The fields for specifying the Data Pool's Cursor.
-type CursorInput struct {
-	// The name of the column that represents the Cursor.
-	ColumnName string `json:"columnName"`
-}
-
-// GetColumnName returns CursorInput.ColumnName, and is useful for accessing the field via an interface.
-func (v *CursorInput) GetColumnName() string { return v.ColumnName }
-
 // DataPoolByNameDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolByNameDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -3653,8 +3621,8 @@ func (v *DataPoolByNameDataPool) GetColumns() *DataPoolDataColumnsDataPoolColumn
 	return v.DataPoolData.Columns
 }
 
-// GetCursor returns DataPoolByNameDataPool.Cursor, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetCursor() *DataPoolDataCursor { return v.DataPoolData.Cursor }
+// GetUniqueId returns DataPoolByNameDataPool.UniqueId, and is useful for accessing the field via an interface.
+func (v *DataPoolByNameDataPool) GetUniqueId() *DataPoolDataUniqueId { return v.DataPoolData.UniqueId }
 
 // GetSyncing returns DataPoolByNameDataPool.Syncing, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetSyncing() *DataPoolDataSyncingDataPoolSyncing {
@@ -3756,7 +3724,7 @@ type __premarshalDataPoolByNameDataPool struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
-	Cursor *DataPoolDataCursor `json:"cursor"`
+	UniqueId *DataPoolDataUniqueId `json:"uniqueId"`
 
 	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
 
@@ -3801,7 +3769,7 @@ func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByName
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
-	retval.Cursor = v.DataPoolData.Cursor
+	retval.UniqueId = v.DataPoolData.UniqueId
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
@@ -3868,11 +3836,9 @@ func (v *DataPoolColumnInput) GetIsNullable() bool { return v.IsNullable }
 // DataPoolData includes the GraphQL fields of DataPool requested by the fragment DataPoolData.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolData struct {
 	// The Data Pool's unique identifier.
 	Id                 string `json:"id"`
@@ -3884,23 +3850,20 @@ type DataPoolData struct {
 	Error  *DataPoolDataError `json:"error"`
 	// The name of the Data Pool's table.
 	Table string `json:"table"`
-	// The Data Pool's timestamp column.
+	// The Data Pool's primary timestamp column.
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
-	// A list of columns included in the Data Pool. The specified columns from the underlying table will by synced to the Data Pool.
-	//
-	// This list does not include any excluded columns.
+	// The Data Pool's columns.
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
-	// The Data Pool's cursor column. The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`.
-	Cursor *DataPoolDataCursor `json:"cursor"`
+	// The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
+	UniqueId *DataPoolDataUniqueId `json:"uniqueId"`
 	// Settings related to Data Pool syncing.
 	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
-	// A list of measures (numeric columns) available to Metrics.
-	//
-	// This list does not include any excluded columns.
+	// The list of measures (numeric columns) in the Data Pool.
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 	// A list of setup tasks performed on the Data Pool during its most recent setup attempt.
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
-	Syncs      *DataPoolDataSyncsSyncConnection           `json:"syncs"`
+	// The list of Syncs of the Data Pool.
+	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 }
 
 // GetId returns DataPoolData.Id, and is useful for accessing the field via an interface.
@@ -3924,8 +3887,8 @@ func (v *DataPoolData) GetTimestamp() *DataPoolDataTimestamp { return v.Timestam
 // GetColumns returns DataPoolData.Columns, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetColumns() *DataPoolDataColumnsDataPoolColumnConnection { return v.Columns }
 
-// GetCursor returns DataPoolData.Cursor, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetCursor() *DataPoolDataCursor { return v.Cursor }
+// GetUniqueId returns DataPoolData.UniqueId, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetUniqueId() *DataPoolDataUniqueId { return v.UniqueId }
 
 // GetSyncing returns DataPoolData.Syncing, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetSyncing() *DataPoolDataSyncingDataPoolSyncing { return v.Syncing }
@@ -4009,7 +3972,7 @@ type __premarshalDataPoolData struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
-	Cursor *DataPoolDataCursor `json:"cursor"`
+	UniqueId *DataPoolDataUniqueId `json:"uniqueId"`
 
 	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
 
@@ -4054,7 +4017,7 @@ func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
 	retval.Table = v.Table
 	retval.Timestamp = v.Timestamp
 	retval.Columns = v.Columns
-	retval.Cursor = v.Cursor
+	retval.UniqueId = v.UniqueId
 	retval.Syncing = v.Syncing
 	retval.AvailableMeasures = v.AvailableMeasures
 	retval.SetupTasks = v.SetupTasks
@@ -4242,67 +4205,6 @@ func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) __prema
 	return &retval, nil
 }
 
-// DataPoolDataCursor includes the requested fields of the GraphQL type Cursor.
-// The GraphQL type's documentation follows.
-//
-// The cursor fields.
-type DataPoolDataCursor struct {
-	CursorData `json:"-"`
-}
-
-// GetColumnName returns DataPoolDataCursor.ColumnName, and is useful for accessing the field via an interface.
-func (v *DataPoolDataCursor) GetColumnName() string { return v.CursorData.ColumnName }
-
-// GetType returns DataPoolDataCursor.Type, and is useful for accessing the field via an interface.
-func (v *DataPoolDataCursor) GetType() ColumnType { return v.CursorData.Type }
-
-func (v *DataPoolDataCursor) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*DataPoolDataCursor
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.DataPoolDataCursor = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.CursorData)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalDataPoolDataCursor struct {
-	ColumnName string `json:"columnName"`
-
-	Type ColumnType `json:"type"`
-}
-
-func (v *DataPoolDataCursor) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *DataPoolDataCursor) __premarshalJSON() (*__premarshalDataPoolDataCursor, error) {
-	var retval __premarshalDataPoolDataCursor
-
-	retval.ColumnName = v.CursorData.ColumnName
-	retval.Type = v.CursorData.Type
-	return &retval, nil
-}
-
 // DataPoolDataDataSource includes the requested fields of the GraphQL type DataSource.
 // The GraphQL type's documentation follows.
 //
@@ -4470,7 +4372,7 @@ func (v *DataPoolDataDataSource) __premarshalJSON() (*__premarshalDataPoolDataDa
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal DataPoolDataDataSource.DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal DataPoolDataDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.DataSourceData.Tables
@@ -4502,11 +4404,9 @@ func (v *DataPoolDataError) GetMessage() string { return v.Message }
 // DataPoolDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -4534,8 +4434,8 @@ func (v *DataPoolDataPool) GetColumns() *DataPoolDataColumnsDataPoolColumnConnec
 	return v.DataPoolData.Columns
 }
 
-// GetCursor returns DataPoolDataPool.Cursor, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetCursor() *DataPoolDataCursor { return v.DataPoolData.Cursor }
+// GetUniqueId returns DataPoolDataPool.UniqueId, and is useful for accessing the field via an interface.
+func (v *DataPoolDataPool) GetUniqueId() *DataPoolDataUniqueId { return v.DataPoolData.UniqueId }
 
 // GetSyncing returns DataPoolDataPool.Syncing, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetSyncing() *DataPoolDataSyncingDataPoolSyncing {
@@ -4633,7 +4533,7 @@ type __premarshalDataPoolDataPool struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
-	Cursor *DataPoolDataCursor `json:"cursor"`
+	UniqueId *DataPoolDataUniqueId `json:"uniqueId"`
 
 	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
 
@@ -4678,7 +4578,7 @@ func (v *DataPoolDataPool) __premarshalJSON() (*__premarshalDataPoolDataPool, er
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
-	retval.Cursor = v.DataPoolData.Cursor
+	retval.UniqueId = v.DataPoolData.UniqueId
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
@@ -4998,7 +4898,7 @@ func (v *DataPoolDataSyncsSyncConnectionNodesSync) __premarshalJSON() (*__premar
 // DataPoolDataTimestamp includes the requested fields of the GraphQL type Timestamp.
 // The GraphQL type's documentation follows.
 //
-// The Timestamp fields.
+// A Data Pool's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
 type DataPoolDataTimestamp struct {
 	TimestampData `json:"-"`
 }
@@ -5055,6 +4955,18 @@ func (v *DataPoolDataTimestamp) __premarshalJSON() (*__premarshalDataPoolDataTim
 	retval.Type = v.TimestampData.Type
 	return &retval, nil
 }
+
+// DataPoolDataUniqueId includes the requested fields of the GraphQL type UniqueId.
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
+type DataPoolDataUniqueId struct {
+	// The name of the column that represents the unique ID.
+	ColumnName string `json:"columnName"`
+}
+
+// GetColumnName returns DataPoolDataUniqueId.ColumnName, and is useful for accessing the field via an interface.
+func (v *DataPoolDataUniqueId) GetColumnName() string { return v.ColumnName }
 
 // DataPoolResponse is returned by DataPool on success.
 type DataPoolResponse struct {
@@ -5205,11 +5117,9 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge) GetNode() *DataP
 // DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -5249,9 +5159,9 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetC
 	return v.DataPoolData.Columns
 }
 
-// GetCursor returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Cursor, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetCursor() *DataPoolDataCursor {
-	return v.DataPoolData.Cursor
+// GetUniqueId returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.UniqueId, and is useful for accessing the field via an interface.
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetUniqueId() *DataPoolDataUniqueId {
+	return v.DataPoolData.UniqueId
 }
 
 // GetSyncing returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Syncing, and is useful for accessing the field via an interface.
@@ -5354,7 +5264,7 @@ type __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPo
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
-	Cursor *DataPoolDataCursor `json:"cursor"`
+	UniqueId *DataPoolDataUniqueId `json:"uniqueId"`
 
 	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
 
@@ -5399,7 +5309,7 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) __pr
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
-	retval.Cursor = v.DataPoolData.Cursor
+	retval.UniqueId = v.DataPoolData.UniqueId
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
@@ -5680,7 +5590,7 @@ func (v *DataSourceByNameDataSource) __premarshalJSON() (*__premarshalDataSource
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal DataSourceByNameDataSource.DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal DataSourceByNameDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.DataSourceData.Tables
@@ -5833,7 +5743,7 @@ func (v *DataSourceData) UnmarshalJSON(b []byte) error {
 				src, dst)
 			if err != nil {
 				return fmt.Errorf(
-					"Unable to unmarshal DataSourceData.ConnectionSettings: %w", err)
+					"unable to unmarshal DataSourceData.ConnectionSettings: %w", err)
 			}
 		}
 	}
@@ -5898,7 +5808,7 @@ func (v *DataSourceData) __premarshalJSON() (*__premarshalDataSourceData, error)
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.Tables
@@ -5973,20 +5883,20 @@ func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return 
 // DataSourceDataConnectionSettings includes the requested fields of the GraphQL interface ConnectionSettings.
 //
 // DataSourceDataConnectionSettings is implemented by the following types:
-// DataSourceDataConnectionSettingsSnowflakeConnectionSettings
 // DataSourceDataConnectionSettingsHttpConnectionSettings
 // DataSourceDataConnectionSettingsS3ConnectionSettings
+// DataSourceDataConnectionSettingsSnowflakeConnectionSettings
 type DataSourceDataConnectionSettings interface {
 	implementsGraphQLInterfaceDataSourceDataConnectionSettings()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
 	GetTypename() *string
 }
 
-func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
-}
 func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
+}
+func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 
 func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConnectionSettings) error {
@@ -6003,14 +5913,14 @@ func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConn
 	}
 
 	switch tn.TypeName {
-	case "SnowflakeConnectionSettings":
-		*v = new(DataSourceDataConnectionSettingsSnowflakeConnectionSettings)
-		return json.Unmarshal(b, *v)
 	case "HttpConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsHttpConnectionSettings)
 		return json.Unmarshal(b, *v)
 	case "S3ConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsS3ConnectionSettings)
+		return json.Unmarshal(b, *v)
+	case "SnowflakeConnectionSettings":
+		*v = new(DataSourceDataConnectionSettingsSnowflakeConnectionSettings)
 		return json.Unmarshal(b, *v)
 	case "":
 		return fmt.Errorf(
@@ -6025,14 +5935,6 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 
 	var typename string
 	switch v := (*v).(type) {
-	case *DataSourceDataConnectionSettingsSnowflakeConnectionSettings:
-		typename = "SnowflakeConnectionSettings"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*DataSourceDataConnectionSettingsSnowflakeConnectionSettings
-		}{typename, v}
-		return json.Marshal(result)
 	case *DataSourceDataConnectionSettingsHttpConnectionSettings:
 		typename = "HttpConnectionSettings"
 
@@ -6047,6 +5949,14 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 		result := struct {
 			TypeName string `json:"__typename"`
 			*DataSourceDataConnectionSettingsS3ConnectionSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case *DataSourceDataConnectionSettingsSnowflakeConnectionSettings:
+		typename = "SnowflakeConnectionSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DataSourceDataConnectionSettingsSnowflakeConnectionSettings
 		}{typename, v}
 		return json.Marshal(result)
 	case nil:
@@ -6490,7 +6400,7 @@ func (v *DataSourceDataSource) __premarshalJSON() (*__premarshalDataSourceDataSo
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal DataSourceDataSource.DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal DataSourceDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.DataSourceData.Tables
@@ -7022,7 +6932,7 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSo
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.DataSourceData.Tables
@@ -7141,9 +7051,7 @@ func (v *DataSourcesResponse) GetDataSources() *DataSourcesDataSourcesDataSource
 
 // DeleteDataPoolByNameResponse is returned by DeleteDataPoolByName on success.
 type DeleteDataPoolByNameResponse struct {
-	// This mutation deletes the specified Data Pool by name and then returns the Data Pool's ID if the Data Pool was deleted successfully.
-	//
-	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+	// Deletes a Data Pool by unique name and returns its ID if the Data Pool was deleted successfully.
 	DeleteDataPoolByName *string `json:"deleteDataPoolByName"`
 }
 
@@ -7154,9 +7062,7 @@ func (v *DeleteDataPoolByNameResponse) GetDeleteDataPoolByName() *string {
 
 // DeleteDataPoolResponse is returned by DeleteDataPool on success.
 type DeleteDataPoolResponse struct {
-	// This mutation deletes the specified Data Pool by ID and then returns the same ID if the Data Pool was deleted successfully.
-	//
-	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+	// Deletes a Data Pool by ID and returns its ID if the Data Pool was deleted successfully.
 	DeleteDataPool *string `json:"deleteDataPool"`
 }
 
@@ -7165,9 +7071,7 @@ func (v *DeleteDataPoolResponse) GetDeleteDataPool() *string { return v.DeleteDa
 
 // DeleteDataSourceByNameResponse is returned by DeleteDataSourceByName on success.
 type DeleteDataSourceByNameResponse struct {
-	// This mutation deletes the specified Data Source by name and then returns the Data Source's ID if the Data Source was deleted successfully.
-	//
-	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+	// Deletes a Data Source by unique name and returns its ID if the Data Source was deleted successfully.
 	DeleteDataSourceByName *string `json:"deleteDataSourceByName"`
 }
 
@@ -7178,9 +7082,7 @@ func (v *DeleteDataSourceByNameResponse) GetDeleteDataSourceByName() *string {
 
 // DeleteDataSourceResponse is returned by DeleteDataSource on success.
 type DeleteDataSourceResponse struct {
-	// This mutation deletes the specified Data Source by ID and then returns the same ID if the Data Source was deleted successfully.
-	//
-	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+	// Deletes a Data Source by ID and returns its ID if the Data Source was deleted successfully.
 	DeleteDataSource *string `json:"deleteDataSource"`
 }
 
@@ -7189,9 +7091,7 @@ func (v *DeleteDataSourceResponse) GetDeleteDataSource() *string { return v.Dele
 
 // DeleteMetricByNameResponse is returned by DeleteMetricByName on success.
 type DeleteMetricByNameResponse struct {
-	// This mutation deletes the specified Metric by name and then returns the Metric's ID if the Data Source was deleted successfully.
-	//
-	// A Metric is a business indicator measured over time.
+	// Deletes a Metric by unique name and returns its ID if the Metric was deleted successfully.
 	DeleteMetricByName *string `json:"deleteMetricByName"`
 }
 
@@ -7200,9 +7100,7 @@ func (v *DeleteMetricByNameResponse) GetDeleteMetricByName() *string { return v.
 
 // DeleteMetricResponse is returned by DeleteMetric on success.
 type DeleteMetricResponse struct {
-	// This mutation deletes the specified Metric by ID and then returns the same ID if the Data Source was deleted successfully.
-	//
-	// A Metric is a business indicator measured over time.
+	// Deletes a Metric by ID and returns its ID if the Metric was deleted successfully.
 	DeleteMetric *string `json:"deleteMetric"`
 }
 
@@ -7639,7 +7537,7 @@ func (v *MetricByNameMetric) __premarshalJSON() (*__premarshalMetricByNameMetric
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal MetricByNameMetric.MetricData.Settings: %w", err)
+				"unable to marshal MetricByNameMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -7772,7 +7670,7 @@ func (v *MetricData) UnmarshalJSON(b []byte) error {
 				src, dst)
 			if err != nil {
 				return fmt.Errorf(
-					"Unable to unmarshal MetricData.Settings: %w", err)
+					"unable to unmarshal MetricData.Settings: %w", err)
 			}
 		}
 	}
@@ -7840,7 +7738,7 @@ func (v *MetricData) __premarshalJSON() (*__premarshalMetricData, error) {
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal MetricData.Settings: %w", err)
+				"unable to marshal MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.CommonDataMetric.UniqueName
@@ -7857,11 +7755,9 @@ func (v *MetricData) __premarshalJSON() (*__premarshalMetricData, error) {
 // MetricDataDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type MetricDataDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -7891,8 +7787,8 @@ func (v *MetricDataDataPool) GetColumns() *DataPoolDataColumnsDataPoolColumnConn
 	return v.DataPoolData.Columns
 }
 
-// GetCursor returns MetricDataDataPool.Cursor, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetCursor() *DataPoolDataCursor { return v.DataPoolData.Cursor }
+// GetUniqueId returns MetricDataDataPool.UniqueId, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetUniqueId() *DataPoolDataUniqueId { return v.DataPoolData.UniqueId }
 
 // GetSyncing returns MetricDataDataPool.Syncing, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetSyncing() *DataPoolDataSyncingDataPoolSyncing {
@@ -7992,7 +7888,7 @@ type __premarshalMetricDataDataPool struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
-	Cursor *DataPoolDataCursor `json:"cursor"`
+	UniqueId *DataPoolDataUniqueId `json:"uniqueId"`
 
 	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
 
@@ -8037,7 +7933,7 @@ func (v *MetricDataDataPool) __premarshalJSON() (*__premarshalMetricDataDataPool
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
-	retval.Cursor = v.DataPoolData.Cursor
+	retval.UniqueId = v.DataPoolData.UniqueId
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
@@ -9066,13 +8962,13 @@ func (v *MetricDataSettingsMaxMetricSettingsMeasureDimension) __premarshalJSON()
 // MetricDataSettingsMetricSettings includes the requested fields of the GraphQL interface MetricSettings.
 //
 // MetricDataSettingsMetricSettings is implemented by the following types:
-// MetricDataSettingsCountMetricSettings
-// MetricDataSettingsSumMetricSettings
-// MetricDataSettingsCountDistinctMetricSettings
 // MetricDataSettingsAverageMetricSettings
-// MetricDataSettingsMinMetricSettings
-// MetricDataSettingsMaxMetricSettings
+// MetricDataSettingsCountDistinctMetricSettings
+// MetricDataSettingsCountMetricSettings
 // MetricDataSettingsCustomMetricSettings
+// MetricDataSettingsMaxMetricSettings
+// MetricDataSettingsMinMetricSettings
+// MetricDataSettingsSumMetricSettings
 // The GraphQL type's documentation follows.
 //
 // A Metric's settings, depending on its type.
@@ -9082,19 +8978,19 @@ type MetricDataSettingsMetricSettings interface {
 	GetTypename() *string
 }
 
-func (v *MetricDataSettingsCountMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
-}
-func (v *MetricDataSettingsSumMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+func (v *MetricDataSettingsAverageMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
 }
 func (v *MetricDataSettingsCountDistinctMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
 }
-func (v *MetricDataSettingsAverageMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+func (v *MetricDataSettingsCountMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
 }
-func (v *MetricDataSettingsMinMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+func (v *MetricDataSettingsCustomMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
 }
 func (v *MetricDataSettingsMaxMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
 }
-func (v *MetricDataSettingsCustomMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+func (v *MetricDataSettingsMinMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
+}
+func (v *MetricDataSettingsSumMetricSettings) implementsGraphQLInterfaceMetricDataSettingsMetricSettings() {
 }
 
 func __unmarshalMetricDataSettingsMetricSettings(b []byte, v *MetricDataSettingsMetricSettings) error {
@@ -9111,26 +9007,26 @@ func __unmarshalMetricDataSettingsMetricSettings(b []byte, v *MetricDataSettings
 	}
 
 	switch tn.TypeName {
-	case "CountMetricSettings":
-		*v = new(MetricDataSettingsCountMetricSettings)
-		return json.Unmarshal(b, *v)
-	case "SumMetricSettings":
-		*v = new(MetricDataSettingsSumMetricSettings)
+	case "AverageMetricSettings":
+		*v = new(MetricDataSettingsAverageMetricSettings)
 		return json.Unmarshal(b, *v)
 	case "CountDistinctMetricSettings":
 		*v = new(MetricDataSettingsCountDistinctMetricSettings)
 		return json.Unmarshal(b, *v)
-	case "AverageMetricSettings":
-		*v = new(MetricDataSettingsAverageMetricSettings)
+	case "CountMetricSettings":
+		*v = new(MetricDataSettingsCountMetricSettings)
 		return json.Unmarshal(b, *v)
-	case "MinMetricSettings":
-		*v = new(MetricDataSettingsMinMetricSettings)
+	case "CustomMetricSettings":
+		*v = new(MetricDataSettingsCustomMetricSettings)
 		return json.Unmarshal(b, *v)
 	case "MaxMetricSettings":
 		*v = new(MetricDataSettingsMaxMetricSettings)
 		return json.Unmarshal(b, *v)
-	case "CustomMetricSettings":
-		*v = new(MetricDataSettingsCustomMetricSettings)
+	case "MinMetricSettings":
+		*v = new(MetricDataSettingsMinMetricSettings)
+		return json.Unmarshal(b, *v)
+	case "SumMetricSettings":
+		*v = new(MetricDataSettingsSumMetricSettings)
 		return json.Unmarshal(b, *v)
 	case "":
 		return fmt.Errorf(
@@ -9145,20 +9041,12 @@ func __marshalMetricDataSettingsMetricSettings(v *MetricDataSettingsMetricSettin
 
 	var typename string
 	switch v := (*v).(type) {
-	case *MetricDataSettingsCountMetricSettings:
-		typename = "CountMetricSettings"
+	case *MetricDataSettingsAverageMetricSettings:
+		typename = "AverageMetricSettings"
 
 		result := struct {
 			TypeName string `json:"__typename"`
-			*MetricDataSettingsCountMetricSettings
-		}{typename, v}
-		return json.Marshal(result)
-	case *MetricDataSettingsSumMetricSettings:
-		typename = "SumMetricSettings"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*MetricDataSettingsSumMetricSettings
+			*MetricDataSettingsAverageMetricSettings
 		}{typename, v}
 		return json.Marshal(result)
 	case *MetricDataSettingsCountDistinctMetricSettings:
@@ -9169,20 +9057,20 @@ func __marshalMetricDataSettingsMetricSettings(v *MetricDataSettingsMetricSettin
 			*MetricDataSettingsCountDistinctMetricSettings
 		}{typename, v}
 		return json.Marshal(result)
-	case *MetricDataSettingsAverageMetricSettings:
-		typename = "AverageMetricSettings"
+	case *MetricDataSettingsCountMetricSettings:
+		typename = "CountMetricSettings"
 
 		result := struct {
 			TypeName string `json:"__typename"`
-			*MetricDataSettingsAverageMetricSettings
+			*MetricDataSettingsCountMetricSettings
 		}{typename, v}
 		return json.Marshal(result)
-	case *MetricDataSettingsMinMetricSettings:
-		typename = "MinMetricSettings"
+	case *MetricDataSettingsCustomMetricSettings:
+		typename = "CustomMetricSettings"
 
 		result := struct {
 			TypeName string `json:"__typename"`
-			*MetricDataSettingsMinMetricSettings
+			*MetricDataSettingsCustomMetricSettings
 		}{typename, v}
 		return json.Marshal(result)
 	case *MetricDataSettingsMaxMetricSettings:
@@ -9193,12 +9081,20 @@ func __marshalMetricDataSettingsMetricSettings(v *MetricDataSettingsMetricSettin
 			*MetricDataSettingsMaxMetricSettings
 		}{typename, v}
 		return json.Marshal(result)
-	case *MetricDataSettingsCustomMetricSettings:
-		typename = "CustomMetricSettings"
+	case *MetricDataSettingsMinMetricSettings:
+		typename = "MinMetricSettings"
 
 		result := struct {
 			TypeName string `json:"__typename"`
-			*MetricDataSettingsCustomMetricSettings
+			*MetricDataSettingsMinMetricSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case *MetricDataSettingsSumMetricSettings:
+		typename = "SumMetricSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*MetricDataSettingsSumMetricSettings
 		}{typename, v}
 		return json.Marshal(result)
 	case nil:
@@ -9846,7 +9742,7 @@ func (v *MetricMetric) __premarshalJSON() (*__premarshalMetricMetric, error) {
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal MetricMetric.MetricData.Settings: %w", err)
+				"unable to marshal MetricMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -10120,7 +10016,7 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) __premarshalJS
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.MetricData.Settings: %w", err)
+				"unable to marshal MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -10308,7 +10204,7 @@ func (v *MetricsMetricsMetricConnectionNodesMetric) __premarshalJSON() (*__prema
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal MetricsMetricsMetricConnectionNodesMetric.MetricData.Settings: %w", err)
+				"unable to marshal MetricsMetricsMetricConnectionNodesMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -10549,11 +10445,9 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponse) GetDataPool() *ModifyData
 // ModifyDataPoolModifyDataPoolDataPoolResponseDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
-// The Data Pool object.
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
 //
-// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type ModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -10593,9 +10487,9 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetColumns() *Dat
 	return v.DataPoolData.Columns
 }
 
-// GetCursor returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Cursor, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetCursor() *DataPoolDataCursor {
-	return v.DataPoolData.Cursor
+// GetUniqueId returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.UniqueId, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetUniqueId() *DataPoolDataUniqueId {
+	return v.DataPoolData.UniqueId
 }
 
 // GetSyncing returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Syncing, and is useful for accessing the field via an interface.
@@ -10698,7 +10592,7 @@ type __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
 
-	Cursor *DataPoolDataCursor `json:"cursor"`
+	UniqueId *DataPoolDataUniqueId `json:"uniqueId"`
 
 	Syncing *DataPoolDataSyncingDataPoolSyncing `json:"syncing"`
 
@@ -10743,7 +10637,7 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON(
 	retval.Table = v.DataPoolData.Table
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
-	retval.Cursor = v.DataPoolData.Cursor
+	retval.UniqueId = v.DataPoolData.UniqueId
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
@@ -10842,11 +10736,7 @@ func (v *ModifyDataPoolModifyDataPoolFailureResponseError) __premarshalJSON() (*
 
 // ModifyDataPoolResponse is returned by ModifyDataPool on success.
 type ModifyDataPoolResponse struct {
-	// This mutation selects a Data Pool by its ID or unique name and modifies it to have the given unique name, description, and data retention time.
-	//
-	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool.
-	//
-	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+	// Modifies a Data Pool with the provided unique name, description, and data retention time. If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool.
 	ModifyDataPool *ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse `json:"-"`
 }
 
@@ -10882,7 +10772,7 @@ func (v *ModifyDataPoolResponse) UnmarshalJSON(b []byte) error {
 				src, *dst)
 			if err != nil {
 				return fmt.Errorf(
-					"Unable to unmarshal ModifyDataPoolResponse.ModifyDataPool: %w", err)
+					"unable to unmarshal ModifyDataPoolResponse.ModifyDataPool: %w", err)
 			}
 		}
 	}
@@ -10914,7 +10804,7 @@ func (v *ModifyDataPoolResponse) __premarshalJSON() (*__premarshalModifyDataPool
 				src)
 			if err != nil {
 				return nil, fmt.Errorf(
-					"Unable to marshal ModifyDataPoolResponse.ModifyDataPool: %w", err)
+					"unable to marshal ModifyDataPoolResponse.ModifyDataPool: %w", err)
 			}
 		}
 	}
@@ -11135,7 +11025,7 @@ func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) _
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.DataSourceData.Tables
@@ -11391,7 +11281,7 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) __premarshalJSON() (*__pr
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal ModifyMetricModifyMetricMetricResponseMetric.MetricData.Settings: %w", err)
+				"unable to marshal ModifyMetricModifyMetricMetricResponseMetric.MetricData.Settings: %w", err)
 		}
 	}
 	retval.UniqueName = v.MetricData.CommonDataMetric.UniqueName
@@ -11407,11 +11297,7 @@ func (v *ModifyMetricModifyMetricMetricResponseMetric) __premarshalJSON() (*__pr
 
 // ModifyMetricResponse is returned by ModifyMetric on success.
 type ModifyMetricResponse struct {
-	// This mutation selects a Metric by its ID and modifies it to have the given unique name, description, and Dimensions.
-	//
-	// If any of the optional arguments are omitted, those properties will be unchanged on the Metric.
-	//
-	// A Metric is a business indicator measured over time.
+	// Modifies a Metric by ID with the provided unique name, description, and Dimensions. If any of the optional arguments are omitted, those properties will be unchanged on the Metric.
 	ModifyMetric *ModifyMetricModifyMetricMetricResponse `json:"modifyMetric"`
 }
 
@@ -11750,7 +11636,7 @@ func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) __pre
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.DataSourceData.Tables
@@ -12080,7 +11966,7 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDat
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"Unable to marshal ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+				"unable to marshal ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
 		}
 	}
 	retval.Tables = v.DataSourceData.Tables
@@ -12184,11 +12070,7 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceFailureResponseError)
 
 // ModifySnowflakeDataSourceResponse is returned by ModifySnowflakeDataSource on success.
 type ModifySnowflakeDataSourceResponse struct {
-	// This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
-	//
-	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
-	//
-	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+	// Modifies a Data Source with the provided unique name, description, and connection settings. If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
 	ModifySnowflakeDataSource *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceOrFailureResponse `json:"-"`
 }
 
@@ -12224,7 +12106,7 @@ func (v *ModifySnowflakeDataSourceResponse) UnmarshalJSON(b []byte) error {
 				src, *dst)
 			if err != nil {
 				return fmt.Errorf(
-					"Unable to unmarshal ModifySnowflakeDataSourceResponse.ModifySnowflakeDataSource: %w", err)
+					"unable to unmarshal ModifySnowflakeDataSourceResponse.ModifySnowflakeDataSource: %w", err)
 			}
 		}
 	}
@@ -12256,7 +12138,7 @@ func (v *ModifySnowflakeDataSourceResponse) __premarshalJSON() (*__premarshalMod
 				src)
 			if err != nil {
 				return nil, fmt.Errorf(
-					"Unable to marshal ModifySnowflakeDataSourceResponse.ModifySnowflakeDataSource: %w", err)
+					"unable to marshal ModifySnowflakeDataSourceResponse.ModifySnowflakeDataSource: %w", err)
 			}
 		}
 	}
@@ -12809,11 +12691,9 @@ const (
 	TableIntrospectionStatusFailed TableIntrospectionStatus = "FAILED"
 )
 
-// Fields for specifying a Data Pool's Tenant ID.
-//
-// The Tenant ID can be used for partitioning and restricting access between customers (Tenants) within a Data Pool.
+// The fields to specify the Data Pool's tenant ID column. The tenant ID column is used to control access to your data with access policies.
 type TenantInput struct {
-	// The name of the column that represents the Tenant ID.
+	// The name of the column that represents the tenant ID.
 	ColumnName string `json:"columnName"`
 }
 
@@ -12823,11 +12703,11 @@ func (v *TenantInput) GetColumnName() string { return v.ColumnName }
 // TimestampData includes the GraphQL fields of Timestamp requested by the fragment TimestampData.
 // The GraphQL type's documentation follows.
 //
-// The Timestamp fields.
+// A Data Pool's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
 type TimestampData struct {
-	// The name of the column that represents the Timestamp.
+	// The name of the column that represents the primary timestamp.
 	ColumnName string `json:"columnName"`
-	// The Timestamp column's type.
+	// The primary timestamp column's type.
 	Type string `json:"type"`
 }
 
@@ -12837,14 +12717,23 @@ func (v *TimestampData) GetColumnName() string { return v.ColumnName }
 // GetType returns TimestampData.Type, and is useful for accessing the field via an interface.
 func (v *TimestampData) GetType() string { return v.Type }
 
-// The fields for specifying the Data Pool's Timestamp.
+// The fields to specify the Data Pool's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
 type TimestampInput struct {
-	// The name of the column that represents the Timestamp.
+	// The name of the column that represents the primary timestamp.
 	ColumnName string `json:"columnName"`
 }
 
 // GetColumnName returns TimestampInput.ColumnName, and is useful for accessing the field via an interface.
 func (v *TimestampInput) GetColumnName() string { return v.ColumnName }
+
+// The fields to specify the Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
+type UniqueIdInput struct {
+	// The name of the column that represents the unique ID.
+	ColumnName string `json:"columnName"`
+}
+
+// GetColumnName returns UniqueIdInput.ColumnName, and is useful for accessing the field via an interface.
+func (v *UniqueIdInput) GetColumnName() string { return v.ColumnName }
 
 // __CreateAverageMetricInput is used internally by genqlient
 type __CreateAverageMetricInput struct {
@@ -13162,14 +13051,8 @@ type __PolicyInput struct {
 // GetId returns __PolicyInput.Id, and is useful for accessing the field via an interface.
 func (v *__PolicyInput) GetId() string { return v.Id }
 
-func CreateAverageMetric(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateAverageMetricInput,
-) (*CreateAverageMetricResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateAverageMetric",
-		Query: `
+// The query or mutation executed by CreateAverageMetric.
+const CreateAverageMetric_Operation = `
 mutation CreateAverageMetric ($input: CreateAverageMetricInput) {
 	createAverageMetric(input: $input) {
 		__typename
@@ -13290,8 +13173,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -13412,10 +13295,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -13455,7 +13334,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateAverageMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateAverageMetricInput,
+) (*CreateAverageMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateAverageMetric",
+		Query:  CreateAverageMetric_Operation,
 		Variables: &__CreateAverageMetricInput{
 			Input: input,
 		},
@@ -13474,14 +13362,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func CreateCountDistinctMetric(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateCountDistinctMetricInput,
-) (*CreateCountDistinctMetricResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateCountDistinctMetric",
-		Query: `
+// The query or mutation executed by CreateCountDistinctMetric.
+const CreateCountDistinctMetric_Operation = `
 mutation CreateCountDistinctMetric ($input: CreateCountDistinctMetricInput) {
 	createCountDistinctMetric(input: $input) {
 		__typename
@@ -13602,8 +13484,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -13724,10 +13606,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -13767,7 +13645,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateCountDistinctMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateCountDistinctMetricInput,
+) (*CreateCountDistinctMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateCountDistinctMetric",
+		Query:  CreateCountDistinctMetric_Operation,
 		Variables: &__CreateCountDistinctMetricInput{
 			Input: input,
 		},
@@ -13786,14 +13673,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func CreateCountMetric(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateCountMetricInput,
-) (*CreateCountMetricResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateCountMetric",
-		Query: `
+// The query or mutation executed by CreateCountMetric.
+const CreateCountMetric_Operation = `
 mutation CreateCountMetric ($input: CreateCountMetricInput) {
 	createCountMetric(input: $input) {
 		__typename
@@ -13914,8 +13795,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -14036,10 +13917,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -14079,7 +13956,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateCountMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateCountMetricInput,
+) (*CreateCountMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateCountMetric",
+		Query:  CreateCountMetric_Operation,
 		Variables: &__CreateCountMetricInput{
 			Input: input,
 		},
@@ -14098,14 +13984,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func CreateCustomMetric(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateCustomMetricInput,
-) (*CreateCustomMetricResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateCustomMetric",
-		Query: `
+// The query or mutation executed by CreateCustomMetric.
+const CreateCustomMetric_Operation = `
 mutation CreateCustomMetric ($input: CreateCustomMetricInput!) {
 	createCustomMetric(input: $input) {
 		__typename
@@ -14226,8 +14106,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -14348,10 +14228,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -14391,7 +14267,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateCustomMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateCustomMetricInput,
+) (*CreateCustomMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateCustomMetric",
+		Query:  CreateCustomMetric_Operation,
 		Variables: &__CreateCustomMetricInput{
 			Input: input,
 		},
@@ -14410,14 +14295,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func CreateDataPool(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateDataPoolInputV2,
-) (*CreateDataPoolResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateDataPool",
-		Query: `
+// The query or mutation executed by CreateDataPool.
+const CreateDataPool_Operation = `
 mutation CreateDataPool ($input: CreateDataPoolInputV2!) {
 	createDataPoolV2(input: $input) {
 		__typename
@@ -14447,8 +14326,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -14572,10 +14451,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -14615,7 +14490,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateDataPool(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateDataPoolInputV2,
+) (*CreateDataPoolResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateDataPool",
+		Query:  CreateDataPool_Operation,
 		Variables: &__CreateDataPoolInput{
 			Input: input,
 		},
@@ -14634,14 +14518,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func CreateHttpDataSource(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateHttpDataSourceInput,
-) (*CreateHttpDataSourceResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateHttpDataSource",
-		Query: `
+// The query or mutation executed by CreateHttpDataSource.
+const CreateHttpDataSource_Operation = `
 mutation CreateHttpDataSource ($input: CreateHttpDataSourceInput!) {
 	createHttpDataSource(input: $input) {
 		dataSource {
@@ -14754,7 +14632,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateHttpDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateHttpDataSourceInput,
+) (*CreateHttpDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateHttpDataSource",
+		Query:  CreateHttpDataSource_Operation,
 		Variables: &__CreateHttpDataSourceInput{
 			Input: input,
 		},
@@ -14773,14 +14660,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func CreateMaxMetric(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateMaxMetricInput,
-) (*CreateMaxMetricResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateMaxMetric",
-		Query: `
+// The query or mutation executed by CreateMaxMetric.
+const CreateMaxMetric_Operation = `
 mutation CreateMaxMetric ($input: CreateMaxMetricInput) {
 	createMaxMetric(input: $input) {
 		__typename
@@ -14901,8 +14782,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -15023,10 +14904,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -15066,7 +14943,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateMaxMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateMaxMetricInput,
+) (*CreateMaxMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateMaxMetric",
+		Query:  CreateMaxMetric_Operation,
 		Variables: &__CreateMaxMetricInput{
 			Input: input,
 		},
@@ -15085,14 +14971,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func CreateMinMetric(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateMinMetricInput,
-) (*CreateMinMetricResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateMinMetric",
-		Query: `
+// The query or mutation executed by CreateMinMetric.
+const CreateMinMetric_Operation = `
 mutation CreateMinMetric ($input: CreateMinMetricInput) {
 	createMinMetric(input: $input) {
 		__typename
@@ -15213,8 +15093,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -15335,10 +15215,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -15378,7 +15254,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateMinMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateMinMetricInput,
+) (*CreateMinMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateMinMetric",
+		Query:  CreateMinMetric_Operation,
 		Variables: &__CreateMinMetricInput{
 			Input: input,
 		},
@@ -15397,14 +15282,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func CreatePolicy(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreatePolicyInput,
-) (*CreatePolicyResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreatePolicy",
-		Query: `
+// The query or mutation executed by CreatePolicy.
+const CreatePolicy_Operation = `
 mutation CreatePolicy ($input: CreatePolicyInput!) {
 	createPolicy(input: $input) {
 		policy {
@@ -15422,7 +15301,16 @@ fragment PolicyData on Policy {
 		id
 	}
 }
-`,
+`
+
+func CreatePolicy(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreatePolicyInput,
+) (*CreatePolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreatePolicy",
+		Query:  CreatePolicy_Operation,
 		Variables: &__CreatePolicyInput{
 			Input: input,
 		},
@@ -15441,14 +15329,8 @@ fragment PolicyData on Policy {
 	return &data, err
 }
 
-func CreateS3DataSource(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateS3DataSourceInput,
-) (*CreateS3DataSourceResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateS3DataSource",
-		Query: `
+// The query or mutation executed by CreateS3DataSource.
+const CreateS3DataSource_Operation = `
 mutation CreateS3DataSource ($input: CreateS3DataSourceInput!) {
 	createS3DataSource(input: $input) {
 		dataSource {
@@ -15561,7 +15443,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateS3DataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateS3DataSourceInput,
+) (*CreateS3DataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateS3DataSource",
+		Query:  CreateS3DataSource_Operation,
 		Variables: &__CreateS3DataSourceInput{
 			Input: input,
 		},
@@ -15580,14 +15471,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func CreateSnowflakeDataSource(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateSnowflakeDataSourceInput,
-) (*CreateSnowflakeDataSourceResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateSnowflakeDataSource",
-		Query: `
+// The query or mutation executed by CreateSnowflakeDataSource.
+const CreateSnowflakeDataSource_Operation = `
 mutation CreateSnowflakeDataSource ($input: createSnowflakeDataSourceInput!) {
 	createSnowflakeDataSource(input: $input) {
 		__typename
@@ -15712,7 +15597,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateSnowflakeDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateSnowflakeDataSourceInput,
+) (*CreateSnowflakeDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateSnowflakeDataSource",
+		Query:  CreateSnowflakeDataSource_Operation,
 		Variables: &__CreateSnowflakeDataSourceInput{
 			Input: input,
 		},
@@ -15731,14 +15625,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func CreateSumMetric(
-	ctx context.Context,
-	client graphql.Client,
-	input *CreateSumMetricInput,
-) (*CreateSumMetricResponse, error) {
-	req := &graphql.Request{
-		OpName: "CreateSumMetric",
-		Query: `
+// The query or mutation executed by CreateSumMetric.
+const CreateSumMetric_Operation = `
 mutation CreateSumMetric ($input: CreateSumMetricInput) {
 	createSumMetric(input: $input) {
 		__typename
@@ -15859,8 +15747,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -15981,10 +15869,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -16024,7 +15908,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func CreateSumMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateSumMetricInput,
+) (*CreateSumMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateSumMetric",
+		Query:  CreateSumMetric_Operation,
 		Variables: &__CreateSumMetricInput{
 			Input: input,
 		},
@@ -16043,14 +15936,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func DataPool(
-	ctx context.Context,
-	client graphql.Client,
-	id string,
-) (*DataPoolResponse, error) {
-	req := &graphql.Request{
-		OpName: "DataPool",
-		Query: `
+// The query or mutation executed by DataPool.
+const DataPool_Operation = `
 query DataPool ($id: ID!) {
 	dataPool(id: $id) {
 		... DataPoolData
@@ -16075,8 +15962,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -16200,10 +16087,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -16243,7 +16126,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func DataPool(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*DataPoolResponse, error) {
+	req := &graphql.Request{
+		OpName: "DataPool",
+		Query:  DataPool_Operation,
 		Variables: &__DataPoolInput{
 			Id: id,
 		},
@@ -16262,14 +16154,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func DataPoolByName(
-	ctx context.Context,
-	client graphql.Client,
-	uniqueName string,
-) (*DataPoolByNameResponse, error) {
-	req := &graphql.Request{
-		OpName: "DataPoolByName",
-		Query: `
+// The query or mutation executed by DataPoolByName.
+const DataPoolByName_Operation = `
 query DataPoolByName ($uniqueName: String!) {
 	dataPool: dataPoolByName(uniqueName: $uniqueName) {
 		... DataPoolData
@@ -16294,8 +16180,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -16419,10 +16305,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -16462,7 +16344,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func DataPoolByName(
+	ctx context.Context,
+	client graphql.Client,
+	uniqueName string,
+) (*DataPoolByNameResponse, error) {
+	req := &graphql.Request{
+		OpName: "DataPoolByName",
+		Query:  DataPoolByName_Operation,
 		Variables: &__DataPoolByNameInput{
 			UniqueName: uniqueName,
 		},
@@ -16481,17 +16372,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func DataPools(
-	ctx context.Context,
-	client graphql.Client,
-	first *int,
-	last *int,
-	after *string,
-	before *string,
-) (*DataPoolsResponse, error) {
-	req := &graphql.Request{
-		OpName: "DataPools",
-		Query: `
+// The query or mutation executed by DataPools.
+const DataPools_Operation = `
 query DataPools ($first: Int, $last: Int, $after: String, $before: String) {
 	dataPools(first: $first, last: $last, after: $after, before: $before) {
 		pageInfo {
@@ -16529,8 +16411,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -16654,10 +16536,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -16697,7 +16575,19 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func DataPools(
+	ctx context.Context,
+	client graphql.Client,
+	first *int,
+	last *int,
+	after *string,
+	before *string,
+) (*DataPoolsResponse, error) {
+	req := &graphql.Request{
+		OpName: "DataPools",
+		Query:  DataPools_Operation,
 		Variables: &__DataPoolsInput{
 			First:  first,
 			Last:   last,
@@ -16719,14 +16609,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func DataSource(
-	ctx context.Context,
-	client graphql.Client,
-	id string,
-) (*DataSourceResponse, error) {
-	req := &graphql.Request{
-		OpName: "DataSource",
-		Query: `
+// The query or mutation executed by DataSource.
+const DataSource_Operation = `
 query DataSource ($id: ID!) {
 	dataSource(id: $id) {
 		... DataSourceData
@@ -16837,7 +16721,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func DataSource(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*DataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "DataSource",
+		Query:  DataSource_Operation,
 		Variables: &__DataSourceInput{
 			Id: id,
 		},
@@ -16856,14 +16749,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func DataSourceByName(
-	ctx context.Context,
-	client graphql.Client,
-	uniqueName string,
-) (*DataSourceByNameResponse, error) {
-	req := &graphql.Request{
-		OpName: "DataSourceByName",
-		Query: `
+// The query or mutation executed by DataSourceByName.
+const DataSourceByName_Operation = `
 query DataSourceByName ($uniqueName: String!) {
 	dataSource: dataSourceByName(uniqueName: $uniqueName) {
 		... DataSourceData
@@ -16974,7 +16861,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func DataSourceByName(
+	ctx context.Context,
+	client graphql.Client,
+	uniqueName string,
+) (*DataSourceByNameResponse, error) {
+	req := &graphql.Request{
+		OpName: "DataSourceByName",
+		Query:  DataSourceByName_Operation,
 		Variables: &__DataSourceByNameInput{
 			UniqueName: uniqueName,
 		},
@@ -16993,17 +16889,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func DataSources(
-	ctx context.Context,
-	client graphql.Client,
-	first *int,
-	last *int,
-	after *string,
-	before *string,
-) (*DataSourcesResponse, error) {
-	req := &graphql.Request{
-		OpName: "DataSources",
-		Query: `
+// The query or mutation executed by DataSources.
+const DataSources_Operation = `
 query DataSources ($first: Int, $last: Int, $after: String, $before: String) {
 	dataSources(first: $first, last: $last, after: $after, before: $before) {
 		pageInfo {
@@ -17127,7 +17014,19 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func DataSources(
+	ctx context.Context,
+	client graphql.Client,
+	first *int,
+	last *int,
+	after *string,
+	before *string,
+) (*DataSourcesResponse, error) {
+	req := &graphql.Request{
+		OpName: "DataSources",
+		Query:  DataSources_Operation,
 		Variables: &__DataSourcesInput{
 			First:  first,
 			Last:   last,
@@ -17149,6 +17048,13 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
+// The query or mutation executed by DeleteDataPool.
+const DeleteDataPool_Operation = `
+mutation DeleteDataPool ($id: ID!) {
+	deleteDataPool(id: $id)
+}
+`
+
 func DeleteDataPool(
 	ctx context.Context,
 	client graphql.Client,
@@ -17156,11 +17062,7 @@ func DeleteDataPool(
 ) (*DeleteDataPoolResponse, error) {
 	req := &graphql.Request{
 		OpName: "DeleteDataPool",
-		Query: `
-mutation DeleteDataPool ($id: ID!) {
-	deleteDataPool(id: $id)
-}
-`,
+		Query:  DeleteDataPool_Operation,
 		Variables: &__DeleteDataPoolInput{
 			Id: id,
 		},
@@ -17179,6 +17081,13 @@ mutation DeleteDataPool ($id: ID!) {
 	return &data, err
 }
 
+// The query or mutation executed by DeleteDataPoolByName.
+const DeleteDataPoolByName_Operation = `
+mutation DeleteDataPoolByName ($uniqueName: String!) {
+	deleteDataPoolByName(uniqueName: $uniqueName)
+}
+`
+
 func DeleteDataPoolByName(
 	ctx context.Context,
 	client graphql.Client,
@@ -17186,11 +17095,7 @@ func DeleteDataPoolByName(
 ) (*DeleteDataPoolByNameResponse, error) {
 	req := &graphql.Request{
 		OpName: "DeleteDataPoolByName",
-		Query: `
-mutation DeleteDataPoolByName ($uniqueName: String!) {
-	deleteDataPoolByName(uniqueName: $uniqueName)
-}
-`,
+		Query:  DeleteDataPoolByName_Operation,
 		Variables: &__DeleteDataPoolByNameInput{
 			UniqueName: uniqueName,
 		},
@@ -17209,6 +17114,13 @@ mutation DeleteDataPoolByName ($uniqueName: String!) {
 	return &data, err
 }
 
+// The query or mutation executed by DeleteDataSource.
+const DeleteDataSource_Operation = `
+mutation DeleteDataSource ($id: ID!) {
+	deleteDataSource(id: $id)
+}
+`
+
 func DeleteDataSource(
 	ctx context.Context,
 	client graphql.Client,
@@ -17216,11 +17128,7 @@ func DeleteDataSource(
 ) (*DeleteDataSourceResponse, error) {
 	req := &graphql.Request{
 		OpName: "DeleteDataSource",
-		Query: `
-mutation DeleteDataSource ($id: ID!) {
-	deleteDataSource(id: $id)
-}
-`,
+		Query:  DeleteDataSource_Operation,
 		Variables: &__DeleteDataSourceInput{
 			Id: id,
 		},
@@ -17239,6 +17147,13 @@ mutation DeleteDataSource ($id: ID!) {
 	return &data, err
 }
 
+// The query or mutation executed by DeleteDataSourceByName.
+const DeleteDataSourceByName_Operation = `
+mutation DeleteDataSourceByName ($uniqueName: String!) {
+	deleteDataSourceByName(uniqueName: $uniqueName)
+}
+`
+
 func DeleteDataSourceByName(
 	ctx context.Context,
 	client graphql.Client,
@@ -17246,11 +17161,7 @@ func DeleteDataSourceByName(
 ) (*DeleteDataSourceByNameResponse, error) {
 	req := &graphql.Request{
 		OpName: "DeleteDataSourceByName",
-		Query: `
-mutation DeleteDataSourceByName ($uniqueName: String!) {
-	deleteDataSourceByName(uniqueName: $uniqueName)
-}
-`,
+		Query:  DeleteDataSourceByName_Operation,
 		Variables: &__DeleteDataSourceByNameInput{
 			UniqueName: uniqueName,
 		},
@@ -17269,6 +17180,13 @@ mutation DeleteDataSourceByName ($uniqueName: String!) {
 	return &data, err
 }
 
+// The query or mutation executed by DeleteMetric.
+const DeleteMetric_Operation = `
+mutation DeleteMetric ($id: ID!) {
+	deleteMetric(id: $id)
+}
+`
+
 func DeleteMetric(
 	ctx context.Context,
 	client graphql.Client,
@@ -17276,11 +17194,7 @@ func DeleteMetric(
 ) (*DeleteMetricResponse, error) {
 	req := &graphql.Request{
 		OpName: "DeleteMetric",
-		Query: `
-mutation DeleteMetric ($id: ID!) {
-	deleteMetric(id: $id)
-}
-`,
+		Query:  DeleteMetric_Operation,
 		Variables: &__DeleteMetricInput{
 			Id: id,
 		},
@@ -17299,6 +17213,13 @@ mutation DeleteMetric ($id: ID!) {
 	return &data, err
 }
 
+// The query or mutation executed by DeleteMetricByName.
+const DeleteMetricByName_Operation = `
+mutation DeleteMetricByName ($uniqueName: String!) {
+	deleteMetricByName(uniqueName: $uniqueName)
+}
+`
+
 func DeleteMetricByName(
 	ctx context.Context,
 	client graphql.Client,
@@ -17306,11 +17227,7 @@ func DeleteMetricByName(
 ) (*DeleteMetricByNameResponse, error) {
 	req := &graphql.Request{
 		OpName: "DeleteMetricByName",
-		Query: `
-mutation DeleteMetricByName ($uniqueName: String!) {
-	deleteMetricByName(uniqueName: $uniqueName)
-}
-`,
+		Query:  DeleteMetricByName_Operation,
 		Variables: &__DeleteMetricByNameInput{
 			UniqueName: uniqueName,
 		},
@@ -17329,6 +17246,13 @@ mutation DeleteMetricByName ($uniqueName: String!) {
 	return &data, err
 }
 
+// The query or mutation executed by DeletePolicy.
+const DeletePolicy_Operation = `
+mutation DeletePolicy ($id: ID!) {
+	deletePolicy(id: $id)
+}
+`
+
 func DeletePolicy(
 	ctx context.Context,
 	client graphql.Client,
@@ -17336,11 +17260,7 @@ func DeletePolicy(
 ) (*DeletePolicyResponse, error) {
 	req := &graphql.Request{
 		OpName: "DeletePolicy",
-		Query: `
-mutation DeletePolicy ($id: ID!) {
-	deletePolicy(id: $id)
-}
-`,
+		Query:  DeletePolicy_Operation,
 		Variables: &__DeletePolicyInput{
 			Id: id,
 		},
@@ -17359,14 +17279,8 @@ mutation DeletePolicy ($id: ID!) {
 	return &data, err
 }
 
-func Metric(
-	ctx context.Context,
-	client graphql.Client,
-	id string,
-) (*MetricResponse, error) {
-	req := &graphql.Request{
-		OpName: "Metric",
-		Query: `
+// The query or mutation executed by Metric.
+const Metric_Operation = `
 query Metric ($id: ID!) {
 	metric(id: $id) {
 		... MetricData
@@ -17484,8 +17398,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -17606,10 +17520,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -17649,7 +17559,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func Metric(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*MetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "Metric",
+		Query:  Metric_Operation,
 		Variables: &__MetricInput{
 			Id: id,
 		},
@@ -17668,14 +17587,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func MetricByName(
-	ctx context.Context,
-	client graphql.Client,
-	uniqueName string,
-) (*MetricByNameResponse, error) {
-	req := &graphql.Request{
-		OpName: "MetricByName",
-		Query: `
+// The query or mutation executed by MetricByName.
+const MetricByName_Operation = `
 query MetricByName ($uniqueName: String!) {
 	metric: metricByName(uniqueName: $uniqueName) {
 		... MetricData
@@ -17793,8 +17706,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -17915,10 +17828,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -17958,7 +17867,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func MetricByName(
+	ctx context.Context,
+	client graphql.Client,
+	uniqueName string,
+) (*MetricByNameResponse, error) {
+	req := &graphql.Request{
+		OpName: "MetricByName",
+		Query:  MetricByName_Operation,
 		Variables: &__MetricByNameInput{
 			UniqueName: uniqueName,
 		},
@@ -17977,17 +17895,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func Metrics(
-	ctx context.Context,
-	client graphql.Client,
-	first *int,
-	last *int,
-	after *string,
-	before *string,
-) (*MetricsResponse, error) {
-	req := &graphql.Request{
-		OpName: "Metrics",
-		Query: `
+// The query or mutation executed by Metrics.
+const Metrics_Operation = `
 query Metrics ($first: Int, $last: Int, $after: String, $before: String) {
 	metrics(first: $first, last: $last, after: $after, before: $before) {
 		pageInfo {
@@ -18122,8 +18031,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -18244,10 +18153,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -18287,7 +18192,19 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func Metrics(
+	ctx context.Context,
+	client graphql.Client,
+	first *int,
+	last *int,
+	after *string,
+	before *string,
+) (*MetricsResponse, error) {
+	req := &graphql.Request{
+		OpName: "Metrics",
+		Query:  Metrics_Operation,
 		Variables: &__MetricsInput{
 			First:  first,
 			Last:   last,
@@ -18309,14 +18226,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func ModifyDataPool(
-	ctx context.Context,
-	client graphql.Client,
-	input *ModifyDataPoolInput,
-) (*ModifyDataPoolResponse, error) {
-	req := &graphql.Request{
-		OpName: "ModifyDataPool",
-		Query: `
+// The query or mutation executed by ModifyDataPool.
+const ModifyDataPool_Operation = `
 mutation ModifyDataPool ($input: modifyDataPoolInput!) {
 	modifyDataPool(input: $input) {
 		__typename
@@ -18351,8 +18262,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -18480,10 +18391,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -18523,7 +18430,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func ModifyDataPool(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyDataPoolInput,
+) (*ModifyDataPoolResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyDataPool",
+		Query:  ModifyDataPool_Operation,
 		Variables: &__ModifyDataPoolInput{
 			Input: input,
 		},
@@ -18542,14 +18458,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func ModifyHttpDataSource(
-	ctx context.Context,
-	client graphql.Client,
-	input *ModifyHttpDataSourceInput,
-) (*ModifyHttpDataSourceResponse, error) {
-	req := &graphql.Request{
-		OpName: "ModifyHttpDataSource",
-		Query: `
+// The query or mutation executed by ModifyHttpDataSource.
+const ModifyHttpDataSource_Operation = `
 mutation ModifyHttpDataSource ($input: ModifyHttpDataSourceInput!) {
 	modifyHttpDataSource(input: $input) {
 		dataSource {
@@ -18662,7 +18572,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func ModifyHttpDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyHttpDataSourceInput,
+) (*ModifyHttpDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyHttpDataSource",
+		Query:  ModifyHttpDataSource_Operation,
 		Variables: &__ModifyHttpDataSourceInput{
 			Input: input,
 		},
@@ -18681,14 +18600,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func ModifyMetric(
-	ctx context.Context,
-	client graphql.Client,
-	input *ModifyMetricInput,
-) (*ModifyMetricResponse, error) {
-	req := &graphql.Request{
-		OpName: "ModifyMetric",
-		Query: `
+// The query or mutation executed by ModifyMetric.
+const ModifyMetric_Operation = `
 mutation ModifyMetric ($input: ModifyMetricInput) {
 	modifyMetric(input: $input) {
 		__typename
@@ -18809,8 +18722,8 @@ fragment DataPoolData on DataPool {
 			... DataPoolColumnData
 		}
 	}
-	cursor {
-		... CursorData
+	uniqueId {
+		columnName
 	}
 	syncing {
 		... DataPoolSyncingData
@@ -18931,10 +18844,6 @@ fragment DataPoolColumnData on DataPoolColumn {
 	type
 	isNullable
 }
-fragment CursorData on Cursor {
-	columnName
-	type
-}
 fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
@@ -18974,7 +18883,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func ModifyMetric(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyMetricInput,
+) (*ModifyMetricResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyMetric",
+		Query:  ModifyMetric_Operation,
 		Variables: &__ModifyMetricInput{
 			Input: input,
 		},
@@ -18993,14 +18911,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func ModifyPolicy(
-	ctx context.Context,
-	client graphql.Client,
-	input *ModifyPolicyInput,
-) (*ModifyPolicyResponse, error) {
-	req := &graphql.Request{
-		OpName: "ModifyPolicy",
-		Query: `
+// The query or mutation executed by ModifyPolicy.
+const ModifyPolicy_Operation = `
 mutation ModifyPolicy ($input: ModifyPolicyInput!) {
 	modifyPolicy(input: $input) {
 		policy {
@@ -19018,7 +18930,16 @@ fragment PolicyData on Policy {
 		id
 	}
 }
-`,
+`
+
+func ModifyPolicy(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyPolicyInput,
+) (*ModifyPolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyPolicy",
+		Query:  ModifyPolicy_Operation,
 		Variables: &__ModifyPolicyInput{
 			Input: input,
 		},
@@ -19037,14 +18958,8 @@ fragment PolicyData on Policy {
 	return &data, err
 }
 
-func ModifyS3DataSource(
-	ctx context.Context,
-	client graphql.Client,
-	input *ModifyS3DataSourceInput,
-) (*ModifyS3DataSourceResponse, error) {
-	req := &graphql.Request{
-		OpName: "ModifyS3DataSource",
-		Query: `
+// The query or mutation executed by ModifyS3DataSource.
+const ModifyS3DataSource_Operation = `
 mutation ModifyS3DataSource ($input: ModifyS3DataSourceInput!) {
 	modifyS3DataSource(input: $input) {
 		dataSource {
@@ -19157,7 +19072,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func ModifyS3DataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyS3DataSourceInput,
+) (*ModifyS3DataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyS3DataSource",
+		Query:  ModifyS3DataSource_Operation,
 		Variables: &__ModifyS3DataSourceInput{
 			Input: input,
 		},
@@ -19176,14 +19100,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func ModifySnowflakeDataSource(
-	ctx context.Context,
-	client graphql.Client,
-	input *ModifySnowflakeDataSourceInput,
-) (*ModifySnowflakeDataSourceResponse, error) {
-	req := &graphql.Request{
-		OpName: "ModifySnowflakeDataSource",
-		Query: `
+// The query or mutation executed by ModifySnowflakeDataSource.
+const ModifySnowflakeDataSource_Operation = `
 mutation ModifySnowflakeDataSource ($input: modifySnowflakeDataSourceInput!) {
 	modifySnowflakeDataSource(input: $input) {
 		__typename
@@ -19308,7 +19226,16 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedBy
 	numTables
 }
-`,
+`
+
+func ModifySnowflakeDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifySnowflakeDataSourceInput,
+) (*ModifySnowflakeDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifySnowflakeDataSource",
+		Query:  ModifySnowflakeDataSource_Operation,
 		Variables: &__ModifySnowflakeDataSourceInput{
 			Input: input,
 		},
@@ -19327,14 +19254,8 @@ fragment TableIntrospectionData on TableIntrospection {
 	return &data, err
 }
 
-func Policy(
-	ctx context.Context,
-	client graphql.Client,
-	id string,
-) (*PolicyResponse, error) {
-	req := &graphql.Request{
-		OpName: "Policy",
-		Query: `
+// The query or mutation executed by Policy.
+const Policy_Operation = `
 query Policy ($id: ID!) {
 	policy(id: $id) {
 		... PolicyData
@@ -19350,7 +19271,16 @@ fragment PolicyData on Policy {
 		id
 	}
 }
-`,
+`
+
+func Policy(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*PolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "Policy",
+		Query:  Policy_Operation,
 		Variables: &__PolicyInput{
 			Id: id,
 		},
