@@ -1,0 +1,7 @@
+mutation CreateWebhookDataSource($input: CreateWebhookDataSourceInput!) {
+    createWebhookDataSource(input: $input) {
+        dataSource {
+            ...DataSourceData
+        }
+    }
+}

@@ -1701,6 +1701,11 @@ type CreateDataPoolInputV2 struct {
 	UniqueId *UniqueIdInput `json:"uniqueId,omitempty"`
 	// The Data Pool's syncing settings.
 	Syncing *DataPoolSyncingInput `json:"syncing,omitempty"`
+	// Enables or disables access control for the Data Pool.
+	//
+	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
+	// Policies in order to query the Data Pool and its Metrics.
+	AccessControlEnabled *bool `json:"accessControlEnabled"`
 }
 
 // GetDataSource returns CreateDataPoolInputV2.DataSource, and is useful for accessing the field via an interface.
@@ -1729,6 +1734,9 @@ func (v *CreateDataPoolInputV2) GetUniqueId() *UniqueIdInput { return v.UniqueId
 
 // GetSyncing returns CreateDataPoolInputV2.Syncing, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInputV2) GetSyncing() *DataPoolSyncingInput { return v.Syncing }
+
+// GetAccessControlEnabled returns CreateDataPoolInputV2.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolInputV2) GetAccessControlEnabled() *bool { return v.AccessControlEnabled }
 
 // CreateDataPoolResponse is returned by CreateDataPool on success.
 type CreateDataPoolResponse struct {
@@ -3584,6 +3592,245 @@ func (v *CreateSumMetricResponse) GetCreateSumMetric() *CreateSumMetricCreateSum
 	return v.CreateSumMetric
 }
 
+// CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponse) GetDataSource() *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetConnectionSettings returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalCreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalCreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+type CreateWebhookDataSourceInput struct {
+	// The Webhook Data Source's connection settings
+	ConnectionSettings *WebhookConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The Webhook Data Source's description.
+	Description *string `json:"description"`
+	// The Webhook Data Source's unique name. If not specified, Propel will set the ID as unique name.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns CreateWebhookDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceInput) GetConnectionSettings() *WebhookConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns CreateWebhookDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetUniqueName returns CreateWebhookDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// CreateWebhookDataSourceResponse is returned by CreateWebhookDataSource on success.
+type CreateWebhookDataSourceResponse struct {
+	// Creates a new Webhook Data Source from the given settings.
+	//
+	// Returns the newly created Data Source (or an error message if creating the Data Source fails).
+	CreateWebhookDataSource *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponse `json:"createWebhookDataSource"`
+}
+
+// GetCreateWebhookDataSource returns CreateWebhookDataSourceResponse.CreateWebhookDataSource, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceResponse) GetCreateWebhookDataSource() *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponse {
+	return v.CreateWebhookDataSource
+}
+
 // DataPoolByNameDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
@@ -4665,7 +4912,7 @@ func (v *DataPoolDataSyncingDataPoolSyncing) GetStatus() DataPoolSyncStatus {
 }
 
 // GetInterval returns DataPoolDataSyncingDataPoolSyncing.Interval, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncingDataPoolSyncing) GetInterval() DataPoolSyncInterval {
+func (v *DataPoolDataSyncingDataPoolSyncing) GetInterval() *DataPoolSyncInterval {
 	return v.DataPoolSyncingData.Interval
 }
 
@@ -4702,7 +4949,7 @@ func (v *DataPoolDataSyncingDataPoolSyncing) UnmarshalJSON(b []byte) error {
 type __premarshalDataPoolDataSyncingDataPoolSyncing struct {
 	Status DataPoolSyncStatus `json:"status"`
 
-	Interval DataPoolSyncInterval `json:"interval"`
+	Interval *DataPoolSyncInterval `json:"interval"`
 
 	LastSyncedAt *time.Time `json:"lastSyncedAt"`
 }
@@ -5053,7 +5300,7 @@ type DataPoolSyncingData struct {
 	// does not mean that syncing will occur exactly on the hour. Instead, the syncing interval starts relative to
 	// when the Data Pool goes `LIVE`, and Propel will attempt to sync approximately every hour. Additionally,
 	// if you pause or resume syncing, this too can shift the syncing interval around.
-	Interval DataPoolSyncInterval `json:"interval"`
+	Interval *DataPoolSyncInterval `json:"interval"`
 	// The date and time of the most recent Sync in UTC.
 	LastSyncedAt *time.Time `json:"lastSyncedAt"`
 }
@@ -5062,7 +5309,7 @@ type DataPoolSyncingData struct {
 func (v *DataPoolSyncingData) GetStatus() DataPoolSyncStatus { return v.Status }
 
 // GetInterval returns DataPoolSyncingData.Interval, and is useful for accessing the field via an interface.
-func (v *DataPoolSyncingData) GetInterval() DataPoolSyncInterval { return v.Interval }
+func (v *DataPoolSyncingData) GetInterval() *DataPoolSyncInterval { return v.Interval }
 
 // GetLastSyncedAt returns DataPoolSyncingData.LastSyncedAt, and is useful for accessing the field via an interface.
 func (v *DataPoolSyncingData) GetLastSyncedAt() *time.Time { return v.LastSyncedAt }
@@ -5886,6 +6133,7 @@ func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return 
 // DataSourceDataConnectionSettingsHttpConnectionSettings
 // DataSourceDataConnectionSettingsS3ConnectionSettings
 // DataSourceDataConnectionSettingsSnowflakeConnectionSettings
+// DataSourceDataConnectionSettingsWebhookConnectionSettings
 type DataSourceDataConnectionSettings interface {
 	implementsGraphQLInterfaceDataSourceDataConnectionSettings()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
@@ -5897,6 +6145,8 @@ func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) implementsGraph
 func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
+}
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 
 func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConnectionSettings) error {
@@ -5921,6 +6171,9 @@ func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConn
 		return json.Unmarshal(b, *v)
 	case "SnowflakeConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsSnowflakeConnectionSettings)
+		return json.Unmarshal(b, *v)
+	case "WebhookConnectionSettings":
+		*v = new(DataSourceDataConnectionSettingsWebhookConnectionSettings)
 		return json.Unmarshal(b, *v)
 	case "":
 		return fmt.Errorf(
@@ -5957,6 +6210,14 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 		result := struct {
 			TypeName string `json:"__typename"`
 			*DataSourceDataConnectionSettingsSnowflakeConnectionSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case *DataSourceDataConnectionSettingsWebhookConnectionSettings:
+		typename = "WebhookConnectionSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DataSourceDataConnectionSettingsWebhookConnectionSettings
 		}{typename, v}
 		return json.Marshal(result)
 	case nil:
@@ -6220,6 +6481,100 @@ func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetUsernam
 
 // GetRole returns DataSourceDataConnectionSettingsSnowflakeConnectionSettings.Role, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsSnowflakeConnectionSettings) GetRole() string { return v.Role }
+
+// DataSourceDataConnectionSettingsWebhookConnectionSettings includes the requested fields of the GraphQL type WebhookConnectionSettings.
+// The GraphQL type's documentation follows.
+//
+// The Webhook Data Source connection settings.
+type DataSourceDataConnectionSettingsWebhookConnectionSettings struct {
+	Typename *string `json:"__typename"`
+	// The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
+	BasicAuth *DataSourceDataConnectionSettingsWebhookConnectionSettingsBasicAuthHttpBasicAuthSettings `json:"basicAuth"`
+	// The additional columns for the Webhook Data Source table.
+	Columns []*DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn `json:"columns"`
+	// The Webhook URL for posting JSON events
+	WebhookUrl string `json:"webhookUrl"`
+}
+
+// GetTypename returns DataSourceDataConnectionSettingsWebhookConnectionSettings.Typename, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTypename() *string {
+	return v.Typename
+}
+
+// GetBasicAuth returns DataSourceDataConnectionSettingsWebhookConnectionSettings.BasicAuth, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetBasicAuth() *DataSourceDataConnectionSettingsWebhookConnectionSettingsBasicAuthHttpBasicAuthSettings {
+	return v.BasicAuth
+}
+
+// GetColumns returns DataSourceDataConnectionSettingsWebhookConnectionSettings.Columns, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetColumns() []*DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn {
+	return v.Columns
+}
+
+// GetWebhookUrl returns DataSourceDataConnectionSettingsWebhookConnectionSettings.WebhookUrl, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetWebhookUrl() string {
+	return v.WebhookUrl
+}
+
+// DataSourceDataConnectionSettingsWebhookConnectionSettingsBasicAuthHttpBasicAuthSettings includes the requested fields of the GraphQL type HttpBasicAuthSettings.
+// The GraphQL type's documentation follows.
+//
+// The HTTP Basic authentication settings.
+type DataSourceDataConnectionSettingsWebhookConnectionSettingsBasicAuthHttpBasicAuthSettings struct {
+	// Username for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
+	Username string `json:"username"`
+	// Password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
+	Password string `json:"password"`
+}
+
+// GetUsername returns DataSourceDataConnectionSettingsWebhookConnectionSettingsBasicAuthHttpBasicAuthSettings.Username, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsBasicAuthHttpBasicAuthSettings) GetUsername() string {
+	return v.Username
+}
+
+// GetPassword returns DataSourceDataConnectionSettingsWebhookConnectionSettingsBasicAuthHttpBasicAuthSettings.Password, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsBasicAuthHttpBasicAuthSettings) GetPassword() string {
+	return v.Password
+}
+
+// DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn includes the requested fields of the GraphQL type WebhookDataSourceColumn.
+// The GraphQL type's documentation follows.
+//
+// A column in the Webhook Data Source's table.
+type DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn struct {
+	// The column name.
+	Name string `json:"name"`
+	// The column type.
+	Type ColumnType `json:"type"`
+	// The JSON property that the column will be derived from. For example, if you POST a JSON event like this:
+	// ```json
+	// { "greeting": { "message": "hello, world" } }
+	// ```
+	// Then you can use the JSON property "greeting.message" to extract "hello, world" to a column.
+	JsonProperty string `json:"jsonProperty"`
+	// Whether the column's type is nullable or not.
+	Nullable bool `json:"nullable"`
+}
+
+// GetName returns DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn.Name, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn) GetName() string {
+	return v.Name
+}
+
+// GetType returns DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn.Type, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn) GetType() ColumnType {
+	return v.Type
+}
+
+// GetJsonProperty returns DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn.JsonProperty, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn) GetJsonProperty() string {
+	return v.JsonProperty
+}
+
+// GetNullable returns DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn.Nullable, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn) GetNullable() bool {
+	return v.Nullable
+}
 
 // DataSourceDataError includes the requested fields of the GraphQL type Error.
 // The GraphQL type's documentation follows.
@@ -10328,6 +10683,11 @@ type ModifyDataPoolInput struct {
 	DataRetentionInDays *int `json:"dataRetentionInDays"`
 	// The Data Pool's new syncing settings.
 	Syncing *DataPoolSyncingInput `json:"syncing,omitempty"`
+	// Enables or disables access control for the Data Pool.
+	//
+	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
+	// Policies in order to query the Data Pool and its Metrics.
+	AccessControlEnabled *bool `json:"accessControlEnabled"`
 }
 
 // GetIdOrUniqueName returns ModifyDataPoolInput.IdOrUniqueName, and is useful for accessing the field via an interface.
@@ -10344,6 +10704,9 @@ func (v *ModifyDataPoolInput) GetDataRetentionInDays() *int { return v.DataReten
 
 // GetSyncing returns ModifyDataPoolInput.Syncing, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolInput) GetSyncing() *DataPoolSyncingInput { return v.Syncing }
+
+// GetAccessControlEnabled returns ModifyDataPoolInput.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolInput) GetAccessControlEnabled() *bool { return v.AccessControlEnabled }
 
 // ModifyDataPoolModifyDataPoolDataPoolOrFailureResponse includes the requested fields of the GraphQL interface DataPoolOrFailureResponse.
 //
@@ -12735,6 +13098,65 @@ type UniqueIdInput struct {
 // GetColumnName returns UniqueIdInput.ColumnName, and is useful for accessing the field via an interface.
 func (v *UniqueIdInput) GetColumnName() string { return v.ColumnName }
 
+// The Webhook Data Source connection settings.
+type WebhookConnectionSettingsInput struct {
+	// The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
+	BasicAuth *HttpBasicAuthInput `json:"basicAuth,omitempty"`
+	// The additional columns for the Webhook Data Source table.
+	Columns []*WebhookDataSourceColumnInput `json:"columns,omitempty"`
+	// The tenant ID column, if configured.
+	Tenant *string `json:"tenant"`
+	// The primary timestamp column.
+	Timestamp string `json:"timestamp"`
+	// The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
+	UniqueId *string `json:"uniqueId"`
+}
+
+// GetBasicAuth returns WebhookConnectionSettingsInput.BasicAuth, and is useful for accessing the field via an interface.
+func (v *WebhookConnectionSettingsInput) GetBasicAuth() *HttpBasicAuthInput { return v.BasicAuth }
+
+// GetColumns returns WebhookConnectionSettingsInput.Columns, and is useful for accessing the field via an interface.
+func (v *WebhookConnectionSettingsInput) GetColumns() []*WebhookDataSourceColumnInput {
+	return v.Columns
+}
+
+// GetTenant returns WebhookConnectionSettingsInput.Tenant, and is useful for accessing the field via an interface.
+func (v *WebhookConnectionSettingsInput) GetTenant() *string { return v.Tenant }
+
+// GetTimestamp returns WebhookConnectionSettingsInput.Timestamp, and is useful for accessing the field via an interface.
+func (v *WebhookConnectionSettingsInput) GetTimestamp() string { return v.Timestamp }
+
+// GetUniqueId returns WebhookConnectionSettingsInput.UniqueId, and is useful for accessing the field via an interface.
+func (v *WebhookConnectionSettingsInput) GetUniqueId() *string { return v.UniqueId }
+
+// The fields for specifying a column in an Webhook Data Source's table.
+type WebhookDataSourceColumnInput struct {
+	// The column name. It has to be unique within a Table.
+	Name string `json:"name"`
+	// The JSON property that the column will be derived from. For example, if you POST a JSON event like this:
+	// ```json
+	// { "greeting": { "message": "hello, world" } }
+	// ```
+	// Then you can use the JSON property "greeting.message" to extract "hello, world" to a column.
+	JsonProperty string `json:"jsonProperty"`
+	// The column type.
+	Type ColumnType `json:"type"`
+	// Whether the column's type is nullable or not.
+	Nullable bool `json:"nullable"`
+}
+
+// GetName returns WebhookDataSourceColumnInput.Name, and is useful for accessing the field via an interface.
+func (v *WebhookDataSourceColumnInput) GetName() string { return v.Name }
+
+// GetJsonProperty returns WebhookDataSourceColumnInput.JsonProperty, and is useful for accessing the field via an interface.
+func (v *WebhookDataSourceColumnInput) GetJsonProperty() string { return v.JsonProperty }
+
+// GetType returns WebhookDataSourceColumnInput.Type, and is useful for accessing the field via an interface.
+func (v *WebhookDataSourceColumnInput) GetType() ColumnType { return v.Type }
+
+// GetNullable returns WebhookDataSourceColumnInput.Nullable, and is useful for accessing the field via an interface.
+func (v *WebhookDataSourceColumnInput) GetNullable() bool { return v.Nullable }
+
 // __CreateAverageMetricInput is used internally by genqlient
 type __CreateAverageMetricInput struct {
 	Input *CreateAverageMetricInput `json:"input,omitempty"`
@@ -12830,6 +13252,14 @@ type __CreateSumMetricInput struct {
 
 // GetInput returns __CreateSumMetricInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateSumMetricInput) GetInput() *CreateSumMetricInput { return v.Input }
+
+// __CreateWebhookDataSourceInput is used internally by genqlient
+type __CreateWebhookDataSourceInput struct {
+	Input *CreateWebhookDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateWebhookDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateWebhookDataSourceInput) GetInput() *CreateWebhookDataSourceInput { return v.Input }
 
 // __DataPoolByNameInput is used internally by genqlient
 type __DataPoolByNameInput struct {
@@ -13258,6 +13688,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -13568,6 +14011,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {
@@ -13880,6 +14336,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -14191,6 +14660,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -14414,6 +14896,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -14573,6 +15068,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {
@@ -14866,6 +15374,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {
@@ -15178,6 +15699,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -15385,6 +15919,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -15534,6 +16081,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {
@@ -15832,6 +16392,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -15925,6 +16498,161 @@ func CreateSumMetric(
 	var err error
 
 	var data CreateSumMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by CreateWebhookDataSource.
+const CreateWebhookDataSource_Operation = `
+mutation CreateWebhookDataSource ($input: CreateWebhookDataSourceInput!) {
+	createWebhookDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				path
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`
+
+func CreateWebhookDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateWebhookDataSourceInput,
+) (*CreateWebhookDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateWebhookDataSource",
+		Query:  CreateWebhookDataSource_Operation,
+		Variables: &__CreateWebhookDataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateWebhookDataSourceResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -16049,6 +16777,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {
@@ -16267,6 +17008,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {
@@ -16499,6 +17253,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -16663,6 +17430,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -16802,6 +17582,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {
@@ -16955,6 +17748,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {
@@ -17483,6 +18289,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -17790,6 +18609,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {
@@ -18116,6 +18948,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -18354,6 +19199,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -18513,6 +19371,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {
@@ -18807,6 +19678,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -19014,6 +19898,19 @@ fragment DataSourceData on DataSource {
 				}
 			}
 		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -19163,6 +20060,19 @@ fragment DataSourceData on DataSource {
 					nullable
 				}
 			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			webhookUrl
 		}
 	}
 	tables(first: 100) {

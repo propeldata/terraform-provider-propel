@@ -45,6 +45,19 @@ fragment DataSourceData on DataSource {
                 }
             }
         }
+        ... on WebhookConnectionSettings {
+            basicAuth {
+                username
+                password
+            }
+            columns {
+                name
+                type
+                jsonProperty
+                nullable
+            }
+            webhookUrl
+        }
     }
     tables (first: 100) {
         nodes {
