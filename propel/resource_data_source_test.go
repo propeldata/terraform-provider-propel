@@ -26,6 +26,11 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 		"unique_name":   acctest.RandString(10),
 	}
 
+	webhookCtx := map[string]any{
+		"resource_name": "webhook",
+		"unique_name":   acctest.RandString(10),
+	}
+
 	snowflakeCtxInvalid := map[string]any{
 		"resource_name":       "foo",
 		"unique_name":         acctest.RandString(10),
@@ -82,7 +87,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 			},
 			// should create Webhook data source
 			{
-				Config: testAccWebhookDataSourceBasic(map[string]any{}),
+				Config: testAccWebhookDataSourceBasic(webhookCtx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.terraform-webhook"),
 					resource.TestCheckResourceAttr("propel_data_source.terraform-webhook", "type", "Webhook"),
@@ -180,10 +185,9 @@ func testAccCheckPropelDataSourceSnowflakeConfigBroken(ctx map[string]any) strin
 }
 
 func testAccWebhookDataSourceBasic(ctx map[string]any) string {
-	// language=hcl-terraform
 	return Nprintf(`
-	resource "propel_data_source" "terraform-webhook" {
-		unique_name = "terraform-webhook"
+	resource "propel_data_source" "%{resource_name}" {
+		unique_name = "%{unique_name}"
 		type = "Webhook"
 
 		webhook_connection_settings {

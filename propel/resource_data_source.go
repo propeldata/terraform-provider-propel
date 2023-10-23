@@ -194,6 +194,7 @@ func resourceDataSource() *schema.Resource {
 			"webhook_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
+				ForceNew:      true,
 				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
@@ -221,8 +222,8 @@ func resourceDataSource() *schema.Resource {
 						},
 						"column": {
 							Type:        schema.TypeList,
-							Required:    true,
-							ForceNew:    false,
+							Optional:    true,
+							ForceNew:    true,
 							Description: "The additional column for the Webhook Data Source table.",
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
@@ -254,11 +255,14 @@ func resourceDataSource() *schema.Resource {
 						},
 						"tenant": {
 							Type:        schema.TypeString,
+							Optional:    true,
+							ForceNew:    true,
 							Description: "The tenant ID column, if configured.",
 						},
 						"timestamp": {
 							Type:        schema.TypeString,
 							Required:    true,
+							ForceNew:    true,
 							Description: "The primary timestamp column.",
 						},
 						"unique_id": {
