@@ -491,35 +491,40 @@ func resourceS3DataSourceCreate(ctx context.Context, d *schema.ResourceData, met
 func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
-	var basicAuth *pc.HttpBasicAuthInput
+	connectionSettings := &pc.WebhookConnectionSettingsInput{}
 	if d.Get("webhook_connection_settings") != nil && len(d.Get("webhook_connection_settings").([]any)) > 0 {
 		cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
 
 		if def, ok := cs["basic_auth"]; ok {
-			basicAuth = expandBasicAuth(def.([]any))
+			connectionSettings.BasicAuth = expandBasicAuth(def.([]any))
+		}
+
+		columns := make([]*pc.WebhookDataSourceColumnInput, 0)
+		if def, ok := cs["column"].([]any); ok && len(def) > 0 {
+			columns = expandWebhookColumns(def)
+		}
+
+		connectionSettings.Timestamp = cs["timestamp"].(string)
+		connectionSettings.Columns = columns
+
+		if t, ok := cs["tenant"]; ok {
+			tenant := t.(string)
+			connectionSettings.Tenant = &tenant
+		}
+
+		if u, ok := cs["unique_id"]; ok {
+			uniqueID := u.(string)
+			connectionSettings.UniqueId = &uniqueID
 		}
 	}
 
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
-	tenant := d.Get("tenant").(string)
-	uniqueID := d.Get("unique_id").(string)
-
-	columns := make([]*pc.WebhookDataSourceColumnInput, 0)
-	if def, ok := d.Get("column").([]any); ok && len(def) > 0 {
-		columns = expandWebhookColumns(def)
-	}
 
 	input := &pc.CreateWebhookDataSourceInput{
-		UniqueName:  &uniqueName,
-		Description: &description,
-		ConnectionSettings: &pc.WebhookConnectionSettingsInput{
-			BasicAuth: basicAuth,
-			Columns:   columns,
-			Tenant:    &tenant,
-			Timestamp: d.Get("timestamp").(string),
-			UniqueId:  &uniqueID,
-		},
+		UniqueName:         &uniqueName,
+		Description:        &description,
+		ConnectionSettings: connectionSettings,
 	}
 
 	response, err := pc.CreateWebhookDataSource(ctx, c, input)
@@ -661,7 +666,7 @@ func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) d
 			})
 		}
 
-		if err := d.Set("table", (interface{})(tables)); err != nil {
+		if err := d.Set("table", (any)(tables)); err != nil {
 			return diag.FromErr(err)
 		}
 	}
@@ -695,7 +700,7 @@ func handleS3Tables(response *pc.DataSourceResponse, d *schema.ResourceData) dia
 			})
 		}
 
-		if err := d.Set("table", (interface{})(tables)); err != nil {
+		if err := d.Set("table", (any)(tables)); err != nil {
 			return diag.FromErr(err)
 		}
 	}
@@ -763,10 +768,10 @@ func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 	switch s := response.DataSource.GetConnectionSettings().(type) {
 	case *pc.DataSourceDataConnectionSettingsWebhookConnectionSettings:
 		settings := map[string]any{
-			"basic_auth": nil,
-			"timestamp":  s.GetTimestamp(),
-			"tenant":     s.GetTenant(),
-			"unique_id":  s.GetUniqueId(),
+			"timestamp": s.GetTimestamp(),
+			"tenant":    s.GetTenant(),
+			"unique_id": s.GetUniqueId(),
+			"columns":   s.GetColumns(),
 		}
 
 		if s.BasicAuth != nil {

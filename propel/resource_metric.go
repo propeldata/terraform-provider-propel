@@ -154,7 +154,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 	var diags diag.Diagnostics
 
 	filters := make([]*pc.FilterInput, 0)
-	if def, ok := d.Get("filter").([]interface{}); ok && len(def) > 0 {
+	if def, ok := d.Get("filter").([]any); ok && len(def) > 0 {
 		filters, diags = expandMetricFilters(def)
 		if diags != nil {
 			return diags
@@ -499,7 +499,7 @@ func resourceMetricDelete(ctx context.Context, d *schema.ResourceData, m interfa
 	return nil
 }
 
-func expandMetricFilters(def []interface{}) ([]*pc.FilterInput, diag.Diagnostics) {
+func expandMetricFilters(def []any) ([]*pc.FilterInput, diag.Diagnostics) {
 	filters := make([]*pc.FilterInput, 0, len(def))
 
 	for _, rawFilter := range def {
@@ -539,7 +539,7 @@ func expandMetricFilters(def []interface{}) ([]*pc.FilterInput, diag.Diagnostics
 	return filters, nil
 }
 
-func expandMetricDimensions(def []interface{}) []*pc.DimensionInput {
+func expandMetricDimensions(def []any) []*pc.DimensionInput {
 	dimensions := make([]*pc.DimensionInput, 0, len(def))
 
 	for _, rawDimension := range def {

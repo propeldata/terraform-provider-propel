@@ -165,7 +165,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 	description := d.Get("description").(string)
 
 	columns := make([]*pc.DataPoolColumnInput, 0)
-	if def, ok := d.Get("column").([]interface{}); ok && len(def) > 0 {
+	if def, ok := d.Get("column").([]any); ok && len(def) > 0 {
 		columns = expandDataPoolColumns(def)
 	}
 

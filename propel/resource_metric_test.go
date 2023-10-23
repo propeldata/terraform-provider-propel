@@ -21,7 +21,7 @@ var (
 func Test_expandMetricFilters(t *testing.T) {
 	tests := []struct {
 		name          string
-		def           []interface{}
+		def           []any
 		want          []*pc.FilterInput
 		expectedError bool
 	}{
