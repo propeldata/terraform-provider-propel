@@ -232,7 +232,7 @@ func resourceDataSource() *schema.Resource {
 										Required:    true,
 										Description: "The column name.",
 									},
-									"jsonProperty": {
+									"json_property": {
 										Type:     schema.TypeString,
 										Required: true,
 										Description: `The JSON property that the column will be derived from. For example, if you POST a JSON event like this:
@@ -1117,7 +1117,7 @@ func expandWebhookColumns(def []any) []*pc.WebhookDataSourceColumnInput {
 			Name:         column["name"].(string),
 			Type:         pc.ColumnType(column["type"].(string)),
 			Nullable:     column["nullable"].(bool),
-			JsonProperty: column["jsonProperty"].(string),
+			JsonProperty: column["json_property"].(string),
 		}
 	}
 
