@@ -338,12 +338,12 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(err)
 	}
 
-	filters := make([]map[string]interface{}, 0)
+	filters := make([]map[string]any, 0)
 
 	switch s := response.Metric.Settings.(type) {
 	case *pc.MetricDataSettingsCountMetricSettings:
 		for _, f := range s.Filters {
-			filter := map[string]interface{}{
+			filter := map[string]any{
 				"column":   f.Column,
 				"operator": f.Operator,
 				"value":    f.Value,
@@ -357,7 +357,7 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		}
 
 		for _, f := range s.Filters {
-			filter := map[string]interface{}{
+			filter := map[string]any{
 				"column":   f.Column,
 				"operator": f.Operator,
 				"value":    f.Value,
@@ -371,7 +371,7 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		}
 
 		for _, f := range s.Filters {
-			filter := map[string]interface{}{
+			filter := map[string]any{
 				"column":   f.Column,
 				"operator": f.Operator,
 				"value":    f.Value,
@@ -385,7 +385,7 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		}
 
 		for _, f := range s.Filters {
-			filter := map[string]interface{}{
+			filter := map[string]any{
 				"column":   f.Column,
 				"operator": f.Operator,
 				"value":    f.Value,
@@ -399,7 +399,7 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		}
 
 		for _, f := range s.Filters {
-			filter := map[string]interface{}{
+			filter := map[string]any{
 				"column":   f.Column,
 				"operator": f.Operator,
 				"value":    f.Value,
@@ -413,7 +413,7 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		}
 
 		for _, f := range s.Filters {
-			filter := map[string]interface{}{
+			filter := map[string]any{
 				"column":   f.Column,
 				"operator": f.Operator,
 				"value":    f.Value,
@@ -427,7 +427,7 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		}
 
 		for _, f := range s.Filters {
-			filter := map[string]interface{}{
+			filter := map[string]any{
 				"column":   f.Column,
 				"operator": f.Operator,
 				"value":    f.Value,
@@ -503,7 +503,7 @@ func expandMetricFilters(def []interface{}) ([]*pc.FilterInput, diag.Diagnostics
 	filters := make([]*pc.FilterInput, 0, len(def))
 
 	for _, rawFilter := range def {
-		filter := rawFilter.(map[string]interface{})
+		filter := rawFilter.(map[string]any)
 
 		f := &pc.FilterInput{
 			Column:   filter["column"].(string),

@@ -203,18 +203,18 @@ func resourceDataSource() *schema.Resource {
 							Type:        schema.TypeList,
 							Optional:    true,
 							MaxItems:    1,
-							Description: "The HTTP Basic authentication settings for sending new events.\n\nIf this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it",
+							Description: "The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.",
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"username": {
 										Type:        schema.TypeString,
 										Required:    true,
-										Description: "The username for Basic authentication that must be included in the Authorization header when uploading new data.",
+										Description: "Username for HTTP Basic authentication that must be included in the Authorization header when uploading new data.",
 									},
 									"password": {
 										Type:        schema.TypeString,
 										Required:    true,
-										Description: "The password for Basic authentication that must be included in the Authorization header when uploading new data.",
+										Description: "Password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.",
 									},
 								},
 							},
@@ -254,12 +254,18 @@ func resourceDataSource() *schema.Resource {
 						},
 						"tenant": {
 							Type:        schema.TypeString,
-							Description: "Indicates the Tenant ID column, if configured.",
+							Description: "The tenant ID column, if configured.",
 						},
 						"timestamp": {
 							Type:        schema.TypeString,
 							Required:    true,
-							Description: "Indicates the timestamp column.",
+							Description: "The primary timestamp column.",
+						},
+						"unique_id": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							ForceNew:    true,
+							Description: "The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.",
 						},
 					},
 				},
@@ -334,6 +340,8 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 		return resourceHttpDataSourceCreate(ctx, d, meta)
 	case "S3":
 		return resourceS3DataSourceCreate(ctx, d, meta)
+	case "WEBHOOK":
+		return resourceWebhookDataSourceCreate(ctx, d, meta)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
@@ -345,7 +353,7 @@ func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceDa
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	connectionSettings := d.Get("snowflake_connection_settings").([]interface{})[0].(map[string]interface{})
+	connectionSettings := d.Get("snowflake_connection_settings").([]any)[0].(map[string]any)
 
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
@@ -394,16 +402,16 @@ func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, m
 	c := meta.(graphql.Client)
 
 	var basicAuth *pc.HttpBasicAuthInput
-	if d.Get("http_connection_settings") != nil && len(d.Get("http_connection_settings").([]interface{})) > 0 {
-		cs := d.Get("http_connection_settings").([]interface{})[0].(map[string]interface{})
+	if d.Get("http_connection_settings") != nil && len(d.Get("http_connection_settings").([]any)) > 0 {
+		cs := d.Get("http_connection_settings").([]any)[0].(map[string]any)
 
 		if def, ok := cs["basic_auth"]; ok {
-			basicAuth = expandBasicAuth(def.([]interface{}))
+			basicAuth = expandBasicAuth(def.([]any))
 		}
 	}
 
 	tables := make([]*pc.HttpDataSourceTableInput, 0)
-	if def, ok := d.Get("table").([]interface{}); ok && len(def) > 0 {
+	if def, ok := d.Get("table").([]any); ok && len(def) > 0 {
 		tables = expandHttpTables(def)
 	}
 
@@ -439,11 +447,11 @@ func resourceS3DataSourceCreate(ctx context.Context, d *schema.ResourceData, met
 	c := meta.(graphql.Client)
 
 	tables := make([]*pc.S3DataSourceTableInput, 0)
-	if def, ok := d.Get("table").([]interface{}); ok && len(def) > 0 {
+	if def, ok := d.Get("table").([]any); ok && len(def) > 0 {
 		tables = expandS3Tables(def)
 	}
 
-	connectionSettings := d.Get("s3_connection_settings").([]interface{})[0].(map[string]interface{})
+	connectionSettings := d.Get("s3_connection_settings").([]any)[0].(map[string]any)
 
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
@@ -488,28 +496,34 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 		}
 	}
 
-	tables := make([]*pc.HttpDataSourceTableInput, 0)
-	if def, ok := d.Get("table").([]interface{}); ok && len(def) > 0 {
-		tables = expandHttpTables(def)
-	}
-
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
-	input := &pc.CreateHttpDataSourceInput{
+	tenant := d.Get("tenant").(string)
+	uniqueID := d.Get("unique_id").(string)
+
+	columns := make([]*pc.WebhookDataSourceColumnInput, 0)
+	if def, ok := d.Get("column").([]any); ok && len(def) > 0 {
+		columns = expandWebhookColumns(def)
+	}
+
+	input := &pc.CreateWebhookDataSourceInput{
 		UniqueName:  &uniqueName,
 		Description: &description,
-		ConnectionSettings: &pc.HttpConnectionSettingsInput{
+		ConnectionSettings: &pc.WebhookConnectionSettingsInput{
 			BasicAuth: basicAuth,
-			Tables:    tables,
+			Columns:   columns,
+			Tenant:    &tenant,
+			Timestamp: d.Get("timestamp").(string),
+			UniqueId:  &uniqueID,
 		},
 	}
 
-	response, err := pc.CreateHttpDataSource(ctx, c, input)
+	response, err := pc.CreateWebhookDataSource(ctx, c, input)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	r := response.CreateHttpDataSource
+	r := response.CreateWebhookDataSource
 	d.SetId(r.DataSource.Id)
 
 	timeout := d.Timeout(schema.TimeoutCreate)
@@ -585,15 +599,17 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 			return diags
 		}
 		return handleS3ConnectionSettings(response, d)
+	case "WEBHOOK":
+		return handleWebhookConnectionSettings(response, d)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
 }
 
 func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	cs := d.Get("snowflake_connection_settings").([]interface{})[0].(map[string]interface{})
+	cs := d.Get("snowflake_connection_settings").([]any)[0].(map[string]any)
 
-	settings := map[string]interface{}{
+	settings := map[string]any{
 		"password": cs["password"],
 	}
 
@@ -609,7 +625,7 @@ func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schem
 		return diag.Errorf("Missing SnowflakeConnectionSettings")
 	}
 
-	if err := d.Set("snowflake_connection_settings", []map[string]interface{}{settings}); err != nil {
+	if err := d.Set("snowflake_connection_settings", []map[string]any{settings}); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -623,18 +639,18 @@ func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) d
 
 	switch s := response.DataSource.GetConnectionSettings().(type) {
 	case *pc.DataSourceDataConnectionSettingsHttpConnectionSettings:
-		tables := make([]interface{}, 0, len(s.Tables))
+		tables := make([]any, 0, len(s.Tables))
 
 		for _, table := range s.Tables {
-			columns := make([]interface{}, 0, len(table.Columns))
+			columns := make([]any, 0, len(table.Columns))
 			for _, column := range table.Columns {
-				columns = append(columns, map[string]interface{}{
+				columns = append(columns, map[string]any{
 					"name":     column.Name,
 					"type":     column.Type,
 					"nullable": column.Nullable,
 				})
 			}
-			tables = append(tables, map[string]interface{}{
+			tables = append(tables, map[string]any{
 				"id":     table.Id,
 				"name":   table.Name,
 				"column": columns,
@@ -656,18 +672,18 @@ func handleS3Tables(response *pc.DataSourceResponse, d *schema.ResourceData) dia
 
 	switch s := response.DataSource.GetConnectionSettings().(type) {
 	case *pc.DataSourceDataConnectionSettingsS3ConnectionSettings:
-		tables := make([]interface{}, 0, len(s.Tables))
+		tables := make([]any, 0, len(s.Tables))
 
 		for _, table := range s.Tables {
-			columns := make([]interface{}, 0, len(table.Columns))
+			columns := make([]any, 0, len(table.Columns))
 			for _, column := range table.Columns {
-				columns = append(columns, map[string]interface{}{
+				columns = append(columns, map[string]any{
 					"name":     column.Name,
 					"type":     column.Type,
 					"nullable": column.Nullable,
 				})
 			}
-			tables = append(tables, map[string]interface{}{
+			tables = append(tables, map[string]any{
 				"id":     table.Id,
 				"name":   table.Name,
 				"path":   table.Path,
@@ -735,6 +751,39 @@ func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.Resou
 	return nil
 }
 
+func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	if d.Get("webhook_connection_settings") == nil || len(d.Get("webhook_connection_settings").([]any)) == 0 {
+		return nil
+	}
+
+	switch s := response.DataSource.GetConnectionSettings().(type) {
+	case *pc.DataSourceDataConnectionSettingsWebhookConnectionSettings:
+		settings := map[string]any{
+			"basic_auth": nil,
+			"timestamp":  s.GetTimestamp(),
+			"tenant":     s.GetTenant(),
+			"unique_id":  s.GetUniqueId(),
+		}
+
+		if s.BasicAuth != nil {
+			settings["basic_auth"] = []map[string]any{
+				{
+					"username": s.BasicAuth.GetUsername(),
+					"password": s.BasicAuth.GetPassword(),
+				},
+			}
+		}
+
+		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {
+			return diag.FromErr(err)
+		}
+	default:
+		return diag.Errorf("Missing WebhookConnectionSettings")
+	}
+
+	return nil
+}
+
 func resourceSnowflakeDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(graphql.Client)
 
@@ -743,7 +792,7 @@ func resourceSnowflakeDataSourceUpdate(ctx context.Context, d *schema.ResourceDa
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
 
-		connectionSettings := d.Get("snowflake_connection_settings").([]interface{})[0].(map[string]interface{})
+		connectionSettings := d.Get("snowflake_connection_settings").([]any)[0].(map[string]any)
 		connectionSettingsInput := &pc.PartialSnowflakeConnectionSettingsInput{}
 
 		if def, ok := connectionSettings["account"]; ok {
@@ -814,17 +863,17 @@ func resourceHttpDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m
 		description := d.Get("description").(string)
 
 		var basicAuth *pc.HttpBasicAuthInput
-		if d.Get("http_connection_settings") != nil && len(d.Get("http_connection_settings").([]interface{})) > 0 {
-			cs := d.Get("http_connection_settings").([]interface{})[0].(map[string]interface{})
+		if d.Get("http_connection_settings") != nil && len(d.Get("http_connection_settings").([]any)) > 0 {
+			cs := d.Get("http_connection_settings").([]any)[0].(map[string]any)
 
 			if def, ok := cs["basic_auth"]; ok {
-				basicAuth = expandBasicAuth(def.([]interface{}))
+				basicAuth = expandBasicAuth(def.([]any))
 			}
 		}
 
 		tables := make([]*pc.HttpDataSourceTableInput, 0)
 		if _, ok := d.GetOk("table"); ok {
-			tables = expandHttpTables(d.Get("table").([]interface{}))
+			tables = expandHttpTables(d.Get("table").([]any))
 		}
 
 		input := &pc.ModifyHttpDataSourceInput{
@@ -863,12 +912,12 @@ func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m i
 
 		tables := make([]*pc.S3DataSourceTableInput, 0)
 		if _, ok := d.GetOk("table"); ok {
-			tables = expandS3Tables(d.Get("table").([]interface{}))
+			tables = expandS3Tables(d.Get("table").([]any))
 		}
 
 		csPartialInput := &pc.PartialS3ConnectionSettingsInput{Tables: tables}
 
-		connectionSettings := d.Get("s3_connection_settings").([]interface{})[0].(map[string]interface{})
+		connectionSettings := d.Get("s3_connection_settings").([]any)[0].(map[string]any)
 
 		if def, ok := connectionSettings["bucket"]; ok {
 			bucket := def.(string)
@@ -977,13 +1026,13 @@ func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id s
 	return nil
 }
 
-func expandHttpTables(def []interface{}) []*pc.HttpDataSourceTableInput {
+func expandHttpTables(def []any) []*pc.HttpDataSourceTableInput {
 	tables := make([]*pc.HttpDataSourceTableInput, 0, len(def))
 
 	for _, rawTable := range def {
-		table := rawTable.(map[string]interface{})
+		table := rawTable.(map[string]any)
 
-		columns := expandHttpColumns(table["column"].([]interface{}))
+		columns := expandHttpColumns(table["column"].([]any))
 
 		tables = append(tables, &pc.HttpDataSourceTableInput{
 			Name:    table["name"].(string),
@@ -994,11 +1043,11 @@ func expandHttpTables(def []interface{}) []*pc.HttpDataSourceTableInput {
 	return tables
 }
 
-func expandHttpColumns(def []interface{}) []*pc.HttpDataSourceColumnInput {
+func expandHttpColumns(def []any) []*pc.HttpDataSourceColumnInput {
 	columns := make([]*pc.HttpDataSourceColumnInput, 0, len(def))
 
 	for _, rawColumn := range def {
-		column := rawColumn.(map[string]interface{})
+		column := rawColumn.(map[string]any)
 
 		columns = append(columns, &pc.HttpDataSourceColumnInput{
 			Name:     column["name"].(string),
@@ -1010,13 +1059,13 @@ func expandHttpColumns(def []interface{}) []*pc.HttpDataSourceColumnInput {
 	return columns
 }
 
-func expandS3Tables(def []interface{}) []*pc.S3DataSourceTableInput {
+func expandS3Tables(def []any) []*pc.S3DataSourceTableInput {
 	tables := make([]*pc.S3DataSourceTableInput, 0, len(def))
 
 	for _, rawTable := range def {
-		table := rawTable.(map[string]interface{})
+		table := rawTable.(map[string]any)
 
-		columns := expandS3Columns(table["column"].([]interface{}))
+		columns := expandS3Columns(table["column"].([]any))
 
 		path := table["path"].(string)
 		tables = append(tables, &pc.S3DataSourceTableInput{
@@ -1029,11 +1078,11 @@ func expandS3Tables(def []interface{}) []*pc.S3DataSourceTableInput {
 	return tables
 }
 
-func expandS3Columns(def []interface{}) []*pc.S3DataSourceColumnInput {
+func expandS3Columns(def []any) []*pc.S3DataSourceColumnInput {
 	columns := make([]*pc.S3DataSourceColumnInput, 0, len(def))
 
 	for _, rawColumn := range def {
-		column := rawColumn.(map[string]interface{})
+		column := rawColumn.(map[string]any)
 
 		columns = append(columns, &pc.S3DataSourceColumnInput{
 			Name:     column["name"].(string),
@@ -1045,11 +1094,28 @@ func expandS3Columns(def []interface{}) []*pc.S3DataSourceColumnInput {
 	return columns
 }
 
-func expandBasicAuth(def []interface{}) *pc.HttpBasicAuthInput {
-	basicAuth := def[0].(map[string]interface{})
+func expandBasicAuth(def []any) *pc.HttpBasicAuthInput {
+	basicAuth := def[0].(map[string]any)
 
 	return &pc.HttpBasicAuthInput{
 		Username: basicAuth["username"].(string),
 		Password: basicAuth["password"].(string),
 	}
+}
+
+func expandWebhookColumns(def []any) []*pc.WebhookDataSourceColumnInput {
+	columns := make([]*pc.WebhookDataSourceColumnInput, len(def))
+
+	for i, rawColumn := range def {
+		column := rawColumn.(map[string]any)
+
+		columns[i] = &pc.WebhookDataSourceColumnInput{
+			Name:         column["name"].(string),
+			Type:         pc.ColumnType(column["type"].(string)),
+			Nullable:     column["nullable"].(bool),
+			JsonProperty: column["jsonProperty"].(string),
+		}
+	}
+
+	return columns
 }

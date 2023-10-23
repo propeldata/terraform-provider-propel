@@ -16,17 +16,17 @@ import (
 )
 
 func TestAccPropelDataSourceBasic(t *testing.T) {
-	httpCtx := map[string]interface{}{
+	httpCtx := map[string]any{
 		"resource_name": "new",
 		"unique_name":   acctest.RandString(10),
 	}
 
-	s3CtxInvalid := map[string]interface{}{
+	s3CtxInvalid := map[string]any{
 		"resource_name": "fizz",
 		"unique_name":   acctest.RandString(10),
 	}
 
-	snowflakeCtxInvalid := map[string]interface{}{
+	snowflakeCtxInvalid := map[string]any{
 		"resource_name":       "foo",
 		"unique_name":         acctest.RandString(10),
 		"snowflake_account":   "invalid-account",
@@ -80,11 +80,21 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					resource.TestCheckResourceAttr("propel_data_source.foo", "status", "BROKEN"),
 				),
 			},
+			// should create Webhook data source
+			{
+				Config: testAccWebhookDataSourceBasic(map[string]any{}),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckPropelDataSourceExists("propel_data_source.terraform-webhook"),
+					resource.TestCheckResourceAttr("propel_data_source.terraform-webhook", "type", "Webhook"),
+					resource.TestCheckResourceAttr("propel_data_source.terraform-webhook", "status", "CONNECTED"),
+					resource.TestCheckResourceAttr("propel_data_source.terraform-webhook", "webhook_connection_settings.timestamp", "timestamp_tz"),
+				),
+			},
 		},
 	})
 }
 
-func testAccCheckPropelDataSourceConfigBasic(ctx map[string]interface{}) string {
+func testAccCheckPropelDataSourceConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
@@ -102,7 +112,7 @@ func testAccCheckPropelDataSourceConfigBasic(ctx map[string]interface{}) string 
 	}`, ctx)
 }
 
-func testAccUpdatePropelDataSourceConfigBasic(ctx map[string]interface{}) string {
+func testAccUpdatePropelDataSourceConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
@@ -126,7 +136,7 @@ func testAccUpdatePropelDataSourceConfigBasic(ctx map[string]interface{}) string
 	}`, ctx)
 }
 
-func testAccCheckPropelDataSourceS3ConfigBroken(ctx map[string]interface{}) string {
+func testAccCheckPropelDataSourceS3ConfigBroken(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
@@ -151,7 +161,7 @@ func testAccCheckPropelDataSourceS3ConfigBroken(ctx map[string]interface{}) stri
 	}`, ctx)
 }
 
-func testAccCheckPropelDataSourceSnowflakeConfigBroken(ctx map[string]interface{}) string {
+func testAccCheckPropelDataSourceSnowflakeConfigBroken(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
@@ -166,6 +176,49 @@ func testAccCheckPropelDataSourceSnowflakeConfigBroken(ctx map[string]interface{
 			username = "%{snowflake_username}"
 			password = "%{snowflake_password}"
 		}
+	}`, ctx)
+}
+
+func testAccWebhookDataSourceBasic(ctx map[string]any) string {
+	// language=hcl-terraform
+	return Nprintf(`
+	resource "propel_data_source" "terraform-webhook" {
+		unique_name = "terraform-webhook"
+		type = "Webhook"
+
+		webhook_connection_settings {
+			timestamp = "timestamp_tz"
+
+			column {
+				name = "id"
+				type = "STRING"
+				nullable = false
+				jsonProperty = "id"
+			}
+
+			column {
+				name = "customer_id"
+				type = "STRING"
+				nullable = false
+				jsonProperty = "customer_id"
+			}
+
+			column {
+				name = "timestamp_tz"
+				type = "TIMESTAMP"
+				nullable = false
+				jsonProperty = "timestamp_tz"
+			}
+
+			basic_auth {
+				username = "foo"
+				password = "bar"
+			}
+	
+			unique_id = "id"
+			tenant = "customer_id"
+		}
+		
 	}`, ctx)
 }
 

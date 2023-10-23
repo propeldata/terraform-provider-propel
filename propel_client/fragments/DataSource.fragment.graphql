@@ -56,6 +56,9 @@ fragment DataSourceData on DataSource {
                 jsonProperty
                 nullable
             }
+            tenant
+            timestamp
+            uniqueId
             webhookUrl
         }
     }

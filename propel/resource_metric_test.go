@@ -194,7 +194,7 @@ func Test_expandMetricFilters(t *testing.T) {
 }
 
 func TestAccPropelMetricBasic(t *testing.T) {
-	ctx := map[string]interface{}{}
+	ctx := map[string]any{}
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
@@ -213,7 +213,7 @@ func TestAccPropelMetricBasic(t *testing.T) {
 	})
 }
 
-func testAccCheckPropelMetricConfigBasic(ctx map[string]interface{}) string {
+func testAccCheckPropelMetricConfigBasic(ctx map[string]any) string {
 	// language=hcl-terraform
 	return Nprintf(`
 		resource "propel_data_source" "foo" {

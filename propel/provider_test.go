@@ -64,8 +64,8 @@ func skipIfEnvNotSet(t *testing.T, env string) {
 }
 
 // This is a Printf sibling (Nprintf; Named Printf), which handles strings like
-// Nprintf("Hello %{target}!", map[string]interface{}{"target":"world"}) == "Hello world!".
-func Nprintf(format string, params map[string]interface{}) string {
+// Nprintf("Hello %{target}!", map[string]any{"target":"world"}) == "Hello world!".
+func Nprintf(format string, params map[string]any) string {
 	for key, val := range params {
 		format = strings.Replace(format, "%{"+key+"}", fmt.Sprintf("%v", val), -1)
 	}

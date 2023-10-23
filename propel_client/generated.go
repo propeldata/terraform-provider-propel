@@ -6492,6 +6492,12 @@ type DataSourceDataConnectionSettingsWebhookConnectionSettings struct {
 	BasicAuth *DataSourceDataConnectionSettingsWebhookConnectionSettingsBasicAuthHttpBasicAuthSettings `json:"basicAuth"`
 	// The additional columns for the Webhook Data Source table.
 	Columns []*DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn `json:"columns"`
+	// The tenant ID column, if configured.
+	Tenant *string `json:"tenant"`
+	// The primary timestamp column.
+	Timestamp string `json:"timestamp"`
+	// The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
+	UniqueId *string `json:"uniqueId"`
 	// The Webhook URL for posting JSON events
 	WebhookUrl string `json:"webhookUrl"`
 }
@@ -6509,6 +6515,21 @@ func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetBasicAuth
 // GetColumns returns DataSourceDataConnectionSettingsWebhookConnectionSettings.Columns, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetColumns() []*DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn {
 	return v.Columns
+}
+
+// GetTenant returns DataSourceDataConnectionSettingsWebhookConnectionSettings.Tenant, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTenant() *string {
+	return v.Tenant
+}
+
+// GetTimestamp returns DataSourceDataConnectionSettingsWebhookConnectionSettings.Timestamp, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTimestamp() string {
+	return v.Timestamp
+}
+
+// GetUniqueId returns DataSourceDataConnectionSettingsWebhookConnectionSettings.UniqueId, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetUniqueId() *string {
+	return v.UniqueId
 }
 
 // GetWebhookUrl returns DataSourceDataConnectionSettingsWebhookConnectionSettings.WebhookUrl, and is useful for accessing the field via an interface.
@@ -13699,6 +13720,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -14023,6 +14047,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -14347,6 +14374,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -14671,6 +14701,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -14907,6 +14940,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -15080,6 +15116,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -15386,6 +15425,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -15710,6 +15752,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -15930,6 +15975,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -16093,6 +16141,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -16403,6 +16454,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -16576,6 +16630,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -16789,6 +16846,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -17020,6 +17080,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -17264,6 +17327,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -17441,6 +17507,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -17594,6 +17663,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -17760,6 +17832,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -18300,6 +18375,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -18621,6 +18699,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -18959,6 +19040,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -19210,6 +19294,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -19383,6 +19470,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -19689,6 +19779,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -19909,6 +20002,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}
@@ -20072,6 +20168,9 @@ fragment DataSourceData on DataSource {
 				jsonProperty
 				nullable
 			}
+			tenant
+			timestamp
+			uniqueId
 			webhookUrl
 		}
 	}

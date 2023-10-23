@@ -139,17 +139,17 @@ func resourceDataPool() *schema.Resource {
 	}
 }
 
-func expandPoolColumns(def []interface{}) []*pc.DataPoolColumnInput {
-	columns := make([]*pc.DataPoolColumnInput, 0, len(def))
+func expandDataPoolColumns(def []any) []*pc.DataPoolColumnInput {
+	columns := make([]*pc.DataPoolColumnInput, len(def))
 
-	for _, rawColumn := range def {
-		column := rawColumn.(map[string]interface{})
+	for i, rawColumn := range def {
+		column := rawColumn.(map[string]any)
 
-		columns = append(columns, &pc.DataPoolColumnInput{
+		columns[i] = &pc.DataPoolColumnInput{
 			ColumnName: column["name"].(string),
 			Type:       pc.ColumnType(column["type"].(string)),
 			IsNullable: column["nullable"].(bool),
-		})
+		}
 	}
 
 	return columns
@@ -166,7 +166,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 
 	columns := make([]*pc.DataPoolColumnInput, 0)
 	if def, ok := d.Get("column").([]interface{}); ok && len(def) > 0 {
-		columns = expandPoolColumns(def)
+		columns = expandDataPoolColumns(def)
 	}
 
 	input := &pc.CreateDataPoolInputV2{
