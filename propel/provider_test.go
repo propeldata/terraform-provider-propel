@@ -37,10 +37,11 @@ func TestProvider_impl(t *testing.T) {
 }
 
 func testAccPreCheck(t *testing.T) {
-	if err := os.Getenv("PROPEL_CLIENT_ID"); err == "" {
+	if v := os.Getenv("PROPEL_CLIENT_ID"); v == "" {
 		t.Fatal("PROPEL_CLIENT_ID must be set for acceptance tests")
 	}
-	if err := os.Getenv("PROPEL_CLIENT_SECRET"); err == "" {
+
+	if v := os.Getenv("PROPEL_CLIENT_SECRET"); v == "" {
 		t.Fatal("PROPEL_CLIENT_SECRET must be set for acceptance tests")
 	}
 

@@ -50,10 +50,10 @@ resource "propel_data_pool" "my_data_pool" {
 
 ### Optional
 
-- `cursor` (String) The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`
 - `description` (String) The Data Pool's description.
 - `syncing` (Block List, Max: 1) The Data Pool's syncing settings. (see [below for nested schema](#nestedblock--syncing))
 - `tenant_id` (String) The tenant ID for restricting access between customers.
+- `unique_id` (String) The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool. Only for Snowflake Data Pools.
 - `unique_name` (String) The Data Pool's name.
 
 ### Read-Only

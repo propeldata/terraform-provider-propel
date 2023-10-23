@@ -4,6 +4,8 @@ schema {
   mutation: Mutation
 }
 
+directive @oneOf on INPUT_OBJECT
+
 """
 Represents an ISO 8601 date and time in UTC. For example, "2022-08-18T08:53:33Z".
 """
@@ -180,6 +182,12 @@ enum ApplicationScope {
   METRIC_QUERY
   """Grant read access to fetch Dimension statistics from Metrics."""
   METRIC_STATS
+  """
+  Grant read access to Metrics.
+
+  This does not allow querying Metrics. For that, see `METRIC_QUERY`.
+  """
+  METRIC_READ
 }
 
 """The fields for creating an Application."""
@@ -769,77 +777,68 @@ type DataSourceResponse {
 }
 
 """
-The Data Pool object.
+The Data Pool object. Data Pools are Propel's high-speed data store and cache
 
-A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
-
-[Learn more about Data Pools](https://www.propeldata.com/docs/data-pools).
+[Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 """
 type DataPool implements Node & Common {
-  """The Data Pool's unique identifier."""
+  "The Data Pool's unique identifier."
   id: ID!
-  """The Data Pool's unique name."""
+  "The Data Pool's unique name."
   uniqueName: String!
-  """The Data Pool's description."""
+  "The Data Pool's description."
   description: String!
-  """The Data Pool's Account."""
+  "The Data Pool's Account."
   account: Account!
-  """The Data Pool's Environment."""
+  "The Data Pool's Environment."
   environment: Environment!
-  """The Data Pool's creation date and time in UTC."""
+  "The Data Pool's creation date and time in UTC."
   createdAt: DateTime!
-  """The Data Pool's last modification date and time in UTC."""
+  "The Data Pool's last modification date and time in UTC."
   modifiedAt: DateTime!
   """
-  The Data Pools's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+  The Data Pool's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
   """
   createdBy: String!
   """
-  The Data Pools's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
+  The Data Pool's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
   """
   modifiedBy: String!
-  """The Data Pool's Data Source."""
+  "The Data Pool's Data Source."
   dataSource: DataSource!
-  """The Data Pool's status."""
+  "The Data Pool's status."
   status: DataPoolStatus!
   error: Error @deprecated(reason: "Refer to `setupTasks` instead")
-  """The Data Pool's data retention in days (not yet supported)."""
+  "The Data Pool's data retention in days (not yet supported)."
   dataRetentionInDays: Int!
-  """The name of the Data Pool's table."""
+  "The name of the Data Pool's table."
   table: String!
-  """The Data Pool's timestamp column."""
+  "The Data Pool's primary timestamp column."
   timestamp: Timestamp!
-  """The Data Pool's Tenant ID, if configured."""
+  "The Data Pool's tenant ID, if configured."
   tenant: Tenant
-  """
-  The Data Pool's cursor column. The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`.
-  """
-  cursor: Cursor
-  """ The number of records in the Data Pool. """
+  "The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool."
+  uniqueId: UniqueId
+  "The number of records in the Data Pool."
   recordCount: String
-  """ The amount of storage in terabytes used by the Data Pool. """
+  "The amount of storage in terabytes used by the Data Pool."
   sizeInTerabytes: Float
-  """
-  A list of columns included in the Data Pool. The specified columns from the underlying table will by synced to the Data Pool.
-
-  This list does not include any excluded columns.
-  """
+  "The Data Pool's columns."
   columns(first: Int, after: String, last: Int, before: String): DataPoolColumnConnection
-  """
-  A list of measures (numeric columns) available to Metrics.
-
-  This list does not include any excluded columns.
-  """
+  "The list of measures (numeric columns) in the Data Pool."
   availableMeasures(first: Int, after: String, last: Int, before: String): DataPoolColumnConnection
-  """ A list of setup tasks performed on the Data Pool during its most recent setup attempt.
-  """
+  "A list of setup tasks performed on the Data Pool during its most recent setup attempt."
   setupTasks: [DataPoolSetupTask!]
-  """ Settings related to Data Pool syncing. """
+  "Settings related to Data Pool syncing."
   syncing: DataPoolSyncing!
+  "The list of Syncs of the Data Pool."
   syncs(filter: SyncsFilter, first: Int, after: String, last: Int, before: String): SyncConnection
+  "The list of Metrics powered by the Data Pool."
   metrics(first: Int, after: String, last: Int, before: String): MetricConnection
-  " The Deletion Jobs that where historically issued to this Data Pool, sorted by creation time, in descending order. "
+  "The Deletion Jobs that where historically issued to this Data Pool, sorted by creation time, in descending order."
   deletionJobs(first: Int, after: String, last: Int, before: String): DeletionJobConnection
+  "Validates a custom expression against the Data Pool's available columns. If the provided expression is invalid, the ValidateExpressionResult response will contain a reason explaining why."
+  validateExpression(expression: String!): ValidateExpressionResult!
 }
 
 """
@@ -943,7 +942,7 @@ type Filter {
   """
   operator: FilterOperator!
   """ The value to compare the column to. """
-  value: String!
+  value: String
   """ Additional filters to AND with this one. AND takes precedence over OR.
   """
   and: [Filter!]
@@ -979,53 +978,55 @@ enum DataPoolStatus {
   DELETING
 }
 
-"""The Timestamp fields."""
+"""
+A Data Pool's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
+"""
 type Timestamp {
-  """ The name of the column that represents the Timestamp. """
+  "The name of the column that represents the primary timestamp."
   columnName: String!
-  """ The Timestamp column's type. """
+  "The primary timestamp column's type."
   type: String!
 }
 
-"""The fields for specifying the Data Pool's Timestamp."""
+"""
+The fields to specify the Data Pool's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
+"""
 input TimestampInput {
-  """ The name of the column that represents the Timestamp. """
+  "The name of the column that represents the primary timestamp."
   columnName: String!
 }
 
 """
-The Tenant ID fields.
-
-The Tenant ID can be used for partitioning and restricting access between customers (Tenants) within a Data Pool.
+A Data Pool's tenant ID column. The tenant ID column is used to control access to your data with access policies.
 """
 type Tenant {
-  """ The name of the column that represents the Tenant ID. """
+  "The name of the column that represents the tenant ID."
   columnName: String!
-  """ The Tenant ID column's type. """
+  "The tenant ID column's type."
   type: String!
 }
 
 """
-Fields for specifying a Data Pool's Tenant ID.
-
-The Tenant ID can be used for partitioning and restricting access between customers (Tenants) within a Data Pool.
+The fields to specify the Data Pool's tenant ID column. The tenant ID column is used to control access to your data with access policies.
 """
 input TenantInput {
-  """ The name of the column that represents the Tenant ID. """
+  "The name of the column that represents the tenant ID."
   columnName: String!
 }
 
-"""The cursor fields."""
-type Cursor {
-  """ The name of the column that represents the cursor. """
+"""
+A Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
+"""
+type UniqueId {
+  "The name of the column that represents the unique ID."
   columnName: String!
-  """ The cursor column's type. """
-  type: ColumnType!
 }
 
-"""The fields for specifying the Data Pool's Cursor."""
-input CursorInput {
-  """ The name of the column that represents the Cursor. """
+"""
+The fields to specify the Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
+"""
+input UniqueIdInput {
+  "The name of the column that represents the unique ID."
   columnName: String!
 }
 
@@ -1079,30 +1080,26 @@ input DataPoolColumnInput {
   isNullable: Boolean!
 }
 
-"""Fields for creating a Data Pool."""
+"""The fields for creating a Data Pool."""
 input CreateDataPoolInputV2 {
-  """The Data Source that will be used to create the Data Pool. """
+  "The Data Source that will be used to create the Data Pool."
   dataSource: ID!
-  """ The table that the Data Pool will sync from. """
+  "The table that the Data Pool will sync from."
   table: String!
-  """ The table's primary timestamp column. """
+  "The table's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics."
   timestamp: TimestampInput!
-  """
-  The Data Pool's unique name. If not specified, Propel will set the ID as the unique name.
-  """
+  "The Data Pool's unique name. If not specified, Propel will set the ID as the unique name."
   uniqueName: String
-  """The Data Pool's description."""
+  "The Data Pool's description."
   description: String
-  """The list of columns."""
+  "The list of columns."
   columns: [DataPoolColumnInput!]!
-  """
-  An optional Data Pool Tenant ID. When specified, the Metrics powered by the Data Pool will be able to use `TENANT_ACCESS` Policies designed for multi-tenant use cases.
-  """
+  "The Data Pool's optional tenant ID column. The tenant ID column is used to control access to your data with access policies."
   tenant: TenantInput
   """
-  The table's cursor column. The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`.
+  The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
   """
-  cursor: CursorInput
+  uniqueId: UniqueIdInput
   """ The Data Pool's syncing settings. """
   syncing: DataPoolSyncingInput
 }
@@ -1197,6 +1194,9 @@ type Sync implements Node {
   dataPool: DataPool
   """The Sync's Data Pool's Data Source."""
   dataSource: DataSource
+  """ The number of new, updated, and deleted records contained within the Sync, if known. This excludes filtered records.
+  """
+  processedRecords: String
   """ The number of new records contained within the Sync, if known. This excludes filtered records.
   """
   newRecords: String
@@ -1260,6 +1260,12 @@ input MetricReportInput {
   propeller: Propeller
   """ The time range for calculating the Metric Report."""
   timeRange: TimeRangeInput!
+  """
+  The time zone to use. Dates and times are always returned in UTC, but setting the time zone influences relative time ranges and granularities.
+
+  You can set this to "America/Los_Angeles", "Europe/Berlin", or any other value in the [IANA time zone database](https://en.wikipedia.org/wiki/Tz_database). Defaults to "UTC".
+  """
+  timeZone: String
   """ One or many dimensions to group the Metric values by. Typically, dimensions in a report are what you want to compare and rank.
   """
   dimensions: [MetricReportDimensionInput!]!
@@ -1301,10 +1307,14 @@ input MetricReportDimensionInput {
 input MetricReportMetricInput {
   """ The Metric's unique name. If not specified, Propel will lookup the Metric by ID.
   """
-  uniqueName: String
+  uniqueName: String @deprecated(reason: "Use `metric`")
   """ The Metric's ID. If not specified, Propel will lookup the Metric by unique name.
   """
-  id: ID
+  id: ID @deprecated(reason: "Use `metric`")
+  """
+  The Metric to query. You can query a pre-configured Metric by ID or name, or you can query an ad hoc Metric that you define inline.
+  """
+  metric: MetricInput
   """ The name to display in the `headers` array when displaying the report. This defaults to the Metric's unique name if unspecified.
   """
   displayName: String
@@ -1443,7 +1453,7 @@ type Metric implements Node & Common {
 }
 
 """A Metric's settings, depending on its type."""
-union MetricSettings = CountMetricSettings | SumMetricSettings | CountDistinctMetricSettings | AverageMetricSettings | MinMetricSettings | MaxMetricSettings
+union MetricSettings = CountMetricSettings | SumMetricSettings | CountDistinctMetricSettings | AverageMetricSettings | MinMetricSettings | MaxMetricSettings | CustomMetricSettings
 
 """The available Metric types."""
 enum MetricType {
@@ -1470,6 +1480,8 @@ enum MetricType {
   Selects the maximum value of the specified column for every record that matches the Metric Filters. For time series, it will select the maximum value for each time granularity.
   """
   MAX
+  "Aggregates values based on the provided custom expression."
+  CUSTOM
 }
 
 """Settings for Count Metrics."""
@@ -1530,6 +1542,16 @@ type MaxMetricSettings {
   filters: [Filter!]
   """The Dimension to select the maximum from."""
   measure: Dimension!
+}
+
+"""Settings for Custom Metrics."""
+type CustomMetricSettings {
+  """
+  Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time.
+  """
+  filters: [Filter!]
+  """The expression that defines the aggregation function for this Metric."""
+  expression: String!
 }
 
 """The result of a mutation which creates or modifies a Metric."""
@@ -1607,7 +1629,6 @@ input CreateMinMetricInput {
   """ The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
   """
   dimensions: [DimensionInput!]
-  """ The column to calculate the minimum from. """
   measure: DimensionInput!
 }
 
@@ -1650,6 +1671,38 @@ input CreateCountDistinctMetricInput {
   dimension: DimensionInput!
 }
 
+"""The fields for creating a new Custom Metric."""
+input CreateCustomMetricInput {
+  """ The Data Pool that powers this Metric. """
+  dataPool: ID!
+  """ The Metric's unique name. If not specified, Propel will set the ID as unique name.
+  """
+  uniqueName: String
+  """ The Metric's description. """
+  description: String
+  """ The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+  """
+  filters: [FilterInput!]
+  """ The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
+  """
+  dimensions: [DimensionInput!]
+  """ The expression that defines the aggregation function for this Metric.
+  """
+  expression: String!
+}
+
+"""
+Response returned by the validateExpression query for validating expressions in Custom Metrics.
+
+Returns whether the expression is valid or not with a reason explaining why.
+"""
+type ValidateExpressionResult {
+  " True if the expression is valid, false otherwise. "
+  valid: Boolean!
+  " The reason for why the expression is not valid in case it isn't, null otherwise.  "
+  reason: String
+}
+
 """The fields for modifying a Metric."""
 input ModifyMetricInput {
   """The ID of the Metric to modify. """
@@ -1674,6 +1727,81 @@ input MigrateMetricInput {
   newDataPoolId: ID!
 }
 
+input DataPoolInput @oneOf {
+  "The ID of the Data Pool."
+  id: ID
+  "The name of the Data Pool."
+  name: String
+}
+
+input CustomMetricQueryInput {
+  "The Data Pool to which this Metric belongs."
+  dataPool: DataPoolInput!
+  "Custom expression for defining the Metric."
+  expression: String!
+}
+
+input CountMetricQueryInput {
+  "The Data Pool to which this Metric belongs."
+  dataPool: DataPoolInput!
+}
+
+input SumMetricQueryInput {
+  "The Data Pool to which this Metric belongs."
+  dataPool: DataPoolInput!
+  """ The column to be summed. """
+  measure: DimensionInput!
+}
+
+input AverageMetricQueryInput {
+  "The Data Pool to which this Metric belongs."
+  dataPool: DataPoolInput!
+  """ The column to be averaged. """
+  measure: DimensionInput!
+}
+
+input MinMetricQueryInput {
+  "The Data Pool to which this Metric belongs."
+  dataPool: DataPoolInput!
+  """ The column to calculate the minimum from. """
+  measure: DimensionInput!
+}
+
+input MaxMetricQueryInput {
+  "The Data Pool to which this Metric belongs."
+  dataPool: DataPoolInput!
+  """ The column to calculate the maximum from. """
+  measure: DimensionInput!
+}
+
+input CountDistinctMetricQueryInput {
+  "The Data Pool to which this Metric belongs."
+  dataPool: DataPoolInput!
+  """ The column to count distinct values from. """
+  dimension: DimensionInput!
+}
+
+input MetricInput @oneOf {
+  "The ID of a pre-configured Metric."
+  id: ID
+  "The name of a pre-configured Metric."
+  name: String
+  "An ad hoc Custom Metric."
+  custom: CustomMetricQueryInput
+  "An ad hoc Count Metric."
+  count: CountMetricQueryInput
+  "An ad hoc Sum Metric."
+  sum: SumMetricQueryInput
+  "An ad hoc Average Metric."
+  average: AverageMetricQueryInput
+  "An ad hoc Min Metric."
+  min: MinMetricQueryInput
+  "An ad hoc Max Metric."
+  max: MaxMetricQueryInput
+  "An ad hoc Count Distinct Metric."
+  countDistinct: CountDistinctMetricQueryInput
+}
+
 """
 The fields for querying a Metric in counter format.
 
@@ -1685,15 +1813,25 @@ input CounterInput {
 
   Required if `metricName` is not specified.
   """
-  metricId: ID
+  metricId: ID @deprecated(reason: "Use `metric`")
   """
   The name of the Metric to query.
 
   Required if `metricId` is not specified.
   """
-  metricName: String
+  metricName: String @deprecated(reason: "Use `metric`")
+  """
+  The Metric to query. You can query a pre-configured Metric by ID or name, or you can query an ad hoc Metric that you define inline.
+  """
+  metric: MetricInput
   """ The time range for calculating the counter."""
   timeRange: TimeRangeInput!
+  """
+  The time zone to use. Dates and times are always returned in UTC, but setting the time zone influences relative time ranges and granularities.
+
+  You can set this to "America/Los_Angeles", "Europe/Berlin", or any other value in the [IANA time zone database](https://en.wikipedia.org/wiki/Tz_database). Defaults to "UTC".
+  """
+  timeZone: String
   """ The Query Filters to apply before retrieving the counter data. If no Query Filters are provided, all data is included.
   """
   filters: [FilterInput!]
@@ -1713,15 +1851,25 @@ input TimeSeriesInput {
 
   Required if `metricName` is not specified.
   """
-  metricId: ID
+  metricId: ID @deprecated(reason: "Use `metric`")
   """
   The name of the Metric to query.
 
   Required if `metricId` is not specified.
   """
-  metricName: String
+  metricName: String @deprecated(reason: "Use `metric`")
+  """
+  The Metric to Query. It can be a pre-created one or it can be inlined here.
+  """
+  metric: MetricInput
   """ The time range for calculating the time series."""
   timeRange: TimeRangeInput!
+  """
+  The time zone to use. Dates and times are always returned in UTC, but setting the time zone influences relative time ranges and granularities.
+
+  You can set this to "America/Los_Angeles", "Europe/Berlin", or any other value in the [IANA time zone database](https://en.wikipedia.org/wiki/Tz_database). Defaults to "UTC".
+  """
+  timeZone: String
   """ The time granularity (hour, day, month, etc.) to aggregate the Metric values by.
   """
   granularity: TimeSeriesGranularity!
@@ -1745,15 +1893,25 @@ input LeaderboardInput {
 
   Required if `metricName` is not specified.
   """
-  metricId: ID
+  metricId: ID @deprecated(reason: "Use `metric`")
   """
   The name of the Metric to query.
 
   Required if `metricId` is not specified.
   """
-  metricName: String
+  metricName: String @deprecated(reason: "Use `metric`")
+  """
+  The Metric to query. You can query a pre-configured Metric by ID or name, or you can query an ad hoc Metric that you define inline.
+  """
+  metric: MetricInput
   """ The time range for calculating the leaderboard."""
   timeRange: TimeRangeInput!
+  """
+  The time zone to use. Dates and times are always returned in UTC, but setting the time zone influences relative time ranges and granularities.
+
+  You can set this to "America/Los_Angeles", "Europe/Berlin", or any other value in the [IANA time zone database](https://en.wikipedia.org/wiki/Tz_database). Defaults to "UTC".
+  """
+  timeZone: String
   """ One or many Dimensions to group the Metric values by. Typically, Dimensions in a leaderboard are what you want to compare and rank.
   """
   dimensions: [DimensionInput!]!
@@ -1794,7 +1952,7 @@ input TimeRangeInput {
   stop: DateTime
 }
 
-"""The sort order options for Metric Queries."""
+"""The available sort orders."""
 enum Sort {
   """Sort in ascending order."""
   ASC
@@ -2000,7 +2158,7 @@ input FilterInput {
   """
   operator: FilterOperator!
   """ The value to compare the column to. """
-  value: String!
+  value: String
   """ Additional filters to AND with this one. AND takes precedence over OR.
   """
   and: [FilterInput!]
@@ -2023,6 +2181,11 @@ enum FilterOperator {
   LESS_THAN
   """ Selects values that are less or equal to the specified value."""
   LESS_THAN_OR_EQUAL_TO
+  """ Selects values that are null. This operator does not accept a value. """
+  IS_NULL
+  """ Selects values that are not null. This operator does not accept a value.
+  """
+  IS_NOT_NULL
 }
 
 """
@@ -2116,6 +2279,8 @@ enum QueryType {
   REPORT
   """Indicates a Record Table Query."""
   RECORDS
+  """Indicates a SelectV1 Query."""
+  SELECT
 }
 
 """The Query subtype."""
@@ -2353,59 +2518,47 @@ input DeletionRequestInput {
 
 type Mutation {
   """
-  This mutation creates a new Application and returns the newly created Application (or an error message if creating the Application fails).
+  Creates a new Application and returns the newly created Application (or an error message if creating the Application fails).
 
   [Learn more about Applications](https://www.propeldata.com/docs/applications).
   """
   createApplication(input: createApplicationInput!): ApplicationOrFailureResponse
   """
-  This mutation selects an Application by its ID or unique name and modifies it to have the given unique name, description, Propeller, and scopes.
-
-  If any of the optional arguments are omitted, those properties will be unchanged on the Application.
+  Modifies an Application with the provided unique name, description, Propeller, and scopes. If any of the optional arguments are omitted, those properties will be unchanged on the Application.
 
   [Learn more about Applications](https://www.propeldata.com/docs/applications).
   """
   modifyApplication(input: modifyApplicationInput!): ApplicationOrFailureResponse
   """
-  This mutation deletes the specified Application by ID and then returns the same ID if the Application was deleted successfully.
+  Deletes an Application by ID and returns its ID if the Application was deleted successfully.
 
   [Learn more about Applications](https://www.propeldata.com/docs/applications).
   """
   deleteApplication(id: ID!): ID
   """
-  This mutation deletes the specified Application by name and then returns the Application's ID if the Application was deleted successfully.
+  Deletes an Application by unique name and returns its ID if the Application was deleted successfully.
 
   [Learn more about Applications](https://www.propeldata.com/docs/applications).
   """
   deleteApplicationByName(uniqueName: String!): ID
   """
-  This mutation creates a new Data Source from the given Snowflake database using the specified Snowflake account, warehouse, schema, username, and role.
+  Creates a new Data Source from the given Snowflake database using the specified Snowflake account, warehouse, schema, username, and role.
 
-  The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
-
-  A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+  Returns the newly created Data Source (or an error message if creating the Data Source fails).
   """
   createSnowflakeDataSource(input: createSnowflakeDataSourceInput!): DataSourceOrFailureResponse
   """
-  This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
-
-  If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
-
-  A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+  Modifies a Data Source with the provided unique name, description, and connection settings. If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
   """
   modifySnowflakeDataSource(input: modifySnowflakeDataSourceInput!): DataSourceOrFailureResponse
   """
-  This mutation attempts to reconnect to the Data Source identified by the given ID or unique name. The mutation then returns the Data Source.
-
-  A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+  Attempts to reconnect a Data Source. The mutation then returns the Data Source object.
   """
   reconnectDataSource(input: idOrUniqueName!): DataSource
   """
-  This mutation is used to introspect the tables in the given Data Source, specified either by its ID or unique name.
+  Introspects the tables in a Data Source.
 
-  The mutation returns the tables along with when they were last cached from the Data Source.
-
-  A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+  Returns the tables along with when they were last cached from the Data Source.
   """
   introspectTables(input: idOrUniqueName!): TableIntrospection
   """
@@ -2413,31 +2566,23 @@ type Mutation {
   """
   testDataSource(input: idOrUniqueName!): DataSourceOrFailureResponse
   """
-  This mutation deletes the specified Data Source by ID and then returns the same ID if the Data Source was deleted successfully.
-
-  A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+  Deletes a Data Source by ID and returns its ID if the Data Source was deleted successfully.
   """
   deleteDataSource(id: ID!): ID
   """
-  This mutation deletes the specified Data Source by name and then returns the Data Source's ID if the Data Source was deleted successfully.
-
-  A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+  Deletes a Data Source by unique name and returns its ID if the Data Source was deleted successfully.
   """
   deleteDataSourceByName(uniqueName: String!): ID
   """
-  This mutation creates a new Data Pool from the given Data Source based on the specified table and using a particular column as the timestamp.
+  Creates a new Data Pool from the given Data Source based on the specified table and using a particular column as the timestamp.
 
-  The mutation returns the newly created Data Pool (or an error message if creating the Data Pool fails).
+  Returns the newly created Data Pool (or an error message if creating the Data Pool fails).
 
-  A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+  [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
   """
   createDataPoolV2(input: CreateDataPoolInputV2!): DataPoolResponse
   """
-  This mutation selects a Data Pool by its ID or unique name and modifies it to have the given unique name, description, and data retention time.
-
-  If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool.
-
-  A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+  Modifies a Data Pool with the provided unique name, description, and data retention time. If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool.
   """
   modifyDataPool(input: modifyDataPoolInput!): DataPoolOrFailureResponse
   """Deprecated. Use `retryDataPoolSetup` instead."""
@@ -2453,86 +2598,81 @@ type Mutation {
   """
   testDataPool(input: idOrUniqueName!): DataPoolOrFailureResponse
   """
-  This mutation deletes the specified Data Pool by ID and then returns the same ID if the Data Pool was deleted successfully.
-
-  A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+  Deletes a Data Pool by ID and returns its ID if the Data Pool was deleted successfully.
   """
   deleteDataPool(id: ID!): ID
   """
-  This mutation deletes the specified Data Pool by name and then returns the Data Pool's ID if the Data Pool was deleted successfully.
-
-  A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
+  Deletes a Data Pool by unique name and returns its ID if the Data Pool was deleted successfully.
   """
   deleteDataPoolByName(uniqueName: String!): ID
-  """ Disabling syncing of a Data Pool. """
+  """ Disables syncing of a Data Pool. """
   disableSyncing(id: ID!): DataPool
-  """ Re-enable syncing of a Data Pool. """
+  """ Re-enables syncing of a Data Pool. """
   enableSyncing(id: ID!): DataPool
   """
-  This mutation creates a new Count Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+  Creates a new Count Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 
-  A Metric is a business indicator measured over time. A Count Metric returns the number of items found in the underlying data over a specific time period.
+  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createCountMetric(input: CreateCountMetricInput): MetricResponse
   """
-  This mutation creates a new Count Distinct Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+  Creates a new Count Distinct Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 
-  A Metric is a business indicator measured over time. A Count Distinct Metric returns the number of distinct items found in the underlying data over a specific time period.
+  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createCountDistinctMetric(input: CreateCountDistinctMetricInput): MetricResponse
   """
-  This mutation creates a new Sum Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+  Creates a new Sum Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 
-  A Metric is a business indicator measured over time. A Sum Metric returns the sum of the values found in the underlying data over a specific time period.
+  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createSumMetric(input: CreateSumMetricInput): MetricResponse
   """
-  This mutation creates a new Average Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+  Creates a new Average Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 
-  A Metric is a business indicator measured over time. An Average Metric returns the average of the underlying data over a specific time period.
+  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createAverageMetric(input: CreateAverageMetricInput): MetricResponse
   """
-  This mutation creates a new Min Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+  Creates a new Min Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 
-  A Metric is a business indicator measured over time. A Min Metric returns the minimum value found in the underlying data during a specific time period.
+  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createMinMetric(input: CreateMinMetricInput): MetricResponse
   """
-  This mutation creates a new Max Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
+  Creates a new Max Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 
-  A Metric is a business indicator measured over time. A Max Metric returns the maximum value found in the underlying data during a specific time period.
+  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createMaxMetric(input: CreateMaxMetricInput): MetricResponse
   """
-  This mutation selects a Metric by its ID and modifies it to have the given unique name, description, and Dimensions.
+  Creates a new Custom Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
 
-  If any of the optional arguments are omitted, those properties will be unchanged on the Metric.
-
-  A Metric is a business indicator measured over time.
+  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
+  """
+  createCustomMetric(input: CreateCustomMetricInput): MetricResponse
+  """
+  Modifies a Metric by ID with the provided unique name, description, and Dimensions. If any of the optional arguments are omitted, those properties will be unchanged on the Metric.
   """
   modifyMetric(input: ModifyMetricInput): MetricResponse
+  """Migrates a Metric from one Data Pool to another."""
   migrateMetric(input: MigrateMetricInput!): Metric
   """
-  This mutation deletes the specified Metric by ID and then returns the same ID if the Data Source was deleted successfully.
-
-  A Metric is a business indicator measured over time.
+  Deletes a Metric by ID and returns its ID if the Metric was deleted successfully.
   """
   deleteMetric(id: ID!): ID
   """
-  This mutation deletes the specified Metric by name and then returns the Metric's ID if the Data Source was deleted successfully.
-
-  A Metric is a business indicator measured over time.
+  Deletes a Metric by unique name and returns its ID if the Metric was deleted successfully.
   """
   deleteMetricByName(uniqueName: String!): ID
   """
-  This mutation creates a new Booster for the given Metric and returns the newly created Booster.
+  Creates a new Booster for the given Metric and returns the newly created Booster.
 
   A Booster significantly improves the query performance for a Metric.
   """
   createBooster(input: CreateBoosterInput!): BoosterResponse
   """
-  This mutation deletes the specified Booster by ID and then returns the same ID if the Booster was deleted successfully.
+  Deletes a Booster by ID and then returns the same ID if the Booster was deleted successfully.
 
   A Booster significantly improves the query performance for a Metric.
   """
@@ -2552,9 +2692,9 @@ type Mutation {
   """Schedules a new Deletion Job on the specified Data Pool."""
   requestDelete(input: DeletionRequestInput!): RequestDeleteResponse!
   """
-  This mutation creates a new HTTP Data Source from the given settings.
+  Creates a new HTTP Data Source from the given settings.
 
-  The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+  Returns the newly created Data Source (or an error message if creating the Data Source fails).
   """
   createHttpDataSource(input: CreateHttpDataSourceInput!): DataSourceResponse!
   """
@@ -2564,9 +2704,9 @@ type Mutation {
   """
   modifyHttpDataSource(input: ModifyHttpDataSourceInput!): DataSourceResponse!
   """
-  This mutation creates a new Data Source, pointed at the specified S3 bucket.
+  Creates a new Amazon S3 Data Source pointed at the specified S3 bucket.
 
-  The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+  Returns the newly created Data Source (or an error message if creating the Data Source fails).
   """
   createS3DataSource(input: CreateS3DataSourceInput!): DataSourceResponse!
   """

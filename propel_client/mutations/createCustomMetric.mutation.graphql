@@ -1,0 +1,8 @@
+mutation CreateCustomMetric($input: CreateCustomMetricInput!) {
+    createCustomMetric(input: $input) {
+        __typename
+        metric {
+            ...MetricData
+        }
+    }
+}

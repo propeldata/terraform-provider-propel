@@ -103,11 +103,11 @@ func resourceDataPool() *schema.Resource {
 				ForceNew:    true,
 				Description: "The Data Pool's timestamp column.",
 			},
-			"cursor": {
+			"unique_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				ForceNew:    true,
-				Description: "The column to track whether a record should be synced. An example of a cursor would be a timestamp column like `updated_at`",
+				Description: "The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool. Only for Snowflake Data Pools.",
 			},
 			"syncing": {
 				Type:        schema.TypeList,
@@ -186,9 +186,9 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 		}
 	}
 
-	if _, exists := d.GetOk("cursor"); exists {
-		input.Cursor = &pc.CursorInput{
-			ColumnName: d.Get("cursor").(string),
+	if _, exists := d.GetOk("unique_id"); exists {
+		input.UniqueId = &pc.UniqueIdInput{
+			ColumnName: d.Get("unique_id").(string),
 		}
 	}
 
@@ -262,8 +262,8 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
-	if response.DataPool.Cursor != nil {
-		if err := d.Set("cursor", response.DataPool.Cursor.ColumnName); err != nil {
+	if response.DataPool.UniqueId != nil {
+		if err := d.Set("unique_id", response.DataPool.UniqueId.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 	}

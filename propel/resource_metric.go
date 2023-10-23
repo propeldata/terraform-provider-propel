@@ -47,6 +47,7 @@ func resourceMetric() *schema.Resource {
 					"AVERAGE",
 					"MIN",
 					"MAX",
+					"CUSTOM",
 				}, false),
 				Description: "The Metric type. The different Metric types determine how the values are calculated.",
 			},
@@ -84,11 +85,13 @@ func resourceMetric() *schema.Resource {
 								"GREATER_THAN_OR_EQUAL_TO",
 								"LESS_THAN",
 								"LESS_THAN_OR_EQUAL_TO",
+								"IS_NULL",
+								"IS_NOT_NULL",
 							}, false),
 						},
 						"value": {
 							Type:        schema.TypeString,
-							Required:    true,
+							Optional:    true,
 							Description: "The value to compare the column to.",
 						},
 						"and": {
@@ -127,6 +130,13 @@ func resourceMetric() *schema.Resource {
 				Computed:    true,
 				ForceNew:    true,
 				Description: "The Dimension where the count distinct operation is going to be performed. Only valid for COUNT_DISTINCT Metrics.",
+			},
+			"expression": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
+				ForceNew:    true,
+				Description: "The custom expression for aggregating data in a Metric. Only valid for CUSTOM Metrics.",
 			},
 			"access_control_enabled": {
 				Type:        schema.TypeBool,
@@ -266,6 +276,23 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 		}
 
 		d.SetId(response.GetCreateMinMetric().Metric.Id)
+
+	case "CUSTOM":
+		input := &pc.CreateCustomMetricInput{
+			DataPool:    dataPool,
+			UniqueName:  &uniqueName,
+			Description: &description,
+			Filters:     filters,
+			Dimensions:  dimensions,
+			Expression:  d.Get("expression").(string),
+		}
+
+		response, err := pc.CreateCustomMetric(ctx, c, input)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		d.SetId(response.GetCreateCustomMetric().Metric.Id)
 	}
 
 	return diags
@@ -394,6 +421,20 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 
 			filters = append(filters, filter)
 		}
+	case *pc.MetricDataSettingsCustomMetricSettings:
+		if err := d.Set("expression", s.Expression); err != nil {
+			return diag.FromErr(err)
+		}
+
+		for _, f := range s.Filters {
+			filter := map[string]interface{}{
+				"column":   f.Column,
+				"operator": f.Operator,
+				"value":    f.Value,
+			}
+
+			filters = append(filters, filter)
+		}
 	}
 
 	if err := d.Set("filter", filters); err != nil {
@@ -467,7 +508,11 @@ func expandMetricFilters(def []interface{}) ([]*pc.FilterInput, diag.Diagnostics
 		f := &pc.FilterInput{
 			Column:   filter["column"].(string),
 			Operator: pc.FilterOperator(filter["operator"].(string)),
-			Value:    filter["value"].(string),
+		}
+
+		if def, ok := filter["value"]; ok {
+			value := def.(string)
+			f.Value = &value
 		}
 
 		if def, ok := filter["and"]; ok && def != "" {

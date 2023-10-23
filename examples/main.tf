@@ -158,6 +158,21 @@ resource "propel_metric" "max_metric" {
   dimensions = ["column_1", "column_2"]
 }
 
+resource "propel_metric" "custom_metric" {
+  unique_name = "My CUSTOM Metric"
+  data_pool   = propel_data_pool.data_pool.id
+
+  type         = "CUSTOM"
+  expression   = "SUM(column_1 * column_2) / COUNT()"
+
+  filter {
+    column   = "column_1"
+    operator = "IS_NOT_NULL"
+  }
+
+  dimensions = ["column_1", "column_2"]
+}
+
 resource "propel_policy" "sum_metric_policy" {
   type = "ALL_ACCESS"
   metric = propel_metric.sum_metric.id
@@ -198,6 +213,10 @@ output "min_metric_id" {
 
 output "max_metric_id" {
   value = propel_metric.max_metric.id
+}
+
+output "custom_metric_id" {
+  value = propel_metric.custom_metric.id
 }
 
 output "sum_metric_policy_id" {
