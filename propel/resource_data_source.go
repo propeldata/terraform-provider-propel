@@ -597,10 +597,6 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("type", response.DataSource.GetType()); err != nil {
-		return diag.FromErr(err)
-	}
-
 	if err := d.Set("status", response.DataSource.GetStatus()); err != nil {
 		return diag.FromErr(err)
 	}
