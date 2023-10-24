@@ -156,6 +156,7 @@ func resourceDataSource() *schema.Resource {
 									"password": {
 										Type:        schema.TypeString,
 										Required:    true,
+										Sensitive:   true,
 										Description: "The password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.",
 									},
 								},
@@ -215,6 +216,7 @@ func resourceDataSource() *schema.Resource {
 									"password": {
 										Type:        schema.TypeString,
 										Required:    true,
+										Sensitive:   true,
 										Description: "Password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.",
 									},
 								},
