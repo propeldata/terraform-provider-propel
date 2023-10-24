@@ -107,7 +107,7 @@ func resourceMetric() *schema.Resource {
 							Optional:     true,
 							Description:  "Additional filters to AND with this one. AND takes precedence over OR. It is defined as a JSON string value.",
 							ValidateFunc: validation.StringIsJSON,
-							StateFunc: func(v interface{}) string {
+							StateFunc: func(v any) string {
 								nJSON, _ := structure.NormalizeJsonString(v)
 								return nJSON
 							},
@@ -117,7 +117,7 @@ func resourceMetric() *schema.Resource {
 							Optional:     true,
 							Description:  "Additional filters to OR with this one. AND takes precedence over OR. It is defined as a JSON string value.",
 							ValidateFunc: validation.StringIsJSON,
-							StateFunc: func(v interface{}) string {
+							StateFunc: func(v any) string {
 								nJSON, _ := structure.NormalizeJsonString(v)
 								return nJSON
 							},
@@ -156,7 +156,7 @@ func resourceMetric() *schema.Resource {
 	}
 }
 
-func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -306,7 +306,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 	return diags
 }
 
-func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -417,7 +417,7 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 	return diags
 }
 
-func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -459,7 +459,7 @@ func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 	return resourceMetricRead(ctx, d, m)
 }
 
-func resourceMetricDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceMetricDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	_, err := pc.DeleteMetric(ctx, c, d.Id())

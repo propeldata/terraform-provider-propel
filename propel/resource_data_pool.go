@@ -155,7 +155,7 @@ func expandDataPoolColumns(def []any) []*pc.DataPoolColumnInput {
 	return columns
 }
 
-func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -219,7 +219,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 	return diags
 }
 
-func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -285,7 +285,7 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 	return diags
 }
 
-func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	if d.HasChanges("unique_name", "description", "syncing") {
@@ -317,7 +317,7 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m inter
 	return resourceDataPoolRead(ctx, d, m)
 }
 
-func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -346,7 +346,7 @@ func waitForDataPoolLive(ctx context.Context, client graphql.Client, id string, 
 		Target: []string{
 			string(pc.DataPoolStatusLive),
 		},
-		Refresh: func() (interface{}, string, error) {
+		Refresh: func() (any, string, error) {
 			resp, err := pc.DataPool(ctx, client, id)
 			if err != nil {
 				return 0, "", fmt.Errorf("error trying to read Data Pool status: %s", err)

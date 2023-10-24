@@ -344,7 +344,7 @@ func resourceDataSource() *schema.Resource {
 	}
 }
 
-func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	// TODO(mroberts): The Propel GraphQL API should eventually return this uppercase.
 	dataSourceType := d.Get("type").(string)
 	switch strings.ToUpper(dataSourceType) {
@@ -361,7 +361,7 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 	}
 }
 
-func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
 	// Warning or errors can be collected in a slice type
@@ -412,7 +412,7 @@ func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceDa
 	return diags
 }
 
-func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
 	var basicAuth *pc.HttpBasicAuthInput
@@ -457,7 +457,7 @@ func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, m
 	return resourceDataSourceRead(ctx, d, meta)
 }
 
-func resourceS3DataSourceCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceS3DataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
 	tables := make([]*pc.S3DataSourceTableInput, 0)
