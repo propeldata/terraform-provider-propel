@@ -1085,6 +1085,11 @@ func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m any
 		return diag.FromErr(err)
 	}
 
+	timeout := d.Timeout(schema.TimeoutDelete)
+	if err = waitForDataSourceDeletion(ctx, c, d.Id(), timeout); err != nil {
+		return diag.FromErr(err)
+	}
+
 	// d.SetId("") is automatically called assuming delete returns no errors, but
 	// it is added here for explicitness.
 	d.SetId("")
@@ -1120,6 +1125,34 @@ func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id s
 		return fmt.Errorf("error waiting for Data Source to be CONNECTED: %s", err)
 	}
 
+	return nil
+}
+
+func waitForDataSourceDeletion(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
+	ticketInterval := 10 // 10s
+	timeoutSeconds := int(timeout.Seconds())
+	n := 0
+
+	ticker := time.NewTicker(time.Duration(ticketInterval) * time.Second)
+	for range ticker.C {
+		if n*ticketInterval > timeoutSeconds {
+			ticker.Stop()
+			break
+		}
+
+		_, err := pc.DataSource(ctx, client, id)
+		if err != nil {
+			ticker.Stop()
+
+			if strings.Contains(err.Error(), "not found") {
+				return nil
+			}
+
+			return fmt.Errorf("error trying to fetch Data Source: %s", err)
+		}
+
+		n++
+	}
 	return nil
 }
 
