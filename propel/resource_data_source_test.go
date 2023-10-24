@@ -92,7 +92,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					testAccCheckPropelDataSourceExists("propel_data_source.webhook"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "WEBHOOK"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "status", "CONNECTED"),
-					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.timestamp", "timestamp_tz"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.timestamp", "timestamp_tz"),
 				),
 			},
 		},
