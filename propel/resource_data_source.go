@@ -271,6 +271,16 @@ func resourceDataSource() *schema.Resource {
 							ForceNew:    true,
 							Description: "The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.",
 						},
+						"webhook_url": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The Webhook URL for posting JSON events.",
+						},
+						"data_pool_id": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The Webhook Data Pool ID.",
+						},
 					},
 				},
 			},
@@ -544,7 +554,7 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 	return resourceDataSourceRead(ctx, d, meta)
 }
 
-func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	response, err := pc.DataSource(ctx, c, d.Id())
@@ -768,10 +778,10 @@ func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 	switch s := response.DataSource.GetConnectionSettings().(type) {
 	case *pc.DataSourceDataConnectionSettingsWebhookConnectionSettings:
 		settings := map[string]any{
-			"timestamp": s.GetTimestamp(),
-			"tenant":    s.GetTenant(),
-			"unique_id": s.GetUniqueId(),
-			"columns":   s.GetColumns(),
+			"timestamp":   s.GetTimestamp(),
+			"tenant":      s.GetTenant(),
+			"unique_id":   s.GetUniqueId(),
+			"webhook_url": s.GetWebhookUrl(),
 		}
 
 		if s.BasicAuth != nil {
@@ -781,6 +791,23 @@ func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 					"password": s.BasicAuth.GetPassword(),
 				},
 			}
+		}
+
+		cols := make([]any, len(s.Columns))
+
+		for i, column := range s.Columns {
+			cols[i] = map[string]any{
+				"name":          column.Name,
+				"type":          column.Type,
+				"nullable":      column.Nullable,
+				"json_property": column.JsonProperty,
+			}
+		}
+
+		settings["column"] = cols
+
+		if len(response.DataSource.DataPools.GetNodes()) == 1 {
+			settings["data_pool_id"] = response.DataSource.DataPools.Nodes[0].Id
 		}
 
 		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {
@@ -793,7 +820,7 @@ func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 	return nil
 }
 
-func resourceSnowflakeDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceSnowflakeDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	if d.HasChanges("unique_name", "description", "snowflake_connection_settings") {
@@ -863,7 +890,7 @@ func resourceSnowflakeDataSourceUpdate(ctx context.Context, d *schema.ResourceDa
 	return resourceDataSourceRead(ctx, d, m)
 }
 
-func resourceHttpDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceHttpDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	if d.HasChanges("unique_name", "description", "table", "http_connection_settings") {
@@ -911,7 +938,7 @@ func resourceHttpDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m
 	return resourceDataSourceRead(ctx, d, m)
 }
 
-func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	if d.HasChanges("unique_name", "description", "table", "s3_connection_settings") {
@@ -970,7 +997,49 @@ func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m i
 	return resourceDataSourceRead(ctx, d, m)
 }
 
-func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
+	c := m.(graphql.Client)
+
+	if d.HasChanges("unique_name", "description", "webhook_connection_settings") {
+		id := d.Id()
+		uniqueName := d.Get("unique_name").(string)
+		description := d.Get("description").(string)
+
+		var basicAuth *pc.HttpBasicAuthInput
+		if d.Get("webhook_connection_settings") != nil && len(d.Get("webhook_connection_settings").([]any)) > 0 {
+			cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
+
+			if def, ok := cs["basic_auth"]; ok {
+				basicAuth = expandBasicAuth(def.([]any))
+			}
+		}
+
+		input := &pc.ModifyWebhookDataSourceInput{
+			IdOrUniqueName: &pc.IdOrUniqueName{
+				Id: &id,
+			},
+			UniqueName:  &uniqueName,
+			Description: &description,
+			ConnectionSettings: &pc.PartialWebhookConnectionSettingsInput{
+				BasicAuth: basicAuth,
+			},
+		}
+
+		if _, err := pc.ModifyWebhookDataSource(ctx, c, input); err != nil {
+			return diag.FromErr(err)
+		}
+
+		timeout := d.Timeout(schema.TimeoutCreate)
+
+		if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	return resourceDataSourceRead(ctx, d, m)
+}
+
+func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 
 	dataSourceType := d.Get("type").(string)
 	switch strings.ToUpper(dataSourceType) {
@@ -980,17 +1049,36 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta 
 		return resourceHttpDataSourceUpdate(ctx, d, meta)
 	case "S3":
 		return resourceS3DataSourceUpdate(ctx, d, meta)
+	case "WEBHOOK":
+		return resourceWebhookDataSourceUpdate(ctx, d, meta)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
 
 }
 
-func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
+
+	// Deletes default Data Pool first
+	if strings.ToUpper(d.Get("type").(string)) == "WEBHOOK" {
+		cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
+
+		dataPoolID := cs["data_pool_id"].(string)
+
+		_, err := pc.DeleteDataPool(ctx, c, dataPoolID)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		timeout := d.Timeout(schema.TimeoutDelete)
+		if err := waitForDataPoolDeletion(ctx, c, dataPoolID, timeout); err != nil {
+			return diag.FromErr(err)
+		}
+	}
 
 	_, err := pc.DeleteDataSource(ctx, c, d.Id())
 	if err != nil {
@@ -1013,7 +1101,7 @@ func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id s
 		Target: []string{
 			string(pc.DataSourceStatusConnected),
 		},
-		Refresh: func() (interface{}, string, error) {
+		Refresh: func() (any, string, error) {
 			resp, err := pc.DataSource(ctx, client, id)
 			if err != nil {
 				return nil, "", fmt.Errorf("error trying to read Data Source status: %s", err)
@@ -1053,51 +1141,51 @@ func expandHttpTables(def []any) []*pc.HttpDataSourceTableInput {
 }
 
 func expandHttpColumns(def []any) []*pc.HttpDataSourceColumnInput {
-	columns := make([]*pc.HttpDataSourceColumnInput, 0, len(def))
+	columns := make([]*pc.HttpDataSourceColumnInput, len(def))
 
-	for _, rawColumn := range def {
+	for i, rawColumn := range def {
 		column := rawColumn.(map[string]any)
 
-		columns = append(columns, &pc.HttpDataSourceColumnInput{
+		columns[i] = &pc.HttpDataSourceColumnInput{
 			Name:     column["name"].(string),
 			Type:     pc.ColumnType(column["type"].(string)),
 			Nullable: column["nullable"].(bool),
-		})
+		}
 	}
 
 	return columns
 }
 
 func expandS3Tables(def []any) []*pc.S3DataSourceTableInput {
-	tables := make([]*pc.S3DataSourceTableInput, 0, len(def))
+	tables := make([]*pc.S3DataSourceTableInput, len(def))
 
-	for _, rawTable := range def {
+	for i, rawTable := range def {
 		table := rawTable.(map[string]any)
 
 		columns := expandS3Columns(table["column"].([]any))
 
 		path := table["path"].(string)
-		tables = append(tables, &pc.S3DataSourceTableInput{
+		tables[i] = &pc.S3DataSourceTableInput{
 			Name:    table["name"].(string),
 			Path:    &path,
 			Columns: columns,
-		})
+		}
 	}
 
 	return tables
 }
 
 func expandS3Columns(def []any) []*pc.S3DataSourceColumnInput {
-	columns := make([]*pc.S3DataSourceColumnInput, 0, len(def))
+	columns := make([]*pc.S3DataSourceColumnInput, len(def))
 
-	for _, rawColumn := range def {
+	for i, rawColumn := range def {
 		column := rawColumn.(map[string]any)
 
-		columns = append(columns, &pc.S3DataSourceColumnInput{
+		columns[i] = &pc.S3DataSourceColumnInput{
 			Name:     column["name"].(string),
 			Type:     pc.ColumnType(column["type"].(string)),
 			Nullable: column["nullable"].(bool),
-		})
+		}
 	}
 
 	return columns

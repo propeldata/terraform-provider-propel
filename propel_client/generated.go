@@ -1799,6 +1799,11 @@ func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) G
 	return v.DataSourceData.Error
 }
 
+// GetDataPools returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
 // GetConnectionSettings returns CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
 	return v.DataSourceData.ConnectionSettings
@@ -1893,6 +1898,8 @@ type __premarshalCreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataS
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -1933,6 +1940,7 @@ func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource) _
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -2668,6 +2676,11 @@ func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetEr
 	return v.DataSourceData.Error
 }
 
+// GetDataPools returns CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
 // GetConnectionSettings returns CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
 	return v.DataSourceData.ConnectionSettings
@@ -2762,6 +2775,8 @@ type __premarshalCreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSourc
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -2802,6 +2817,7 @@ func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource) __pre
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -2992,6 +3008,11 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDat
 	return v.DataSourceData.Error
 }
 
+// GetDataPools returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
 // GetConnectionSettings returns CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
 	return v.DataSourceData.ConnectionSettings
@@ -3086,6 +3107,8 @@ type __premarshalCreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceRes
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -3126,6 +3149,7 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDat
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -3638,6 +3662,11 @@ func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSou
 	return v.DataSourceData.Error
 }
 
+// GetDataPools returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
 // GetConnectionSettings returns CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
 	return v.DataSourceData.ConnectionSettings
@@ -3732,6 +3761,8 @@ type __premarshalCreateWebhookDataSourceCreateWebhookDataSourceDataSourceRespons
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -3772,6 +3803,7 @@ func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSou
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -4476,6 +4508,11 @@ func (v *DataPoolDataDataSource) GetStatus() DataSourceStatus { return v.DataSou
 // GetError returns DataPoolDataDataSource.Error, and is useful for accessing the field via an interface.
 func (v *DataPoolDataDataSource) GetError() *DataSourceDataError { return v.DataSourceData.Error }
 
+// GetDataPools returns DataPoolDataDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
 // GetConnectionSettings returns DataPoolDataDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *DataPoolDataDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
 	return v.DataSourceData.ConnectionSettings
@@ -4570,6 +4607,8 @@ type __premarshalDataPoolDataDataSource struct {
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -4610,6 +4649,7 @@ func (v *DataPoolDataDataSource) __premarshalJSON() (*__premarshalDataPoolDataDa
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -5694,6 +5734,11 @@ func (v *DataSourceByNameDataSource) GetStatus() DataSourceStatus { return v.Dat
 // GetError returns DataSourceByNameDataSource.Error, and is useful for accessing the field via an interface.
 func (v *DataSourceByNameDataSource) GetError() *DataSourceDataError { return v.DataSourceData.Error }
 
+// GetDataPools returns DataSourceByNameDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *DataSourceByNameDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
 // GetConnectionSettings returns DataSourceByNameDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *DataSourceByNameDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
 	return v.DataSourceData.ConnectionSettings
@@ -5788,6 +5833,8 @@ type __premarshalDataSourceByNameDataSource struct {
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -5828,6 +5875,7 @@ func (v *DataSourceByNameDataSource) __premarshalJSON() (*__premarshalDataSource
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -5894,6 +5942,14 @@ type DataSourceData struct {
 	// The Data Source's status.
 	Status DataSourceStatus     `json:"status"`
 	Error  *DataSourceDataError `json:"error"`
+	// If you list Data Pools via the `dataPools` field on a Data Source, you will get Data Pools for the Data Source.
+	//
+	// The `dataPools` field uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+	//
+	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
+	//
+	// For backward pagination, the `last` parameter defines the number of results to return, and the `before` parameter defines the cursor to continue from. You should pass the cursor for the _first_ result of the current page to `before`.
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
 	// The Data Source's connection settings.
 	ConnectionSettings DataSourceDataConnectionSettings `json:"-"`
 	// The tables contained within the Data Source, according to the most recent table introspection.
@@ -5915,6 +5971,11 @@ func (v *DataSourceData) GetStatus() DataSourceStatus { return v.Status }
 
 // GetError returns DataSourceData.Error, and is useful for accessing the field via an interface.
 func (v *DataSourceData) GetError() *DataSourceDataError { return v.Error }
+
+// GetDataPools returns DataSourceData.DataPools, and is useful for accessing the field via an interface.
+func (v *DataSourceData) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataPools
+}
 
 // GetConnectionSettings returns DataSourceData.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *DataSourceData) GetConnectionSettings() DataSourceDataConnectionSettings {
@@ -6006,6 +6067,8 @@ type __premarshalDataSourceData struct {
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -6046,6 +6109,7 @@ func (v *DataSourceData) __premarshalJSON() (*__premarshalDataSourceData, error)
 	retval.Type = v.Type
 	retval.Status = v.Status
 	retval.Error = v.Error
+	retval.DataPools = v.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -6597,6 +6661,36 @@ func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhook
 	return v.Nullable
 }
 
+// DataSourceDataDataPoolsDataPoolConnection includes the requested fields of the GraphQL type DataPoolConnection.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool connection object.
+//
+// Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+type DataSourceDataDataPoolsDataPoolConnection struct {
+	// The Data Pool connection's nodes.
+	Nodes []*DataSourceDataDataPoolsDataPoolConnectionNodesDataPool `json:"nodes"`
+}
+
+// GetNodes returns DataSourceDataDataPoolsDataPoolConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataSourceDataDataPoolsDataPoolConnection) GetNodes() []*DataSourceDataDataPoolsDataPoolConnectionNodesDataPool {
+	return v.Nodes
+}
+
+// DataSourceDataDataPoolsDataPoolConnectionNodesDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
+//
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
+type DataSourceDataDataPoolsDataPoolConnectionNodesDataPool struct {
+	// The Data Pool's unique identifier.
+	Id string `json:"id"`
+}
+
+// GetId returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.Id, and is useful for accessing the field via an interface.
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetId() string { return v.Id }
+
 // DataSourceDataError includes the requested fields of the GraphQL type Error.
 // The GraphQL type's documentation follows.
 //
@@ -6632,6 +6726,11 @@ func (v *DataSourceDataSource) GetStatus() DataSourceStatus { return v.DataSourc
 
 // GetError returns DataSourceDataSource.Error, and is useful for accessing the field via an interface.
 func (v *DataSourceDataSource) GetError() *DataSourceDataError { return v.DataSourceData.Error }
+
+// GetDataPools returns DataSourceDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *DataSourceDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
 
 // GetConnectionSettings returns DataSourceDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *DataSourceDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
@@ -6727,6 +6826,8 @@ type __premarshalDataSourceDataSource struct {
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -6767,6 +6868,7 @@ func (v *DataSourceDataSource) __premarshalJSON() (*__premarshalDataSourceDataSo
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -7165,6 +7267,11 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSo
 	return v.DataSourceData.Error
 }
 
+// GetDataPools returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
 // GetConnectionSettings returns DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
 	return v.DataSourceData.ConnectionSettings
@@ -7259,6 +7366,8 @@ type __premarshalDataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNo
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -7299,6 +7408,7 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSo
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -11266,6 +11376,11 @@ func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) G
 	return v.DataSourceData.Error
 }
 
+// GetDataPools returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
 // GetConnectionSettings returns ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
 	return v.DataSourceData.ConnectionSettings
@@ -11360,6 +11475,8 @@ type __premarshalModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataS
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -11400,6 +11517,7 @@ func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource) _
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -11877,6 +11995,11 @@ func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetEr
 	return v.DataSourceData.Error
 }
 
+// GetDataPools returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
 // GetConnectionSettings returns ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
 	return v.DataSourceData.ConnectionSettings
@@ -11971,6 +12094,8 @@ type __premarshalModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSourc
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -12011,6 +12136,7 @@ func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource) __pre
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -12207,6 +12333,11 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDat
 	return v.DataSourceData.Error
 }
 
+// GetDataPools returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
 // GetConnectionSettings returns ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
 func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
 	return v.DataSourceData.ConnectionSettings
@@ -12301,6 +12432,8 @@ type __premarshalModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceRes
 
 	Error *DataSourceDataError `json:"error"`
 
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
 	ConnectionSettings json.RawMessage `json:"connectionSettings"`
 
 	Tables *DataSourceDataTablesTableConnection `json:"tables"`
@@ -12341,6 +12474,7 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDat
 	retval.Type = v.DataSourceData.Type
 	retval.Status = v.DataSourceData.Status
 	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
 	{
 
 		dst := &retval.ConnectionSettings
@@ -12529,6 +12663,258 @@ func (v *ModifySnowflakeDataSourceResponse) __premarshalJSON() (*__premarshalMod
 	return &retval, nil
 }
 
+type ModifyWebhookDataSourceInput struct {
+	// The Webhook Data Source's new connection settings. If not provided this property will not be modified.
+	ConnectionSettings *PartialWebhookConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The Webhook Data Source's new description. If not provided this property will not be modified.
+	Description *string `json:"description"`
+	// The ID or unique name of the Webhook Data Source to modify.
+	IdOrUniqueName *IdOrUniqueName `json:"idOrUniqueName,omitempty"`
+	// The Webhook Data Source's new unique name. If not provided this property will not be modified.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns ModifyWebhookDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceInput) GetConnectionSettings() *PartialWebhookConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns ModifyWebhookDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetIdOrUniqueName returns ModifyWebhookDataSourceInput.IdOrUniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceInput) GetIdOrUniqueName() *IdOrUniqueName { return v.IdOrUniqueName }
+
+// GetUniqueName returns ModifyWebhookDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponse) GetDataSource() *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetDataPools returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
+// GetConnectionSettings returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyWebhookDataSourceResponse is returned by ModifyWebhookDataSource on success.
+type ModifyWebhookDataSourceResponse struct {
+	// Modifies the Data Source by the ID or unique name provided with the given unique name, description, and connection settings.
+	//
+	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+	ModifyWebhookDataSource *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponse `json:"modifyWebhookDataSource"`
+}
+
+// GetModifyWebhookDataSource returns ModifyWebhookDataSourceResponse.ModifyWebhookDataSource, and is useful for accessing the field via an interface.
+func (v *ModifyWebhookDataSourceResponse) GetModifyWebhookDataSource() *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponse {
+	return v.ModifyWebhookDataSource
+}
+
 // PageInfoData includes the GraphQL fields of PageInfo requested by the fragment PageInfoData.
 // The GraphQL type's documentation follows.
 //
@@ -12641,6 +13027,24 @@ func (v *PartialSnowflakeConnectionSettingsInput) GetPassword() *string { return
 
 // GetRole returns PartialSnowflakeConnectionSettingsInput.Role, and is useful for accessing the field via an interface.
 func (v *PartialSnowflakeConnectionSettingsInput) GetRole() *string { return v.Role }
+
+// The Webhook Data Source connection settings.
+type PartialWebhookConnectionSettingsInput struct {
+	// The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it. If not provided this property will not be modified.
+	BasicAuth *HttpBasicAuthInput `json:"basicAuth,omitempty"`
+	// Set this to `false` to disable HTTP Basic authentication. Any previously stored HTTP Basic authentication settings will be cleared out. If not provided this property will not be modified.
+	BasicAuthEnabled *bool `json:"basicAuthEnabled"`
+}
+
+// GetBasicAuth returns PartialWebhookConnectionSettingsInput.BasicAuth, and is useful for accessing the field via an interface.
+func (v *PartialWebhookConnectionSettingsInput) GetBasicAuth() *HttpBasicAuthInput {
+	return v.BasicAuth
+}
+
+// GetBasicAuthEnabled returns PartialWebhookConnectionSettingsInput.BasicAuthEnabled, and is useful for accessing the field via an interface.
+func (v *PartialWebhookConnectionSettingsInput) GetBasicAuthEnabled() *bool {
+	return v.BasicAuthEnabled
+}
 
 // PolicyData includes the GraphQL fields of Policy requested by the fragment PolicyData.
 // The GraphQL type's documentation follows.
@@ -13494,6 +13898,14 @@ type __ModifySnowflakeDataSourceInput struct {
 // GetInput returns __ModifySnowflakeDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifySnowflakeDataSourceInput) GetInput() *ModifySnowflakeDataSourceInput { return v.Input }
 
+// __ModifyWebhookDataSourceInput is used internally by genqlient
+type __ModifyWebhookDataSourceInput struct {
+	Input *ModifyWebhookDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyWebhookDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyWebhookDataSourceInput) GetInput() *ModifyWebhookDataSourceInput { return v.Input }
+
 // __PolicyInput is used internally by genqlient
 type __PolicyInput struct {
 	Id string `json:"id"`
@@ -13669,6 +14081,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -13997,6 +14414,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -14323,6 +14745,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -14651,6 +15078,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -14890,6 +15322,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -15065,6 +15502,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -15374,6 +15816,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -15702,6 +16149,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -15925,6 +16377,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -16090,6 +16547,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -16404,6 +16866,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -16579,6 +17046,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -16795,6 +17267,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -17029,6 +17506,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -17277,6 +17759,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -17457,6 +17944,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -17612,6 +18104,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -17781,6 +18278,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -18325,6 +18827,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -18648,6 +19155,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -18990,6 +19502,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -19244,6 +19761,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -19419,6 +19941,11 @@ fragment DataSourceData on DataSource {
 	status
 	error {
 		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
 	}
 	connectionSettings {
 		__typename
@@ -19729,6 +20256,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -19952,6 +20484,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -20118,6 +20655,11 @@ fragment DataSourceData on DataSource {
 	error {
 		message
 	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
 	connectionSettings {
 		__typename
 		... on SnowflakeConnectionSettings {
@@ -20252,6 +20794,169 @@ func ModifySnowflakeDataSource(
 	var err error
 
 	var data ModifySnowflakeDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by ModifyWebhookDataSource.
+const ModifyWebhookDataSource_Operation = `
+mutation ModifyWebhookDataSource ($input: ModifyWebhookDataSourceInput!) {
+	modifyWebhookDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	dataPools {
+		nodes {
+			id
+		}
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				path
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			tenant
+			timestamp
+			uniqueId
+			webhookUrl
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`
+
+func ModifyWebhookDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyWebhookDataSourceInput,
+) (*ModifyWebhookDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyWebhookDataSource",
+		Query:  ModifyWebhookDataSource_Operation,
+		Variables: &__ModifyWebhookDataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyWebhookDataSourceResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(

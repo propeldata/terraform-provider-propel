@@ -6,6 +6,11 @@ fragment DataSourceData on DataSource {
     error {
         message
     }
+    dataPools {
+        nodes {
+            id
+        }
+    }
     connectionSettings {
         __typename
         ... on SnowflakeConnectionSettings {
