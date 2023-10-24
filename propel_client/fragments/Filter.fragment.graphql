@@ -2,4 +2,14 @@ fragment FilterData on Filter {
     column
     operator
     value
+    and {
+        column
+        operator
+        value
+    }
+    or {
+        column
+        operator
+        value
+    }
 }

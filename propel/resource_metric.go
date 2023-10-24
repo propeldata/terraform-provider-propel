@@ -13,6 +13,14 @@ import (
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
+type MetricFilter interface {
+	GetColumn() string
+	GetOperator() pc.FilterOperator
+	GetValue() *string
+	GetAnd() []*pc.FilterDataAndFilter
+	GetOr() []*pc.FilterDataOrFilter
+}
+
 func resourceMetric() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: resourceMetricCreate,
@@ -342,98 +350,63 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 
 	switch s := response.Metric.Settings.(type) {
 	case *pc.MetricDataSettingsCountMetricSettings:
-		for _, f := range s.Filters {
-			filter := map[string]any{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsSumMetricSettings:
 		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]any{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsCountDistinctMetricSettings:
 		if err := d.Set("dimension", s.Dimension.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]any{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsAverageMetricSettings:
 		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]any{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsMinMetricSettings:
 		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]any{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsMaxMetricSettings:
 		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]any{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsCustomMetricSettings:
 		if err := d.Set("expression", s.Expression); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]any{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	}
 
@@ -552,4 +525,38 @@ func expandMetricDimensions(def []any) []*pc.DimensionInput {
 	}
 
 	return dimensions
+}
+
+func parseMetricFilters[T MetricFilter](filters []T) ([]map[string]any, error) {
+	parsedFilters := make([]map[string]any, len(filters))
+
+	for i, f := range filters {
+		filter := map[string]any{
+			"column":   f.GetColumn(),
+			"operator": f.GetOperator(),
+			"value":    f.GetValue(),
+		}
+
+		if len(f.GetAnd()) > 0 {
+			and, err := json.Marshal(f.GetAnd())
+			if err != nil {
+				return nil, err
+			}
+
+			filter["and"] = string(and)
+		}
+
+		if len(f.GetOr()) > 0 {
+			or, err := json.Marshal(f.GetOr())
+			if err != nil {
+				return nil, err
+			}
+
+			filter["or"] = string(or)
+		}
+
+		parsedFilters[i] = filter
+	}
+
+	return parsedFilters, nil
 }

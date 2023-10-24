@@ -7677,6 +7677,10 @@ type FilterData struct {
 	Operator FilterOperator `json:"operator"`
 	// The value to compare the column to.
 	Value *string `json:"value"`
+	// Additional filters to AND with this one. AND takes precedence over OR.
+	And []*FilterDataAndFilter `json:"and"`
+	// Additional filters to OR with this one. AND takes precedence over OR.
+	Or []*FilterDataOrFilter `json:"or"`
 }
 
 // GetColumn returns FilterData.Column, and is useful for accessing the field via an interface.
@@ -7687,6 +7691,112 @@ func (v *FilterData) GetOperator() FilterOperator { return v.Operator }
 
 // GetValue returns FilterData.Value, and is useful for accessing the field via an interface.
 func (v *FilterData) GetValue() *string { return v.Value }
+
+// GetAnd returns FilterData.And, and is useful for accessing the field via an interface.
+func (v *FilterData) GetAnd() []*FilterDataAndFilter { return v.And }
+
+// GetOr returns FilterData.Or, and is useful for accessing the field via an interface.
+func (v *FilterData) GetOr() []*FilterDataOrFilter { return v.Or }
+
+// FilterDataAndFilter includes the requested fields of the GraphQL type Filter.
+// The GraphQL type's documentation follows.
+//
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
+type FilterDataAndFilter struct {
+	// The name of the column to filter on.
+	Column string `json:"column"`
+	// The operation to perform when comparing the column and filter values.
+	Operator FilterOperator `json:"operator"`
+	// The value to compare the column to.
+	Value *string `json:"value"`
+}
+
+// GetColumn returns FilterDataAndFilter.Column, and is useful for accessing the field via an interface.
+func (v *FilterDataAndFilter) GetColumn() string { return v.Column }
+
+// GetOperator returns FilterDataAndFilter.Operator, and is useful for accessing the field via an interface.
+func (v *FilterDataAndFilter) GetOperator() FilterOperator { return v.Operator }
+
+// GetValue returns FilterDataAndFilter.Value, and is useful for accessing the field via an interface.
+func (v *FilterDataAndFilter) GetValue() *string { return v.Value }
+
+// FilterDataOrFilter includes the requested fields of the GraphQL type Filter.
+// The GraphQL type's documentation follows.
+//
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
+type FilterDataOrFilter struct {
+	// The name of the column to filter on.
+	Column string `json:"column"`
+	// The operation to perform when comparing the column and filter values.
+	Operator FilterOperator `json:"operator"`
+	// The value to compare the column to.
+	Value *string `json:"value"`
+}
+
+// GetColumn returns FilterDataOrFilter.Column, and is useful for accessing the field via an interface.
+func (v *FilterDataOrFilter) GetColumn() string { return v.Column }
+
+// GetOperator returns FilterDataOrFilter.Operator, and is useful for accessing the field via an interface.
+func (v *FilterDataOrFilter) GetOperator() FilterOperator { return v.Operator }
+
+// GetValue returns FilterDataOrFilter.Value, and is useful for accessing the field via an interface.
+func (v *FilterDataOrFilter) GetValue() *string { return v.Value }
 
 // The fields of a filter.
 //
@@ -8657,6 +8767,16 @@ func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) GetValue() *strin
 	return v.FilterData.Value
 }
 
+// GetAnd returns MetricDataSettingsAverageMetricSettingsFiltersFilter.And, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) GetAnd() []*FilterDataAndFilter {
+	return v.FilterData.And
+}
+
+// GetOr returns MetricDataSettingsAverageMetricSettingsFiltersFilter.Or, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) GetOr() []*FilterDataOrFilter {
+	return v.FilterData.Or
+}
+
 func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
 
 	if string(b) == "null" {
@@ -8688,6 +8808,10 @@ type __premarshalMetricDataSettingsAverageMetricSettingsFiltersFilter struct {
 	Operator FilterOperator `json:"operator"`
 
 	Value *string `json:"value"`
+
+	And []*FilterDataAndFilter `json:"and"`
+
+	Or []*FilterDataOrFilter `json:"or"`
 }
 
 func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
@@ -8704,6 +8828,8 @@ func (v *MetricDataSettingsAverageMetricSettingsFiltersFilter) __premarshalJSON(
 	retval.Column = v.FilterData.Column
 	retval.Operator = v.FilterData.Operator
 	retval.Value = v.FilterData.Value
+	retval.And = v.FilterData.And
+	retval.Or = v.FilterData.Or
 	return &retval, nil
 }
 
@@ -8945,6 +9071,16 @@ func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) GetValue() 
 	return v.FilterData.Value
 }
 
+// GetAnd returns MetricDataSettingsCountDistinctMetricSettingsFiltersFilter.And, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) GetAnd() []*FilterDataAndFilter {
+	return v.FilterData.And
+}
+
+// GetOr returns MetricDataSettingsCountDistinctMetricSettingsFiltersFilter.Or, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) GetOr() []*FilterDataOrFilter {
+	return v.FilterData.Or
+}
+
 func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
 
 	if string(b) == "null" {
@@ -8976,6 +9112,10 @@ type __premarshalMetricDataSettingsCountDistinctMetricSettingsFiltersFilter stru
 	Operator FilterOperator `json:"operator"`
 
 	Value *string `json:"value"`
+
+	And []*FilterDataAndFilter `json:"and"`
+
+	Or []*FilterDataOrFilter `json:"or"`
 }
 
 func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
@@ -8992,6 +9132,8 @@ func (v *MetricDataSettingsCountDistinctMetricSettingsFiltersFilter) __premarsha
 	retval.Column = v.FilterData.Column
 	retval.Operator = v.FilterData.Operator
 	retval.Value = v.FilterData.Value
+	retval.And = v.FilterData.And
+	retval.Or = v.FilterData.Or
 	return &retval, nil
 }
 
@@ -9064,6 +9206,16 @@ func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) GetValue() *string 
 	return v.FilterData.Value
 }
 
+// GetAnd returns MetricDataSettingsCountMetricSettingsFiltersFilter.And, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) GetAnd() []*FilterDataAndFilter {
+	return v.FilterData.And
+}
+
+// GetOr returns MetricDataSettingsCountMetricSettingsFiltersFilter.Or, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) GetOr() []*FilterDataOrFilter {
+	return v.FilterData.Or
+}
+
 func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
 
 	if string(b) == "null" {
@@ -9095,6 +9247,10 @@ type __premarshalMetricDataSettingsCountMetricSettingsFiltersFilter struct {
 	Operator FilterOperator `json:"operator"`
 
 	Value *string `json:"value"`
+
+	And []*FilterDataAndFilter `json:"and"`
+
+	Or []*FilterDataOrFilter `json:"or"`
 }
 
 func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
@@ -9111,6 +9267,8 @@ func (v *MetricDataSettingsCountMetricSettingsFiltersFilter) __premarshalJSON() 
 	retval.Column = v.FilterData.Column
 	retval.Operator = v.FilterData.Operator
 	retval.Value = v.FilterData.Value
+	retval.And = v.FilterData.And
+	retval.Or = v.FilterData.Or
 	return &retval, nil
 }
 
@@ -9188,6 +9346,16 @@ func (v *MetricDataSettingsCustomMetricSettingsFiltersFilter) GetValue() *string
 	return v.FilterData.Value
 }
 
+// GetAnd returns MetricDataSettingsCustomMetricSettingsFiltersFilter.And, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCustomMetricSettingsFiltersFilter) GetAnd() []*FilterDataAndFilter {
+	return v.FilterData.And
+}
+
+// GetOr returns MetricDataSettingsCustomMetricSettingsFiltersFilter.Or, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsCustomMetricSettingsFiltersFilter) GetOr() []*FilterDataOrFilter {
+	return v.FilterData.Or
+}
+
 func (v *MetricDataSettingsCustomMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
 
 	if string(b) == "null" {
@@ -9219,6 +9387,10 @@ type __premarshalMetricDataSettingsCustomMetricSettingsFiltersFilter struct {
 	Operator FilterOperator `json:"operator"`
 
 	Value *string `json:"value"`
+
+	And []*FilterDataAndFilter `json:"and"`
+
+	Or []*FilterDataOrFilter `json:"or"`
 }
 
 func (v *MetricDataSettingsCustomMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
@@ -9235,6 +9407,8 @@ func (v *MetricDataSettingsCustomMetricSettingsFiltersFilter) __premarshalJSON()
 	retval.Column = v.FilterData.Column
 	retval.Operator = v.FilterData.Operator
 	retval.Value = v.FilterData.Value
+	retval.And = v.FilterData.And
+	retval.Or = v.FilterData.Or
 	return &retval, nil
 }
 
@@ -9314,6 +9488,16 @@ func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) GetValue() *string {
 	return v.FilterData.Value
 }
 
+// GetAnd returns MetricDataSettingsMaxMetricSettingsFiltersFilter.And, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) GetAnd() []*FilterDataAndFilter {
+	return v.FilterData.And
+}
+
+// GetOr returns MetricDataSettingsMaxMetricSettingsFiltersFilter.Or, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) GetOr() []*FilterDataOrFilter {
+	return v.FilterData.Or
+}
+
 func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
 
 	if string(b) == "null" {
@@ -9345,6 +9529,10 @@ type __premarshalMetricDataSettingsMaxMetricSettingsFiltersFilter struct {
 	Operator FilterOperator `json:"operator"`
 
 	Value *string `json:"value"`
+
+	And []*FilterDataAndFilter `json:"and"`
+
+	Or []*FilterDataOrFilter `json:"or"`
 }
 
 func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
@@ -9361,6 +9549,8 @@ func (v *MetricDataSettingsMaxMetricSettingsFiltersFilter) __premarshalJSON() (*
 	retval.Column = v.FilterData.Column
 	retval.Operator = v.FilterData.Operator
 	retval.Value = v.FilterData.Value
+	retval.And = v.FilterData.And
+	retval.Or = v.FilterData.Or
 	return &retval, nil
 }
 
@@ -9667,6 +9857,16 @@ func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) GetValue() *string {
 	return v.FilterData.Value
 }
 
+// GetAnd returns MetricDataSettingsMinMetricSettingsFiltersFilter.And, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) GetAnd() []*FilterDataAndFilter {
+	return v.FilterData.And
+}
+
+// GetOr returns MetricDataSettingsMinMetricSettingsFiltersFilter.Or, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) GetOr() []*FilterDataOrFilter {
+	return v.FilterData.Or
+}
+
 func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
 
 	if string(b) == "null" {
@@ -9698,6 +9898,10 @@ type __premarshalMetricDataSettingsMinMetricSettingsFiltersFilter struct {
 	Operator FilterOperator `json:"operator"`
 
 	Value *string `json:"value"`
+
+	And []*FilterDataAndFilter `json:"and"`
+
+	Or []*FilterDataOrFilter `json:"or"`
 }
 
 func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
@@ -9714,6 +9918,8 @@ func (v *MetricDataSettingsMinMetricSettingsFiltersFilter) __premarshalJSON() (*
 	retval.Column = v.FilterData.Column
 	retval.Operator = v.FilterData.Operator
 	retval.Value = v.FilterData.Value
+	retval.And = v.FilterData.And
+	retval.Or = v.FilterData.Or
 	return &retval, nil
 }
 
@@ -9874,6 +10080,16 @@ func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) GetValue() *string {
 	return v.FilterData.Value
 }
 
+// GetAnd returns MetricDataSettingsSumMetricSettingsFiltersFilter.And, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) GetAnd() []*FilterDataAndFilter {
+	return v.FilterData.And
+}
+
+// GetOr returns MetricDataSettingsSumMetricSettingsFiltersFilter.Or, and is useful for accessing the field via an interface.
+func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) GetOr() []*FilterDataOrFilter {
+	return v.FilterData.Or
+}
+
 func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) UnmarshalJSON(b []byte) error {
 
 	if string(b) == "null" {
@@ -9905,6 +10121,10 @@ type __premarshalMetricDataSettingsSumMetricSettingsFiltersFilter struct {
 	Operator FilterOperator `json:"operator"`
 
 	Value *string `json:"value"`
+
+	And []*FilterDataAndFilter `json:"and"`
+
+	Or []*FilterDataOrFilter `json:"or"`
 }
 
 func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) MarshalJSON() ([]byte, error) {
@@ -9921,6 +10141,8 @@ func (v *MetricDataSettingsSumMetricSettingsFiltersFilter) __premarshalJSON() (*
 	retval.Column = v.FilterData.Column
 	retval.Operator = v.FilterData.Operator
 	retval.Value = v.FilterData.Value
+	retval.And = v.FilterData.And
+	retval.Or = v.FilterData.Or
 	return &retval, nil
 }
 
@@ -14073,6 +14295,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
@@ -14405,6 +14637,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
@@ -14737,6 +14979,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
@@ -15069,6 +15321,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
@@ -15808,6 +16070,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
@@ -16140,6 +16412,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
@@ -16857,6 +17139,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
@@ -18818,6 +19110,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
@@ -19147,6 +19449,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
@@ -19493,6 +19805,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
@@ -20247,6 +20569,16 @@ fragment FilterData on Filter {
 	column
 	operator
 	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 fragment DataSourceData on DataSource {
 	id
