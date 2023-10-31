@@ -1127,13 +1127,13 @@ func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id s
 }
 
 func waitForDataSourceDeletion(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
-	ticketInterval := 10 // 10s
+	tickerInterval := 10 // 10s
 	timeoutSeconds := int(timeout.Seconds())
 	n := 0
 
-	ticker := time.NewTicker(time.Duration(ticketInterval) * time.Second)
+	ticker := time.NewTicker(time.Duration(tickerInterval) * time.Second)
 	for range ticker.C {
-		if n*ticketInterval > timeoutSeconds {
+		if n*tickerInterval > timeoutSeconds {
 			ticker.Stop()
 			break
 		}
