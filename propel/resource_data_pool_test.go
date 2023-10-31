@@ -14,7 +14,7 @@ import (
 )
 
 func TestAccPropelDataPoolBasic(t *testing.T) {
-	ctx := map[string]interface{}{}
+	ctx := map[string]any{}
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
@@ -33,7 +33,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 	})
 }
 
-func testAccCheckPropelDataPoolConfigBasic(ctx map[string]interface{}) string {
+func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
 		unique_name = "terraform-test-3"

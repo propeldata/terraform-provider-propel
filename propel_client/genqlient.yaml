@@ -32,6 +32,7 @@ operations:
 - mutations/createS3DataSource.mutation.graphql
 - mutations/createSnowflakeDataSource.mutation.graphql
 - mutations/createSumMetric.mutation.graphql
+- mutations/createWebhookDataSource.mutation.graphql
 #- mutations/deleteApplication.mutation.graphql
 #- mutations/deleteApplicationByName.mutation.graphql
 - mutations/deleteDataPool.mutation.graphql

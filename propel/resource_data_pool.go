@@ -139,23 +139,23 @@ func resourceDataPool() *schema.Resource {
 	}
 }
 
-func expandPoolColumns(def []interface{}) []*pc.DataPoolColumnInput {
-	columns := make([]*pc.DataPoolColumnInput, 0, len(def))
+func expandDataPoolColumns(def []any) []*pc.DataPoolColumnInput {
+	columns := make([]*pc.DataPoolColumnInput, len(def))
 
-	for _, rawColumn := range def {
-		column := rawColumn.(map[string]interface{})
+	for i, rawColumn := range def {
+		column := rawColumn.(map[string]any)
 
-		columns = append(columns, &pc.DataPoolColumnInput{
+		columns[i] = &pc.DataPoolColumnInput{
 			ColumnName: column["name"].(string),
 			Type:       pc.ColumnType(column["type"].(string)),
 			IsNullable: column["nullable"].(bool),
-		})
+		}
 	}
 
 	return columns
 }
 
-func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -165,8 +165,8 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 	description := d.Get("description").(string)
 
 	columns := make([]*pc.DataPoolColumnInput, 0)
-	if def, ok := d.Get("column").([]interface{}); ok && len(def) > 0 {
-		columns = expandPoolColumns(def)
+	if def, ok := d.Get("column").([]any); ok && len(def) > 0 {
+		columns = expandDataPoolColumns(def)
 	}
 
 	input := &pc.CreateDataPoolInputV2{
@@ -219,7 +219,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta in
 	return diags
 }
 
-func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -285,7 +285,7 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m interfa
 	return diags
 }
 
-func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	if d.HasChanges("unique_name", "description", "syncing") {
@@ -317,7 +317,7 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m inter
 	return resourceDataPoolRead(ctx, d, m)
 }
 
-func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -346,7 +346,7 @@ func waitForDataPoolLive(ctx context.Context, client graphql.Client, id string, 
 		Target: []string{
 			string(pc.DataPoolStatusLive),
 		},
-		Refresh: func() (interface{}, string, error) {
+		Refresh: func() (any, string, error) {
 			resp, err := pc.DataPool(ctx, client, id)
 			if err != nil {
 				return 0, "", fmt.Errorf("error trying to read Data Pool status: %s", err)
@@ -369,13 +369,13 @@ func waitForDataPoolLive(ctx context.Context, client graphql.Client, id string, 
 }
 
 func waitForDataPoolDeletion(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
-	ticketInterval := 10 // 10s
+	tickerInterval := 10 // 10s
 	timeoutSeconds := int(timeout.Seconds())
 	n := 0
 
-	ticker := time.NewTicker(time.Duration(ticketInterval) * time.Second)
+	ticker := time.NewTicker(time.Duration(tickerInterval) * time.Second)
 	for range ticker.C {
-		if n*ticketInterval > timeoutSeconds {
+		if n*tickerInterval > timeoutSeconds {
 			ticker.Stop()
 			break
 		}

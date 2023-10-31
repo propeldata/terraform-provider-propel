@@ -6,6 +6,11 @@ fragment DataSourceData on DataSource {
     error {
         message
     }
+    dataPools {
+        nodes {
+            id
+        }
+    }
     connectionSettings {
         __typename
         ... on SnowflakeConnectionSettings {
@@ -44,6 +49,22 @@ fragment DataSourceData on DataSource {
                     nullable
                 }
             }
+        }
+        ... on WebhookConnectionSettings {
+            basicAuth {
+                username
+                password
+            }
+            columns {
+                name
+                type
+                jsonProperty
+                nullable
+            }
+            tenant
+            timestamp
+            uniqueId
+            webhookUrl
         }
     }
     tables (first: 100) {

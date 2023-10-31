@@ -41,6 +41,37 @@ resource "propel_data_source" "http_data_source" {
   }
 }
 
+resource "propel_data_source" "webhook_data_source" {
+  unique_name = "My Webhook Data Source"
+  description = "This is an example of a Webhook Data Source"
+  type        = "Webhook"
+
+  webhook_connection_settings {
+    timestamp = "date"
+    unique_id = "id"
+    tenant = "customer_id"
+
+    column {
+      name = "id"
+      type = "STRING"
+      nullable = false
+      json_property = "id"
+    }
+
+    column {
+      name = "customer_id"
+      type = "STRING"
+      nullable = false
+      json_property = "customer_id"
+    }
+
+    basic_auth {
+      username = "foo"
+      password = var.http_basic_auth_password
+    }
+  }
+}
+
 resource "propel_data_pool" "data_pool" {
   unique_name = "My Data Pool"
   description = "Data Pool Description"

@@ -29,3 +29,11 @@ mutation ModifyS3DataSource($input: ModifyS3DataSourceInput!) {
         }
     }
 }
+
+mutation ModifyWebhookDataSource($input: ModifyWebhookDataSourceInput!) {
+    modifyWebhookDataSource(input: $input) {
+        dataSource {
+            ...DataSourceData
+        }
+    }
+}

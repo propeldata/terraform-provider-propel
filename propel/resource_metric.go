@@ -13,6 +13,14 @@ import (
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
+type MetricFilter interface {
+	GetColumn() string
+	GetOperator() pc.FilterOperator
+	GetValue() *string
+	GetAnd() []*pc.FilterDataAndFilter
+	GetOr() []*pc.FilterDataOrFilter
+}
+
 func resourceMetric() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: resourceMetricCreate,
@@ -99,7 +107,7 @@ func resourceMetric() *schema.Resource {
 							Optional:     true,
 							Description:  "Additional filters to AND with this one. AND takes precedence over OR. It is defined as a JSON string value.",
 							ValidateFunc: validation.StringIsJSON,
-							StateFunc: func(v interface{}) string {
+							StateFunc: func(v any) string {
 								nJSON, _ := structure.NormalizeJsonString(v)
 								return nJSON
 							},
@@ -109,7 +117,7 @@ func resourceMetric() *schema.Resource {
 							Optional:     true,
 							Description:  "Additional filters to OR with this one. AND takes precedence over OR. It is defined as a JSON string value.",
 							ValidateFunc: validation.StringIsJSON,
-							StateFunc: func(v interface{}) string {
+							StateFunc: func(v any) string {
 								nJSON, _ := structure.NormalizeJsonString(v)
 								return nJSON
 							},
@@ -148,13 +156,13 @@ func resourceMetric() *schema.Resource {
 	}
 }
 
-func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
 	var diags diag.Diagnostics
 
 	filters := make([]*pc.FilterInput, 0)
-	if def, ok := d.Get("filter").([]interface{}); ok && len(def) > 0 {
+	if def, ok := d.Get("filter").([]any); ok && len(def) > 0 {
 		filters, diags = expandMetricFilters(def)
 		if diags != nil {
 			return diags
@@ -298,7 +306,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta inte
 	return diags
 }
 
-func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -338,102 +346,67 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(err)
 	}
 
-	filters := make([]map[string]interface{}, 0)
+	filters := make([]map[string]any, 0)
 
 	switch s := response.Metric.Settings.(type) {
 	case *pc.MetricDataSettingsCountMetricSettings:
-		for _, f := range s.Filters {
-			filter := map[string]interface{}{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsSumMetricSettings:
 		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]interface{}{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsCountDistinctMetricSettings:
 		if err := d.Set("dimension", s.Dimension.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]interface{}{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsAverageMetricSettings:
 		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]interface{}{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsMinMetricSettings:
 		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]interface{}{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsMaxMetricSettings:
 		if err := d.Set("measure", s.Measure.ColumnName); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]interface{}{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	case *pc.MetricDataSettingsCustomMetricSettings:
 		if err := d.Set("expression", s.Expression); err != nil {
 			return diag.FromErr(err)
 		}
 
-		for _, f := range s.Filters {
-			filter := map[string]interface{}{
-				"column":   f.Column,
-				"operator": f.Operator,
-				"value":    f.Value,
-			}
-
-			filters = append(filters, filter)
+		filters, err = parseMetricFilters(s.Filters)
+		if err != nil {
+			return diag.FromErr(err)
 		}
 	}
 
@@ -444,7 +417,7 @@ func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta interf
 	return diags
 }
 
-func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	var diags diag.Diagnostics
@@ -486,7 +459,7 @@ func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 	return resourceMetricRead(ctx, d, m)
 }
 
-func resourceMetricDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceMetricDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
 	_, err := pc.DeleteMetric(ctx, c, d.Id())
@@ -499,11 +472,11 @@ func resourceMetricDelete(ctx context.Context, d *schema.ResourceData, m interfa
 	return nil
 }
 
-func expandMetricFilters(def []interface{}) ([]*pc.FilterInput, diag.Diagnostics) {
+func expandMetricFilters(def []any) ([]*pc.FilterInput, diag.Diagnostics) {
 	filters := make([]*pc.FilterInput, 0, len(def))
 
 	for _, rawFilter := range def {
-		filter := rawFilter.(map[string]interface{})
+		filter := rawFilter.(map[string]any)
 
 		f := &pc.FilterInput{
 			Column:   filter["column"].(string),
@@ -539,7 +512,7 @@ func expandMetricFilters(def []interface{}) ([]*pc.FilterInput, diag.Diagnostics
 	return filters, nil
 }
 
-func expandMetricDimensions(def []interface{}) []*pc.DimensionInput {
+func expandMetricDimensions(def []any) []*pc.DimensionInput {
 	dimensions := make([]*pc.DimensionInput, 0, len(def))
 
 	for _, rawDimension := range def {
@@ -552,4 +525,38 @@ func expandMetricDimensions(def []interface{}) []*pc.DimensionInput {
 	}
 
 	return dimensions
+}
+
+func parseMetricFilters[T MetricFilter](filters []T) ([]map[string]any, error) {
+	parsedFilters := make([]map[string]any, len(filters))
+
+	for i, f := range filters {
+		filter := map[string]any{
+			"column":   f.GetColumn(),
+			"operator": f.GetOperator(),
+			"value":    f.GetValue(),
+		}
+
+		if len(f.GetAnd()) > 0 {
+			and, err := json.Marshal(f.GetAnd())
+			if err != nil {
+				return nil, err
+			}
+
+			filter["and"] = string(and)
+		}
+
+		if len(f.GetOr()) > 0 {
+			or, err := json.Marshal(f.GetOr())
+			if err != nil {
+				return nil, err
+			}
+
+			filter["or"] = string(or)
+		}
+
+		parsedFilters[i] = filter
+	}
+
+	return parsedFilters, nil
 }

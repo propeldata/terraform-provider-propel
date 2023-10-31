@@ -163,7 +163,7 @@ type Application implements Node & Common {
   """The Application's OAuth 2.0 scopes."""
   scopes: [ApplicationScope!]!
   """A paginated list of Policies associated with the Application."""
-  policies(first: Int, after: String, last: Int, before: String): PolicyConnection!
+  policies(first: Int, after: String, last: Int, before: String): PolicyConnection! @deprecated(reason: "Use Data Pool Access Policies instead")
 }
 
 """The API operations an Application is authorized to perform."""
@@ -512,7 +512,7 @@ enum DataSourceStatus {
   DELETING
 }
 
-union ConnectionSettings = SnowflakeConnectionSettings | HttpConnectionSettings | S3ConnectionSettings
+union ConnectionSettings = SnowflakeConnectionSettings | HttpConnectionSettings | S3ConnectionSettings | WebhookConnectionSettings
 
 """The Snowflake Data Source connection settings."""
 type SnowflakeConnectionSettings {
@@ -762,6 +762,42 @@ input S3DataSourceColumnInput {
   nullable: Boolean!
 }
 
+"""A column in the Webhook Data Source's table."""
+type WebhookDataSourceColumn {
+  "The column name."
+  name: String!
+  """
+  The JSON property that the column will be derived from. For example, if you POST a JSON event like this:
+  ```json
+  { "greeting": { "message": "hello, world" } }
+  ```
+  Then you can use the JSON property "greeting.message" to extract "hello, world" to a column.
+  """
+  jsonProperty: String!
+  "The column type."
+  type: ColumnType!
+  "Whether the column's type is nullable or not."
+  nullable: Boolean!
+}
+
+"""The fields for specifying a column in an Webhook Data Source's table."""
+input WebhookDataSourceColumnInput {
+  "The column name. It has to be unique within a Table."
+  name: String!
+  """
+  The JSON property that the column will be derived from. For example, if you POST a JSON event like this:
+  ```json
+  { "greeting": { "message": "hello, world" } }
+  ```
+  Then you can use the JSON property "greeting.message" to extract "hello, world" to a column.
+  """
+  jsonProperty: String!
+  "The column type."
+  type: ColumnType!
+  "Whether the column's type is nullable or not."
+  nullable: Boolean!
+}
+
 """
 The result of a mutation which creates or modifies a DataSource.
 
@@ -837,6 +873,13 @@ type DataPool implements Node & Common {
   metrics(first: Int, after: String, last: Int, before: String): MetricConnection
   "The Deletion Jobs that where historically issued to this Data Pool, sorted by creation time, in descending order."
   deletionJobs(first: Int, after: String, last: Int, before: String): DeletionJobConnection
+  """
+  Whether the Data Pool has access control enabled or not.
+
+  If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
+  Policies in order to query the Data Pool and its Metrics.
+  """
+  accessControlEnabled: Boolean!
   "Validates a custom expression against the Data Pool's available columns. If the provided expression is invalid, the ValidateExpressionResult response will contain a reason explaining why."
   validateExpression(expression: String!): ValidateExpressionResult!
 }
@@ -1102,6 +1145,13 @@ input CreateDataPoolInputV2 {
   uniqueId: UniqueIdInput
   """ The Data Pool's syncing settings. """
   syncing: DataPoolSyncingInput
+  """
+  Enables or disables access control for the Data Pool.
+
+  If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
+  Policies in order to query the Data Pool and its Metrics.
+  """
+  accessControlEnabled: Boolean
 }
 
 """The fields for modifying a Data Pool."""
@@ -1116,6 +1166,13 @@ input modifyDataPoolInput {
   dataRetentionInDays: Int
   """ The Data Pool's new syncing settings. """
   syncing: DataPoolSyncingInput
+  """
+  Enables or disables access control for the Data Pool.
+
+  If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
+  Policies in order to query the Data Pool and its Metrics.
+  """
+  accessControlEnabled: Boolean
 }
 
 """
@@ -1156,7 +1213,7 @@ type DataPoolSyncing {
   when the Data Pool goes `LIVE`, and Propel will attempt to sync approximately every hour. Additionally,
   if you pause or resume syncing, this too can shift the syncing interval around.
   """
-  interval: DataPoolSyncInterval!
+  interval: DataPoolSyncInterval
   """ The date and time of the most recent Sync in UTC. """
   lastSyncedAt: DateTime
 }
@@ -2715,6 +2772,18 @@ type Mutation {
   If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
   """
   modifyS3DataSource(input: ModifyS3DataSourceInput!): DataSourceResponse!
+  """
+  Creates a new Webhook Data Source from the given settings.
+
+  Returns the newly created Data Source (or an error message if creating the Data Source fails).
+  """
+  createWebhookDataSource(input: CreateWebhookDataSourceInput!): DataSourceResponse!
+  """
+  Modifies the Data Source by the ID or unique name provided with the given unique name, description, and connection settings.
+
+  If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+  """
+  modifyWebhookDataSource(input: ModifyWebhookDataSourceInput!): DataSourceResponse!
 }
 
 type Query {
@@ -3328,4 +3397,82 @@ input S3ConnectionSettingsInput {
   bucket: String!
   """The S3 Data Source's tables."""
   tables: [S3DataSourceTableInput!]!
+}
+
+input CreateWebhookDataSourceInput {
+  """The Webhook Data Source's connection settings"""
+  connectionSettings: WebhookConnectionSettingsInput!
+  """The Webhook Data Source's description."""
+  description: String
+  """
+  The Webhook Data Source's unique name. If not specified, Propel will set the ID as unique name.
+  """
+  uniqueName: String
+}
+
+input ModifyWebhookDataSourceInput {
+  """
+  The Webhook Data Source's new connection settings. If not provided this property will not be modified.
+  """
+  connectionSettings: PartialWebhookConnectionSettingsInput
+  """
+  The Webhook Data Source's new description. If not provided this property will not be modified.
+  """
+  description: String
+  """The ID or unique name of the Webhook Data Source to modify."""
+  idOrUniqueName: idOrUniqueName!
+  """
+  The Webhook Data Source's new unique name. If not provided this property will not be modified.
+  """
+  uniqueName: String
+}
+
+"""The Webhook Data Source connection settings."""
+input PartialWebhookConnectionSettingsInput {
+  """
+  The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it. If not provided this property will not be modified.
+  """
+  basicAuth: HttpBasicAuthInput
+  """
+  Set this to `false` to disable HTTP Basic authentication. Any previously stored HTTP Basic authentication settings will be cleared out. If not provided this property will not be modified.
+  """
+  basicAuthEnabled: Boolean
+}
+
+"""The Webhook Data Source connection settings."""
+type WebhookConnectionSettings {
+  """
+  The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
+  """
+  basicAuth: HttpBasicAuthSettings
+  """The additional columns for the Webhook Data Source table."""
+  columns: [WebhookDataSourceColumn!]
+  """The tenant ID column, if configured."""
+  tenant: String
+  """The primary timestamp column."""
+  timestamp: String!
+  """
+  The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
+  """
+  uniqueId: String
+  """The Webhook URL for posting JSON events"""
+  webhookUrl: String!
+}
+
+"""The Webhook Data Source connection settings."""
+input WebhookConnectionSettingsInput {
+  """
+  The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
+  """
+  basicAuth: HttpBasicAuthInput
+  """The additional columns for the Webhook Data Source table."""
+  columns: [WebhookDataSourceColumnInput!]
+  """The tenant ID column, if configured."""
+  tenant: String
+  """The primary timestamp column."""
+  timestamp: String!
+  """
+  The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
+  """
+  uniqueId: String
 }

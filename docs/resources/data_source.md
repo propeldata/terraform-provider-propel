@@ -40,7 +40,7 @@ resource "propel_data_source" "my_data_source" {
 
 ### Required
 
-- `type` (String) The Data Source's type. Depending on this, you will need to specify one of `http_connection_settings`, `s3_connection_settings`, or `snowflake_connection_settings`.
+- `type` (String) The Data Source's type. Depending on this, you will need to specify one of `http_connection_settings`, `s3_connection_settings`, `webhook_connection_settings` or `snowflake_connection_settings`.
 
 ### Optional
 
@@ -51,6 +51,7 @@ resource "propel_data_source" "my_data_source" {
 - `table` (Block List) (see [below for nested schema](#nestedblock--table))
 - `timeouts` (Block, Optional) (see [below for nested schema](#nestedblock--timeouts))
 - `unique_name` (String) The Data Source's name.
+- `webhook_connection_settings` (Block List, Max: 1) (see [below for nested schema](#nestedblock--webhook_connection_settings))
 
 ### Read-Only
 
@@ -77,7 +78,7 @@ If this parameter is not provided, anyone with the URL to your tables will be ab
 
 Required:
 
-- `password` (String) The password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
+- `password` (String, Sensitive) The password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
 - `username` (String) The username for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
 
 
@@ -140,6 +141,47 @@ Optional:
 
 - `create` (String)
 - `delete` (String)
+
+
+<a id="nestedblock--webhook_connection_settings"></a>
+### Nested Schema for `webhook_connection_settings`
+
+Required:
+
+- `timestamp` (String) The primary timestamp column.
+
+Optional:
+
+- `basic_auth` (Block List, Max: 1) The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it. (see [below for nested schema](#nestedblock--webhook_connection_settings--basic_auth))
+- `column` (Block List) The additional column for the Webhook Data Source table. (see [below for nested schema](#nestedblock--webhook_connection_settings--column))
+- `tenant` (String) The tenant ID column, if configured.
+- `unique_id` (String) The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
+
+Read-Only:
+
+- `data_pool_id` (String) The Webhook Data Pool ID.
+- `webhook_url` (String) The Webhook URL for posting JSON events.
+
+<a id="nestedblock--webhook_connection_settings--basic_auth"></a>
+### Nested Schema for `webhook_connection_settings.basic_auth`
+
+Required:
+
+- `password` (String, Sensitive) Password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
+- `username` (String) Username for HTTP Basic authentication that must be included in the Authorization header when uploading new data.
+
+
+<a id="nestedblock--webhook_connection_settings--column"></a>
+### Nested Schema for `webhook_connection_settings.column`
+
+Required:
+
+- `json_property` (String) The JSON property that the column will be derived from. For example, if you POST a JSON event like this:
+														{ "greeting": { "message": "hello, world" } }
+													Then you can use the JSON property "greeting.message" to extract "hello, world" to a column.
+- `name` (String) The column name.
+- `nullable` (Boolean) Whether the column's type is nullable or not.
+- `type` (String) The column type.
 
 ## Import
 
