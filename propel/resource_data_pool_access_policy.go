@@ -55,7 +55,7 @@ func resourceDataPoolAccessPolicy() *schema.Resource {
 				Type:        schema.TypeList,
 				Required:    true,
 				Description: `The list of columns that the Access Policy makes available for querying. Set "*" to allow all columns.`,
-				Elem:        schema.TypeString,
+				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 			"row": {
 				Type:        schema.TypeList,
@@ -123,7 +123,13 @@ func resourceDataPoolAccessPolicyCreate(ctx context.Context, d *schema.ResourceD
 	dataPoolId := d.Get("data_pool").(string)
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
-	columns := d.Get("columns").([]string)
+
+	columns := make([]string, 0)
+	if def, ok := d.GetOk("columns"); ok {
+		for _, col := range def.(*schema.Set).List() {
+			columns = append(columns, col.(string))
+		}
+	}
 
 	rows := make([]*pc.FilterInput, 0)
 	if def, ok := d.Get("row").([]any); ok && len(def) > 0 {
@@ -149,8 +155,7 @@ func resourceDataPoolAccessPolicyCreate(ctx context.Context, d *schema.ResourceD
 	d.SetId(response.CreateDataPoolAccessPolicy.DataPoolAccessPolicy.Id)
 
 	if def, exists := d.GetOk("applications"); exists {
-		applications := def.(*schema.Set).List()
-		for _, app := range applications {
+		for _, app := range def.(*schema.Set).List() {
 			_, err = pc.AssignDataPoolAccessPolicy(ctx, c, app.(string), response.CreateDataPoolAccessPolicy.DataPoolAccessPolicy.Id)
 			if err != nil {
 				return diag.FromErr(err)
@@ -229,7 +234,13 @@ func resourceDataPoolAccessPolicyUpdate(ctx context.Context, d *schema.ResourceD
 		id := d.Id()
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
-		columns := d.Get("columns").([]string)
+
+		columns := make([]string, 0)
+		if def, ok := d.GetOk("columns"); ok {
+			for _, col := range def.(*schema.Set).List() {
+				columns = append(columns, col.(string))
+			}
+		}
 
 		rows := make([]*pc.FilterInput, 0)
 		if def, ok := d.Get("row").([]any); ok && len(def) > 0 {
