@@ -34,7 +34,7 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 	// language=hcl-terraform
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
-		unique_name = "terraform-test-5"
+		unique_name = "terraform-ds-test-5"
 		type = "Http"
 
 		http_connection_settings {
@@ -62,7 +62,7 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 	}
 
 	resource "propel_data_pool" "bar" {
-		unique_name = "terraform-test-5"
+		unique_name = "terraform-dp-test-5"
 		table = "${propel_data_source.foo.table[0].name}"
 
 		column {
@@ -81,7 +81,7 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 	}
 	
 	resource "propel_data_pool_access_policy" "baz" {
-		unique_name = "terraform-test-5"
+		unique_name = "terraform-ap-test-5"
 		description = "This is an example of a Data Pool Access Policy"
 		data_pool   = propel_data_pool.bar.id
 		

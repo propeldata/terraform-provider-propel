@@ -2,7 +2,6 @@ package propel
 
 import (
 	"context"
-	"slices"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -112,12 +111,6 @@ func resourceDataPoolAccessPolicy() *schema.Resource {
 					},
 				},
 			},
-			"applications": {
-				Type:        schema.TypeList,
-				Optional:    true,
-				Description: `The list of columns that the Access Policy makes available for querying. Set "*" to allow all columns.`,
-				Elem:        schema.TypeString,
-			},
 		},
 	}
 }
@@ -155,10 +148,10 @@ func resourceDataPoolAccessPolicyCreate(ctx context.Context, d *schema.ResourceD
 
 	d.SetId(response.CreateDataPoolAccessPolicy.DataPoolAccessPolicy.Id)
 
-	if _, exists := d.GetOk("applications"); exists {
-		applications := d.Get("applications").([]string)
+	if def, exists := d.GetOk("applications"); exists {
+		applications := def.(*schema.Set).List()
 		for _, app := range applications {
-			_, err = pc.AssignDataPoolAccessPolicy(ctx, c, app, response.CreateDataPoolAccessPolicy.DataPoolAccessPolicy.Id)
+			_, err = pc.AssignDataPoolAccessPolicy(ctx, c, app.(string), response.CreateDataPoolAccessPolicy.DataPoolAccessPolicy.Id)
 			if err != nil {
 				return diag.FromErr(err)
 			}
@@ -264,20 +257,27 @@ func resourceDataPoolAccessPolicyUpdate(ctx context.Context, d *schema.ResourceD
 		id := d.Id()
 
 		oldItem, newItem := d.GetChange("applications")
-		oldApplications, newApplications := oldItem.([]string), newItem.([]string)
+		oldApplications, newApplications := oldItem.(*schema.Set).List(), newItem.(*schema.Set).List()
 
-		// TODO: maybe make this a bit more efficient
+		oldMap, newMap := map[string]bool{}, map[string]bool{}
 		for _, oldApp := range oldApplications {
-			if !slices.Contains(newApplications, oldApp) {
-				_, err := pc.UnAssignDataPoolAccessPolicy(ctx, c, id, oldApp)
+			oldMap[oldApp.(string)] = true
+		}
+
+		for _, newApp := range newApplications {
+			if !oldMap[newApp.(string)] {
+				_, err := pc.AssignDataPoolAccessPolicy(ctx, c, id, newApp.(string))
 				if err != nil {
 					return diag.FromErr(err)
 				}
 			}
+
+			newMap[newApp.(string)] = true
 		}
-		for _, newApp := range newApplications {
-			if !slices.Contains(oldApplications, newApp) {
-				_, err := pc.AssignDataPoolAccessPolicy(ctx, c, id, newApp)
+
+		for oldApp := range oldMap {
+			if !newMap[oldApp] {
+				_, err := pc.UnAssignDataPoolAccessPolicy(ctx, c, id, oldApp)
 				if err != nil {
 					return diag.FromErr(err)
 				}
@@ -291,11 +291,13 @@ func resourceDataPoolAccessPolicyUpdate(ctx context.Context, d *schema.ResourceD
 func resourceDataPoolAccessPolicyDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	applications := d.Get("applications").([]string)
-	for _, app := range applications {
-		_, err := pc.UnAssignDataPoolAccessPolicy(ctx, c, d.Id(), app)
-		if err != nil {
-			return diag.FromErr(err)
+	if def, exists := d.GetOk("applications"); exists {
+		applications := def.(*schema.Set).List()
+		for _, app := range applications {
+			_, err := pc.UnAssignDataPoolAccessPolicy(ctx, c, app.(string), d.Id())
+			if err != nil {
+				return diag.FromErr(err)
+			}
 		}
 	}
 
