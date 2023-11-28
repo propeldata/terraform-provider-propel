@@ -23,7 +23,7 @@ func TestAccPropelDataPoolAccessPolicyBasic(t *testing.T) {
 				Config: testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataPoolExists("propel_data_pool_access_policy.baz"),
-					resource.TestCheckResourceAttr("propel_data_pool_access_policy.baz", "uniqueName", "terraform-test-5"),
+					resource.TestCheckResourceAttr("propel_data_pool_access_policy.baz", "description", "This is an example of a Data Pool Access Policy"),
 				),
 			},
 		},
