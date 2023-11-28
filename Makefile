@@ -2,7 +2,7 @@
 
 GO_FILES=$(wildcard */*.go)
 BINARY=terraform-provider-propel
-VERSION=1.0.1
+VERSION=1.0.2
 
 build: terraform-provider-propel
 

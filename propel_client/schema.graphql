@@ -164,6 +164,8 @@ type Application implements Node & Common {
   scopes: [ApplicationScope!]!
   """A paginated list of Policies associated with the Application."""
   policies(first: Int, after: String, last: Int, before: String): PolicyConnection! @deprecated(reason: "Use Data Pool Access Policies instead")
+  """A paginated list of Data Pool Access Policies associated with the Application."""
+  dataPoolAccessPolicies (first: Int, after: String, last: Int, before: String): DataPoolAccessPolicyConnection!
 }
 
 """The API operations an Application is authorized to perform."""
@@ -871,7 +873,7 @@ type DataPool implements Node & Common {
   syncs(filter: SyncsFilter, first: Int, after: String, last: Int, before: String): SyncConnection
   "The list of Metrics powered by the Data Pool."
   metrics(first: Int, after: String, last: Int, before: String): MetricConnection
-  "The Deletion Jobs that where historically issued to this Data Pool, sorted by creation time, in descending order."
+  "The Deletion Jobs that were historically issued to this Data Pool, sorted by creation time, in descending order."
   deletionJobs(first: Int, after: String, last: Int, before: String): DeletionJobConnection
   """
   Whether the Data Pool has access control enabled or not.
@@ -880,6 +882,8 @@ type DataPool implements Node & Common {
   Policies in order to query the Data Pool and its Metrics.
   """
   accessControlEnabled: Boolean!
+  "A paginated list of Data Pool Access Policies available on the Data Pool."
+  dataPoolAccessPolicies (first: Int, after: String, last: Int, before: String): DataPoolAccessPolicyConnection!
   "Validates a custom expression against the Data Pool's available columns. If the provided expression is invalid, the ValidateExpressionResult response will contain a reason explaining why."
   validateExpression(expression: String!): ValidateExpressionResult!
 }
@@ -2338,6 +2342,8 @@ enum QueryType {
   RECORDS
   """Indicates a SelectV1 Query."""
   SELECT
+  """Indicates a SQL Query."""
+  SQL
 }
 
 """The Query subtype."""
@@ -2510,14 +2516,46 @@ type PolicyResponse {
   policy: Policy
 }
 
-enum DeletionJobStatus {
-  "The Deletion Job was created, but is not yet being executed."
+"""
+A Job is an asynchronous process that modifies a Data Pool or its records. It keeps track of its progress and outcome.
+"""
+interface Job {
+  "The Job's creation date and time in UTC."
+  createdAt: DateTime!
+  "Who created the Job."
+  createdBy: String!
+  "The Job's last modification date and time in UTC."
+  modifiedAt: DateTime!
+  "Who last modified the Job."
+  modifiedBy: String!
+  "Account to which the Job belongs."
+  account: Account!
+  "Environment to which the Job belongs."
+  environment: Environment!
+  "The Data Pool whose records will be modified by the Job."
+  dataPool: DataPool!
+  "The current Job's status."
+  status: JobStatus!
+  "The error that occurred while executing the Job, if any."
+  error: Error
+  "The current progress of the Job, from 0.0 to 1.0."
+  progress: Float!
+  "The time at which the Job started."
+  startedAt: DateTime
+  "The time at which the Job succeeded."
+  succeededAt: DateTime
+  "The time at which the Job failed."
+  failedAt: DateTime
+}
+
+enum JobStatus {
+  "The Job was created, but is not yet being executed."
   CREATED
-  "The Deletion Job is executing."
+  "The Job is executing."
   IN_PROGRESS
-  "The Deletion Job succeeded."
+  "The Job succeeded."
   SUCCEEDED
-  "The Deletion Job failed. Check the error message."
+  "The Job failed. Check the error message."
   FAILED
 }
 
@@ -2528,25 +2566,25 @@ The Deletion Job represents the asynchronous process of deleting data
 given some filters inside a Data Pool. It tracks the deletion process
 until it is finished, showing the progress and the outcome when it is finished.
 """
-type DeletionJob implements Node {
-  "The Deletion Job's ID"
+type DeletionJob implements Node & Job {
+  "The Deletion Job's ID."
   id: ID!
-  "The Deletion Job's creation date and time in UTC"
+  "The Deletion Job's creation date and time in UTC."
   createdAt: DateTime!
-  "Who created the Deletion Job"
+  "Who created the Deletion Job."
   createdBy: String!
-  "The Deletion Job's last modification date and time in UTC"
+  "The Deletion Job's last modification date and time in UTC."
   modifiedAt: DateTime!
-  "Who last modified the Deletion Job"
+  "Who last modified the Deletion Job."
   modifiedBy: String!
-  "Account to which the Deletion Job belongs"
+  "Account to which the Deletion Job belongs."
   account: Account!
-  "Environment to which the Deletion Job belongs"
+  "Environment to which the Deletion Job belongs."
   environment: Environment!
-  "The Data Pool whose records will be deleted by the Deletion Job"
+  "The Data Pool whose records will be deleted by the Deletion Job."
   dataPool: DataPool!
-  "The current Deletion Job's status"
-  status: DeletionJobStatus!
+  "The current Deletion Job's status."
+  status: JobStatus!
   "The list of filters that will be used for deleting data. Data matching the filters will be deleted."
   filters: [Filter!]!
   "The error that occurred while deleting data, if any."
@@ -2561,11 +2599,19 @@ type DeletionJob implements Node {
   failedAt: DateTime
 }
 
+"""The response returned by the Deletion Job."""
 type RequestDeleteResponse {
   "The Deletion Job that was just created."
   job: DeletionJob!
 }
 
+"""The response returned by the Deletion Job."""
+type DeletionJobResponse {
+  "The Deletion Job that was just created."
+  job: DeletionJob!
+}
+
+"""The fields for creating a Deletion Job."""
 input DeletionRequestInput {
   "The Data Pool that is going to get the data deleted"
   dataPool: ID!
@@ -2573,7 +2619,147 @@ input DeletionRequestInput {
   filters: [FilterInput!]!
 }
 
+"""The fields for creating a Deletion Job."""
+input CreateDeletionJobInput {
+  "The Data Pool that is going to get the data deleted"
+  dataPool: ID!
+  "The list of filters that will be used for deleting data. Data matching these filters will be deleted."
+  filters: [FilterInput!]!
+}
+
+type DataPoolAccessPolicy implements Node & Common  {
+  """ The ID of the Data Pool Access Policy. """
+  id: ID!
+
+  """ The Data Pool Access Policy's unique name. """
+  uniqueName: String!
+
+  """ The Data Pool Access Policy's description. """
+  description: String!
+
+  """ The Data Pool Access Policy's Account. """
+  account: Account!
+
+  """ The Data Pool Access Policy's Environment. """
+  environment: Environment!
+
+  """ The Data Pool Access Policy's creation date and time in UTC. """
+  createdAt: DateTime!
+
+  """ The Data Pool Access Policy's last modification date and time in UTC. """
+  modifiedAt: DateTime!
+
+  """ The Data Pool Access Policy's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel. """
+  createdBy: String!
+
+  """ The Data Pool Access Policy's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel. """
+  modifiedBy: String!
+
+  """ The Data Pool to which the Access Policy belongs. """
+  dataPool: DataPool!
+
+  """ Columns that the Access Policy makes available for querying. """
+  columns: [String!]!
+
+  """ Row-level filters that the Access Policy applies before executing queries. """
+  rows: [Filter!]!
+
+  """ Applications that are assigned to this Data Pool Access Policy. """
+  applications(
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): ApplicationConnection!
+}
+
+input CreateDataPoolAccessPolicyInput {
+  """The Data Pool Access Policy's unique name. If not specified, Propel will set the ID as unique name."""
+  uniqueName: String
+
+  """The Data Pool Access Policy's description."""
+  description: String
+
+  """ The Data Pool to which the Access Policy belongs. """
+  dataPool: ID!
+
+  """
+  Columns that the Access Policy makes available for querying.
+
+  If set to `["*"]`, all columns will be available for querying.
+  """
+  columns: [String!]!
+
+  """ Row-level filters that the Access Policy applies before executing queries. """
+  rows: [FilterInput!]
+}
+
+type DataPoolAccessPolicyResponse {
+  """ The Data Pool Access Policy. """
+  dataPoolAccessPolicy: DataPoolAccessPolicy!
+}
+
+input ModifyDataPoolAccessPolicyInput {
+  id: ID!
+  """The Data Pool Access Policy's new unique name."""
+  uniqueName: String
+
+  """The Data Pool Access Policy's new description. """
+  description: String
+
+  """ Columns that the Access Policy makes available for querying. If not provided this property will not be modified. """
+  columns: [String!]
+
+  """ Row-level filters that the Access Policy applies before executing queries. If not provided this property will not be modified. """
+  rows: [FilterInput!]
+}
+
 type Mutation {
+  """
+  Creates a Data Pool Access Policy for the specified Data Pool.
+
+  [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
+  """
+  createDataPoolAccessPolicy(input: CreateDataPoolAccessPolicyInput!): DataPoolAccessPolicyResponse!
+
+  """
+  Modifies a Data Pool Access Policy with the provided unique name, description, columns and rows. If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool Access Policy.
+
+  [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
+  """
+  modifyDataPoolAccessPolicy(input: ModifyDataPoolAccessPolicyInput!): DataPoolAccessPolicyResponse!
+
+  """
+  Deletes a Data Pool Access Policy by ID and returns its ID if the Data Pool Access Policy was deleted successfully.
+
+  [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
+  """
+  deleteDataPoolAccessPolicy(id: ID!): ID
+
+  """
+  Assign a Data Pool Access Policy to an Application.
+
+  The Data Pool Access Policy will restrict the Data Pool rows and columns that the Application
+  can query. If the Data Pool has `accessControlEnabled` set to true, the Application
+  *must* have a Data Pool Access Policy assigned in order to query the Data Pool.
+
+  An Application can have at most one Data Pool Access Policy assigned for a given Data Pool. If
+  an Application already has a Data Pool Access Policy for a given Data Pool, and you call this
+  mutation with another Data Pool Access Policy for the same Data Pool, the Application's Data Pool Access
+  Policy will be replaced.
+  """
+  assignDataPoolAccessPolicyToApplication(dataPoolAccessPolicy: ID!, application: ID!): ID
+
+  """
+  Unassign a Data Pool Access Policy from an Application.
+
+  Once unassigned, whether the Application will be able to query the Data Pool is
+  controlled by the Data Pool's `accessControlEnabled` property. If
+  `accessControlEnabled` is true, the Application will no longer be able to query the
+  Data Pool. If `accessControlEnabled` is false, the Application will be able to query
+  *all* data in the Data Pool, unrestricted.
+  """
+  unAssignDataPoolAccessPolicyFromApplication(dataPoolAccessPolicy: ID!, application: ID!): ID
   """
   Creates a new Application and returns the newly created Application (or an error message if creating the Application fails).
 
@@ -2747,7 +2933,13 @@ type Mutation {
   """
   deletePolicy(id: ID!): ID
   """Schedules a new Deletion Job on the specified Data Pool."""
-  requestDelete(input: DeletionRequestInput!): RequestDeleteResponse!
+  requestDelete(input: DeletionRequestInput!): RequestDeleteResponse! @deprecated(reason: "This has been renamed to `createDeletionJob`")
+  """Schedules a new Deletion Job on the specified Data Pool."""
+  createDeletionJob(input: CreateDeletionJobInput!): DeletionJobResponse!
+  """Manually trigger a Sync for a Data Pool."""
+  syncDataPool(dataPoolId: ID!): Sync
+  """Manually trigger a re-Sync for a Data Pool."""
+  resyncDataPool(dataPoolId: ID!): Sync
   """
   Creates a new HTTP Data Source from the given settings.
 
@@ -2859,6 +3051,12 @@ type Query {
   For backward pagination, the `last` parameter defines the number of results to return, and the `before` parameter defines the cursor to continue from. You should pass the cursor for the _first_ result of the current page to `before`.
   """
   dataPools(first: Int, after: String, last: Int, before: String): DataPoolConnection
+  """
+  This query returns the Data Pool Access Policy specified by the given ID.
+
+  A Data Pool Access Policy limits the data that Applications can access within a Data Pool.
+  """
+  dataPoolAccessPolicy(id: ID!): DataPoolAccessPolicy
   """
   This query returns the Metric specified by the given ID.
 
@@ -3062,6 +3260,35 @@ type DataPoolEdge {
 }
 
 """
+The Data Pool Access Policy connection object.
+
+Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+"""
+type DataPoolAccessPolicyConnection {
+  """The Data Pool Access Policy connection's edges."""
+  edges: [DataPoolAccessPolicyEdge!]!
+
+  """The Data Pool Access Policy connection's nodes."""
+  nodes: [DataPoolAccessPolicy!]!
+
+  """The Data Pool Access Policy connection's page info."""
+  pageInfo: PageInfo!
+}
+
+"""
+The Data Pool Access Policy edge object.
+
+Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+"""
+type DataPoolAccessPolicyEdge {
+  """The edge's cursor."""
+  cursor: String!
+
+  """The edge's node."""
+  node: DataPoolAccessPolicy!
+}
+
+"""
 The Data Source connection object.
 
 Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
@@ -3088,21 +3315,21 @@ type DataSourceEdge {
 }
 
 """
-The Data Source connection object.
+The Deletion Job connection object.
 
 Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
 """
 type DeletionJobConnection {
-  """The Data Source connection's edges."""
+  """The Deletion Job connection's edges."""
   edges: [DeletionJobEdge!]!
-  """The Data Source connection's nodes."""
+  """The Deletion Job connection's nodes."""
   nodes: [DeletionJob!]!
-  """The Data Source connection's page info."""
+  """The Deletion Job connection's page info."""
   pageInfo: PageInfo!
 }
 
 """
-The Data Source edge object.
+The Deletion Job edge object.
 
 Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
 """

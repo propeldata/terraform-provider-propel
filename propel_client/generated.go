@@ -11,6 +11,26 @@ import (
 	"github.com/Khan/genqlient/graphql"
 )
 
+// AssignDataPoolAccessPolicyResponse is returned by AssignDataPoolAccessPolicy on success.
+type AssignDataPoolAccessPolicyResponse struct {
+	// Assign a Data Pool Access Policy to an Application.
+	//
+	// The Data Pool Access Policy will restrict the Data Pool rows and columns that the Application
+	// can query. If the Data Pool has `accessControlEnabled` set to true, the Application
+	// *must* have a Data Pool Access Policy assigned in order to query the Data Pool.
+	//
+	// An Application can have at most one Data Pool Access Policy assigned for a given Data Pool. If
+	// an Application already has a Data Pool Access Policy for a given Data Pool, and you call this
+	// mutation with another Data Pool Access Policy for the same Data Pool, the Application's Data Pool Access
+	// Policy will be replaced.
+	AssignDataPoolAccessPolicyToApplication *string `json:"assignDataPoolAccessPolicyToApplication"`
+}
+
+// GetAssignDataPoolAccessPolicyToApplication returns AssignDataPoolAccessPolicyResponse.AssignDataPoolAccessPolicyToApplication, and is useful for accessing the field via an interface.
+func (v *AssignDataPoolAccessPolicyResponse) GetAssignDataPoolAccessPolicyToApplication() *string {
+	return v.AssignDataPoolAccessPolicyToApplication
+}
+
 // ColumnData includes the GraphQL fields of Column requested by the fragment ColumnData.
 // The GraphQL type's documentation follows.
 //
@@ -75,6 +95,7 @@ const (
 // CommonDataDataSource
 // CommonDataDataPool
 // CommonDataMetric
+// CommonDataDataPoolAccessPolicy
 type CommonData interface {
 	implementsGraphQLInterfaceCommonData()
 	// GetUniqueName returns the interface-field "uniqueName" from its implementation.
@@ -119,10 +140,11 @@ type CommonData interface {
 	GetModifiedBy() string
 }
 
-func (v *CommonDataApplication) implementsGraphQLInterfaceCommonData() {}
-func (v *CommonDataDataSource) implementsGraphQLInterfaceCommonData()  {}
-func (v *CommonDataDataPool) implementsGraphQLInterfaceCommonData()    {}
-func (v *CommonDataMetric) implementsGraphQLInterfaceCommonData()      {}
+func (v *CommonDataApplication) implementsGraphQLInterfaceCommonData()          {}
+func (v *CommonDataDataSource) implementsGraphQLInterfaceCommonData()           {}
+func (v *CommonDataDataPool) implementsGraphQLInterfaceCommonData()             {}
+func (v *CommonDataMetric) implementsGraphQLInterfaceCommonData()               {}
+func (v *CommonDataDataPoolAccessPolicy) implementsGraphQLInterfaceCommonData() {}
 
 func __unmarshalCommonData(b []byte, v *CommonData) error {
 	if string(b) == "null" {
@@ -149,6 +171,9 @@ func __unmarshalCommonData(b []byte, v *CommonData) error {
 		return json.Unmarshal(b, *v)
 	case "Metric":
 		*v = new(CommonDataMetric)
+		return json.Unmarshal(b, *v)
+	case "DataPoolAccessPolicy":
+		*v = new(CommonDataDataPoolAccessPolicy)
 		return json.Unmarshal(b, *v)
 	case "":
 		return fmt.Errorf(
@@ -193,6 +218,14 @@ func __marshalCommonData(v *CommonData) ([]byte, error) {
 		result := struct {
 			TypeName string `json:"__typename"`
 			*CommonDataMetric
+		}{typename, v}
+		return json.Marshal(result)
+	case *CommonDataDataPoolAccessPolicy:
+		typename = "DataPoolAccessPolicy"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CommonDataDataPoolAccessPolicy
 		}{typename, v}
 		return json.Marshal(result)
 	case nil:
@@ -312,6 +345,57 @@ func (v *CommonDataDataPool) GetCreatedBy() string { return v.CreatedBy }
 
 // GetModifiedBy returns CommonDataDataPool.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *CommonDataDataPool) GetModifiedBy() string { return v.ModifiedBy }
+
+// CommonData includes the GraphQL fields of DataPoolAccessPolicy requested by the fragment CommonData.
+// The GraphQL type's documentation follows.
+//
+// All Propel resources, such as Applications and Metrics, have a set of common properties, such as the Propel Account and Environment that they are associated with. They also have a unique ID, which is specified in the interface `Node`.
+//
+// Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
+type CommonDataDataPoolAccessPolicy struct {
+	// The resource's unique name.
+	UniqueName string `json:"uniqueName"`
+	// The resource's description.
+	Description string `json:"description"`
+	// The resource's Account.
+	Account *CommonDataAccount `json:"account"`
+	// The resource's Environment.
+	Environment *CommonDataEnvironment `json:"environment"`
+	// The resource's creation date and time in UTC.
+	CreatedAt time.Time `json:"createdAt"`
+	// The resource's last modification date and time in UTC.
+	ModifiedAt time.Time `json:"modifiedAt"`
+	// The resource's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+	CreatedBy string `json:"createdBy"`
+	// The resource's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+// GetUniqueName returns CommonDataDataPoolAccessPolicy.UniqueName, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPoolAccessPolicy) GetUniqueName() string { return v.UniqueName }
+
+// GetDescription returns CommonDataDataPoolAccessPolicy.Description, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPoolAccessPolicy) GetDescription() string { return v.Description }
+
+// GetAccount returns CommonDataDataPoolAccessPolicy.Account, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPoolAccessPolicy) GetAccount() *CommonDataAccount { return v.Account }
+
+// GetEnvironment returns CommonDataDataPoolAccessPolicy.Environment, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPoolAccessPolicy) GetEnvironment() *CommonDataEnvironment {
+	return v.Environment
+}
+
+// GetCreatedAt returns CommonDataDataPoolAccessPolicy.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPoolAccessPolicy) GetCreatedAt() time.Time { return v.CreatedAt }
+
+// GetModifiedAt returns CommonDataDataPoolAccessPolicy.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPoolAccessPolicy) GetModifiedAt() time.Time { return v.ModifiedAt }
+
+// GetCreatedBy returns CommonDataDataPoolAccessPolicy.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPoolAccessPolicy) GetCreatedBy() string { return v.CreatedBy }
+
+// GetModifiedBy returns CommonDataDataPoolAccessPolicy.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataDataPoolAccessPolicy) GetModifiedBy() string { return v.ModifiedBy }
 
 // CommonData includes the GraphQL fields of DataSource requested by the fragment CommonData.
 // The GraphQL type's documentation follows.
@@ -1452,6 +1536,202 @@ func (v *CreateCustomMetricResponse) GetCreateCustomMetric() *CreateCustomMetric
 	return v.CreateCustomMetric
 }
 
+// CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponse includes the requested fields of the GraphQL type DataPoolAccessPolicyResponse.
+type CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponse struct {
+	// The Data Pool Access Policy.
+	DataPoolAccessPolicy *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy `json:"dataPoolAccessPolicy"`
+}
+
+// GetDataPoolAccessPolicy returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponse.DataPoolAccessPolicy, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponse) GetDataPoolAccessPolicy() *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy {
+	return v.DataPoolAccessPolicy
+}
+
+// CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy includes the requested fields of the GraphQL type DataPoolAccessPolicy.
+type CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy struct {
+	DataPoolAccessPolicyData `json:"-"`
+}
+
+// GetId returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Id, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetId() string {
+	return v.DataPoolAccessPolicyData.Id
+}
+
+// GetColumns returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Columns, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetColumns() []string {
+	return v.DataPoolAccessPolicyData.Columns
+}
+
+// GetRows returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Rows, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetRows() []*DataPoolAccessPolicyDataRowsFilter {
+	return v.DataPoolAccessPolicyData.Rows
+}
+
+// GetDataPool returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.DataPool, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetDataPool() *DataPoolAccessPolicyDataDataPool {
+	return v.DataPoolAccessPolicyData.DataPool
+}
+
+// GetUniqueName returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetUniqueName() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.UniqueName
+}
+
+// GetDescription returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Description, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetDescription() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Description
+}
+
+// GetAccount returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Account, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetAccount() *CommonDataAccount {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Account
+}
+
+// GetEnvironment returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Environment, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetEnvironment() *CommonDataEnvironment {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Environment
+}
+
+// GetCreatedAt returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetCreatedAt() time.Time {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedAt
+}
+
+// GetModifiedAt returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetModifiedAt() time.Time {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedAt
+}
+
+// GetCreatedBy returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetCreatedBy() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedBy
+}
+
+// GetModifiedBy returns CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetModifiedBy() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedBy
+}
+
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataPoolAccessPolicyData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy struct {
+	Id string `json:"id"`
+
+	Columns []string `json:"columns"`
+
+	Rows []*DataPoolAccessPolicyDataRowsFilter `json:"rows"`
+
+	DataPool *DataPoolAccessPolicyDataDataPool `json:"dataPool"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) __premarshalJSON() (*__premarshalCreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy, error) {
+	var retval __premarshalCreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy
+
+	retval.Id = v.DataPoolAccessPolicyData.Id
+	retval.Columns = v.DataPoolAccessPolicyData.Columns
+	retval.Rows = v.DataPoolAccessPolicyData.Rows
+	retval.DataPool = v.DataPoolAccessPolicyData.DataPool
+	retval.UniqueName = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.UniqueName
+	retval.Description = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Description
+	retval.Account = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Account
+	retval.Environment = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Environment
+	retval.CreatedAt = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedAt
+	retval.ModifiedAt = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedAt
+	retval.CreatedBy = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedBy
+	retval.ModifiedBy = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedBy
+	return &retval, nil
+}
+
+type CreateDataPoolAccessPolicyInput struct {
+	// The Data Pool Access Policy's unique name. If not specified, Propel will set the ID as unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Data Pool Access Policy's description.
+	Description *string `json:"description"`
+	// The Data Pool to which the Access Policy belongs.
+	DataPool string `json:"dataPool"`
+	// Columns that the Access Policy makes available for querying.
+	//
+	// If set to `["*"]`, all columns will be available for querying.
+	Columns []string `json:"columns"`
+	// Row-level filters that the Access Policy applies before executing queries.
+	Rows []*FilterInput `json:"rows,omitempty"`
+}
+
+// GetUniqueName returns CreateDataPoolAccessPolicyInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyInput) GetUniqueName() *string { return v.UniqueName }
+
+// GetDescription returns CreateDataPoolAccessPolicyInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyInput) GetDescription() *string { return v.Description }
+
+// GetDataPool returns CreateDataPoolAccessPolicyInput.DataPool, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyInput) GetDataPool() string { return v.DataPool }
+
+// GetColumns returns CreateDataPoolAccessPolicyInput.Columns, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyInput) GetColumns() []string { return v.Columns }
+
+// GetRows returns CreateDataPoolAccessPolicyInput.Rows, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyInput) GetRows() []*FilterInput { return v.Rows }
+
+// CreateDataPoolAccessPolicyResponse is returned by CreateDataPoolAccessPolicy on success.
+type CreateDataPoolAccessPolicyResponse struct {
+	// Creates a Data Pool Access Policy for the specified Data Pool.
+	//
+	// [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
+	CreateDataPoolAccessPolicy *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponse `json:"createDataPoolAccessPolicy"`
+}
+
+// GetCreateDataPoolAccessPolicy returns CreateDataPoolAccessPolicyResponse.CreateDataPoolAccessPolicy, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyResponse) GetCreateDataPoolAccessPolicy() *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponse {
+	return v.CreateDataPoolAccessPolicy
+}
+
 // CreateDataPoolCreateDataPoolV2DataPoolResponse includes the requested fields of the GraphQL type DataPoolResponse.
 // The GraphQL type's documentation follows.
 //
@@ -1538,6 +1818,11 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetSetupTasks()
 // GetSyncs returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.Syncs, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
 	return v.DataPoolData.Syncs
+}
+
+// GetDataPoolAccessPolicies returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.DataPoolData.DataPoolAccessPolicies
 }
 
 // GetUniqueName returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.UniqueName, and is useful for accessing the field via an interface.
@@ -1630,6 +1915,8 @@ type __premarshalCreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 
 	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
+	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -1670,6 +1957,7 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
+	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -3863,6 +4151,470 @@ func (v *CreateWebhookDataSourceResponse) GetCreateWebhookDataSource() *CreateWe
 	return v.CreateWebhookDataSource
 }
 
+// DataPoolAccessPolicyData includes the GraphQL fields of DataPoolAccessPolicy requested by the fragment DataPoolAccessPolicyData.
+type DataPoolAccessPolicyData struct {
+	// The ID of the Data Pool Access Policy.
+	Id                             string `json:"id"`
+	CommonDataDataPoolAccessPolicy `json:"-"`
+	// Columns that the Access Policy makes available for querying.
+	Columns []string `json:"columns"`
+	// Row-level filters that the Access Policy applies before executing queries.
+	Rows []*DataPoolAccessPolicyDataRowsFilter `json:"rows"`
+	// The Data Pool to which the Access Policy belongs.
+	DataPool *DataPoolAccessPolicyDataDataPool `json:"dataPool"`
+}
+
+// GetId returns DataPoolAccessPolicyData.Id, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetId() string { return v.Id }
+
+// GetColumns returns DataPoolAccessPolicyData.Columns, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetColumns() []string { return v.Columns }
+
+// GetRows returns DataPoolAccessPolicyData.Rows, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetRows() []*DataPoolAccessPolicyDataRowsFilter { return v.Rows }
+
+// GetDataPool returns DataPoolAccessPolicyData.DataPool, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetDataPool() *DataPoolAccessPolicyDataDataPool { return v.DataPool }
+
+// GetUniqueName returns DataPoolAccessPolicyData.UniqueName, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetUniqueName() string {
+	return v.CommonDataDataPoolAccessPolicy.UniqueName
+}
+
+// GetDescription returns DataPoolAccessPolicyData.Description, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetDescription() string {
+	return v.CommonDataDataPoolAccessPolicy.Description
+}
+
+// GetAccount returns DataPoolAccessPolicyData.Account, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetAccount() *CommonDataAccount {
+	return v.CommonDataDataPoolAccessPolicy.Account
+}
+
+// GetEnvironment returns DataPoolAccessPolicyData.Environment, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetEnvironment() *CommonDataEnvironment {
+	return v.CommonDataDataPoolAccessPolicy.Environment
+}
+
+// GetCreatedAt returns DataPoolAccessPolicyData.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetCreatedAt() time.Time {
+	return v.CommonDataDataPoolAccessPolicy.CreatedAt
+}
+
+// GetModifiedAt returns DataPoolAccessPolicyData.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetModifiedAt() time.Time {
+	return v.CommonDataDataPoolAccessPolicy.ModifiedAt
+}
+
+// GetCreatedBy returns DataPoolAccessPolicyData.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetCreatedBy() string {
+	return v.CommonDataDataPoolAccessPolicy.CreatedBy
+}
+
+// GetModifiedBy returns DataPoolAccessPolicyData.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyData) GetModifiedBy() string {
+	return v.CommonDataDataPoolAccessPolicy.ModifiedBy
+}
+
+func (v *DataPoolAccessPolicyData) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolAccessPolicyData
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolAccessPolicyData = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.CommonDataDataPoolAccessPolicy)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolAccessPolicyData struct {
+	Id string `json:"id"`
+
+	Columns []string `json:"columns"`
+
+	Rows []*DataPoolAccessPolicyDataRowsFilter `json:"rows"`
+
+	DataPool *DataPoolAccessPolicyDataDataPool `json:"dataPool"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *DataPoolAccessPolicyData) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolAccessPolicyData) __premarshalJSON() (*__premarshalDataPoolAccessPolicyData, error) {
+	var retval __premarshalDataPoolAccessPolicyData
+
+	retval.Id = v.Id
+	retval.Columns = v.Columns
+	retval.Rows = v.Rows
+	retval.DataPool = v.DataPool
+	retval.UniqueName = v.CommonDataDataPoolAccessPolicy.UniqueName
+	retval.Description = v.CommonDataDataPoolAccessPolicy.Description
+	retval.Account = v.CommonDataDataPoolAccessPolicy.Account
+	retval.Environment = v.CommonDataDataPoolAccessPolicy.Environment
+	retval.CreatedAt = v.CommonDataDataPoolAccessPolicy.CreatedAt
+	retval.ModifiedAt = v.CommonDataDataPoolAccessPolicy.ModifiedAt
+	retval.CreatedBy = v.CommonDataDataPoolAccessPolicy.CreatedBy
+	retval.ModifiedBy = v.CommonDataDataPoolAccessPolicy.ModifiedBy
+	return &retval, nil
+}
+
+// DataPoolAccessPolicyDataDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
+//
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
+type DataPoolAccessPolicyDataDataPool struct {
+	// The Data Pool's unique identifier.
+	Id string `json:"id"`
+}
+
+// GetId returns DataPoolAccessPolicyDataDataPool.Id, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataDataPool) GetId() string { return v.Id }
+
+// DataPoolAccessPolicyDataPoolAccessPolicy includes the requested fields of the GraphQL type DataPoolAccessPolicy.
+type DataPoolAccessPolicyDataPoolAccessPolicy struct {
+	DataPoolAccessPolicyData `json:"-"`
+	// Applications that are assigned to this Data Pool Access Policy.
+	Applications *DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnection `json:"applications"`
+}
+
+// GetApplications returns DataPoolAccessPolicyDataPoolAccessPolicy.Applications, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetApplications() *DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnection {
+	return v.Applications
+}
+
+// GetId returns DataPoolAccessPolicyDataPoolAccessPolicy.Id, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetId() string {
+	return v.DataPoolAccessPolicyData.Id
+}
+
+// GetColumns returns DataPoolAccessPolicyDataPoolAccessPolicy.Columns, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetColumns() []string {
+	return v.DataPoolAccessPolicyData.Columns
+}
+
+// GetRows returns DataPoolAccessPolicyDataPoolAccessPolicy.Rows, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetRows() []*DataPoolAccessPolicyDataRowsFilter {
+	return v.DataPoolAccessPolicyData.Rows
+}
+
+// GetDataPool returns DataPoolAccessPolicyDataPoolAccessPolicy.DataPool, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetDataPool() *DataPoolAccessPolicyDataDataPool {
+	return v.DataPoolAccessPolicyData.DataPool
+}
+
+// GetUniqueName returns DataPoolAccessPolicyDataPoolAccessPolicy.UniqueName, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetUniqueName() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.UniqueName
+}
+
+// GetDescription returns DataPoolAccessPolicyDataPoolAccessPolicy.Description, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetDescription() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Description
+}
+
+// GetAccount returns DataPoolAccessPolicyDataPoolAccessPolicy.Account, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetAccount() *CommonDataAccount {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Account
+}
+
+// GetEnvironment returns DataPoolAccessPolicyDataPoolAccessPolicy.Environment, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetEnvironment() *CommonDataEnvironment {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Environment
+}
+
+// GetCreatedAt returns DataPoolAccessPolicyDataPoolAccessPolicy.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetCreatedAt() time.Time {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedAt
+}
+
+// GetModifiedAt returns DataPoolAccessPolicyDataPoolAccessPolicy.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetModifiedAt() time.Time {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedAt
+}
+
+// GetCreatedBy returns DataPoolAccessPolicyDataPoolAccessPolicy.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetCreatedBy() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedBy
+}
+
+// GetModifiedBy returns DataPoolAccessPolicyDataPoolAccessPolicy.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) GetModifiedBy() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedBy
+}
+
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolAccessPolicyDataPoolAccessPolicy
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolAccessPolicyDataPoolAccessPolicy = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataPoolAccessPolicyData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolAccessPolicyDataPoolAccessPolicy struct {
+	Applications *DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnection `json:"applications"`
+
+	Id string `json:"id"`
+
+	Columns []string `json:"columns"`
+
+	Rows []*DataPoolAccessPolicyDataRowsFilter `json:"rows"`
+
+	DataPool *DataPoolAccessPolicyDataDataPool `json:"dataPool"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolAccessPolicyDataPoolAccessPolicy) __premarshalJSON() (*__premarshalDataPoolAccessPolicyDataPoolAccessPolicy, error) {
+	var retval __premarshalDataPoolAccessPolicyDataPoolAccessPolicy
+
+	retval.Applications = v.Applications
+	retval.Id = v.DataPoolAccessPolicyData.Id
+	retval.Columns = v.DataPoolAccessPolicyData.Columns
+	retval.Rows = v.DataPoolAccessPolicyData.Rows
+	retval.DataPool = v.DataPoolAccessPolicyData.DataPool
+	retval.UniqueName = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.UniqueName
+	retval.Description = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Description
+	retval.Account = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Account
+	retval.Environment = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Environment
+	retval.CreatedAt = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedAt
+	retval.ModifiedAt = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedAt
+	retval.CreatedBy = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedBy
+	retval.ModifiedBy = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedBy
+	return &retval, nil
+}
+
+// DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnection includes the requested fields of the GraphQL type ApplicationConnection.
+// The GraphQL type's documentation follows.
+//
+// The Application connection object.
+//
+// Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+type DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnection struct {
+	// The Application connection's nodes.
+	Nodes []*DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnectionNodesApplication `json:"nodes"`
+}
+
+// GetNodes returns DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnection) GetNodes() []*DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnectionNodesApplication {
+	return v.Nodes
+}
+
+// DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnectionNodesApplication includes the requested fields of the GraphQL type Application.
+// The GraphQL type's documentation follows.
+//
+// The Application object.
+//
+// Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
+//
+// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+type DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnectionNodesApplication struct {
+	// The Application's unique identifier.
+	Id string `json:"id"`
+}
+
+// GetId returns DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnectionNodesApplication.Id, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnectionNodesApplication) GetId() string {
+	return v.Id
+}
+
+// DataPoolAccessPolicyDataRowsFilter includes the requested fields of the GraphQL type Filter.
+// The GraphQL type's documentation follows.
+//
+// The fields of a filter.
+//
+// You can construct more complex filters using `and` and `or`. For example, to construct a filter equivalent to
+//
+// ```
+// (value > 0 AND value <= 100) OR status = "confirmed"
+// ```
+//
+// you could write
+//
+// ```
+// {
+// "column": "value",
+// "operator": "GREATER_THAN",
+// "value": "0",
+// "and": [{
+// "column": "value",
+// "operator": "LESS_THAN_OR_EQUAL_TO",
+// "value": "0"
+// }],
+// "or": [{
+// "column": "status",
+// "operator": "EQUALS",
+// "value": "confirmed"
+// }]
+// }
+// ```
+//
+// Note that `and` takes precedence over `or`.
+type DataPoolAccessPolicyDataRowsFilter struct {
+	FilterData `json:"-"`
+}
+
+// GetColumn returns DataPoolAccessPolicyDataRowsFilter.Column, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataRowsFilter) GetColumn() string { return v.FilterData.Column }
+
+// GetOperator returns DataPoolAccessPolicyDataRowsFilter.Operator, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataRowsFilter) GetOperator() FilterOperator {
+	return v.FilterData.Operator
+}
+
+// GetValue returns DataPoolAccessPolicyDataRowsFilter.Value, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataRowsFilter) GetValue() *string { return v.FilterData.Value }
+
+// GetAnd returns DataPoolAccessPolicyDataRowsFilter.And, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataRowsFilter) GetAnd() []*FilterDataAndFilter { return v.FilterData.And }
+
+// GetOr returns DataPoolAccessPolicyDataRowsFilter.Or, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyDataRowsFilter) GetOr() []*FilterDataOrFilter { return v.FilterData.Or }
+
+func (v *DataPoolAccessPolicyDataRowsFilter) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolAccessPolicyDataRowsFilter
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolAccessPolicyDataRowsFilter = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.FilterData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolAccessPolicyDataRowsFilter struct {
+	Column string `json:"column"`
+
+	Operator FilterOperator `json:"operator"`
+
+	Value *string `json:"value"`
+
+	And []*FilterDataAndFilter `json:"and"`
+
+	Or []*FilterDataOrFilter `json:"or"`
+}
+
+func (v *DataPoolAccessPolicyDataRowsFilter) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolAccessPolicyDataRowsFilter) __premarshalJSON() (*__premarshalDataPoolAccessPolicyDataRowsFilter, error) {
+	var retval __premarshalDataPoolAccessPolicyDataRowsFilter
+
+	retval.Column = v.FilterData.Column
+	retval.Operator = v.FilterData.Operator
+	retval.Value = v.FilterData.Value
+	retval.And = v.FilterData.And
+	retval.Or = v.FilterData.Or
+	return &retval, nil
+}
+
+// DataPoolAccessPolicyResponse is returned by DataPoolAccessPolicy on success.
+type DataPoolAccessPolicyResponse struct {
+	// This query returns the Data Pool Access Policy specified by the given ID.
+	//
+	// A Data Pool Access Policy limits the data that Applications can access within a Data Pool.
+	DataPoolAccessPolicy *DataPoolAccessPolicyDataPoolAccessPolicy `json:"dataPoolAccessPolicy"`
+}
+
+// GetDataPoolAccessPolicy returns DataPoolAccessPolicyResponse.DataPoolAccessPolicy, and is useful for accessing the field via an interface.
+func (v *DataPoolAccessPolicyResponse) GetDataPoolAccessPolicy() *DataPoolAccessPolicyDataPoolAccessPolicy {
+	return v.DataPoolAccessPolicy
+}
+
 // DataPoolByNameDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
 //
@@ -3921,6 +4673,11 @@ func (v *DataPoolByNameDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPo
 // GetSyncs returns DataPoolByNameDataPool.Syncs, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
 	return v.DataPoolData.Syncs
+}
+
+// GetDataPoolAccessPolicies returns DataPoolByNameDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *DataPoolByNameDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.DataPoolData.DataPoolAccessPolicies
 }
 
 // GetUniqueName returns DataPoolByNameDataPool.UniqueName, and is useful for accessing the field via an interface.
@@ -4013,6 +4770,8 @@ type __premarshalDataPoolByNameDataPool struct {
 
 	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
+	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -4053,6 +4812,7 @@ func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByName
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
+	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -4143,6 +4903,8 @@ type DataPoolData struct {
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 	// The list of Syncs of the Data Pool.
 	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
+	// A paginated list of Data Pool Access Policies available on the Data Pool.
+	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 }
 
 // GetId returns DataPoolData.Id, and is useful for accessing the field via an interface.
@@ -4184,6 +4946,11 @@ func (v *DataPoolData) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetupTas
 
 // GetSyncs returns DataPoolData.Syncs, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.Syncs }
+
+// GetDataPoolAccessPolicies returns DataPoolData.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.DataPoolAccessPolicies
+}
 
 // GetUniqueName returns DataPoolData.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetUniqueName() string { return v.CommonDataDataPool.UniqueName }
@@ -4261,6 +5028,8 @@ type __premarshalDataPoolData struct {
 
 	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
+	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -4301,6 +5070,7 @@ func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
 	retval.AvailableMeasures = v.AvailableMeasures
 	retval.SetupTasks = v.SetupTasks
 	retval.Syncs = v.Syncs
+	retval.DataPoolAccessPolicies = v.DataPoolAccessPolicies
 	retval.UniqueName = v.CommonDataDataPool.UniqueName
 	retval.Description = v.CommonDataDataPool.Description
 	retval.Account = v.CommonDataDataPool.Account
@@ -4481,6 +5251,164 @@ func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) __prema
 	retval.ColumnName = v.DataPoolColumnData.ColumnName
 	retval.Type = v.DataPoolColumnData.Type
 	retval.IsNullable = v.DataPoolColumnData.IsNullable
+	return &retval, nil
+}
+
+// DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection includes the requested fields of the GraphQL type DataPoolAccessPolicyConnection.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool Access Policy connection object.
+//
+// Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+type DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection struct {
+	// The Data Pool Access Policy connection's nodes.
+	Nodes []*DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy `json:"nodes"`
+}
+
+// GetNodes returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection) GetNodes() []*DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy {
+	return v.Nodes
+}
+
+// DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy includes the requested fields of the GraphQL type DataPoolAccessPolicy.
+type DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy struct {
+	DataPoolAccessPolicyData `json:"-"`
+}
+
+// GetId returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Id, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetId() string {
+	return v.DataPoolAccessPolicyData.Id
+}
+
+// GetColumns returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Columns, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetColumns() []string {
+	return v.DataPoolAccessPolicyData.Columns
+}
+
+// GetRows returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Rows, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetRows() []*DataPoolAccessPolicyDataRowsFilter {
+	return v.DataPoolAccessPolicyData.Rows
+}
+
+// GetDataPool returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.DataPool, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetDataPool() *DataPoolAccessPolicyDataDataPool {
+	return v.DataPoolAccessPolicyData.DataPool
+}
+
+// GetUniqueName returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.UniqueName, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetUniqueName() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.UniqueName
+}
+
+// GetDescription returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Description, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetDescription() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Description
+}
+
+// GetAccount returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Account, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetAccount() *CommonDataAccount {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Account
+}
+
+// GetEnvironment returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Environment, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetEnvironment() *CommonDataEnvironment {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Environment
+}
+
+// GetCreatedAt returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.CreatedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetCreatedAt() time.Time {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedAt
+}
+
+// GetModifiedAt returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetModifiedAt() time.Time {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedAt
+}
+
+// GetCreatedBy returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.CreatedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetCreatedBy() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedBy
+}
+
+// GetModifiedBy returns DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetModifiedBy() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedBy
+}
+
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataPoolAccessPolicyData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy struct {
+	Id string `json:"id"`
+
+	Columns []string `json:"columns"`
+
+	Rows []*DataPoolAccessPolicyDataRowsFilter `json:"rows"`
+
+	DataPool *DataPoolAccessPolicyDataDataPool `json:"dataPool"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) __premarshalJSON() (*__premarshalDataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy, error) {
+	var retval __premarshalDataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy
+
+	retval.Id = v.DataPoolAccessPolicyData.Id
+	retval.Columns = v.DataPoolAccessPolicyData.Columns
+	retval.Rows = v.DataPoolAccessPolicyData.Rows
+	retval.DataPool = v.DataPoolAccessPolicyData.DataPool
+	retval.UniqueName = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.UniqueName
+	retval.Description = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Description
+	retval.Account = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Account
+	retval.Environment = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Environment
+	retval.CreatedAt = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedAt
+	retval.ModifiedAt = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedAt
+	retval.CreatedBy = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedBy
+	retval.ModifiedBy = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedBy
 	return &retval, nil
 }
 
@@ -4742,6 +5670,11 @@ func (v *DataPoolDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetu
 // GetSyncs returns DataPoolDataPool.Syncs, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
 
+// GetDataPoolAccessPolicies returns DataPoolDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *DataPoolDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.DataPoolData.DataPoolAccessPolicies
+}
+
 // GetUniqueName returns DataPoolDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -4830,6 +5763,8 @@ type __premarshalDataPoolDataPool struct {
 
 	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
+	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -4870,6 +5805,7 @@ func (v *DataPoolDataPool) __premarshalJSON() (*__premarshalDataPoolDataPool, er
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
+	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -5471,6 +6407,11 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetS
 	return v.DataPoolData.Syncs
 }
 
+// GetDataPoolAccessPolicies returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.DataPoolData.DataPoolAccessPolicies
+}
+
 // GetUniqueName returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -5561,6 +6502,8 @@ type __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPo
 
 	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
+	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -5601,6 +6544,7 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) __pr
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
+	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -7535,6 +8479,19 @@ func (v *DataSourcesResponse) GetDataSources() *DataSourcesDataSourcesDataSource
 	return v.DataSources
 }
 
+// DeleteDataPoolAccessPolicyResponse is returned by DeleteDataPoolAccessPolicy on success.
+type DeleteDataPoolAccessPolicyResponse struct {
+	// Deletes a Data Pool Access Policy by ID and returns its ID if the Data Pool Access Policy was deleted successfully.
+	//
+	// [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
+	DeleteDataPoolAccessPolicy *string `json:"deleteDataPoolAccessPolicy"`
+}
+
+// GetDeleteDataPoolAccessPolicy returns DeleteDataPoolAccessPolicyResponse.DeleteDataPoolAccessPolicy, and is useful for accessing the field via an interface.
+func (v *DeleteDataPoolAccessPolicyResponse) GetDeleteDataPoolAccessPolicy() *string {
+	return v.DeleteDataPoolAccessPolicy
+}
+
 // DeleteDataPoolByNameResponse is returned by DeleteDataPoolByName on success.
 type DeleteDataPoolByNameResponse struct {
 	// Deletes a Data Pool by unique name and returns its ID if the Data Pool was deleted successfully.
@@ -8404,6 +9361,11 @@ func (v *MetricDataDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSe
 // GetSyncs returns MetricDataDataPool.Syncs, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
 
+// GetDataPoolAccessPolicies returns MetricDataDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.DataPoolData.DataPoolAccessPolicies
+}
+
 // GetUniqueName returns MetricDataDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -8494,6 +9456,8 @@ type __premarshalMetricDataDataPool struct {
 
 	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
+	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -8534,6 +9498,7 @@ func (v *MetricDataDataPool) __premarshalJSON() (*__premarshalMetricDataDataPool
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
+	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -11024,6 +11989,199 @@ type MetricsResponse struct {
 // GetMetrics returns MetricsResponse.Metrics, and is useful for accessing the field via an interface.
 func (v *MetricsResponse) GetMetrics() *MetricsMetricsMetricConnection { return v.Metrics }
 
+type ModifyDataPoolAccessPolicyInput struct {
+	Id string `json:"id"`
+	// The Data Pool Access Policy's new unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Data Pool Access Policy's new description.
+	Description *string `json:"description"`
+	// Columns that the Access Policy makes available for querying. If not provided this property will not be modified.
+	Columns []string `json:"columns"`
+	// Row-level filters that the Access Policy applies before executing queries. If not provided this property will not be modified.
+	Rows []*FilterInput `json:"rows,omitempty"`
+}
+
+// GetId returns ModifyDataPoolAccessPolicyInput.Id, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyInput) GetId() string { return v.Id }
+
+// GetUniqueName returns ModifyDataPoolAccessPolicyInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyInput) GetUniqueName() *string { return v.UniqueName }
+
+// GetDescription returns ModifyDataPoolAccessPolicyInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyInput) GetDescription() *string { return v.Description }
+
+// GetColumns returns ModifyDataPoolAccessPolicyInput.Columns, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyInput) GetColumns() []string { return v.Columns }
+
+// GetRows returns ModifyDataPoolAccessPolicyInput.Rows, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyInput) GetRows() []*FilterInput { return v.Rows }
+
+// ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponse includes the requested fields of the GraphQL type DataPoolAccessPolicyResponse.
+type ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponse struct {
+	// The Data Pool Access Policy.
+	DataPoolAccessPolicy *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy `json:"dataPoolAccessPolicy"`
+}
+
+// GetDataPoolAccessPolicy returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponse.DataPoolAccessPolicy, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponse) GetDataPoolAccessPolicy() *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy {
+	return v.DataPoolAccessPolicy
+}
+
+// ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy includes the requested fields of the GraphQL type DataPoolAccessPolicy.
+type ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy struct {
+	DataPoolAccessPolicyData `json:"-"`
+}
+
+// GetId returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Id, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetId() string {
+	return v.DataPoolAccessPolicyData.Id
+}
+
+// GetColumns returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Columns, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetColumns() []string {
+	return v.DataPoolAccessPolicyData.Columns
+}
+
+// GetRows returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Rows, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetRows() []*DataPoolAccessPolicyDataRowsFilter {
+	return v.DataPoolAccessPolicyData.Rows
+}
+
+// GetDataPool returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.DataPool, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetDataPool() *DataPoolAccessPolicyDataDataPool {
+	return v.DataPoolAccessPolicyData.DataPool
+}
+
+// GetUniqueName returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetUniqueName() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.UniqueName
+}
+
+// GetDescription returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Description, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetDescription() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Description
+}
+
+// GetAccount returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Account, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetAccount() *CommonDataAccount {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Account
+}
+
+// GetEnvironment returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetEnvironment() *CommonDataEnvironment {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Environment
+}
+
+// GetCreatedAt returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetCreatedAt() time.Time {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedAt
+}
+
+// GetModifiedAt returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetModifiedAt() time.Time {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetCreatedBy() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedBy
+}
+
+// GetModifiedBy returns ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) GetModifiedBy() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedBy
+}
+
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataPoolAccessPolicyData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy struct {
+	Id string `json:"id"`
+
+	Columns []string `json:"columns"`
+
+	Rows []*DataPoolAccessPolicyDataRowsFilter `json:"rows"`
+
+	DataPool *DataPoolAccessPolicyDataDataPool `json:"dataPool"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy) __premarshalJSON() (*__premarshalModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy, error) {
+	var retval __premarshalModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponseDataPoolAccessPolicy
+
+	retval.Id = v.DataPoolAccessPolicyData.Id
+	retval.Columns = v.DataPoolAccessPolicyData.Columns
+	retval.Rows = v.DataPoolAccessPolicyData.Rows
+	retval.DataPool = v.DataPoolAccessPolicyData.DataPool
+	retval.UniqueName = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.UniqueName
+	retval.Description = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Description
+	retval.Account = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Account
+	retval.Environment = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Environment
+	retval.CreatedAt = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedAt
+	retval.ModifiedAt = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedAt
+	retval.CreatedBy = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedBy
+	retval.ModifiedBy = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyDataPoolAccessPolicyResponse is returned by ModifyDataPoolAccessPolicy on success.
+type ModifyDataPoolAccessPolicyResponse struct {
+	// Modifies a Data Pool Access Policy with the provided unique name, description, columns and rows. If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool Access Policy.
+	//
+	// [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
+	ModifyDataPoolAccessPolicy *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponse `json:"modifyDataPoolAccessPolicy"`
+}
+
+// GetModifyDataPoolAccessPolicy returns ModifyDataPoolAccessPolicyResponse.ModifyDataPoolAccessPolicy, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyResponse) GetModifyDataPoolAccessPolicy() *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponse {
+	return v.ModifyDataPoolAccessPolicy
+}
+
 // The fields for modifying a Data Pool.
 type ModifyDataPoolInput struct {
 	// The ID or unique name of the Data Pool to modify.
@@ -11228,6 +12386,11 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSyncs() *DataP
 	return v.DataPoolData.Syncs
 }
 
+// GetDataPoolAccessPolicies returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.DataPoolData.DataPoolAccessPolicies
+}
+
 // GetUniqueName returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -11318,6 +12481,8 @@ type __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 
 	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 
+	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -11358,6 +12523,7 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON(
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
+	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -13736,6 +14902,23 @@ type TimestampInput struct {
 // GetColumnName returns TimestampInput.ColumnName, and is useful for accessing the field via an interface.
 func (v *TimestampInput) GetColumnName() string { return v.ColumnName }
 
+// UnAssignDataPoolAccessPolicyResponse is returned by UnAssignDataPoolAccessPolicy on success.
+type UnAssignDataPoolAccessPolicyResponse struct {
+	// Unassign a Data Pool Access Policy from an Application.
+	//
+	// Once unassigned, whether the Application will be able to query the Data Pool is
+	// controlled by the Data Pool's `accessControlEnabled` property. If
+	// `accessControlEnabled` is true, the Application will no longer be able to query the
+	// Data Pool. If `accessControlEnabled` is false, the Application will be able to query
+	// *all* data in the Data Pool, unrestricted.
+	UnAssignDataPoolAccessPolicyFromApplication *string `json:"unAssignDataPoolAccessPolicyFromApplication"`
+}
+
+// GetUnAssignDataPoolAccessPolicyFromApplication returns UnAssignDataPoolAccessPolicyResponse.UnAssignDataPoolAccessPolicyFromApplication, and is useful for accessing the field via an interface.
+func (v *UnAssignDataPoolAccessPolicyResponse) GetUnAssignDataPoolAccessPolicyFromApplication() *string {
+	return v.UnAssignDataPoolAccessPolicyFromApplication
+}
+
 // The fields to specify the Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
 type UniqueIdInput struct {
 	// The name of the column that represents the unique ID.
@@ -13804,6 +14987,20 @@ func (v *WebhookDataSourceColumnInput) GetType() ColumnType { return v.Type }
 // GetNullable returns WebhookDataSourceColumnInput.Nullable, and is useful for accessing the field via an interface.
 func (v *WebhookDataSourceColumnInput) GetNullable() bool { return v.Nullable }
 
+// __AssignDataPoolAccessPolicyInput is used internally by genqlient
+type __AssignDataPoolAccessPolicyInput struct {
+	Application          string `json:"application"`
+	DataPoolAccessPolicy string `json:"dataPoolAccessPolicy"`
+}
+
+// GetApplication returns __AssignDataPoolAccessPolicyInput.Application, and is useful for accessing the field via an interface.
+func (v *__AssignDataPoolAccessPolicyInput) GetApplication() string { return v.Application }
+
+// GetDataPoolAccessPolicy returns __AssignDataPoolAccessPolicyInput.DataPoolAccessPolicy, and is useful for accessing the field via an interface.
+func (v *__AssignDataPoolAccessPolicyInput) GetDataPoolAccessPolicy() string {
+	return v.DataPoolAccessPolicy
+}
+
 // __CreateAverageMetricInput is used internally by genqlient
 type __CreateAverageMetricInput struct {
 	Input *CreateAverageMetricInput `json:"input,omitempty"`
@@ -13835,6 +15032,16 @@ type __CreateCustomMetricInput struct {
 
 // GetInput returns __CreateCustomMetricInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateCustomMetricInput) GetInput() *CreateCustomMetricInput { return v.Input }
+
+// __CreateDataPoolAccessPolicyInput is used internally by genqlient
+type __CreateDataPoolAccessPolicyInput struct {
+	Input *CreateDataPoolAccessPolicyInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateDataPoolAccessPolicyInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateDataPoolAccessPolicyInput) GetInput() *CreateDataPoolAccessPolicyInput {
+	return v.Input
+}
 
 // __CreateDataPoolInput is used internally by genqlient
 type __CreateDataPoolInput struct {
@@ -13908,6 +15115,14 @@ type __CreateWebhookDataSourceInput struct {
 // GetInput returns __CreateWebhookDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateWebhookDataSourceInput) GetInput() *CreateWebhookDataSourceInput { return v.Input }
 
+// __DataPoolAccessPolicyInput is used internally by genqlient
+type __DataPoolAccessPolicyInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __DataPoolAccessPolicyInput.Id, and is useful for accessing the field via an interface.
+func (v *__DataPoolAccessPolicyInput) GetId() string { return v.Id }
+
 // __DataPoolByNameInput is used internally by genqlient
 type __DataPoolByNameInput struct {
 	UniqueName string `json:"uniqueName"`
@@ -13979,6 +15194,14 @@ func (v *__DataSourcesInput) GetAfter() *string { return v.After }
 
 // GetBefore returns __DataSourcesInput.Before, and is useful for accessing the field via an interface.
 func (v *__DataSourcesInput) GetBefore() *string { return v.Before }
+
+// __DeleteDataPoolAccessPolicyInput is used internally by genqlient
+type __DeleteDataPoolAccessPolicyInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __DeleteDataPoolAccessPolicyInput.Id, and is useful for accessing the field via an interface.
+func (v *__DeleteDataPoolAccessPolicyInput) GetId() string { return v.Id }
 
 // __DeleteDataPoolByNameInput is used internally by genqlient
 type __DeleteDataPoolByNameInput struct {
@@ -14072,6 +15295,16 @@ func (v *__MetricsInput) GetAfter() *string { return v.After }
 // GetBefore returns __MetricsInput.Before, and is useful for accessing the field via an interface.
 func (v *__MetricsInput) GetBefore() *string { return v.Before }
 
+// __ModifyDataPoolAccessPolicyInput is used internally by genqlient
+type __ModifyDataPoolAccessPolicyInput struct {
+	Input *ModifyDataPoolAccessPolicyInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyDataPoolAccessPolicyInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyDataPoolAccessPolicyInput) GetInput() *ModifyDataPoolAccessPolicyInput {
+	return v.Input
+}
+
 // __ModifyDataPoolInput is used internally by genqlient
 type __ModifyDataPoolInput struct {
 	Input *ModifyDataPoolInput `json:"input,omitempty"`
@@ -14135,6 +15368,55 @@ type __PolicyInput struct {
 
 // GetId returns __PolicyInput.Id, and is useful for accessing the field via an interface.
 func (v *__PolicyInput) GetId() string { return v.Id }
+
+// __UnAssignDataPoolAccessPolicyInput is used internally by genqlient
+type __UnAssignDataPoolAccessPolicyInput struct {
+	DataPoolAccessPolicy string `json:"dataPoolAccessPolicy"`
+	Application          string `json:"application"`
+}
+
+// GetDataPoolAccessPolicy returns __UnAssignDataPoolAccessPolicyInput.DataPoolAccessPolicy, and is useful for accessing the field via an interface.
+func (v *__UnAssignDataPoolAccessPolicyInput) GetDataPoolAccessPolicy() string {
+	return v.DataPoolAccessPolicy
+}
+
+// GetApplication returns __UnAssignDataPoolAccessPolicyInput.Application, and is useful for accessing the field via an interface.
+func (v *__UnAssignDataPoolAccessPolicyInput) GetApplication() string { return v.Application }
+
+// The query or mutation executed by AssignDataPoolAccessPolicy.
+const AssignDataPoolAccessPolicy_Operation = `
+mutation AssignDataPoolAccessPolicy ($application: ID!, $dataPoolAccessPolicy: ID!) {
+	assignDataPoolAccessPolicyToApplication(application: $application, dataPoolAccessPolicy: $dataPoolAccessPolicy)
+}
+`
+
+func AssignDataPoolAccessPolicy(
+	ctx context.Context,
+	client graphql.Client,
+	application string,
+	dataPoolAccessPolicy string,
+) (*AssignDataPoolAccessPolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "AssignDataPoolAccessPolicy",
+		Query:  AssignDataPoolAccessPolicy_Operation,
+		Variables: &__AssignDataPoolAccessPolicyInput{
+			Application:          application,
+			DataPoolAccessPolicy: dataPoolAccessPolicy,
+		},
+	}
+	var err error
+
+	var data AssignDataPoolAccessPolicyResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
 
 // The query or mutation executed by CreateAverageMetric.
 const CreateAverageMetric_Operation = `
@@ -14282,6 +15564,11 @@ fragment DataPoolData on DataPool {
 	syncs {
 		nodes {
 			... SyncData
+		}
+	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
 		}
 	}
 }
@@ -14433,6 +15720,17 @@ fragment SyncData on Sync {
 	createdBy
 	modifiedAt
 	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
 }
 fragment ColumnData on Column {
 	name
@@ -14626,6 +15924,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -14775,6 +16078,17 @@ fragment SyncData on Sync {
 	createdBy
 	modifiedAt
 	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
 }
 fragment ColumnData on Column {
 	name
@@ -14968,6 +16282,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -15117,6 +16436,17 @@ fragment SyncData on Sync {
 	createdBy
 	modifiedAt
 	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
 }
 fragment ColumnData on Column {
 	name
@@ -15310,6 +16640,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -15460,6 +16795,17 @@ fragment SyncData on Sync {
 	modifiedAt
 	modifiedBy
 }
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -15559,6 +16905,11 @@ fragment DataPoolData on DataPool {
 	syncs {
 		nodes {
 			... SyncData
+		}
+	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
 		}
 	}
 }
@@ -15704,6 +17055,17 @@ fragment SyncData on Sync {
 	modifiedAt
 	modifiedBy
 }
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -15719,6 +17081,21 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedAt
 	modifiedBy
 	numTables
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 `
 
@@ -15737,6 +17114,83 @@ func CreateDataPool(
 	var err error
 
 	var data CreateDataPoolResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by CreateDataPoolAccessPolicy.
+const CreateDataPoolAccessPolicy_Operation = `
+mutation CreateDataPoolAccessPolicy ($input: CreateDataPoolAccessPolicyInput!) {
+	createDataPoolAccessPolicy(input: $input) {
+		dataPoolAccessPolicy {
+			... DataPoolAccessPolicyData
+		}
+	}
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
+}
+`
+
+func CreateDataPoolAccessPolicy(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateDataPoolAccessPolicyInput,
+) (*CreateDataPoolAccessPolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateDataPoolAccessPolicy",
+		Query:  CreateDataPoolAccessPolicy_Operation,
+		Variables: &__CreateDataPoolAccessPolicyInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateDataPoolAccessPolicyResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -16059,6 +17513,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -16208,6 +17667,17 @@ fragment SyncData on Sync {
 	createdBy
 	modifiedAt
 	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
 }
 fragment ColumnData on Column {
 	name
@@ -16401,6 +17871,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -16550,6 +18025,17 @@ fragment SyncData on Sync {
 	createdBy
 	modifiedAt
 	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
 }
 fragment ColumnData on Column {
 	name
@@ -17128,6 +18614,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -17277,6 +18768,17 @@ fragment SyncData on Sync {
 	createdBy
 	modifiedAt
 	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
 }
 fragment ColumnData on Column {
 	name
@@ -17537,6 +19039,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -17680,6 +19187,17 @@ fragment SyncData on Sync {
 	modifiedAt
 	modifiedBy
 }
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -17695,6 +19213,21 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedAt
 	modifiedBy
 	numTables
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 `
 
@@ -17713,6 +19246,86 @@ func DataPool(
 	var err error
 
 	var data DataPoolResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by DataPoolAccessPolicy.
+const DataPoolAccessPolicy_Operation = `
+query DataPoolAccessPolicy ($id: ID!) {
+	dataPoolAccessPolicy(id: $id) {
+		... DataPoolAccessPolicyData
+		applications {
+			nodes {
+				id
+			}
+		}
+	}
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
+}
+`
+
+func DataPoolAccessPolicy(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*DataPoolAccessPolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "DataPoolAccessPolicy",
+		Query:  DataPoolAccessPolicy_Operation,
+		Variables: &__DataPoolAccessPolicyInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data DataPoolAccessPolicyResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -17776,6 +19389,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -17919,6 +19537,17 @@ fragment SyncData on Sync {
 	modifiedAt
 	modifiedBy
 }
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -17934,6 +19563,21 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedAt
 	modifiedBy
 	numTables
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 `
 
@@ -18028,6 +19672,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -18171,6 +19820,17 @@ fragment SyncData on Sync {
 	modifiedAt
 	modifiedBy
 }
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -18186,6 +19846,21 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedAt
 	modifiedBy
 	numTables
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 `
 
@@ -18756,6 +20431,39 @@ func DeleteDataPool(
 	return &data, err
 }
 
+// The query or mutation executed by DeleteDataPoolAccessPolicy.
+const DeleteDataPoolAccessPolicy_Operation = `
+mutation DeleteDataPoolAccessPolicy ($id: ID!) {
+	deleteDataPoolAccessPolicy(id: $id)
+}
+`
+
+func DeleteDataPoolAccessPolicy(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*DeleteDataPoolAccessPolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "DeleteDataPoolAccessPolicy",
+		Query:  DeleteDataPoolAccessPolicy_Operation,
+		Variables: &__DeleteDataPoolAccessPolicyInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data DeleteDataPoolAccessPolicyResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
 // The query or mutation executed by DeleteDataPoolByName.
 const DeleteDataPoolByName_Operation = `
 mutation DeleteDataPoolByName ($uniqueName: String!) {
@@ -19099,6 +20807,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -19248,6 +20961,17 @@ fragment SyncData on Sync {
 	createdBy
 	modifiedAt
 	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
 }
 fragment ColumnData on Column {
 	name
@@ -19438,6 +21162,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -19587,6 +21316,17 @@ fragment SyncData on Sync {
 	createdBy
 	modifiedAt
 	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
 }
 fragment ColumnData on Column {
 	name
@@ -19794,6 +21534,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -19944,6 +21689,17 @@ fragment SyncData on Sync {
 	modifiedAt
 	modifiedBy
 }
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -20054,6 +21810,11 @@ fragment DataPoolData on DataPool {
 	syncs {
 		nodes {
 			... SyncData
+		}
+	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
 		}
 	}
 }
@@ -20203,6 +21964,17 @@ fragment SyncData on Sync {
 	modifiedAt
 	modifiedBy
 }
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -20218,6 +21990,21 @@ fragment TableIntrospectionData on TableIntrospection {
 	modifiedAt
 	modifiedBy
 	numTables
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
 }
 `
 
@@ -20236,6 +22023,83 @@ func ModifyDataPool(
 	var err error
 
 	var data ModifyDataPoolResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by ModifyDataPoolAccessPolicy.
+const ModifyDataPoolAccessPolicy_Operation = `
+mutation ModifyDataPoolAccessPolicy ($input: ModifyDataPoolAccessPolicyInput!) {
+	modifyDataPoolAccessPolicy(input: $input) {
+		dataPoolAccessPolicy {
+			... DataPoolAccessPolicyData
+		}
+	}
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
+}
+`
+
+func ModifyDataPoolAccessPolicy(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyDataPoolAccessPolicyInput,
+) (*ModifyDataPoolAccessPolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyDataPoolAccessPolicy",
+		Query:  ModifyDataPoolAccessPolicy_Operation,
+		Variables: &__ModifyDataPoolAccessPolicyInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyDataPoolAccessPolicyResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -20558,6 +22422,11 @@ fragment DataPoolData on DataPool {
 			... SyncData
 		}
 	}
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -20707,6 +22576,17 @@ fragment SyncData on Sync {
 	createdBy
 	modifiedAt
 	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
 }
 fragment ColumnData on Column {
 	name
@@ -21334,6 +23214,41 @@ func Policy(
 	var err error
 
 	var data PolicyResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by UnAssignDataPoolAccessPolicy.
+const UnAssignDataPoolAccessPolicy_Operation = `
+mutation UnAssignDataPoolAccessPolicy ($dataPoolAccessPolicy: ID!, $application: ID!) {
+	unAssignDataPoolAccessPolicyFromApplication(dataPoolAccessPolicy: $dataPoolAccessPolicy, application: $application)
+}
+`
+
+func UnAssignDataPoolAccessPolicy(
+	ctx context.Context,
+	client graphql.Client,
+	dataPoolAccessPolicy string,
+	application string,
+) (*UnAssignDataPoolAccessPolicyResponse, error) {
+	req := &graphql.Request{
+		OpName: "UnAssignDataPoolAccessPolicy",
+		Query:  UnAssignDataPoolAccessPolicy_Operation,
+		Variables: &__UnAssignDataPoolAccessPolicyInput{
+			DataPoolAccessPolicy: dataPoolAccessPolicy,
+			Application:          application,
+		},
+	}
+	var err error
+
+	var data UnAssignDataPoolAccessPolicyResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(

@@ -48,4 +48,9 @@ fragment DataPoolData on DataPool {
             ...SyncData
         }
     }
+    dataPoolAccessPolicies {
+        nodes {
+            ...DataPoolAccessPolicyData
+        }
+    }
 }

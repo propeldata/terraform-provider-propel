@@ -1,0 +1,11 @@
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+    id
+    ...CommonData
+    columns
+    rows {
+        ...FilterData
+    }
+    dataPool {
+        id
+    }
+}
