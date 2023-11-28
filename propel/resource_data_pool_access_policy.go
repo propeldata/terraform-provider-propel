@@ -52,7 +52,7 @@ func resourceDataPoolAccessPolicy() *schema.Resource {
 				Description: "The Environment to which the Data Pool Access Policy belongs.",
 			},
 			"columns": {
-				Type:        schema.TypeList,
+				Type:        schema.TypeSet,
 				Required:    true,
 				Description: `The list of columns that the Access Policy makes available for querying. Set "*" to allow all columns.`,
 				Elem:        &schema.Schema{Type: schema.TypeString},

@@ -34,7 +34,7 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 	// language=hcl-terraform
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
-		unique_name = "terraform-ds-test-5"
+		unique_name = "terraform-dso-test-5"
 		type = "Http"
 
 		http_connection_settings {
