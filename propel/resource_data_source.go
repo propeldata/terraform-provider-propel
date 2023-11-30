@@ -507,8 +507,6 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 	if d.Get("webhook_connection_settings") != nil && len(d.Get("webhook_connection_settings").([]any)) > 0 {
 		cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
 
-		fmt.Println(cs)
-
 		if def, ok := cs["basic_auth"]; ok {
 			connectionSettings.BasicAuth = expandBasicAuth(def.([]any))
 		}
@@ -529,12 +527,19 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 		u, ok := cs["unique_id"]
 		if ok && u.(string) != "" {
 			uniqueID := u.(string)
+			fmt.Println("uniqueId: ", uniqueID)
 			connectionSettings.UniqueId = &uniqueID
 		}
 	}
 
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
+
+	if connectionSettings.UniqueId != nil {
+		fmt.Println("UniqueID>>", *connectionSettings.UniqueId, "<<end")
+	}
+
+	fmt.Println(*connectionSettings)
 
 	input := &pc.CreateWebhookDataSourceInput{
 		UniqueName:         &uniqueName,
