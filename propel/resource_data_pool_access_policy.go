@@ -111,6 +111,12 @@ func resourceDataPoolAccessPolicy() *schema.Resource {
 					},
 				},
 			},
+			"applications": {
+				Type:        schema.TypeSet,
+				Optional:    true,
+				Description: `The list of columns that the Access Policy makes available for querying. Set "*" to allow all columns.`,
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
 		},
 	}
 }
@@ -154,7 +160,7 @@ func resourceDataPoolAccessPolicyCreate(ctx context.Context, d *schema.ResourceD
 
 	d.SetId(response.CreateDataPoolAccessPolicy.DataPoolAccessPolicy.Id)
 
-	if def, exists := d.GetOk("applications"); exists {
+	if def, ok := d.GetOk("applications"); ok {
 		for _, app := range def.(*schema.Set).List() {
 			_, err = pc.AssignDataPoolAccessPolicy(ctx, c, app.(string), response.CreateDataPoolAccessPolicy.DataPoolAccessPolicy.Id)
 			if err != nil {
@@ -213,13 +219,15 @@ func resourceDataPoolAccessPolicyRead(ctx context.Context, d *schema.ResourceDat
 		return diag.FromErr(err)
 	}
 
-	apps := make([]string, 0, len(response.DataPoolAccessPolicy.Applications.Nodes))
-	for _, node := range response.DataPoolAccessPolicy.Applications.Nodes {
-		apps = append(apps, node.Id)
-	}
+	if response.DataPoolAccessPolicy.Applications != nil {
+		apps := make([]string, 0, len(response.DataPoolAccessPolicy.Applications.Nodes))
+		for _, node := range response.DataPoolAccessPolicy.Applications.Nodes {
+			apps = append(apps, node.Id)
+		}
 
-	if err := d.Set("applications", apps); err != nil {
-		return diag.FromErr(err)
+		if err := d.Set("applications", apps); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	return diags
@@ -302,7 +310,7 @@ func resourceDataPoolAccessPolicyUpdate(ctx context.Context, d *schema.ResourceD
 func resourceDataPoolAccessPolicyDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	if def, exists := d.GetOk("applications"); exists {
+	if def, ok := d.GetOk("applications"); ok {
 		applications := def.(*schema.Set).List()
 		for _, app := range applications {
 			_, err := pc.UnAssignDataPoolAccessPolicy(ctx, c, app.(string), d.Id())
