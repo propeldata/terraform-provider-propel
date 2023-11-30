@@ -277,8 +277,8 @@ func resourceDataPoolAccessPolicyUpdate(ctx context.Context, d *schema.ResourceD
 
 		oldItem, newItem := d.GetChange("applications")
 		oldApplications, newApplications := oldItem.(*schema.Set).List(), newItem.(*schema.Set).List()
-
 		oldMap, newMap := map[string]bool{}, map[string]bool{}
+
 		for _, oldApp := range oldApplications {
 			oldMap[oldApp.(string)] = true
 		}

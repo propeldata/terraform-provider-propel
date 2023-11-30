@@ -1825,6 +1825,11 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetDataPoolAcce
 	return v.DataPoolData.DataPoolAccessPolicies
 }
 
+// GetAccessControlEnabled returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetAccessControlEnabled() bool {
+	return v.DataPoolData.AccessControlEnabled
+}
+
 // GetUniqueName returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -1917,6 +1922,8 @@ type __premarshalCreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -1958,6 +1965,7 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
+	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -4680,6 +4688,11 @@ func (v *DataPoolByNameDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPo
 	return v.DataPoolData.DataPoolAccessPolicies
 }
 
+// GetAccessControlEnabled returns DataPoolByNameDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *DataPoolByNameDataPool) GetAccessControlEnabled() bool {
+	return v.DataPoolData.AccessControlEnabled
+}
+
 // GetUniqueName returns DataPoolByNameDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -4772,6 +4785,8 @@ type __premarshalDataPoolByNameDataPool struct {
 
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -4813,6 +4828,7 @@ func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByName
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
+	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -4905,6 +4921,11 @@ type DataPoolData struct {
 	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 	// A paginated list of Data Pool Access Policies available on the Data Pool.
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+	// Whether the Data Pool has access control enabled or not.
+	//
+	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
+	// Policies in order to query the Data Pool and its Metrics.
+	AccessControlEnabled bool `json:"accessControlEnabled"`
 }
 
 // GetId returns DataPoolData.Id, and is useful for accessing the field via an interface.
@@ -4951,6 +4972,9 @@ func (v *DataPoolData) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.Sy
 func (v *DataPoolData) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolAccessPolicies
 }
+
+// GetAccessControlEnabled returns DataPoolData.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetAccessControlEnabled() bool { return v.AccessControlEnabled }
 
 // GetUniqueName returns DataPoolData.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetUniqueName() string { return v.CommonDataDataPool.UniqueName }
@@ -5030,6 +5054,8 @@ type __premarshalDataPoolData struct {
 
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -5071,6 +5097,7 @@ func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
 	retval.SetupTasks = v.SetupTasks
 	retval.Syncs = v.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolAccessPolicies
+	retval.AccessControlEnabled = v.AccessControlEnabled
 	retval.UniqueName = v.CommonDataDataPool.UniqueName
 	retval.Description = v.CommonDataDataPool.Description
 	retval.Account = v.CommonDataDataPool.Account
@@ -5675,6 +5702,9 @@ func (v *DataPoolDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAcce
 	return v.DataPoolData.DataPoolAccessPolicies
 }
 
+// GetAccessControlEnabled returns DataPoolDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *DataPoolDataPool) GetAccessControlEnabled() bool { return v.DataPoolData.AccessControlEnabled }
+
 // GetUniqueName returns DataPoolDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -5765,6 +5795,8 @@ type __premarshalDataPoolDataPool struct {
 
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -5806,6 +5838,7 @@ func (v *DataPoolDataPool) __premarshalJSON() (*__premarshalDataPoolDataPool, er
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
+	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -6412,6 +6445,11 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetD
 	return v.DataPoolData.DataPoolAccessPolicies
 }
 
+// GetAccessControlEnabled returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetAccessControlEnabled() bool {
+	return v.DataPoolData.AccessControlEnabled
+}
+
 // GetUniqueName returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -6504,6 +6542,8 @@ type __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPo
 
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -6545,6 +6585,7 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) __pr
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
+	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -9366,6 +9407,11 @@ func (v *MetricDataDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAc
 	return v.DataPoolData.DataPoolAccessPolicies
 }
 
+// GetAccessControlEnabled returns MetricDataDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetAccessControlEnabled() bool {
+	return v.DataPoolData.AccessControlEnabled
+}
+
 // GetUniqueName returns MetricDataDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -9458,6 +9504,8 @@ type __premarshalMetricDataDataPool struct {
 
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -9499,6 +9547,7 @@ func (v *MetricDataDataPool) __premarshalJSON() (*__premarshalMetricDataDataPool
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
+	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -12391,6 +12440,11 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDataPoolAccess
 	return v.DataPoolData.DataPoolAccessPolicies
 }
 
+// GetAccessControlEnabled returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAccessControlEnabled() bool {
+	return v.DataPoolData.AccessControlEnabled
+}
+
 // GetUniqueName returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -12483,6 +12537,8 @@ type __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
+	AccessControlEnabled bool `json:"accessControlEnabled"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -12524,6 +12580,7 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON(
 	retval.SetupTasks = v.DataPoolData.SetupTasks
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
+	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -15571,6 +15628,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -15929,6 +15987,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -16287,6 +16346,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -16645,6 +16705,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -16912,6 +16973,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment CommonData on Common {
 	uniqueName
@@ -17518,6 +17580,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -17876,6 +17939,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -18619,6 +18683,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -19044,6 +19109,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment CommonData on Common {
 	uniqueName
@@ -19394,6 +19460,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment CommonData on Common {
 	uniqueName
@@ -19677,6 +19744,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment CommonData on Common {
 	uniqueName
@@ -20812,6 +20880,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -21167,6 +21236,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -21539,6 +21609,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -21817,6 +21888,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment GqlError on Error {
 	code
@@ -22427,6 +22499,7 @@ fragment DataPoolData on DataPool {
 			... DataPoolAccessPolicyData
 		}
 	}
+	accessControlEnabled
 }
 fragment DimensionData on Dimension {
 	columnName

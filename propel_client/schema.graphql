@@ -164,8 +164,10 @@ type Application implements Node & Common {
   scopes: [ApplicationScope!]!
   """A paginated list of Policies associated with the Application."""
   policies(first: Int, after: String, last: Int, before: String): PolicyConnection! @deprecated(reason: "Use Data Pool Access Policies instead")
-  """A paginated list of Data Pool Access Policies associated with the Application."""
-  dataPoolAccessPolicies (first: Int, after: String, last: Int, before: String): DataPoolAccessPolicyConnection!
+  """
+  A paginated list of Data Pool Access Policies associated with the Application.
+  """
+  dataPoolAccessPolicies(first: Int, after: String, last: Int, before: String): DataPoolAccessPolicyConnection!
 }
 
 """The API operations an Application is authorized to perform."""
@@ -883,7 +885,7 @@ type DataPool implements Node & Common {
   """
   accessControlEnabled: Boolean!
   "A paginated list of Data Pool Access Policies available on the Data Pool."
-  dataPoolAccessPolicies (first: Int, after: String, last: Int, before: String): DataPoolAccessPolicyConnection!
+  dataPoolAccessPolicies(first: Int, after: String, last: Int, before: String): DataPoolAccessPolicyConnection!
   "Validates a custom expression against the Data Pool's available columns. If the provided expression is invalid, the ValidateExpressionResult response will contain a reason explaining why."
   validateExpression(expression: String!): ValidateExpressionResult!
 }
@@ -2627,70 +2629,56 @@ input CreateDeletionJobInput {
   filters: [FilterInput!]!
 }
 
-type DataPoolAccessPolicy implements Node & Common  {
+type DataPoolAccessPolicy implements Node & Common {
   """ The ID of the Data Pool Access Policy. """
   id: ID!
-
   """ The Data Pool Access Policy's unique name. """
   uniqueName: String!
-
   """ The Data Pool Access Policy's description. """
   description: String!
-
   """ The Data Pool Access Policy's Account. """
   account: Account!
-
   """ The Data Pool Access Policy's Environment. """
   environment: Environment!
-
   """ The Data Pool Access Policy's creation date and time in UTC. """
   createdAt: DateTime!
-
-  """ The Data Pool Access Policy's last modification date and time in UTC. """
+  """ The Data Pool Access Policy's last modification date and time in UTC.
+  """
   modifiedAt: DateTime!
-
-  """ The Data Pool Access Policy's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel. """
+  """ The Data Pool Access Policy's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+  """
   createdBy: String!
-
-  """ The Data Pool Access Policy's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel. """
+  """ The Data Pool Access Policy's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
+  """
   modifiedBy: String!
-
   """ The Data Pool to which the Access Policy belongs. """
   dataPool: DataPool!
-
   """ Columns that the Access Policy makes available for querying. """
   columns: [String!]!
-
-  """ Row-level filters that the Access Policy applies before executing queries. """
+  """ Row-level filters that the Access Policy applies before executing queries.
+  """
   rows: [Filter!]!
-
   """ Applications that are assigned to this Data Pool Access Policy. """
-  applications(
-    first: Int
-    after: String
-    last: Int
-    before: String
-  ): ApplicationConnection!
+  applications(first: Int, after: String, last: Int, before: String): ApplicationConnection!
 }
 
 input CreateDataPoolAccessPolicyInput {
-  """The Data Pool Access Policy's unique name. If not specified, Propel will set the ID as unique name."""
+  """
+  The Data Pool Access Policy's unique name. If not specified, Propel will set the ID as unique name.
+  """
   uniqueName: String
-
   """The Data Pool Access Policy's description."""
   description: String
-
   """ The Data Pool to which the Access Policy belongs. """
   dataPool: ID!
-
   """
   Columns that the Access Policy makes available for querying.
 
   If set to `["*"]`, all columns will be available for querying.
   """
   columns: [String!]!
-
-  """ Row-level filters that the Access Policy applies before executing queries. """
+  """ Row-level filters that the Access Policy applies before executing queries.
+  """
   rows: [FilterInput!]
 }
 
@@ -2703,14 +2691,13 @@ input ModifyDataPoolAccessPolicyInput {
   id: ID!
   """The Data Pool Access Policy's new unique name."""
   uniqueName: String
-
   """The Data Pool Access Policy's new description. """
   description: String
-
-  """ Columns that the Access Policy makes available for querying. If not provided this property will not be modified. """
+  """ Columns that the Access Policy makes available for querying. If not provided this property will not be modified.
+  """
   columns: [String!]
-
-  """ Row-level filters that the Access Policy applies before executing queries. If not provided this property will not be modified. """
+  """ Row-level filters that the Access Policy applies before executing queries. If not provided this property will not be modified.
+  """
   rows: [FilterInput!]
 }
 
@@ -2721,21 +2708,18 @@ type Mutation {
   [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
   """
   createDataPoolAccessPolicy(input: CreateDataPoolAccessPolicyInput!): DataPoolAccessPolicyResponse!
-
   """
   Modifies a Data Pool Access Policy with the provided unique name, description, columns and rows. If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool Access Policy.
 
   [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
   """
   modifyDataPoolAccessPolicy(input: ModifyDataPoolAccessPolicyInput!): DataPoolAccessPolicyResponse!
-
   """
   Deletes a Data Pool Access Policy by ID and returns its ID if the Data Pool Access Policy was deleted successfully.
 
   [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
   """
   deleteDataPoolAccessPolicy(id: ID!): ID
-
   """
   Assign a Data Pool Access Policy to an Application.
 
@@ -2749,7 +2733,6 @@ type Mutation {
   Policy will be replaced.
   """
   assignDataPoolAccessPolicyToApplication(dataPoolAccessPolicy: ID!, application: ID!): ID
-
   """
   Unassign a Data Pool Access Policy from an Application.
 
@@ -3208,6 +3191,32 @@ type ColumnEdge {
 }
 
 """
+The Data Pool Access Policy connection object.
+
+Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+"""
+type DataPoolAccessPolicyConnection {
+  """The Data Pool Access Policy connection's edges."""
+  edges: [DataPoolAccessPolicyEdge!]!
+  """The Data Pool Access Policy connection's nodes."""
+  nodes: [DataPoolAccessPolicy!]!
+  """The Data Pool Access Policy connection's page info."""
+  pageInfo: PageInfo!
+}
+
+"""
+The Data Pool Access Policy edge object.
+
+Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+"""
+type DataPoolAccessPolicyEdge {
+  """The edge's cursor."""
+  cursor: String!
+  """The edge's node."""
+  node: DataPoolAccessPolicy!
+}
+
+"""
 The Data Pool column connection object.
 
 Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
@@ -3257,35 +3266,6 @@ type DataPoolEdge {
   cursor: String!
   """The edge's node."""
   node: DataPool!
-}
-
-"""
-The Data Pool Access Policy connection object.
-
-Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
-"""
-type DataPoolAccessPolicyConnection {
-  """The Data Pool Access Policy connection's edges."""
-  edges: [DataPoolAccessPolicyEdge!]!
-
-  """The Data Pool Access Policy connection's nodes."""
-  nodes: [DataPoolAccessPolicy!]!
-
-  """The Data Pool Access Policy connection's page info."""
-  pageInfo: PageInfo!
-}
-
-"""
-The Data Pool Access Policy edge object.
-
-Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
-"""
-type DataPoolAccessPolicyEdge {
-  """The edge's cursor."""
-  cursor: String!
-
-  """The edge's node."""
-  node: DataPoolAccessPolicy!
 }
 
 """

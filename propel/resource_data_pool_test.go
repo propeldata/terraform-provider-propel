@@ -36,7 +36,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
-		unique_name = "terraform-ds-test-3"
+		unique_name = "terraform-test-3"
 		type = "Http"
 
 		http_connection_settings {
