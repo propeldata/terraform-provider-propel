@@ -525,8 +525,7 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 		}
 
 		if u, ok := cs["unique_id"]; ok {
-			uniqueID := u.(string)
-			connectionSettings.UniqueId = &uniqueID
+			connectionSettings.UniqueId = u.(*string)
 		}
 	}
 
