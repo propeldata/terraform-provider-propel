@@ -507,6 +507,8 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 	if d.Get("webhook_connection_settings") != nil && len(d.Get("webhook_connection_settings").([]any)) > 0 {
 		cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
 
+		fmt.Println(cs)
+
 		if def, ok := cs["basic_auth"]; ok {
 			connectionSettings.BasicAuth = expandBasicAuth(def.([]any))
 		}
