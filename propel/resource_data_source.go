@@ -534,12 +534,6 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
 
-	if connectionSettings.UniqueId != nil {
-		fmt.Println("UniqueID>>", *connectionSettings.UniqueId, "<<end")
-	}
-
-	fmt.Println(*connectionSettings)
-
 	input := &pc.CreateWebhookDataSourceInput{
 		UniqueName:         &uniqueName,
 		Description:        &description,
