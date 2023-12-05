@@ -287,9 +287,9 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) di
 
 func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
+	id := d.Id()
 
 	if d.HasChanges("unique_name", "description", "syncing") {
-		id := d.Id()
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
 		input := &pc.ModifyDataPoolInput{
@@ -314,7 +314,76 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m any) 
 		}
 	}
 
+	if d.HasChanges("column") {
+		oldItem, newItem := d.GetChange("column")
+		oldDef, oldOk := oldItem.([]any)
+		newDef, newOk := newItem.([]any)
+
+		if oldOk && newOk {
+			newColumns, err := getNewColumns(oldDef, newDef)
+			if err != nil {
+				return diag.FromErr(err)
+			}
+
+			for _, newColumn := range newColumns {
+				if !newColumn.IsNullable {
+					return diag.FromErr(fmt.Errorf(`new column "%s" must be nullable`, newColumn.ColumnName))
+				}
+
+				_, err := pc.CreateAddColumnToDataPoolJob(ctx, c, &pc.CreateAddColumnToDataPoolJobInput{
+					DataPool:   id,
+					ColumnName: newColumn.ColumnName,
+					ColumnType: newColumn.Type,
+				})
+				if err != nil {
+					return diag.FromErr(err)
+				}
+			}
+		}
+	}
+
 	return resourceDataPoolRead(ctx, d, m)
+}
+
+func getNewColumns(oldItemDef []any, newItemDef []any) (map[string]pc.DataPoolColumnInput, error) {
+	newColumns := map[string]pc.DataPoolColumnInput{}
+
+	for _, rawColumn := range newItemDef {
+		column := rawColumn.(map[string]any)
+		columnInput := pc.DataPoolColumnInput{
+			ColumnName: column["name"].(string),
+			Type:       pc.ColumnType(column["type"].(string)),
+			IsNullable: column["nullable"].(bool),
+		}
+
+		if _, ok := newColumns[columnInput.ColumnName]; ok {
+			return nil, fmt.Errorf(`column "%s" already exists`, columnInput.ColumnName)
+		}
+
+		newColumns[columnInput.ColumnName] = columnInput
+	}
+
+	for _, rawColumn := range oldItemDef {
+		column := rawColumn.(map[string]any)
+		columnInput := pc.DataPoolColumnInput{
+			ColumnName: column["name"].(string),
+			Type:       pc.ColumnType(column["type"].(string)),
+			IsNullable: column["nullable"].(bool),
+		}
+
+		newColumnInput, ok := newColumns[columnInput.ColumnName]
+		if !ok {
+			return nil, fmt.Errorf(`column "%s" was removed, column deletions are not supported`, columnInput.ColumnName)
+		}
+
+		if columnInput.Type != newColumnInput.Type || columnInput.IsNullable != newColumnInput.IsNullable {
+			return nil, fmt.Errorf(`column "%s" was modified, column updates are not supported`, columnInput.ColumnName)
+		}
+
+		delete(newColumns, columnInput.ColumnName)
+	}
+
+	return newColumns, nil
 }
 
 func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {

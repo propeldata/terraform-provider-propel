@@ -997,9 +997,9 @@ func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m a
 
 func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
+	id := d.Id()
 
 	if d.HasChanges("unique_name", "description", "webhook_connection_settings") {
-		id := d.Id()
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
 
@@ -1032,6 +1032,12 @@ func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData
 		if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
 			return diag.FromErr(err)
 		}
+	}
+
+	if d.HasChanges("webhook_connection_settings") {
+		// Check if columns have changes
+		// Add new columns
+		// Wait for job completion
 	}
 
 	return resourceDataSourceRead(ctx, d, m)
