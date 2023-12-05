@@ -507,7 +507,7 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 	if d.Get("webhook_connection_settings") != nil && len(d.Get("webhook_connection_settings").([]any)) > 0 {
 		cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
 
-		if def, ok := cs["basic_auth"]; ok {
+		if def, ok := cs["basic_auth"]; ok && len(def.([]any)) > 0 {
 			connectionSettings.BasicAuth = expandBasicAuth(def.([]any))
 		}
 
@@ -519,13 +519,12 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 		connectionSettings.Timestamp = cs["timestamp"].(string)
 		connectionSettings.Columns = columns
 
-		if t, ok := cs["tenant"]; ok {
+		if t, ok := cs["tenant"]; ok && t.(string) != "" {
 			tenant := t.(string)
 			connectionSettings.Tenant = &tenant
 		}
 
-		u, ok := cs["unique_id"]
-		if ok && u.(string) != "" {
+		if u, ok := cs["unique_id"]; ok && u.(string) != "" {
 			uniqueID := u.(string)
 			connectionSettings.UniqueId = &uniqueID
 		}
