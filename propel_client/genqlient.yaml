@@ -9,6 +9,7 @@ operations:
 - fragments/Column.fragment.graphql
 - fragments/Common.fragment.graphql
 - fragments/DataPool.fragment.graphql
+- fragments/DataPoolAccessPolicy.fragment.graphql
 - fragments/DataSource.fragment.graphql
 - fragments/Dimension.fragment.graphql
 - fragments/Timestamp.fragment.graphql
@@ -22,11 +23,13 @@ operations:
 - fragments/TableIntrospection.fragment.graphql
 - mutations/createAddColumnToDataPoolJob.mutation.graphql
 #- mutations/createApplication.mutation.graphql
+- mutations/assignDataPoolAccessPolicy.mutation.graphql
 - mutations/createAverageMetric.mutation.graphql
 - mutations/createCountDistinctMetric.mutation.graphql
 - mutations/createCountMetric.mutation.graphql
 - mutations/createCustomMetric.mutation.graphql
 - mutations/createDataPool.mutation.graphql
+- mutations/createDataPoolAccessPolicy.mutation.graphql
 - mutations/createHttpDataSource.mutation.graphql
 - mutations/createMaxMetric.mutation.graphql
 - mutations/createMinMetric.mutation.graphql
@@ -39,6 +42,7 @@ operations:
 #- mutations/deleteApplicationByName.mutation.graphql
 - mutations/deleteDataPool.mutation.graphql
 - mutations/deleteDataPoolByName.mutation.graphql
+- mutations/deleteDataPoolAccessPolicy.mutation.graphql
 - mutations/deleteDataSource.mutation.graphql
 - mutations/deleteDataSourceByName.mutation.graphql
 - mutations/deleteMetric.mutation.graphql
@@ -47,11 +51,13 @@ operations:
 #- mutations/introspectTables.mutation.graphql
 #- mutations/modifyApplication.mutation.graphql
 - mutations/modifyDataPool.mutation.graphql
+- mutations/modifyDataPoolAccessPolicy.mutation.graphql
 - mutations/modifyDataSource.mutation.graphql
 - mutations/modifyMetric.mutation.graphql
 - mutations/modifyPolicy.mutation.graphql
 #- mutations/reconnectDataPool.mutation.graphql
 #- mutations/reconnectDataSource.mutation.graphql
+- mutations/unAssignDataPoolAccessPolicy.mutation.graphql
 - queries/addColumnToDataPoolJob.query.graphql
 #- queries/application.query.graphql
 #- queries/applicationByClientId.query.graphql
@@ -60,6 +66,7 @@ operations:
 #- queries/counter.query.graphql
 - queries/dataPool.query.graphql
 - queries/dataPoolByName.query.graphql
+- queries/dataPoolAccessPolicy.query.graphql
 - queries/dataPools.query.graphql
 - queries/dataSource.query.graphql
 - queries/dataSourceByName.query.graphql

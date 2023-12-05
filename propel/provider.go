@@ -32,10 +32,11 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"propel_data_source": resourceDataSource(),
-			"propel_data_pool":   resourceDataPool(),
-			"propel_metric":      resourceMetric(),
-			"propel_policy":      resourcePolicy(),
+			"propel_data_source":             resourceDataSource(),
+			"propel_data_pool":               resourceDataPool(),
+			"propel_data_pool_access_policy": resourceDataPoolAccessPolicy(),
+			"propel_metric":                  resourceMetric(),
+			"propel_policy":                  resourcePolicy(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}

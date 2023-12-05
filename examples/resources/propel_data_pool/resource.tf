@@ -5,6 +5,8 @@ resource "propel_data_pool" "my_data_pool" {
   table       = "events"
   timestamp   = "date"
 
+  access_control_enabled = false
+
   column {
     name     = "date"
     type     = "TIMESTAMP"

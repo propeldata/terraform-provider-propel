@@ -1,0 +1,7 @@
+mutation ModifyDataPoolAccessPolicy($input: ModifyDataPoolAccessPolicyInput!) {
+    modifyDataPoolAccessPolicy(input: $input) {
+        dataPoolAccessPolicy {
+            ...DataPoolAccessPolicyData
+        }
+    }
+}

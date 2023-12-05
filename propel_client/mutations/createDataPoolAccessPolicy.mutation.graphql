@@ -1,0 +1,7 @@
+mutation CreateDataPoolAccessPolicy($input: CreateDataPoolAccessPolicyInput!) {
+    createDataPoolAccessPolicy(input: $input) {
+        dataPoolAccessPolicy {
+            ...DataPoolAccessPolicyData
+        }
+    }
+}
