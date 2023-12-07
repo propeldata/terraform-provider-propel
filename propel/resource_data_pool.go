@@ -298,21 +298,22 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) di
 
 func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
+	id := d.Id()
+	input := &pc.ModifyDataPoolInput{
+		IdOrUniqueName: &pc.IdOrUniqueName{Id: &id},
+	}
 
-	if d.HasChanges("unique_name", "description", "syncing", "access_control_enabled") {
-		id := d.Id()
+	if d.HasChanges("unique_name", "description", "access_control_enabled") {
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
 		accessControlEnabled := d.Get("access_control_enabled").(bool)
-		input := &pc.ModifyDataPoolInput{
-			IdOrUniqueName: &pc.IdOrUniqueName{
-				Id: &id,
-			},
-			UniqueName:           &uniqueName,
-			Description:          &description,
-			AccessControlEnabled: &accessControlEnabled,
-		}
 
+		input.UniqueName = &uniqueName
+		input.Description = &description
+		input.AccessControlEnabled = &accessControlEnabled
+	}
+
+	if d.HasChange("syncing") {
 		if _, exists := d.GetOk("syncing"); exists {
 			syncing := d.Get("syncing").([]any)[0].(map[string]any)
 
@@ -320,11 +321,11 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m any) 
 				Interval: pc.DataPoolSyncInterval(syncing["interval"].(string)),
 			}
 		}
+	}
 
-		_, err := pc.ModifyDataPool(ctx, c, input)
-		if err != nil {
-			return diag.FromErr(err)
-		}
+	_, err := pc.ModifyDataPool(ctx, c, input)
+	if err != nil {
+		return diag.FromErr(err)
 	}
 
 	return resourceDataPoolRead(ctx, d, m)
