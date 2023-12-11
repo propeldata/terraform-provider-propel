@@ -17,3 +17,14 @@ var IsValidColumnType = validation.StringInSlice([]string{
 	"STRING",
 	"TIMESTAMP",
 }, false)
+
+var IsValidOperator = validation.StringInSlice([]string{
+	"EQUALS",
+	"NOT_EQUALS",
+	"GREATER_THAN",
+	"GREATER_THAN_OR_EQUAL_TO",
+	"LESS_THAN",
+	"LESS_THAN_OR_EQUAL_TO",
+	"IS_NULL",
+	"IS_NOT_NULL",
+}, false)
