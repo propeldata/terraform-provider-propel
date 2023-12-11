@@ -21,6 +21,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckPropelDataPoolDestroy,
 		Steps: []resource.TestStep{
+			// should create the data pool
 			{
 				Config: testAccCheckPropelDataPoolConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
@@ -30,6 +31,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "description", "Data Pool test"),
 				),
 			},
+			// should update the data pool
 			{
 				Config: testAccUpdatePropelDataPoolConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
@@ -96,9 +98,37 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
 
 func testAccUpdatePropelDataPoolConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
+	resource "propel_data_source" "foo" {
+		unique_name = "terraform-test-3"
+		type = "Http"
+
+		http_connection_settings {
+			basic_auth {
+				username = "foo"
+				password = "bar"
+			}
+		}
+
+		table {
+			name = "CLUSTER_TEST_TABLE_1"
+
+			column {
+				name = "timestamp_tz"
+				type = "TIMESTAMP"
+				nullable = false
+			}
+
+			column {
+				name = "account_id"
+				type = "STRING"
+				nullable = false
+			}
+		}
+	}
+
 	resource "propel_data_pool" "bar" {
 		unique_name = "terraform-test-3"
-		description = "Updated description"
+		description = "Data Pool test"
 		table = "${propel_data_source.foo.table[0].name}"
 
 		column {
