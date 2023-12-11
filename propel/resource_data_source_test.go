@@ -95,6 +95,16 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.timestamp", "timestamp_tz"),
 				),
 			},
+			// should add a column to the Webhook data pool
+			{
+				Config: testAccUpdateWebhookDataSourceBasic(webhookCtx),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckPropelDataSourceExists("propel_data_source.webhook"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "Webhook"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "status", "CONNECTED"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.column.3.name", "new_column"),
+				),
+			},
 		},
 	})
 }
@@ -212,6 +222,55 @@ func testAccWebhookDataSourceBasic(ctx map[string]any) string {
 				type = "TIMESTAMP"
 				nullable = false
 				json_property = "timestamp_tz"
+			}
+
+			basic_auth {
+				username = "foo"
+				password = "bar"
+			}
+	
+			unique_id = "id"
+			tenant = "customer_id"
+		}
+		
+	}`, ctx)
+}
+
+func testAccUpdateWebhookDataSourceBasic(ctx map[string]any) string {
+	return Nprintf(`
+	resource "propel_data_source" "%{resource_name}" {
+		unique_name = "%{unique_name}"
+		type = "Webhook"
+
+		webhook_connection_settings {
+			timestamp = "timestamp_tz"
+
+			column {
+				name = "id"
+				type = "STRING"
+				nullable = false
+				json_property = "id"
+			}
+
+			column {
+				name = "customer_id"
+				type = "STRING"
+				nullable = false
+				json_property = "customer_id"
+			}
+
+			column {
+				name = "timestamp_tz"
+				type = "TIMESTAMP"
+				nullable = false
+				json_property = "timestamp_tz"
+			}
+
+			column {
+				name = "new_column"
+				type = "STRING"
+				nullable = true
+				json_property = "new_column"
 			}
 
 			basic_auth {

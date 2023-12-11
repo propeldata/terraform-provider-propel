@@ -225,7 +225,6 @@ func resourceDataSource() *schema.Resource {
 						"column": {
 							Type:        schema.TypeList,
 							Optional:    true,
-							ForceNew:    true,
 							Description: "The additional column for the Webhook Data Source table.",
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
@@ -1026,10 +1025,17 @@ func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData
 
 	oldCS, newCS := oldDef[0].(map[string]any), newDef[0].(map[string]any)
 
-	if def, ok := newCS["basic_auth"]; ok {
-		input.ConnectionSettings = &pc.PartialWebhookConnectionSettingsInput{
-			BasicAuth: expandBasicAuth(def.([]any)),
-		}
+	def, ok := newCS["basic_auth"]
+	var basicAuth *pc.HttpBasicAuthInput
+
+	basicAuthEnabled := ok && len(def.([]any)) > 0
+	if basicAuthEnabled {
+		basicAuth = expandBasicAuth(def.([]any))
+	}
+
+	input.ConnectionSettings = &pc.PartialWebhookConnectionSettingsInput{
+		BasicAuth:        basicAuth,
+		BasicAuthEnabled: &basicAuthEnabled,
 	}
 
 	if _, err := pc.ModifyWebhookDataSource(ctx, c, input); err != nil {
@@ -1042,6 +1048,7 @@ func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData
 		return diag.FromErr(err)
 	}
 
+	dataPoolId := oldCS["data_pool_id"].(string)
 	oldColumnItem, okOld := oldCS["column"]
 	newColumnItem, okNew := newCS["column"]
 	if !okNew || !okOld {
@@ -1057,7 +1064,7 @@ func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData
 		return resourceDataSourceRead(ctx, d, m)
 	}
 
-	if err := addNewDataSourceColumns(ctx, d, c, id, newColumns); err != nil {
+	if err := addNewDataSourceColumns(ctx, d, c, dataPoolId, newColumns); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -1107,19 +1114,14 @@ func getNewDataSourceColumns(oldItemDef []any, newItemDef []any) (map[string]pc.
 	return newColumns, nil
 }
 
-func addNewDataSourceColumns(ctx context.Context, d *schema.ResourceData, c graphql.Client, dataSourceId string, newColumns map[string]pc.WebhookDataSourceColumnInput) error {
+func addNewDataSourceColumns(ctx context.Context, d *schema.ResourceData, c graphql.Client, dataPoolId string, newColumns map[string]pc.WebhookDataSourceColumnInput) error {
 	for _, newColumn := range newColumns {
 		if !newColumn.Nullable {
 			return fmt.Errorf(`new column "%s" must be nullable`, newColumn.Name)
 		}
 
-		dsResponse, err := pc.DataSource(ctx, c, dataSourceId)
-		if err != nil {
-			return err
-		}
-
 		jobResponse, err := pc.CreateAddColumnToDataPoolJob(ctx, c, &pc.CreateAddColumnToDataPoolJobInput{
-			DataPool:     dsResponse.DataSource.DataPools.Nodes[0].Id,
+			DataPool:     dataPoolId,
 			ColumnName:   newColumn.Name,
 			ColumnType:   newColumn.Type,
 			JsonProperty: &newColumn.JsonProperty,
