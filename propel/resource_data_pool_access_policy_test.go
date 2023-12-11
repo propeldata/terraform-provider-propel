@@ -94,7 +94,8 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 		    column   = "account_id"
 			operator = "IS_NOT_NULL"
 		}
-	
+
+		applications = ["APP01FXSFB8AJJBNKCAQTFV3J29G4"]
 	}`, ctx)
 }
 
