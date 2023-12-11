@@ -102,7 +102,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					testAccCheckPropelDataSourceExists("propel_data_source.webhook"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "Webhook"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "status", "CONNECTED"),
-					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.column.3.name", "new_column"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.column.3.name", "new"),
 				),
 			},
 		},
@@ -267,7 +267,7 @@ func testAccUpdateWebhookDataSourceBasic(ctx map[string]any) string {
 			}
 
 			column {
-				name = "new_column"
+				name = "new"
 				type = "STRING"
 				nullable = true
 				json_property = "new_column"
