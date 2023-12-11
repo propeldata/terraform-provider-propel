@@ -128,7 +128,7 @@ func testAccUpdatePropelDataPoolConfigBasic(ctx map[string]any) string {
 
 	resource "propel_data_pool" "bar" {
 		unique_name = "terraform-test-3"
-		description = "Data Pool test"
+		description = "Updated description"
 		table = "${propel_data_source.foo.table[0].name}"
 
 		column {
