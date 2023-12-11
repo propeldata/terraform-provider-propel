@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/structure"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
+	"github.com/propeldata/terraform-provider-propel/propel/internal/utils"
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
@@ -83,19 +84,10 @@ func resourceMetric() *schema.Resource {
 							Description: "The name of the column to filter on.",
 						},
 						"operator": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The operation to perform when comparing the column and filter values.",
-							ValidateFunc: validation.StringInSlice([]string{
-								"EQUALS",
-								"NOT_EQUALS",
-								"GREATER_THAN",
-								"GREATER_THAN_OR_EQUAL_TO",
-								"LESS_THAN",
-								"LESS_THAN_OR_EQUAL_TO",
-								"IS_NULL",
-								"IS_NOT_NULL",
-							}, false),
+							Type:         schema.TypeString,
+							Required:     true,
+							Description:  "The operation to perform when comparing the column and filter values.",
+							ValidateFunc: utils.IsValidOperator,
 						},
 						"value": {
 							Type:        schema.TypeString,

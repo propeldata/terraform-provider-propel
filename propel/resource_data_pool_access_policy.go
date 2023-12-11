@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/structure"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
+	"github.com/propeldata/terraform-provider-propel/propel/internal/utils"
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
@@ -69,19 +70,10 @@ func resourceDataPoolAccessPolicy() *schema.Resource {
 							Description: "The name of the column to filter on.",
 						},
 						"operator": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The operation to perform when comparing the column and filter values.",
-							ValidateFunc: validation.StringInSlice([]string{
-								"EQUALS",
-								"NOT_EQUALS",
-								"GREATER_THAN",
-								"GREATER_THAN_OR_EQUAL_TO",
-								"LESS_THAN",
-								"LESS_THAN_OR_EQUAL_TO",
-								"IS_NULL",
-								"IS_NOT_NULL",
-							}, false),
+							Type:         schema.TypeString,
+							Required:     true,
+							Description:  "The operation to perform when comparing the column and filter values.",
+							ValidateFunc: utils.IsValidOperator,
 						},
 						"value": {
 							Type:        schema.TypeString,
@@ -114,7 +106,7 @@ func resourceDataPoolAccessPolicy() *schema.Resource {
 			"applications": {
 				Type:        schema.TypeSet,
 				Optional:    true,
-				Description: `The list of columns that the Access Policy makes available for querying. Set "*" to allow all columns.`,
+				Description: `The list of applications to which the Access Policy is assigned.`,
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 		},
@@ -285,7 +277,7 @@ func resourceDataPoolAccessPolicyUpdate(ctx context.Context, d *schema.ResourceD
 
 		for _, newApp := range newApplications {
 			if !oldMap[newApp.(string)] {
-				_, err := pc.AssignDataPoolAccessPolicy(ctx, c, id, newApp.(string))
+				_, err := pc.AssignDataPoolAccessPolicy(ctx, c, newApp.(string), id)
 				if err != nil {
 					return diag.FromErr(err)
 				}
@@ -313,7 +305,7 @@ func resourceDataPoolAccessPolicyDelete(ctx context.Context, d *schema.ResourceD
 	if def, ok := d.GetOk("applications"); ok {
 		applications := def.(*schema.Set).List()
 		for _, app := range applications {
-			_, err := pc.UnAssignDataPoolAccessPolicy(ctx, c, app.(string), d.Id())
+			_, err := pc.UnAssignDataPoolAccessPolicy(ctx, c, d.Id(), app.(string))
 			if err != nil {
 				return diag.FromErr(err)
 			}
