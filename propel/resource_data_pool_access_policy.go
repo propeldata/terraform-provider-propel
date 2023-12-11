@@ -277,7 +277,7 @@ func resourceDataPoolAccessPolicyUpdate(ctx context.Context, d *schema.ResourceD
 
 		for _, newApp := range newApplications {
 			if !oldMap[newApp.(string)] {
-				_, err := pc.AssignDataPoolAccessPolicy(ctx, c, id, newApp.(string))
+				_, err := pc.AssignDataPoolAccessPolicy(ctx, c, newApp.(string), id)
 				if err != nil {
 					return diag.FromErr(err)
 				}
@@ -305,7 +305,7 @@ func resourceDataPoolAccessPolicyDelete(ctx context.Context, d *schema.ResourceD
 	if def, ok := d.GetOk("applications"); ok {
 		applications := def.(*schema.Set).List()
 		for _, app := range applications {
-			_, err := pc.UnAssignDataPoolAccessPolicy(ctx, c, app.(string), d.Id())
+			_, err := pc.UnAssignDataPoolAccessPolicy(ctx, c, d.Id(), app.(string))
 			if err != nil {
 				return diag.FromErr(err)
 			}
