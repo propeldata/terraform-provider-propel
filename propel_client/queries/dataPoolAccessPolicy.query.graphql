@@ -1,0 +1,10 @@
+query DataPoolAccessPolicy($id: ID!) {
+    dataPoolAccessPolicy(id: $id) {
+        ...DataPoolAccessPolicyData
+        applications {
+            nodes {
+                id
+            }
+        }
+    }
+}

@@ -3,4 +3,9 @@ fragment ApplicationData on Application {
     ...CommonData
     clientId
     secret
+    dataPoolAccessPolicies {
+        nodes {
+            ...DataPoolAccessPolicyData
+        }
+    }
 }

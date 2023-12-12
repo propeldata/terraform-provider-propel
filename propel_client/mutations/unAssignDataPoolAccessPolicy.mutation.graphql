@@ -1,0 +1,3 @@
+mutation UnAssignDataPoolAccessPolicy ($dataPoolAccessPolicy: ID!, $application: ID!) {
+    unAssignDataPoolAccessPolicyFromApplication(dataPoolAccessPolicy: $dataPoolAccessPolicy, application: $application)
+}

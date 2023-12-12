@@ -87,6 +87,20 @@ resource "propel_data_pool" "data_pool" {
   }
 }
 
+resource "propel_data_pool_access_policy" "data_pool_access_policy" {
+  unique_name = "My Data Pool Access Policy"
+  description = "Data Pool Access Policy Description"
+  data_pool = propel_data_pool.data_pool.id
+
+  columns = ["*"]
+
+  row {
+    column   = "column_0"
+    operator = "EQUALS"
+    value    = "value"
+  }
+}
+
 resource "propel_metric" "count_metric" {
   unique_name = "My Count Metric"
   description = "Metric Description"
