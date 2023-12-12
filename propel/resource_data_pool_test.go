@@ -210,6 +210,19 @@ func Test_getNewDataPoolColumns(t *testing.T) {
 			expectedError: "",
 		},
 		{
+			name: "No new columns",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+			},
+			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
+			expectedError:      "",
+		},
+		{
 			name: "Repeated column names",
 			oldItemDef: []any{
 				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},

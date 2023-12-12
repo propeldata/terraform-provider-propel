@@ -350,6 +350,19 @@ func Test_getNewDataSourceColumns(t *testing.T) {
 			expectedError: "",
 		},
 		{
+			name: "No new columns",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
+			},
+			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{},
+			expectedError:      "",
+		},
+		{
 			name: "Repeated column names",
 			oldItemDef: []any{
 				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
