@@ -343,8 +343,7 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m any) 
 			return diag.FromErr(err)
 		}
 
-		err = addNewDataPoolColumns(ctx, d, c, id, newColumns)
-		if err != nil {
+		if err = addNewDataPoolColumns(ctx, d, c, id, newColumns); err != nil {
 			return diag.FromErr(err)
 		}
 	}
@@ -410,8 +409,7 @@ func addNewDataPoolColumns(ctx context.Context, d *schema.ResourceData, c graphq
 
 		timeout := d.Timeout(schema.TimeoutUpdate)
 
-		err = waitForAddColumnJob(ctx, c, response.CreateAddColumnToDataPoolJob.Job.Id, timeout)
-		if err != nil {
+		if err = waitForAddColumnJob(ctx, c, response.CreateAddColumnToDataPoolJob.Job.Id, timeout); err != nil {
 			return err
 		}
 	}

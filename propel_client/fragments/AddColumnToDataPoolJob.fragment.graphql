@@ -1,15 +1,5 @@
 fragment AddColumnToDataPoolJobData on AddColumnToDataPoolJob {
     id
-    createdAt
-    createdBy
-    modifiedAt
-    modifiedBy
-    account {
-        id
-    }
-    environment {
-        id
-    }
     dataPool {
         id
     }
@@ -17,10 +7,6 @@ fragment AddColumnToDataPoolJobData on AddColumnToDataPoolJob {
     error {
         ...GqlError
     }
-    progress
-    startedAt
-    succeededAt
-    failedAt
     columnName
     columnType
 }

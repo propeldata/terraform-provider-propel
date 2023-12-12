@@ -792,7 +792,8 @@ func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.Resou
 }
 
 func handleWebhookConnectionSettings(ctx context.Context, c graphql.Client, response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	if d.Get("webhook_connection_settings") == nil || len(d.Get("webhook_connection_settings").([]any)) == 0 {
+	cs := d.Get("webhook_connection_settings")
+	if cs == nil || len(cs.([]any)) == 0 {
 		return nil
 	}
 
@@ -828,15 +829,10 @@ func handleWebhookConnectionSettings(ctx context.Context, c graphql.Client, resp
 		settings["column"] = cols
 
 		if len(response.DataSource.DataPools.GetNodes()) == 1 {
-			dataPoolId := response.DataSource.DataPools.Nodes[0].Id
-			settings["data_pool_id"] = dataPoolId
+			csMap := cs.([]any)[0].(map[string]any)
 
-			dpResponse, err := pc.DataPool(ctx, c, dataPoolId)
-			if err != nil {
-				return diag.FromErr(err)
-			}
-
-			settings["access_control_enabled"] = dpResponse.DataPool.AccessControlEnabled
+			settings["data_pool_id"] = response.DataSource.DataPools.Nodes[0].Id
+			settings["access_control_enabled"] = csMap["access_control_enabled"]
 		}
 
 		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {
@@ -1142,7 +1138,7 @@ func getNewDataSourceColumns(oldItemDef []any, newItemDef []any) (map[string]pc.
 			return nil, fmt.Errorf(`column "%s" was removed, column deletions are not supported`, columnInput.Name)
 		}
 
-		if columnInput.Type != newColumnInput.Type || columnInput.Nullable != newColumnInput.Nullable {
+		if columnInput.Type != newColumnInput.Type || columnInput.Nullable != newColumnInput.Nullable || columnInput.JsonProperty != newColumnInput.JsonProperty {
 			return nil, fmt.Errorf(`column "%s" was modified, column updates are not supported`, columnInput.Name)
 		}
 
