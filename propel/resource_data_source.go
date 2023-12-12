@@ -640,7 +640,7 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 		}
 		return handleS3ConnectionSettings(response, d)
 	case "WEBHOOK":
-		return handleWebhookConnectionSettings(response, d)
+		return handleWebhookConnectionSettings(ctx, c, response, d)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
@@ -791,7 +791,7 @@ func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.Resou
 	return nil
 }
 
-func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+func handleWebhookConnectionSettings(ctx context.Context, c graphql.Client, response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
 	if d.Get("webhook_connection_settings") == nil || len(d.Get("webhook_connection_settings").([]any)) == 0 {
 		return nil
 	}
@@ -828,7 +828,15 @@ func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 		settings["column"] = cols
 
 		if len(response.DataSource.DataPools.GetNodes()) == 1 {
-			settings["data_pool_id"] = response.DataSource.DataPools.Nodes[0].Id
+			dataPoolId := response.DataSource.DataPools.Nodes[0].Id
+			settings["data_pool_id"] = dataPoolId
+
+			dpResponse, err := pc.DataPool(ctx, c, dataPoolId)
+			if err != nil {
+				return diag.FromErr(err)
+			}
+
+			settings["access_control_enabled"] = dpResponse.DataPool.AccessControlEnabled
 		}
 
 		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {
@@ -1087,12 +1095,10 @@ func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData
 		return diag.FromErr(err)
 	}
 
-	if len(newColumns) == 0 {
-		return resourceDataSourceRead(ctx, d, m)
-	}
-
-	if err := addNewDataSourceColumns(ctx, d, c, dataPoolId, newColumns); err != nil {
-		return diag.FromErr(err)
+	if len(newColumns) > 0 {
+		if err := addNewDataSourceColumns(ctx, d, c, dataPoolId, newColumns); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	_, err = pc.ModifyDataPool(ctx, c, &pc.ModifyDataPoolInput{

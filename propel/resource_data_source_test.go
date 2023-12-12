@@ -277,6 +277,8 @@ func testAccUpdateWebhookDataSourceBasic(ctx map[string]any) string {
 				username = "foo"
 				password = "bar"
 			}
+
+			access_control_enabled = true
 	
 			unique_id = "id"
 			tenant = "customer_id"
