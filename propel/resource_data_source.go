@@ -254,6 +254,11 @@ func resourceDataSource() *schema.Resource {
 								},
 							},
 						},
+						"access_control_enabled": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: "Whether the resulting Data Pool has access control enabled or not. If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.",
+						},
 						"tenant": {
 							Type:        schema.TypeString,
 							Optional:    true,
@@ -503,6 +508,8 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 	c := meta.(graphql.Client)
 
 	connectionSettings := &pc.WebhookConnectionSettingsInput{}
+	accessControlEnabled := false
+
 	if d.Get("webhook_connection_settings") != nil && len(d.Get("webhook_connection_settings").([]any)) > 0 {
 		cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
 
@@ -526,6 +533,10 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 		if u, ok := cs["unique_id"]; ok && u.(string) != "" {
 			uniqueID := u.(string)
 			connectionSettings.UniqueId = &uniqueID
+		}
+
+		if enabled, ok := cs["access_control_enabled"]; ok && enabled.(bool) {
+			accessControlEnabled = true
 		}
 	}
 
@@ -552,7 +563,21 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 		return diag.FromErr(err)
 	}
 
-	return resourceDataSourceRead(ctx, d, meta)
+	if accessControlEnabled {
+		if _, err = pc.ModifyDataPool(ctx, c, &pc.ModifyDataPoolInput{
+			IdOrUniqueName:       &pc.IdOrUniqueName{UniqueName: &uniqueName},
+			AccessControlEnabled: &accessControlEnabled,
+		}); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	dsResponse := resourceDataSourceRead(ctx, d, meta)
+	if dsResponse != nil {
+		return dsResponse
+	}
+
+	return nil
 }
 
 func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
@@ -1049,6 +1074,8 @@ func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData
 	}
 
 	dataPoolId := oldCS["data_pool_id"].(string)
+	accessControlEnabled := newCS["access_control_enabled"].(bool)
+
 	oldColumnItem, okOld := oldCS["column"]
 	newColumnItem, okNew := newCS["column"]
 	if !okNew || !okOld {
@@ -1067,6 +1094,11 @@ func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData
 	if err := addNewDataSourceColumns(ctx, d, c, dataPoolId, newColumns); err != nil {
 		return diag.FromErr(err)
 	}
+
+	_, err = pc.ModifyDataPool(ctx, c, &pc.ModifyDataPoolInput{
+		IdOrUniqueName:       &pc.IdOrUniqueName{Id: &dataPoolId},
+		AccessControlEnabled: &accessControlEnabled,
+	})
 
 	return resourceDataSourceRead(ctx, d, m)
 }
