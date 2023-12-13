@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/stretchr/testify/assert"
 
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
@@ -93,6 +94,16 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "Webhook"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "status", "CONNECTED"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.timestamp", "timestamp_tz"),
+				),
+			},
+			// should add a column to the Webhook data pool
+			{
+				Config: testAccUpdateWebhookDataSourceBasic(webhookCtx),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckPropelDataSourceExists("propel_data_source.webhook"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "Webhook"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "status", "CONNECTED"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.column.3.name", "new"),
 				),
 			},
 		},
@@ -226,6 +237,57 @@ func testAccWebhookDataSourceBasic(ctx map[string]any) string {
 	}`, ctx)
 }
 
+func testAccUpdateWebhookDataSourceBasic(ctx map[string]any) string {
+	return Nprintf(`
+	resource "propel_data_source" "%{resource_name}" {
+		unique_name = "%{unique_name}"
+		type = "Webhook"
+
+		webhook_connection_settings {
+			timestamp = "timestamp_tz"
+
+			column {
+				name = "id"
+				type = "STRING"
+				nullable = false
+				json_property = "id"
+			}
+
+			column {
+				name = "customer_id"
+				type = "STRING"
+				nullable = false
+				json_property = "customer_id"
+			}
+
+			column {
+				name = "timestamp_tz"
+				type = "TIMESTAMP"
+				nullable = false
+				json_property = "timestamp_tz"
+			}
+
+			column {
+				name = "new"
+				type = "STRING"
+				nullable = true
+				json_property = "new_column"
+			}
+
+			basic_auth {
+				username = "foo"
+				password = "bar"
+			}
+
+			access_control_enabled = true
+	
+			unique_id = "id"
+			tenant = "customer_id"
+		}
+		
+	}`, ctx)
+}
+
 func testAccCheckPropelDataSourceDestroy(s *terraform.State) error {
 	c := testAccProvider.Meta().(graphql.Client)
 
@@ -258,5 +320,99 @@ func testAccCheckPropelDataSourceExists(n string) resource.TestCheckFunc {
 		}
 
 		return nil
+	}
+}
+
+func Test_getNewDataSourceColumns(t *testing.T) {
+	tests := []struct {
+		name               string
+		oldItemDef         []any
+		newItemDef         []any
+		expectedNewColumns map[string]pc.WebhookDataSourceColumnInput
+		expectedError      string
+	}{
+		{
+			name: "Successful new columns",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
+				map[string]any{"name": "COLUMN_C", "type": "INT64", "nullable": false, "json_property": "column_c"},
+				map[string]any{"name": "COLUMN_D", "type": "TIMESTAMP", "nullable": false, "json_property": "column_d"},
+			},
+			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{
+				"COLUMN_C": {Name: "COLUMN_C", Type: "INT64", Nullable: false, JsonProperty: "column_c"},
+				"COLUMN_D": {Name: "COLUMN_D", Type: "TIMESTAMP", Nullable: false, JsonProperty: "column_d"},
+			},
+			expectedError: "",
+		},
+		{
+			name: "No new columns",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
+			},
+			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{},
+			expectedError:      "",
+		},
+		{
+			name: "Repeated column names",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
+				map[string]any{"name": "COLUMN_B", "type": "TIMESTAMP", "nullable": false, "json_property": "column_sb"},
+			},
+			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{},
+			expectedError:      `column "COLUMN_B" already exists`,
+		},
+		{
+			name: "Unsupported column deletion",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
+			},
+			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{},
+			expectedError:      `column "COLUMN_B" was removed, column deletions are not supported`,
+		},
+		{
+			name: "Unsupported column update",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_z"},
+			},
+			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{},
+			expectedError:      `column "COLUMN_A" was modified, column updates are not supported`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(st *testing.T) {
+			a := assert.New(st)
+
+			result, err := getNewDataSourceColumns(tt.oldItemDef, tt.newItemDef)
+			if tt.expectedError != "" {
+				a.Error(err)
+				a.EqualError(err, tt.expectedError)
+				return
+			}
+
+			a.NoError(err)
+			a.Equal(tt.expectedNewColumns, result)
+		})
 	}
 }

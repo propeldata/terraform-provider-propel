@@ -11,6 +11,239 @@ import (
 	"github.com/Khan/genqlient/graphql"
 )
 
+// AddColumnToDataPoolJobAddColumnToDataPoolJob includes the requested fields of the GraphQL type AddColumnToDataPoolJob.
+// The GraphQL type's documentation follows.
+//
+// AddColumnToDataPoolJob scheduled for a specific Data Pool.
+//
+// The Add Column Job represents the asynchronous process of adding a column,
+// given its name and type, to a Data Pool. It tracks the process of adding a column
+// until it is finished, showing the progress and the outcome when it is finished.
+type AddColumnToDataPoolJobAddColumnToDataPoolJob struct {
+	AddColumnToDataPoolJobData `json:"-"`
+}
+
+// GetId returns AddColumnToDataPoolJobAddColumnToDataPoolJob.Id, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetId() string {
+	return v.AddColumnToDataPoolJobData.Id
+}
+
+// GetDataPool returns AddColumnToDataPoolJobAddColumnToDataPoolJob.DataPool, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetDataPool() *AddColumnToDataPoolJobDataDataPool {
+	return v.AddColumnToDataPoolJobData.DataPool
+}
+
+// GetStatus returns AddColumnToDataPoolJobAddColumnToDataPoolJob.Status, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetStatus() JobStatus {
+	return v.AddColumnToDataPoolJobData.Status
+}
+
+// GetError returns AddColumnToDataPoolJobAddColumnToDataPoolJob.Error, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetError() *AddColumnToDataPoolJobDataError {
+	return v.AddColumnToDataPoolJobData.Error
+}
+
+// GetColumnName returns AddColumnToDataPoolJobAddColumnToDataPoolJob.ColumnName, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetColumnName() string {
+	return v.AddColumnToDataPoolJobData.ColumnName
+}
+
+// GetColumnType returns AddColumnToDataPoolJobAddColumnToDataPoolJob.ColumnType, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetColumnType() ColumnType {
+	return v.AddColumnToDataPoolJobData.ColumnType
+}
+
+func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*AddColumnToDataPoolJobAddColumnToDataPoolJob
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.AddColumnToDataPoolJobAddColumnToDataPoolJob = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.AddColumnToDataPoolJobData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalAddColumnToDataPoolJobAddColumnToDataPoolJob struct {
+	Id string `json:"id"`
+
+	DataPool *AddColumnToDataPoolJobDataDataPool `json:"dataPool"`
+
+	Status JobStatus `json:"status"`
+
+	Error *AddColumnToDataPoolJobDataError `json:"error"`
+
+	ColumnName string `json:"columnName"`
+
+	ColumnType ColumnType `json:"columnType"`
+}
+
+func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) __premarshalJSON() (*__premarshalAddColumnToDataPoolJobAddColumnToDataPoolJob, error) {
+	var retval __premarshalAddColumnToDataPoolJobAddColumnToDataPoolJob
+
+	retval.Id = v.AddColumnToDataPoolJobData.Id
+	retval.DataPool = v.AddColumnToDataPoolJobData.DataPool
+	retval.Status = v.AddColumnToDataPoolJobData.Status
+	retval.Error = v.AddColumnToDataPoolJobData.Error
+	retval.ColumnName = v.AddColumnToDataPoolJobData.ColumnName
+	retval.ColumnType = v.AddColumnToDataPoolJobData.ColumnType
+	return &retval, nil
+}
+
+// AddColumnToDataPoolJobData includes the GraphQL fields of AddColumnToDataPoolJob requested by the fragment AddColumnToDataPoolJobData.
+// The GraphQL type's documentation follows.
+//
+// AddColumnToDataPoolJob scheduled for a specific Data Pool.
+//
+// The Add Column Job represents the asynchronous process of adding a column,
+// given its name and type, to a Data Pool. It tracks the process of adding a column
+// until it is finished, showing the progress and the outcome when it is finished.
+type AddColumnToDataPoolJobData struct {
+	// The AddColumnToDataPoolJob's ID.
+	Id string `json:"id"`
+	// The Data Pool to which a column will be added by the Job.
+	DataPool *AddColumnToDataPoolJobDataDataPool `json:"dataPool"`
+	// The current AddColumnToDataPoolJob's status.
+	Status JobStatus `json:"status"`
+	// The error that occurred while adding the column data, if any.
+	Error *AddColumnToDataPoolJobDataError `json:"error"`
+	// Name of the new column.
+	ColumnName string `json:"columnName"`
+	// Type of the new column.
+	ColumnType ColumnType `json:"columnType"`
+}
+
+// GetId returns AddColumnToDataPoolJobData.Id, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobData) GetId() string { return v.Id }
+
+// GetDataPool returns AddColumnToDataPoolJobData.DataPool, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobData) GetDataPool() *AddColumnToDataPoolJobDataDataPool {
+	return v.DataPool
+}
+
+// GetStatus returns AddColumnToDataPoolJobData.Status, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobData) GetStatus() JobStatus { return v.Status }
+
+// GetError returns AddColumnToDataPoolJobData.Error, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobData) GetError() *AddColumnToDataPoolJobDataError { return v.Error }
+
+// GetColumnName returns AddColumnToDataPoolJobData.ColumnName, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobData) GetColumnName() string { return v.ColumnName }
+
+// GetColumnType returns AddColumnToDataPoolJobData.ColumnType, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobData) GetColumnType() ColumnType { return v.ColumnType }
+
+// AddColumnToDataPoolJobDataDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
+//
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
+type AddColumnToDataPoolJobDataDataPool struct {
+	// The Data Pool's unique identifier.
+	Id string `json:"id"`
+}
+
+// GetId returns AddColumnToDataPoolJobDataDataPool.Id, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobDataDataPool) GetId() string { return v.Id }
+
+// AddColumnToDataPoolJobDataError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
+type AddColumnToDataPoolJobDataError struct {
+	GqlError `json:"-"`
+}
+
+// GetCode returns AddColumnToDataPoolJobDataError.Code, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobDataError) GetCode() *int { return v.GqlError.Code }
+
+// GetMessage returns AddColumnToDataPoolJobDataError.Message, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobDataError) GetMessage() string { return v.GqlError.Message }
+
+func (v *AddColumnToDataPoolJobDataError) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*AddColumnToDataPoolJobDataError
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.AddColumnToDataPoolJobDataError = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.GqlError)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalAddColumnToDataPoolJobDataError struct {
+	Code *int `json:"code"`
+
+	Message string `json:"message"`
+}
+
+func (v *AddColumnToDataPoolJobDataError) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *AddColumnToDataPoolJobDataError) __premarshalJSON() (*__premarshalAddColumnToDataPoolJobDataError, error) {
+	var retval __premarshalAddColumnToDataPoolJobDataError
+
+	retval.Code = v.GqlError.Code
+	retval.Message = v.GqlError.Message
+	return &retval, nil
+}
+
+// AddColumnToDataPoolJobResponse is returned by AddColumnToDataPoolJob on success.
+type AddColumnToDataPoolJobResponse struct {
+	// This query returns the AddColumnToDataPoolJob specified by the given ID.
+	//
+	// The AddColumnToDataPoolJob represents the asynchronous process of adding
+	// a column, given its name and type, to a Data Pool.
+	AddColumnToDataPoolJob *AddColumnToDataPoolJobAddColumnToDataPoolJob `json:"addColumnToDataPoolJob"`
+}
+
+// GetAddColumnToDataPoolJob returns AddColumnToDataPoolJobResponse.AddColumnToDataPoolJob, and is useful for accessing the field via an interface.
+func (v *AddColumnToDataPoolJobResponse) GetAddColumnToDataPoolJob() *AddColumnToDataPoolJobAddColumnToDataPoolJob {
+	return v.AddColumnToDataPoolJob
+}
+
 // AssignDataPoolAccessPolicyResponse is returned by AssignDataPoolAccessPolicy on success.
 type AssignDataPoolAccessPolicyResponse struct {
 	// Assign a Data Pool Access Policy to an Application.
@@ -508,6 +741,156 @@ func (v *CommonDataMetric) GetCreatedBy() string { return v.CreatedBy }
 
 // GetModifiedBy returns CommonDataMetric.ModifiedBy, and is useful for accessing the field via an interface.
 func (v *CommonDataMetric) GetModifiedBy() string { return v.ModifiedBy }
+
+// CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponse includes the requested fields of the GraphQL type AddColumnToDataPoolJobResponse.
+// The GraphQL type's documentation follows.
+//
+// The response returned by the Add Column Job.
+type CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponse struct {
+	// The AddColumnToDataPool Job that was just created.
+	Job *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob `json:"job"`
+}
+
+// GetJob returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponse.Job, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponse) GetJob() *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob {
+	return v.Job
+}
+
+// CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob includes the requested fields of the GraphQL type AddColumnToDataPoolJob.
+// The GraphQL type's documentation follows.
+//
+// AddColumnToDataPoolJob scheduled for a specific Data Pool.
+//
+// The Add Column Job represents the asynchronous process of adding a column,
+// given its name and type, to a Data Pool. It tracks the process of adding a column
+// until it is finished, showing the progress and the outcome when it is finished.
+type CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob struct {
+	AddColumnToDataPoolJobData `json:"-"`
+}
+
+// GetId returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.Id, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetId() string {
+	return v.AddColumnToDataPoolJobData.Id
+}
+
+// GetDataPool returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.DataPool, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetDataPool() *AddColumnToDataPoolJobDataDataPool {
+	return v.AddColumnToDataPoolJobData.DataPool
+}
+
+// GetStatus returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.Status, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetStatus() JobStatus {
+	return v.AddColumnToDataPoolJobData.Status
+}
+
+// GetError returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.Error, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetError() *AddColumnToDataPoolJobDataError {
+	return v.AddColumnToDataPoolJobData.Error
+}
+
+// GetColumnName returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.ColumnName, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetColumnName() string {
+	return v.AddColumnToDataPoolJobData.ColumnName
+}
+
+// GetColumnType returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.ColumnType, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetColumnType() ColumnType {
+	return v.AddColumnToDataPoolJobData.ColumnType
+}
+
+func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.AddColumnToDataPoolJobData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob struct {
+	Id string `json:"id"`
+
+	DataPool *AddColumnToDataPoolJobDataDataPool `json:"dataPool"`
+
+	Status JobStatus `json:"status"`
+
+	Error *AddColumnToDataPoolJobDataError `json:"error"`
+
+	ColumnName string `json:"columnName"`
+
+	ColumnType ColumnType `json:"columnType"`
+}
+
+func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) __premarshalJSON() (*__premarshalCreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob, error) {
+	var retval __premarshalCreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob
+
+	retval.Id = v.AddColumnToDataPoolJobData.Id
+	retval.DataPool = v.AddColumnToDataPoolJobData.DataPool
+	retval.Status = v.AddColumnToDataPoolJobData.Status
+	retval.Error = v.AddColumnToDataPoolJobData.Error
+	retval.ColumnName = v.AddColumnToDataPoolJobData.ColumnName
+	retval.ColumnType = v.AddColumnToDataPoolJobData.ColumnType
+	return &retval, nil
+}
+
+// The fields for creating an Add Column Job.
+type CreateAddColumnToDataPoolJobInput struct {
+	// The Data Pool to which the column will be added.
+	DataPool string `json:"dataPool"`
+	// Name of the new column.
+	ColumnName string `json:"columnName"`
+	// Type of the new column.
+	ColumnType ColumnType `json:"columnType"`
+	// JSON property to which the new column corresponds.
+	JsonProperty *string `json:"jsonProperty"`
+}
+
+// GetDataPool returns CreateAddColumnToDataPoolJobInput.DataPool, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobInput) GetDataPool() string { return v.DataPool }
+
+// GetColumnName returns CreateAddColumnToDataPoolJobInput.ColumnName, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobInput) GetColumnName() string { return v.ColumnName }
+
+// GetColumnType returns CreateAddColumnToDataPoolJobInput.ColumnType, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobInput) GetColumnType() ColumnType { return v.ColumnType }
+
+// GetJsonProperty returns CreateAddColumnToDataPoolJobInput.JsonProperty, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobInput) GetJsonProperty() *string { return v.JsonProperty }
+
+// CreateAddColumnToDataPoolJobResponse is returned by CreateAddColumnToDataPoolJob on success.
+type CreateAddColumnToDataPoolJobResponse struct {
+	// Schedules a new AddColumnToDataPoolJob on the specified Data Pool.
+	CreateAddColumnToDataPoolJob *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponse `json:"createAddColumnToDataPoolJob"`
+}
+
+// GetCreateAddColumnToDataPoolJob returns CreateAddColumnToDataPoolJobResponse.CreateAddColumnToDataPoolJob, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobResponse) GetCreateAddColumnToDataPoolJob() *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponse {
+	return v.CreateAddColumnToDataPoolJob
+}
 
 // CreateAverageMetricCreateAverageMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
 // The GraphQL type's documentation follows.
@@ -7671,10 +8054,20 @@ func (v *DataSourceDataDataPoolsDataPoolConnection) GetNodes() []*DataSourceData
 type DataSourceDataDataPoolsDataPoolConnectionNodesDataPool struct {
 	// The Data Pool's unique identifier.
 	Id string `json:"id"`
+	// Whether the Data Pool has access control enabled or not.
+	//
+	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
+	// Policies in order to query the Data Pool and its Metrics.
+	AccessControlEnabled bool `json:"accessControlEnabled"`
 }
 
 // GetId returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.Id, and is useful for accessing the field via an interface.
 func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetId() string { return v.Id }
+
+// GetAccessControlEnabled returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetAccessControlEnabled() bool {
+	return v.AccessControlEnabled
+}
 
 // DataSourceDataError includes the requested fields of the GraphQL type Error.
 // The GraphQL type's documentation follows.
@@ -8970,6 +9363,19 @@ func (v *IdOrUniqueName) GetId() *string { return v.Id }
 
 // GetUniqueName returns IdOrUniqueName.UniqueName, and is useful for accessing the field via an interface.
 func (v *IdOrUniqueName) GetUniqueName() *string { return v.UniqueName }
+
+type JobStatus string
+
+const (
+	// The Job was created, but is not yet being executed.
+	JobStatusCreated JobStatus = "CREATED"
+	// The Job is executing.
+	JobStatusInProgress JobStatus = "IN_PROGRESS"
+	// The Job succeeded.
+	JobStatusSucceeded JobStatus = "SUCCEEDED"
+	// The Job failed. Check the error message.
+	JobStatusFailed JobStatus = "FAILED"
+)
 
 // MetricByNameMetric includes the requested fields of the GraphQL type Metric.
 // The GraphQL type's documentation follows.
@@ -15044,6 +15450,14 @@ func (v *WebhookDataSourceColumnInput) GetType() ColumnType { return v.Type }
 // GetNullable returns WebhookDataSourceColumnInput.Nullable, and is useful for accessing the field via an interface.
 func (v *WebhookDataSourceColumnInput) GetNullable() bool { return v.Nullable }
 
+// __AddColumnToDataPoolJobInput is used internally by genqlient
+type __AddColumnToDataPoolJobInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __AddColumnToDataPoolJobInput.Id, and is useful for accessing the field via an interface.
+func (v *__AddColumnToDataPoolJobInput) GetId() string { return v.Id }
+
 // __AssignDataPoolAccessPolicyInput is used internally by genqlient
 type __AssignDataPoolAccessPolicyInput struct {
 	Application          string `json:"application"`
@@ -15056,6 +15470,16 @@ func (v *__AssignDataPoolAccessPolicyInput) GetApplication() string { return v.A
 // GetDataPoolAccessPolicy returns __AssignDataPoolAccessPolicyInput.DataPoolAccessPolicy, and is useful for accessing the field via an interface.
 func (v *__AssignDataPoolAccessPolicyInput) GetDataPoolAccessPolicy() string {
 	return v.DataPoolAccessPolicy
+}
+
+// __CreateAddColumnToDataPoolJobInput is used internally by genqlient
+type __CreateAddColumnToDataPoolJobInput struct {
+	Input *CreateAddColumnToDataPoolJobInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateAddColumnToDataPoolJobInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateAddColumnToDataPoolJobInput) GetInput() *CreateAddColumnToDataPoolJobInput {
+	return v.Input
 }
 
 // __CreateAverageMetricInput is used internally by genqlient
@@ -15440,6 +15864,57 @@ func (v *__UnAssignDataPoolAccessPolicyInput) GetDataPoolAccessPolicy() string {
 // GetApplication returns __UnAssignDataPoolAccessPolicyInput.Application, and is useful for accessing the field via an interface.
 func (v *__UnAssignDataPoolAccessPolicyInput) GetApplication() string { return v.Application }
 
+// The query or mutation executed by AddColumnToDataPoolJob.
+const AddColumnToDataPoolJob_Operation = `
+query AddColumnToDataPoolJob ($id: ID!) {
+	addColumnToDataPoolJob(id: $id) {
+		... AddColumnToDataPoolJobData
+	}
+}
+fragment AddColumnToDataPoolJobData on AddColumnToDataPoolJob {
+	id
+	dataPool {
+		id
+	}
+	status
+	error {
+		... GqlError
+	}
+	columnName
+	columnType
+}
+fragment GqlError on Error {
+	code
+	message
+}
+`
+
+func AddColumnToDataPoolJob(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*AddColumnToDataPoolJobResponse, error) {
+	req := &graphql.Request{
+		OpName: "AddColumnToDataPoolJob",
+		Query:  AddColumnToDataPoolJob_Operation,
+		Variables: &__AddColumnToDataPoolJobInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data AddColumnToDataPoolJobResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
 // The query or mutation executed by AssignDataPoolAccessPolicy.
 const AssignDataPoolAccessPolicy_Operation = `
 mutation AssignDataPoolAccessPolicy ($application: ID!, $dataPoolAccessPolicy: ID!) {
@@ -15464,6 +15939,59 @@ func AssignDataPoolAccessPolicy(
 	var err error
 
 	var data AssignDataPoolAccessPolicyResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by CreateAddColumnToDataPoolJob.
+const CreateAddColumnToDataPoolJob_Operation = `
+mutation CreateAddColumnToDataPoolJob ($input: CreateAddColumnToDataPoolJobInput!) {
+	createAddColumnToDataPoolJob(input: $input) {
+		job {
+			... AddColumnToDataPoolJobData
+		}
+	}
+}
+fragment AddColumnToDataPoolJobData on AddColumnToDataPoolJob {
+	id
+	dataPool {
+		id
+	}
+	status
+	error {
+		... GqlError
+	}
+	columnName
+	columnType
+}
+fragment GqlError on Error {
+	code
+	message
+}
+`
+
+func CreateAddColumnToDataPoolJob(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateAddColumnToDataPoolJobInput,
+) (*CreateAddColumnToDataPoolJobResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateAddColumnToDataPoolJob",
+		Query:  CreateAddColumnToDataPoolJob_Operation,
+		Variables: &__CreateAddColumnToDataPoolJobInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateAddColumnToDataPoolJobResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -15662,6 +16190,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -16021,6 +16550,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -16380,6 +16910,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -16739,6 +17270,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -17000,6 +17532,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -17284,6 +17817,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -17614,6 +18148,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -17973,6 +18508,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -18212,6 +18748,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -18383,6 +18920,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -18717,6 +19255,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -18909,6 +19448,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -19136,6 +19676,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -19487,6 +20028,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -19771,6 +20313,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -19982,6 +20525,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -20143,6 +20687,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -20317,6 +20862,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -20914,6 +21460,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -21270,6 +21817,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -21643,6 +22191,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -21919,6 +22468,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -22203,6 +22753,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -22533,6 +23084,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -22772,6 +23324,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -22943,6 +23496,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -23110,6 +23664,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {

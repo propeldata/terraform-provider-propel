@@ -1,0 +1,12 @@
+fragment AddColumnToDataPoolJobData on AddColumnToDataPoolJob {
+    id
+    dataPool {
+        id
+    }
+    status
+    error {
+        ...GqlError
+    }
+    columnName
+    columnType
+}

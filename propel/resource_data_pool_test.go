@@ -9,6 +9,7 @@ import (
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/stretchr/testify/assert"
 
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
@@ -175,5 +176,99 @@ func testAccCheckPropelDataPoolExists(n string) resource.TestCheckFunc {
 		}
 
 		return nil
+	}
+}
+
+func Test_getNewDataPoolColumns(t *testing.T) {
+	tests := []struct {
+		name               string
+		oldItemDef         []any
+		newItemDef         []any
+		expectedNewColumns map[string]pc.DataPoolColumnInput
+		expectedError      string
+	}{
+		{
+			name: "Successful new columns",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+				map[string]any{"name": "COLUMN_C", "type": "INT64", "nullable": false},
+				map[string]any{"name": "COLUMN_D", "type": "TIMESTAMP", "nullable": false},
+			},
+			expectedNewColumns: map[string]pc.DataPoolColumnInput{
+				"COLUMN_C": {ColumnName: "COLUMN_C", Type: "INT64", IsNullable: false},
+				"COLUMN_D": {ColumnName: "COLUMN_D", Type: "TIMESTAMP", IsNullable: false},
+			},
+			expectedError: "",
+		},
+		{
+			name: "No new columns",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+			},
+			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
+			expectedError:      "",
+		},
+		{
+			name: "Repeated column names",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false},
+			},
+			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
+			expectedError:      `column "COLUMN_B" already exists`,
+		},
+		{
+			name: "Unsupported column deletion",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+			},
+			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
+			expectedError:      `column "COLUMN_B" was removed, column deletions are not supported`,
+		},
+		{
+			name: "Unsupported column update",
+			oldItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false},
+			},
+			newItemDef: []any{
+				map[string]any{"name": "COLUMN_A", "type": "FLOAT", "nullable": false},
+			},
+			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
+			expectedError:      `column "COLUMN_A" was modified, column updates are not supported`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(st *testing.T) {
+			a := assert.New(st)
+
+			result, err := getNewDataPoolColumns(tt.oldItemDef, tt.newItemDef)
+			if tt.expectedError != "" {
+				a.Error(err)
+				a.EqualError(err, tt.expectedError)
+				return
+			}
+
+			a.NoError(err)
+			a.Equal(tt.expectedNewColumns, result)
+		})
 	}
 }

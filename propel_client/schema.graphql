@@ -877,6 +877,10 @@ type DataPool implements Node & Common {
   metrics(first: Int, after: String, last: Int, before: String): MetricConnection
   "The Deletion Jobs that were historically issued to this Data Pool, sorted by creation time, in descending order."
   deletionJobs(first: Int, after: String, last: Int, before: String): DeletionJobConnection
+  "The Add Column Jobs that were historically issued to this Data Pool, sorted by creation time, in descending order."
+  addColumnToDataPoolJobs(first: Int, after: String, last: Int, before: String): AddColumnToDataPoolJobConnection
+  "The UpdateDataPoolRecords Jobs that were historically issued to this Data Pool, sorted by creation time, in descending order."
+  updateDataPoolRecordsJobs(first: Int, after: String, last: Int, before: String): UpdateDataPoolRecordsJobConnection
   """
   Whether the Data Pool has access control enabled or not.
 
@@ -998,6 +1002,34 @@ type Filter {
   """ Additional filters to OR with this one. AND takes precedence over OR.
   """
   or: [Filter!]
+}
+
+"""
+The fields for creating an Update Data Pool Records Job.
+
+```
+{
+"column": "status",
+"expression": "'completed'"
+}
+
+{
+"column": "counter",
+"expression": "counter + 1"
+}
+
+{
+"column": "full_name",
+"expression": "concat(first_name, ' ', last_name)"
+}
+```
+"""
+type UpdateDataPoolRecordsJobSetColumn {
+  """ The name of the column to update. """
+  column: String!
+  """ The value to which the column will be updated. Once evaluated, it should be of the same data type as the column.
+  """
+  expression: String!
 }
 
 """The fields for creating or modifying a Dimension."""
@@ -2252,6 +2284,34 @@ enum FilterOperator {
 }
 
 """
+The fields for creating an Update Data Pool Records Job.
+
+```
+{
+"column": "status",
+"expression": "'completed'"
+}
+
+{
+"column": "counter",
+"expression": "counter + 1"
+}
+
+{
+"column": "full_name",
+"expression": "concat(first_name, ' ', last_name)"
+}
+```
+"""
+input UpdateDataPoolRecordsJobSetColumnInput {
+  """ The name of the column to update. """
+  column: String!
+  """ The value to which the column will be updated. Once evaluated, it should be of the same data type as the column.
+  """
+  expression: String!
+}
+
+"""
 The time series response object. It contains an array of time series labels and an array of Metric values for the given time range and Query Filters.
 """
 type TimeSeriesResponse {
@@ -2629,6 +2689,125 @@ input CreateDeletionJobInput {
   filters: [FilterInput!]!
 }
 
+"""
+AddColumnToDataPoolJob scheduled for a specific Data Pool.
+
+The Add Column Job represents the asynchronous process of adding a column,
+given its name and type, to a Data Pool. It tracks the process of adding a column
+until it is finished, showing the progress and the outcome when it is finished.
+"""
+type AddColumnToDataPoolJob implements Node & Job {
+  "The AddColumnToDataPoolJob's ID."
+  id: ID!
+  "The AddColumnToDataPoolJob's creation date and time in UTC."
+  createdAt: DateTime!
+  "Who created the AddColumnToDataPoolJob."
+  createdBy: String!
+  "The AddColumnToDataPoolJob's last modification date and time in UTC."
+  modifiedAt: DateTime!
+  "Who modified the AddColumnToDataPoolJob last."
+  modifiedBy: String!
+  "Account to which the AddColumnToDataPoolJob belongs."
+  account: Account!
+  "Environment to which the AddColumnToDataPoolJob belongs."
+  environment: Environment!
+  "The Data Pool to which a column will be added by the Job."
+  dataPool: DataPool!
+  "The current AddColumnToDataPoolJob's status."
+  status: JobStatus!
+  "Name of the new column."
+  columnName: String!
+  "Type of the new column."
+  columnType: ColumnType!
+  "JSON property to which the new column corresponds."
+  jsonProperty: String
+  "The error that occurred while adding the column data, if any."
+  error: Error
+  "The current progress of the AddColumnToDataPool Job, from 0.0 to 1.0."
+  progress: Float!
+  "The time at which the AddColumnToDataPool Job started."
+  startedAt: DateTime
+  "The time at which the AddColumnToDataPool Job succeeded."
+  succeededAt: DateTime
+  "The time at which the AddColumnToDataPool Job failed."
+  failedAt: DateTime
+}
+
+"""The fields for creating an Add Column Job."""
+input CreateAddColumnToDataPoolJobInput {
+  "The Data Pool to which the column will be added."
+  dataPool: ID!
+  "Name of the new column."
+  columnName: String!
+  "Type of the new column."
+  columnType: ColumnType!
+  "JSON property to which the new column corresponds."
+  jsonProperty: String
+}
+
+"""The response returned by the Add Column Job."""
+type AddColumnToDataPoolJobResponse {
+  "The AddColumnToDataPool Job that was just created."
+  job: AddColumnToDataPoolJob!
+}
+
+"""
+UpdateDataPoolRecords Job scheduled for a specific Data Pool.
+The Update Data Pool Records Job represents the asynchronous process of updating records
+given some filters, inside a Data Pool. It tracks the process of updating records
+until it is finished, showing the progress and the outcome when it is finished.
+"""
+type UpdateDataPoolRecordsJob implements Node & Job {
+  "The UpdateDataPoolRecords Job's ID"
+  id: ID!
+  "The UpdateDataPoolRecords Job's creation date and time in UTC"
+  createdAt: DateTime!
+  "Who created the UpdateDataPoolRecords Job"
+  createdBy: String!
+  "The UpdateDataPoolRecords Job's last modification date and time in UTC"
+  modifiedAt: DateTime!
+  "Who last modified the UpdateDataPoolRecords Job"
+  modifiedBy: String!
+  "Account to which the UpdateDataPoolRecords Job belongs"
+  account: Account!
+  "Environment to which the UpdateDataPoolRecords Job belongs"
+  environment: Environment!
+  "The Data Pool whose records will be updated by the UpdateDataPoolRecords Job"
+  dataPool: DataPool!
+  "The current UpdateDataPoolRecords Job's status"
+  status: JobStatus!
+  "The list of filters that will be used for updating data. Data matching the filters will be updated."
+  filters: [Filter!]!
+  "Describes how the job will update the records."
+  set: [UpdateDataPoolRecordsJobSetColumn!]!
+  "The error that occurred while updating data, if any."
+  error: Error
+  "The current progress of the UpdateDataPoolRecords Job, from 0.0 to 1.0."
+  progress: Float!
+  "The time at which the UpdateDataPoolRecords Job started."
+  startedAt: DateTime
+  "The time at which the UpdateDataPoolRecords Job succeeded."
+  succeededAt: DateTime
+  "The time at which the UpdateDataPoolRecords Job failed."
+  failedAt: DateTime
+}
+
+"""The fields for creating an Update Data Pool Records Job."""
+input CreateUpdateDataPoolRecordsJobInput {
+  "The Data Pool that is going to get its records updated."
+  dataPool: ID!
+  "The list of filters that will be used for updating records. Records matching these filters will be updated."
+  filters: [FilterInput!]!
+  "Describes how the job will update the records."
+  set: [UpdateDataPoolRecordsJobSetColumnInput!]!
+}
+
+"""The response returned by the Update Data Pool Records Job."""
+type UpdateDataPoolRecordsJobResponse {
+  "The UpdateDataPoolRecords Job that was just created."
+  job: UpdateDataPoolRecordsJob!
+}
+
 type DataPoolAccessPolicy implements Node & Common {
   """ The ID of the Data Pool Access Policy. """
   id: ID!
@@ -2919,6 +3098,10 @@ type Mutation {
   requestDelete(input: DeletionRequestInput!): RequestDeleteResponse! @deprecated(reason: "This has been renamed to `createDeletionJob`")
   """Schedules a new Deletion Job on the specified Data Pool."""
   createDeletionJob(input: CreateDeletionJobInput!): DeletionJobResponse!
+  """Schedules a new AddColumnToDataPoolJob on the specified Data Pool."""
+  createAddColumnToDataPoolJob(input: CreateAddColumnToDataPoolJobInput!): AddColumnToDataPoolJobResponse!
+  """Schedules a new UpdateDataPoolRecords Job on the specified Data Pool."""
+  createUpdateDataPoolRecordsJob(input: CreateUpdateDataPoolRecordsJobInput!): UpdateDataPoolRecordsJobResponse!
   """Manually trigger a Sync for a Data Pool."""
   syncDataPool(dataPoolId: ID!): Sync
   """Manually trigger a re-Sync for a Data Pool."""
@@ -3106,6 +3289,54 @@ type Query {
   given some filters inside a Data Pool.
   """
   deletionJob(id: ID!): DeletionJob
+  """
+  This query returns the AddColumnToDataPoolJob specified by the given ID.
+
+  The AddColumnToDataPoolJob represents the asynchronous process of adding
+  a column, given its name and type, to a Data Pool.
+  """
+  addColumnToDataPoolJob(id: ID!): AddColumnToDataPoolJob
+  """
+  This query returns the AddColumnToDataPool Job specified by a given status.
+  """
+  addColumnToDataPoolJobByStatus(status: JobStatus!, first: Int, after: String, last: Int, before: String): AddColumnToDataPoolJobConnection!
+  """
+  This query returns the UpdateDataPoolRecords Job specified by the given ID.
+
+  The UpdateDataPoolRecords Job represents the asynchronous process of updating
+  records inside a Data Pool.
+  """
+  updateDataPoolRecordsJob(id: ID!): UpdateDataPoolRecordsJob
+  """
+  This query returns the UpdateDataPoolRecords Job specified by a given status.
+  """
+  updateDataPoolRecordsJobByStatus(status: JobStatus!, first: Int, after: String, last: Int, before: String): UpdateDataPoolRecordsJobConnection!
+}
+
+"""
+The Add column to Data Pool Job connection object.
+
+Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+"""
+type AddColumnToDataPoolJobConnection {
+  """The Add column to Data Pool Job connection's edges."""
+  edges: [AddColumnToDataPoolJobEdge!]!
+  """The Add column to Data Pool Job connection's nodes."""
+  nodes: [AddColumnToDataPoolJob!]!
+  """The Add column to Data Pool Job connection's page info."""
+  pageInfo: PageInfo!
+}
+
+"""
+The Add column to Data Pool Job edge object.
+
+Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+"""
+type AddColumnToDataPoolJobEdge {
+  """The edge's cursor."""
+  cursor: String!
+  """The edge's node."""
+  node: AddColumnToDataPoolJob!
 }
 
 """
@@ -3452,6 +3683,32 @@ type TableIntrospectionEdge {
   cursor: String!
   """The edge's node."""
   node: TableIntrospection!
+}
+
+"""
+The Update Data Pool records Job connection object.
+
+Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+"""
+type UpdateDataPoolRecordsJobConnection {
+  """The Update Data Pool records Job connection's edges."""
+  edges: [UpdateDataPoolRecordsJobEdge!]!
+  """The Update Data Pool records Job connection's nodes."""
+  nodes: [UpdateDataPoolRecordsJob!]!
+  """The Update Data Pool records Job connection's page info."""
+  pageInfo: PageInfo!
+}
+
+"""
+The Update Data Pool records Job edge object.
+
+Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+"""
+type UpdateDataPoolRecordsJobEdge {
+  """The edge's cursor."""
+  cursor: String!
+  """The edge's node."""
+  node: UpdateDataPoolRecordsJob!
 }
 
 input CreateHttpDataSourceInput {

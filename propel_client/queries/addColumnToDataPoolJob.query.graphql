@@ -1,0 +1,5 @@
+query AddColumnToDataPoolJob($id: ID!) {
+    addColumnToDataPoolJob(id: $id) {
+        ...AddColumnToDataPoolJobData
+    }
+}
