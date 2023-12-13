@@ -49,7 +49,6 @@ resource "propel_data_source" "webhook_data_source" {
   webhook_connection_settings {
     timestamp = "date"
     unique_id = "id"
-    tenant = "customer_id"
 
     column {
       name = "id"
