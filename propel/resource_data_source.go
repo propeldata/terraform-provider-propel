@@ -588,6 +588,8 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 		return diag.FromErr(err)
 	}
 
+	d.SetId(response.DataSource.Id)
+
 	if err := d.Set("unique_name", response.DataSource.GetUniqueName()); err != nil {
 		return diag.FromErr(err)
 	}
@@ -640,7 +642,7 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 		}
 		return handleS3ConnectionSettings(response, d)
 	case "WEBHOOK":
-		return handleWebhookConnectionSettings(ctx, c, response, d)
+		return handleWebhookConnectionSettings(response, d)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
@@ -791,7 +793,7 @@ func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.Resou
 	return nil
 }
 
-func handleWebhookConnectionSettings(ctx context.Context, c graphql.Client, response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
 	if d.Get("webhook_connection_settings") == nil || len(d.Get("webhook_connection_settings").([]any)) == 0 {
 		return nil
 	}

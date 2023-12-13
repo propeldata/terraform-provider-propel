@@ -504,6 +504,7 @@ func waitForAddColumnJob(ctx context.Context, client graphql.Client, id string, 
 		},
 		Target: []string{
 			string(pc.JobStatusSucceeded),
+			string(pc.JobStatusFailed),
 		},
 		Refresh: func() (any, string, error) {
 			resp, err := pc.AddColumnToDataPoolJob(ctx, client, id)
