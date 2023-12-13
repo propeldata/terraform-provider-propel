@@ -1,0 +1,7 @@
+mutation CreateAddColumnToDataPoolJob($input: CreateAddColumnToDataPoolJobInput!) {
+    createAddColumnToDataPoolJob(input: $input) {
+        job {
+            ...AddColumnToDataPoolJobData
+        }
+    }
+}

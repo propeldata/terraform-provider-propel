@@ -2,13 +2,14 @@ package propel
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/retry"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
@@ -195,7 +196,6 @@ func resourceDataSource() *schema.Resource {
 			"webhook_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ForceNew:      true,
 				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
@@ -225,7 +225,6 @@ func resourceDataSource() *schema.Resource {
 						"column": {
 							Type:        schema.TypeList,
 							Optional:    true,
-							ForceNew:    true,
 							Description: "The additional column for the Webhook Data Source table.",
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
@@ -254,6 +253,11 @@ func resourceDataSource() *schema.Resource {
 									},
 								},
 							},
+						},
+						"access_control_enabled": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: "Whether the resulting Data Pool has access control enabled or not. If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.",
 						},
 						"tenant": {
 							Type:        schema.TypeString,
@@ -504,6 +508,8 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 	c := meta.(graphql.Client)
 
 	connectionSettings := &pc.WebhookConnectionSettingsInput{}
+	accessControlEnabled := false
+
 	if d.Get("webhook_connection_settings") != nil && len(d.Get("webhook_connection_settings").([]any)) > 0 {
 		cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
 
@@ -527,6 +533,10 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 		if u, ok := cs["unique_id"]; ok && u.(string) != "" {
 			uniqueID := u.(string)
 			connectionSettings.UniqueId = &uniqueID
+		}
+
+		if enabled, ok := cs["access_control_enabled"]; ok && enabled.(bool) {
+			accessControlEnabled = true
 		}
 	}
 
@@ -553,7 +563,21 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 		return diag.FromErr(err)
 	}
 
-	return resourceDataSourceRead(ctx, d, meta)
+	if accessControlEnabled {
+		if _, err = pc.ModifyDataPool(ctx, c, &pc.ModifyDataPoolInput{
+			IdOrUniqueName:       &pc.IdOrUniqueName{UniqueName: &uniqueName},
+			AccessControlEnabled: &accessControlEnabled,
+		}); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	dsResponse := resourceDataSourceRead(ctx, d, meta)
+	if dsResponse != nil {
+		return dsResponse
+	}
+
+	return nil
 }
 
 func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
@@ -565,6 +589,7 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 	}
 
 	d.SetId(response.DataSource.Id)
+
 	if err := d.Set("unique_name", response.DataSource.GetUniqueName()); err != nil {
 		return diag.FromErr(err)
 	}
@@ -806,6 +831,7 @@ func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 
 		if len(response.DataSource.DataPools.GetNodes()) == 1 {
 			settings["data_pool_id"] = response.DataSource.DataPools.Nodes[0].Id
+			settings["access_control_enabled"] = response.DataSource.DataPools.Nodes[0].AccessControlEnabled
 		}
 
 		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {
@@ -997,44 +1023,155 @@ func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m a
 
 func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
+	id := d.Id()
 
-	if d.HasChanges("unique_name", "description", "webhook_connection_settings") {
-		id := d.Id()
+	input := &pc.ModifyWebhookDataSourceInput{
+		IdOrUniqueName: &pc.IdOrUniqueName{Id: &id},
+	}
+
+	if d.HasChanges("unique_name", "description") {
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
 
-		var basicAuth *pc.HttpBasicAuthInput
-		if d.Get("webhook_connection_settings") != nil && len(d.Get("webhook_connection_settings").([]any)) > 0 {
-			cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
+		input.UniqueName = &uniqueName
+		input.Description = &description
+	}
 
-			if def, ok := cs["basic_auth"]; ok {
-				basicAuth = expandBasicAuth(def.([]any))
-			}
-		}
-
-		input := &pc.ModifyWebhookDataSourceInput{
-			IdOrUniqueName: &pc.IdOrUniqueName{
-				Id: &id,
-			},
-			UniqueName:  &uniqueName,
-			Description: &description,
-			ConnectionSettings: &pc.PartialWebhookConnectionSettingsInput{
-				BasicAuth: basicAuth,
-			},
-		}
-
+	if !d.HasChange("webhook_connection_settings") {
 		if _, err := pc.ModifyWebhookDataSource(ctx, c, input); err != nil {
-			return diag.FromErr(err)
-		}
-
-		timeout := d.Timeout(schema.TimeoutCreate)
-
-		if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
 			return diag.FromErr(err)
 		}
 	}
 
+	oldItem, newItem := d.GetChange("webhook_connection_settings")
+	oldDef, oldOk := oldItem.([]any)
+	newDef, newOk := newItem.([]any)
+
+	if !oldOk || !newOk || len(newDef) < 1 {
+		diag.FromErr(errors.New("invalid webhook connection settings format"))
+	}
+
+	oldCS, newCS := oldDef[0].(map[string]any), newDef[0].(map[string]any)
+
+	def, ok := newCS["basic_auth"]
+	var basicAuth *pc.HttpBasicAuthInput
+
+	basicAuthEnabled := ok && len(def.([]any)) > 0
+	if basicAuthEnabled {
+		basicAuth = expandBasicAuth(def.([]any))
+	}
+
+	input.ConnectionSettings = &pc.PartialWebhookConnectionSettingsInput{
+		BasicAuth:        basicAuth,
+		BasicAuthEnabled: &basicAuthEnabled,
+	}
+
+	if _, err := pc.ModifyWebhookDataSource(ctx, c, input); err != nil {
+		return diag.FromErr(err)
+	}
+
+	timeout := d.Timeout(schema.TimeoutCreate)
+
+	if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
+		return diag.FromErr(err)
+	}
+
+	dataPoolId := oldCS["data_pool_id"].(string)
+	accessControlEnabled := newCS["access_control_enabled"].(bool)
+
+	oldColumnItem, okOld := oldCS["column"]
+	newColumnItem, okNew := newCS["column"]
+	if !okNew || !okOld {
+		return diag.FromErr(errors.New("invalid webhook columns"))
+	}
+
+	newColumns, err := getNewDataSourceColumns(oldColumnItem.([]any), newColumnItem.([]any))
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	if len(newColumns) > 0 {
+		if err := addNewDataSourceColumns(ctx, d, c, dataPoolId, newColumns); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	_, err = pc.ModifyDataPool(ctx, c, &pc.ModifyDataPoolInput{
+		IdOrUniqueName:       &pc.IdOrUniqueName{Id: &dataPoolId},
+		AccessControlEnabled: &accessControlEnabled,
+	})
+
 	return resourceDataSourceRead(ctx, d, m)
+}
+
+func getNewDataSourceColumns(oldItemDef []any, newItemDef []any) (map[string]pc.WebhookDataSourceColumnInput, error) {
+	newColumns := map[string]pc.WebhookDataSourceColumnInput{}
+
+	for _, rawColumn := range newItemDef {
+		column := rawColumn.(map[string]any)
+		columnInput := pc.WebhookDataSourceColumnInput{
+			Name:         column["name"].(string),
+			Type:         pc.ColumnType(column["type"].(string)),
+			Nullable:     column["nullable"].(bool),
+			JsonProperty: column["json_property"].(string),
+		}
+
+		if _, ok := newColumns[columnInput.Name]; ok {
+			return nil, fmt.Errorf(`column "%s" already exists`, columnInput.Name)
+		}
+
+		newColumns[columnInput.Name] = columnInput
+	}
+
+	for _, rawColumn := range oldItemDef {
+		column := rawColumn.(map[string]any)
+		columnInput := pc.WebhookDataSourceColumnInput{
+			Name:         column["name"].(string),
+			Type:         pc.ColumnType(column["type"].(string)),
+			Nullable:     column["nullable"].(bool),
+			JsonProperty: column["json_property"].(string),
+		}
+
+		newColumnInput, ok := newColumns[columnInput.Name]
+		if !ok {
+			return nil, fmt.Errorf(`column "%s" was removed, column deletions are not supported`, columnInput.Name)
+		}
+
+		if columnInput.Type != newColumnInput.Type || columnInput.Nullable != newColumnInput.Nullable || columnInput.JsonProperty != newColumnInput.JsonProperty {
+			return nil, fmt.Errorf(`column "%s" was modified, column updates are not supported`, columnInput.Name)
+		}
+
+		delete(newColumns, columnInput.Name)
+	}
+
+	return newColumns, nil
+}
+
+func addNewDataSourceColumns(ctx context.Context, d *schema.ResourceData, c graphql.Client, dataPoolId string, newColumns map[string]pc.WebhookDataSourceColumnInput) error {
+	for _, newColumn := range newColumns {
+		if !newColumn.Nullable {
+			return fmt.Errorf(`new column "%s" must be nullable`, newColumn.Name)
+		}
+
+		jobResponse, err := pc.CreateAddColumnToDataPoolJob(ctx, c, &pc.CreateAddColumnToDataPoolJobInput{
+			DataPool:     dataPoolId,
+			ColumnName:   newColumn.Name,
+			ColumnType:   newColumn.Type,
+			JsonProperty: &newColumn.JsonProperty,
+		})
+		if err != nil {
+			return err
+		}
+
+		timeout := d.Timeout(schema.TimeoutUpdate)
+
+		err = waitForAddColumnJob(ctx, c, jobResponse.CreateAddColumnToDataPoolJob.Job.Id, timeout)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
@@ -1096,7 +1233,7 @@ func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m any
 }
 
 func waitForDataSourceConnected(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
-	createStateConf := &resource.StateChangeConf{
+	createStateConf := &retry.StateChangeConf{
 		Pending: []string{
 			string(pc.DataSourceStatusCreated),
 			string(pc.DataSourceStatusConnecting),

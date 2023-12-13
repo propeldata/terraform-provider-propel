@@ -2,13 +2,14 @@ package propel
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/retry"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	"github.com/propeldata/terraform-provider-propel/propel/internal/utils"
@@ -328,7 +329,92 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m any) 
 		return diag.FromErr(err)
 	}
 
+	if d.HasChange("column") {
+		oldItem, newItem := d.GetChange("column")
+		oldDef, oldOk := oldItem.([]any)
+		newDef, newOk := newItem.([]any)
+
+		if !oldOk || !newOk {
+			diag.FromErr(errors.New("invalid column format"))
+		}
+
+		newColumns, err := getNewDataPoolColumns(oldDef, newDef)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		if err = addNewDataPoolColumns(ctx, d, c, id, newColumns); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
 	return resourceDataPoolRead(ctx, d, m)
+}
+
+func getNewDataPoolColumns(oldItemDef []any, newItemDef []any) (map[string]pc.DataPoolColumnInput, error) {
+	newColumns := map[string]pc.DataPoolColumnInput{}
+
+	for _, rawColumn := range newItemDef {
+		column := rawColumn.(map[string]any)
+		columnInput := pc.DataPoolColumnInput{
+			ColumnName: column["name"].(string),
+			Type:       pc.ColumnType(column["type"].(string)),
+			IsNullable: column["nullable"].(bool),
+		}
+
+		if _, ok := newColumns[columnInput.ColumnName]; ok {
+			return nil, fmt.Errorf(`column "%s" already exists`, columnInput.ColumnName)
+		}
+
+		newColumns[columnInput.ColumnName] = columnInput
+	}
+
+	for _, rawColumn := range oldItemDef {
+		column := rawColumn.(map[string]any)
+		columnInput := pc.DataPoolColumnInput{
+			ColumnName: column["name"].(string),
+			Type:       pc.ColumnType(column["type"].(string)),
+			IsNullable: column["nullable"].(bool),
+		}
+
+		newColumnInput, ok := newColumns[columnInput.ColumnName]
+		if !ok {
+			return nil, fmt.Errorf(`column "%s" was removed, column deletions are not supported`, columnInput.ColumnName)
+		}
+
+		if columnInput.Type != newColumnInput.Type || columnInput.IsNullable != newColumnInput.IsNullable {
+			return nil, fmt.Errorf(`column "%s" was modified, column updates are not supported`, columnInput.ColumnName)
+		}
+
+		delete(newColumns, columnInput.ColumnName)
+	}
+
+	return newColumns, nil
+}
+
+func addNewDataPoolColumns(ctx context.Context, d *schema.ResourceData, c graphql.Client, dataPoolId string, newColumns map[string]pc.DataPoolColumnInput) error {
+	for _, newColumn := range newColumns {
+		if !newColumn.IsNullable {
+			return fmt.Errorf(`new column "%s" must be nullable`, newColumn.ColumnName)
+		}
+
+		response, err := pc.CreateAddColumnToDataPoolJob(ctx, c, &pc.CreateAddColumnToDataPoolJobInput{
+			DataPool:   dataPoolId,
+			ColumnName: newColumn.ColumnName,
+			ColumnType: newColumn.Type,
+		})
+		if err != nil {
+			return err
+		}
+
+		timeout := d.Timeout(schema.TimeoutUpdate)
+
+		if err = waitForAddColumnJob(ctx, c, response.CreateAddColumnToDataPoolJob.Job.Id, timeout); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
@@ -352,7 +438,7 @@ func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m any) 
 }
 
 func waitForDataPoolLive(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
-	createStateConf := &resource.StateChangeConf{
+	createStateConf := &retry.StateChangeConf{
 		Pending: []string{
 			string(pc.DataPoolStatusCreated),
 			string(pc.DataPoolStatusPending),
@@ -407,5 +493,42 @@ func waitForDataPoolDeletion(ctx context.Context, client graphql.Client, id stri
 
 		n++
 	}
+	return nil
+}
+
+func waitForAddColumnJob(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
+	createStateConf := &retry.StateChangeConf{
+		Pending: []string{
+			string(pc.JobStatusCreated),
+			string(pc.JobStatusInProgress),
+		},
+		Target: []string{
+			string(pc.JobStatusSucceeded),
+			string(pc.JobStatusFailed),
+		},
+		Refresh: func() (any, string, error) {
+			resp, err := pc.AddColumnToDataPoolJob(ctx, client, id)
+			if err != nil {
+				return 0, "", fmt.Errorf("error trying to read Add Column Job status: %s", err)
+			}
+
+			return resp, string(resp.AddColumnToDataPoolJob.Status), nil
+		},
+		Timeout:                   timeout - time.Minute,
+		Delay:                     10 * time.Second,
+		MinTimeout:                5 * time.Second,
+		ContinuousTargetOccurence: 3,
+	}
+
+	resp, err := createStateConf.WaitForStateContext(ctx)
+	if err != nil {
+		return fmt.Errorf("error waiting for Add Column Job to succeed: %s", err)
+	}
+
+	addColumnJobResponse, ok := resp.(*pc.AddColumnToDataPoolJobResponse)
+	if !ok || addColumnJobResponse.AddColumnToDataPoolJob.Status == pc.JobStatusFailed {
+		return fmt.Errorf("add column job failed: %s", addColumnJobResponse.AddColumnToDataPoolJob.Error.Message)
+	}
+
 	return nil
 }

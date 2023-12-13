@@ -4,6 +4,7 @@ schema: schema.graphql
 optional: pointer
 use_struct_references: true
 operations:
+- fragments/AddColumnToDataPoolJob.fragment.graphql
 #- fragments/Application.fragment.graphql
 - fragments/Column.fragment.graphql
 - fragments/Common.fragment.graphql
@@ -20,6 +21,7 @@ operations:
 - fragments/Sync.fragment.graphql
 - fragments/DataPoolSyncing.fragment.graphql
 - fragments/TableIntrospection.fragment.graphql
+- mutations/createAddColumnToDataPoolJob.mutation.graphql
 #- mutations/createApplication.mutation.graphql
 - mutations/assignDataPoolAccessPolicy.mutation.graphql
 - mutations/createAverageMetric.mutation.graphql
@@ -56,6 +58,7 @@ operations:
 #- mutations/reconnectDataPool.mutation.graphql
 #- mutations/reconnectDataSource.mutation.graphql
 - mutations/unAssignDataPoolAccessPolicy.mutation.graphql
+- queries/addColumnToDataPoolJob.query.graphql
 #- queries/application.query.graphql
 #- queries/applicationByClientId.query.graphql
 #- queries/applicationByName.query.graphql
