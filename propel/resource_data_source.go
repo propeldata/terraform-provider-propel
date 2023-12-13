@@ -792,8 +792,7 @@ func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.Resou
 }
 
 func handleWebhookConnectionSettings(ctx context.Context, c graphql.Client, response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	cs := d.Get("webhook_connection_settings")
-	if cs == nil || len(cs.([]any)) == 0 {
+	if d.Get("webhook_connection_settings") == nil || len(d.Get("webhook_connection_settings").([]any)) == 0 {
 		return nil
 	}
 
@@ -829,10 +828,8 @@ func handleWebhookConnectionSettings(ctx context.Context, c graphql.Client, resp
 		settings["column"] = cols
 
 		if len(response.DataSource.DataPools.GetNodes()) == 1 {
-			csMap := cs.([]any)[0].(map[string]any)
-
 			settings["data_pool_id"] = response.DataSource.DataPools.Nodes[0].Id
-			settings["access_control_enabled"] = csMap["access_control_enabled"]
+			settings["access_control_enabled"] = response.DataSource.DataPools.Nodes[0].AccessControlEnabled
 		}
 
 		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {

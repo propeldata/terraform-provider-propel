@@ -28,36 +28,6 @@ func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetId() string {
 	return v.AddColumnToDataPoolJobData.Id
 }
 
-// GetCreatedAt returns AddColumnToDataPoolJobAddColumnToDataPoolJob.CreatedAt, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetCreatedAt() time.Time {
-	return v.AddColumnToDataPoolJobData.CreatedAt
-}
-
-// GetCreatedBy returns AddColumnToDataPoolJobAddColumnToDataPoolJob.CreatedBy, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetCreatedBy() string {
-	return v.AddColumnToDataPoolJobData.CreatedBy
-}
-
-// GetModifiedAt returns AddColumnToDataPoolJobAddColumnToDataPoolJob.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetModifiedAt() time.Time {
-	return v.AddColumnToDataPoolJobData.ModifiedAt
-}
-
-// GetModifiedBy returns AddColumnToDataPoolJobAddColumnToDataPoolJob.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetModifiedBy() string {
-	return v.AddColumnToDataPoolJobData.ModifiedBy
-}
-
-// GetAccount returns AddColumnToDataPoolJobAddColumnToDataPoolJob.Account, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetAccount() *AddColumnToDataPoolJobDataAccount {
-	return v.AddColumnToDataPoolJobData.Account
-}
-
-// GetEnvironment returns AddColumnToDataPoolJobAddColumnToDataPoolJob.Environment, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetEnvironment() *AddColumnToDataPoolJobDataEnvironment {
-	return v.AddColumnToDataPoolJobData.Environment
-}
-
 // GetDataPool returns AddColumnToDataPoolJobAddColumnToDataPoolJob.DataPool, and is useful for accessing the field via an interface.
 func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetDataPool() *AddColumnToDataPoolJobDataDataPool {
 	return v.AddColumnToDataPoolJobData.DataPool
@@ -71,26 +41,6 @@ func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetStatus() JobStatus {
 // GetError returns AddColumnToDataPoolJobAddColumnToDataPoolJob.Error, and is useful for accessing the field via an interface.
 func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetError() *AddColumnToDataPoolJobDataError {
 	return v.AddColumnToDataPoolJobData.Error
-}
-
-// GetProgress returns AddColumnToDataPoolJobAddColumnToDataPoolJob.Progress, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetProgress() float64 {
-	return v.AddColumnToDataPoolJobData.Progress
-}
-
-// GetStartedAt returns AddColumnToDataPoolJobAddColumnToDataPoolJob.StartedAt, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetStartedAt() *time.Time {
-	return v.AddColumnToDataPoolJobData.StartedAt
-}
-
-// GetSucceededAt returns AddColumnToDataPoolJobAddColumnToDataPoolJob.SucceededAt, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetSucceededAt() *time.Time {
-	return v.AddColumnToDataPoolJobData.SucceededAt
-}
-
-// GetFailedAt returns AddColumnToDataPoolJobAddColumnToDataPoolJob.FailedAt, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) GetFailedAt() *time.Time {
-	return v.AddColumnToDataPoolJobData.FailedAt
 }
 
 // GetColumnName returns AddColumnToDataPoolJobAddColumnToDataPoolJob.ColumnName, and is useful for accessing the field via an interface.
@@ -131,31 +81,11 @@ func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) UnmarshalJSON(b []byte) e
 type __premarshalAddColumnToDataPoolJobAddColumnToDataPoolJob struct {
 	Id string `json:"id"`
 
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	ModifiedBy string `json:"modifiedBy"`
-
-	Account *AddColumnToDataPoolJobDataAccount `json:"account"`
-
-	Environment *AddColumnToDataPoolJobDataEnvironment `json:"environment"`
-
 	DataPool *AddColumnToDataPoolJobDataDataPool `json:"dataPool"`
 
 	Status JobStatus `json:"status"`
 
 	Error *AddColumnToDataPoolJobDataError `json:"error"`
-
-	Progress float64 `json:"progress"`
-
-	StartedAt *time.Time `json:"startedAt"`
-
-	SucceededAt *time.Time `json:"succeededAt"`
-
-	FailedAt *time.Time `json:"failedAt"`
 
 	ColumnName string `json:"columnName"`
 
@@ -174,19 +104,9 @@ func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) __premarshalJSON() (*__pr
 	var retval __premarshalAddColumnToDataPoolJobAddColumnToDataPoolJob
 
 	retval.Id = v.AddColumnToDataPoolJobData.Id
-	retval.CreatedAt = v.AddColumnToDataPoolJobData.CreatedAt
-	retval.CreatedBy = v.AddColumnToDataPoolJobData.CreatedBy
-	retval.ModifiedAt = v.AddColumnToDataPoolJobData.ModifiedAt
-	retval.ModifiedBy = v.AddColumnToDataPoolJobData.ModifiedBy
-	retval.Account = v.AddColumnToDataPoolJobData.Account
-	retval.Environment = v.AddColumnToDataPoolJobData.Environment
 	retval.DataPool = v.AddColumnToDataPoolJobData.DataPool
 	retval.Status = v.AddColumnToDataPoolJobData.Status
 	retval.Error = v.AddColumnToDataPoolJobData.Error
-	retval.Progress = v.AddColumnToDataPoolJobData.Progress
-	retval.StartedAt = v.AddColumnToDataPoolJobData.StartedAt
-	retval.SucceededAt = v.AddColumnToDataPoolJobData.SucceededAt
-	retval.FailedAt = v.AddColumnToDataPoolJobData.FailedAt
 	retval.ColumnName = v.AddColumnToDataPoolJobData.ColumnName
 	retval.ColumnType = v.AddColumnToDataPoolJobData.ColumnType
 	return &retval, nil
@@ -203,32 +123,12 @@ func (v *AddColumnToDataPoolJobAddColumnToDataPoolJob) __premarshalJSON() (*__pr
 type AddColumnToDataPoolJobData struct {
 	// The AddColumnToDataPoolJob's ID.
 	Id string `json:"id"`
-	// The AddColumnToDataPoolJob's creation date and time in UTC.
-	CreatedAt time.Time `json:"createdAt"`
-	// Who created the AddColumnToDataPoolJob.
-	CreatedBy string `json:"createdBy"`
-	// The AddColumnToDataPoolJob's last modification date and time in UTC.
-	ModifiedAt time.Time `json:"modifiedAt"`
-	// Who modified the AddColumnToDataPoolJob last.
-	ModifiedBy string `json:"modifiedBy"`
-	// Account to which the AddColumnToDataPoolJob belongs.
-	Account *AddColumnToDataPoolJobDataAccount `json:"account"`
-	// Environment to which the AddColumnToDataPoolJob belongs.
-	Environment *AddColumnToDataPoolJobDataEnvironment `json:"environment"`
 	// The Data Pool to which a column will be added by the Job.
 	DataPool *AddColumnToDataPoolJobDataDataPool `json:"dataPool"`
 	// The current AddColumnToDataPoolJob's status.
 	Status JobStatus `json:"status"`
 	// The error that occurred while adding the column data, if any.
 	Error *AddColumnToDataPoolJobDataError `json:"error"`
-	// The current progress of the AddColumnToDataPool Job, from 0.0 to 1.0.
-	Progress float64 `json:"progress"`
-	// The time at which the AddColumnToDataPool Job started.
-	StartedAt *time.Time `json:"startedAt"`
-	// The time at which the AddColumnToDataPool Job succeeded.
-	SucceededAt *time.Time `json:"succeededAt"`
-	// The time at which the AddColumnToDataPool Job failed.
-	FailedAt *time.Time `json:"failedAt"`
 	// Name of the new column.
 	ColumnName string `json:"columnName"`
 	// Type of the new column.
@@ -237,28 +137,6 @@ type AddColumnToDataPoolJobData struct {
 
 // GetId returns AddColumnToDataPoolJobData.Id, and is useful for accessing the field via an interface.
 func (v *AddColumnToDataPoolJobData) GetId() string { return v.Id }
-
-// GetCreatedAt returns AddColumnToDataPoolJobData.CreatedAt, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobData) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetCreatedBy returns AddColumnToDataPoolJobData.CreatedBy, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobData) GetCreatedBy() string { return v.CreatedBy }
-
-// GetModifiedAt returns AddColumnToDataPoolJobData.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobData) GetModifiedAt() time.Time { return v.ModifiedAt }
-
-// GetModifiedBy returns AddColumnToDataPoolJobData.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobData) GetModifiedBy() string { return v.ModifiedBy }
-
-// GetAccount returns AddColumnToDataPoolJobData.Account, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobData) GetAccount() *AddColumnToDataPoolJobDataAccount {
-	return v.Account
-}
-
-// GetEnvironment returns AddColumnToDataPoolJobData.Environment, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobData) GetEnvironment() *AddColumnToDataPoolJobDataEnvironment {
-	return v.Environment
-}
 
 // GetDataPool returns AddColumnToDataPoolJobData.DataPool, and is useful for accessing the field via an interface.
 func (v *AddColumnToDataPoolJobData) GetDataPool() *AddColumnToDataPoolJobDataDataPool {
@@ -271,35 +149,11 @@ func (v *AddColumnToDataPoolJobData) GetStatus() JobStatus { return v.Status }
 // GetError returns AddColumnToDataPoolJobData.Error, and is useful for accessing the field via an interface.
 func (v *AddColumnToDataPoolJobData) GetError() *AddColumnToDataPoolJobDataError { return v.Error }
 
-// GetProgress returns AddColumnToDataPoolJobData.Progress, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobData) GetProgress() float64 { return v.Progress }
-
-// GetStartedAt returns AddColumnToDataPoolJobData.StartedAt, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobData) GetStartedAt() *time.Time { return v.StartedAt }
-
-// GetSucceededAt returns AddColumnToDataPoolJobData.SucceededAt, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobData) GetSucceededAt() *time.Time { return v.SucceededAt }
-
-// GetFailedAt returns AddColumnToDataPoolJobData.FailedAt, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobData) GetFailedAt() *time.Time { return v.FailedAt }
-
 // GetColumnName returns AddColumnToDataPoolJobData.ColumnName, and is useful for accessing the field via an interface.
 func (v *AddColumnToDataPoolJobData) GetColumnName() string { return v.ColumnName }
 
 // GetColumnType returns AddColumnToDataPoolJobData.ColumnType, and is useful for accessing the field via an interface.
 func (v *AddColumnToDataPoolJobData) GetColumnType() ColumnType { return v.ColumnType }
-
-// AddColumnToDataPoolJobDataAccount includes the requested fields of the GraphQL type Account.
-// The GraphQL type's documentation follows.
-//
-// The Account object.
-type AddColumnToDataPoolJobDataAccount struct {
-	// The Account's unique identifier.
-	Id string `json:"id"`
-}
-
-// GetId returns AddColumnToDataPoolJobDataAccount.Id, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobDataAccount) GetId() string { return v.Id }
 
 // AddColumnToDataPoolJobDataDataPool includes the requested fields of the GraphQL type DataPool.
 // The GraphQL type's documentation follows.
@@ -314,20 +168,6 @@ type AddColumnToDataPoolJobDataDataPool struct {
 
 // GetId returns AddColumnToDataPoolJobDataDataPool.Id, and is useful for accessing the field via an interface.
 func (v *AddColumnToDataPoolJobDataDataPool) GetId() string { return v.Id }
-
-// AddColumnToDataPoolJobDataEnvironment includes the requested fields of the GraphQL type Environment.
-// The GraphQL type's documentation follows.
-//
-// The Environments object.
-//
-// Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads. Environments are hosted in a specific region, initially in us-east-2 only.
-type AddColumnToDataPoolJobDataEnvironment struct {
-	// The Environment's unique identifier.
-	Id string `json:"id"`
-}
-
-// GetId returns AddColumnToDataPoolJobDataEnvironment.Id, and is useful for accessing the field via an interface.
-func (v *AddColumnToDataPoolJobDataEnvironment) GetId() string { return v.Id }
 
 // AddColumnToDataPoolJobDataError includes the requested fields of the GraphQL type Error.
 // The GraphQL type's documentation follows.
@@ -933,36 +773,6 @@ func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToData
 	return v.AddColumnToDataPoolJobData.Id
 }
 
-// GetCreatedAt returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.CreatedAt, and is useful for accessing the field via an interface.
-func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetCreatedAt() time.Time {
-	return v.AddColumnToDataPoolJobData.CreatedAt
-}
-
-// GetCreatedBy returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.CreatedBy, and is useful for accessing the field via an interface.
-func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetCreatedBy() string {
-	return v.AddColumnToDataPoolJobData.CreatedBy
-}
-
-// GetModifiedAt returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetModifiedAt() time.Time {
-	return v.AddColumnToDataPoolJobData.ModifiedAt
-}
-
-// GetModifiedBy returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetModifiedBy() string {
-	return v.AddColumnToDataPoolJobData.ModifiedBy
-}
-
-// GetAccount returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.Account, and is useful for accessing the field via an interface.
-func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetAccount() *AddColumnToDataPoolJobDataAccount {
-	return v.AddColumnToDataPoolJobData.Account
-}
-
-// GetEnvironment returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.Environment, and is useful for accessing the field via an interface.
-func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetEnvironment() *AddColumnToDataPoolJobDataEnvironment {
-	return v.AddColumnToDataPoolJobData.Environment
-}
-
 // GetDataPool returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.DataPool, and is useful for accessing the field via an interface.
 func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetDataPool() *AddColumnToDataPoolJobDataDataPool {
 	return v.AddColumnToDataPoolJobData.DataPool
@@ -976,26 +786,6 @@ func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToData
 // GetError returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.Error, and is useful for accessing the field via an interface.
 func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetError() *AddColumnToDataPoolJobDataError {
 	return v.AddColumnToDataPoolJobData.Error
-}
-
-// GetProgress returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.Progress, and is useful for accessing the field via an interface.
-func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetProgress() float64 {
-	return v.AddColumnToDataPoolJobData.Progress
-}
-
-// GetStartedAt returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.StartedAt, and is useful for accessing the field via an interface.
-func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetStartedAt() *time.Time {
-	return v.AddColumnToDataPoolJobData.StartedAt
-}
-
-// GetSucceededAt returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.SucceededAt, and is useful for accessing the field via an interface.
-func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetSucceededAt() *time.Time {
-	return v.AddColumnToDataPoolJobData.SucceededAt
-}
-
-// GetFailedAt returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.FailedAt, and is useful for accessing the field via an interface.
-func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob) GetFailedAt() *time.Time {
-	return v.AddColumnToDataPoolJobData.FailedAt
 }
 
 // GetColumnName returns CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob.ColumnName, and is useful for accessing the field via an interface.
@@ -1036,31 +826,11 @@ func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToData
 type __premarshalCreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob struct {
 	Id string `json:"id"`
 
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	ModifiedBy string `json:"modifiedBy"`
-
-	Account *AddColumnToDataPoolJobDataAccount `json:"account"`
-
-	Environment *AddColumnToDataPoolJobDataEnvironment `json:"environment"`
-
 	DataPool *AddColumnToDataPoolJobDataDataPool `json:"dataPool"`
 
 	Status JobStatus `json:"status"`
 
 	Error *AddColumnToDataPoolJobDataError `json:"error"`
-
-	Progress float64 `json:"progress"`
-
-	StartedAt *time.Time `json:"startedAt"`
-
-	SucceededAt *time.Time `json:"succeededAt"`
-
-	FailedAt *time.Time `json:"failedAt"`
 
 	ColumnName string `json:"columnName"`
 
@@ -1079,19 +849,9 @@ func (v *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToData
 	var retval __premarshalCreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponseJobAddColumnToDataPoolJob
 
 	retval.Id = v.AddColumnToDataPoolJobData.Id
-	retval.CreatedAt = v.AddColumnToDataPoolJobData.CreatedAt
-	retval.CreatedBy = v.AddColumnToDataPoolJobData.CreatedBy
-	retval.ModifiedAt = v.AddColumnToDataPoolJobData.ModifiedAt
-	retval.ModifiedBy = v.AddColumnToDataPoolJobData.ModifiedBy
-	retval.Account = v.AddColumnToDataPoolJobData.Account
-	retval.Environment = v.AddColumnToDataPoolJobData.Environment
 	retval.DataPool = v.AddColumnToDataPoolJobData.DataPool
 	retval.Status = v.AddColumnToDataPoolJobData.Status
 	retval.Error = v.AddColumnToDataPoolJobData.Error
-	retval.Progress = v.AddColumnToDataPoolJobData.Progress
-	retval.StartedAt = v.AddColumnToDataPoolJobData.StartedAt
-	retval.SucceededAt = v.AddColumnToDataPoolJobData.SucceededAt
-	retval.FailedAt = v.AddColumnToDataPoolJobData.FailedAt
 	retval.ColumnName = v.AddColumnToDataPoolJobData.ColumnName
 	retval.ColumnType = v.AddColumnToDataPoolJobData.ColumnType
 	return &retval, nil
@@ -8294,10 +8054,20 @@ func (v *DataSourceDataDataPoolsDataPoolConnection) GetNodes() []*DataSourceData
 type DataSourceDataDataPoolsDataPoolConnectionNodesDataPool struct {
 	// The Data Pool's unique identifier.
 	Id string `json:"id"`
+	// Whether the Data Pool has access control enabled or not.
+	//
+	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
+	// Policies in order to query the Data Pool and its Metrics.
+	AccessControlEnabled bool `json:"accessControlEnabled"`
 }
 
 // GetId returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.Id, and is useful for accessing the field via an interface.
 func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetId() string { return v.Id }
+
+// GetAccessControlEnabled returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetAccessControlEnabled() bool {
+	return v.AccessControlEnabled
+}
 
 // DataSourceDataError includes the requested fields of the GraphQL type Error.
 // The GraphQL type's documentation follows.
@@ -16103,16 +15873,6 @@ query AddColumnToDataPoolJob ($id: ID!) {
 }
 fragment AddColumnToDataPoolJobData on AddColumnToDataPoolJob {
 	id
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-	account {
-		id
-	}
-	environment {
-		id
-	}
 	dataPool {
 		id
 	}
@@ -16120,10 +15880,6 @@ fragment AddColumnToDataPoolJobData on AddColumnToDataPoolJob {
 	error {
 		... GqlError
 	}
-	progress
-	startedAt
-	succeededAt
-	failedAt
 	columnName
 	columnType
 }
@@ -16205,16 +15961,6 @@ mutation CreateAddColumnToDataPoolJob ($input: CreateAddColumnToDataPoolJobInput
 }
 fragment AddColumnToDataPoolJobData on AddColumnToDataPoolJob {
 	id
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-	account {
-		id
-	}
-	environment {
-		id
-	}
 	dataPool {
 		id
 	}
@@ -16222,10 +15968,6 @@ fragment AddColumnToDataPoolJobData on AddColumnToDataPoolJob {
 	error {
 		... GqlError
 	}
-	progress
-	startedAt
-	succeededAt
-	failedAt
 	columnName
 	columnType
 }
@@ -16448,6 +16190,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -16807,6 +16550,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -17166,6 +16910,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -17525,6 +17270,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -17786,6 +17532,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -18070,6 +17817,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -18400,6 +18148,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -18759,6 +18508,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -18998,6 +18748,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -19169,6 +18920,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -19503,6 +19255,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -19695,6 +19448,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -19922,6 +19676,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -20273,6 +20028,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -20557,6 +20313,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -20768,6 +20525,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -20929,6 +20687,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -21103,6 +20862,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -21700,6 +21460,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -22056,6 +21817,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -22429,6 +22191,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -22705,6 +22468,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -22989,6 +22753,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -23319,6 +23084,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -23558,6 +23324,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -23729,6 +23496,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
@@ -23896,6 +23664,7 @@ fragment DataSourceData on DataSource {
 	dataPools {
 		nodes {
 			id
+			accessControlEnabled
 		}
 	}
 	connectionSettings {
