@@ -27,7 +27,6 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataPoolExists("propel_data_pool.bar"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "table", "CLUSTER_TEST_TABLE_1"),
-					resource.TestCheckResourceAttr("propel_data_pool.bar", "tenant_id", "account_id"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "description", "Data Pool test"),
 				),
 			},
@@ -37,7 +36,6 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataPoolExists("propel_data_pool.bar"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "table", "CLUSTER_TEST_TABLE_1"),
-					resource.TestCheckResourceAttr("propel_data_pool.bar", "tenant_id", "account_id"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "description", "Updated description"),
 				),
 			},
@@ -90,7 +88,6 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
 			type = "STRING"
 			nullable = false
 		}
-		tenant_id = "account_id"
 		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
 		data_source = "${propel_data_source.foo.id}"
 	}`, ctx)
@@ -141,7 +138,6 @@ func testAccUpdatePropelDataPoolConfigBasic(ctx map[string]any) string {
 			type = "STRING"
 			nullable = false
 		}
-		tenant_id = "account_id"
 		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
 		data_source = "${propel_data_source.foo.id}"
 	}`, ctx)

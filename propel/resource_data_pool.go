@@ -91,12 +91,6 @@ func resourceDataPool() *schema.Resource {
 					},
 				},
 			},
-			"tenant_id": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				ForceNew:    true,
-				Description: "The tenant ID for restricting access between customers.",
-			},
 			"timestamp": {
 				Type:        schema.TypeString,
 				Required:    true,
