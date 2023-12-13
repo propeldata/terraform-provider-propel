@@ -520,9 +520,14 @@ func waitForAddColumnJob(ctx context.Context, client graphql.Client, id string, 
 		ContinuousTargetOccurence: 3,
 	}
 
-	_, err := createStateConf.WaitForStateContext(ctx)
+	resp, err := createStateConf.WaitForStateContext(ctx)
 	if err != nil {
 		return fmt.Errorf("error waiting for Add Column Job to succeed: %s", err)
+	}
+
+	addColumnJobResponse, ok := resp.(*pc.AddColumnToDataPoolJobResponse)
+	if !ok || addColumnJobResponse.AddColumnToDataPoolJob.Status == pc.JobStatusFailed {
+		return fmt.Errorf("add column job failed: %s", addColumnJobResponse.AddColumnToDataPoolJob.Error.Message)
 	}
 
 	return nil
