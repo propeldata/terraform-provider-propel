@@ -649,10 +649,13 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 }
 
 func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	cs := d.Get("snowflake_connection_settings").([]any)[0].(map[string]any)
+	settings := make(map[string]any)
 
-	settings := map[string]any{
-		"password": cs["password"],
+	csList := d.Get("snowflake_connection_settings").([]any)
+	if len(csList) == 1 {
+		cs := csList[0].(map[string]any)
+
+		settings["password"] = cs["password"]
 	}
 
 	switch s := response.DataSource.GetConnectionSettings().(type) {
@@ -772,10 +775,13 @@ func handleHttpConnectionSettings(response *pc.DataSourceResponse, d *schema.Res
 }
 
 func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	cs := d.Get("s3_connection_settings").([]any)[0].(map[string]any)
+	settings := make(map[string]any)
 
-	settings := map[string]any{
-		"aws_secret_access_key": cs["aws_secret_access_key"],
+	csList := d.Get("s3_connection_settings").([]any)
+	if len(csList) == 1 {
+		cs := csList[0].(map[string]any)
+
+		settings["aws_secret_access_key"] = cs["aws_secret_access_key"]
 	}
 
 	switch s := response.DataSource.GetConnectionSettings().(type) {
@@ -794,13 +800,11 @@ func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.Resou
 }
 
 func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	if d.Get("webhook_connection_settings") == nil || len(d.Get("webhook_connection_settings").([]any)) == 0 {
-		return nil
-	}
+	var settings map[string]any
 
 	switch s := response.DataSource.GetConnectionSettings().(type) {
 	case *pc.DataSourceDataConnectionSettingsWebhookConnectionSettings:
-		settings := map[string]any{
+		settings = map[string]any{
 			"timestamp":   s.GetTimestamp(),
 			"tenant":      s.GetTenant(),
 			"unique_id":   s.GetUniqueId(),

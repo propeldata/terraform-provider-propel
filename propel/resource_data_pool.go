@@ -270,6 +270,10 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) di
 		return diag.FromErr(err)
 	}
 
+	if err := d.Set("tenant_id", response.DataPool.Tenant.ColumnName); err != nil {
+		return diag.FromErr(err)
+	}
+
 	if err := d.Set("access_control_enabled", response.DataPool.AccessControlEnabled); err != nil {
 		return diag.FromErr(err)
 	}
@@ -292,6 +296,23 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) di
 
 	if err := d.Set("syncing", []map[string]any{syncing}); err != nil {
 		return diag.FromErr(err)
+	}
+
+	columnNodes := response.DataPool.Columns.Nodes
+	if len(columnNodes) > 0 {
+		columns := make([]any, 0, len(columnNodes))
+
+		for _, node := range columnNodes {
+			columns = append(columns, map[string]any{
+				"name":     node.GetColumnName(),
+				"type":     node.GetType(),
+				"nullable": node.GetIsNullable(),
+			})
+		}
+
+		if err := d.Set("column", (any)(columns)); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	return diags
