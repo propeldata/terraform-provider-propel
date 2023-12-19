@@ -599,6 +599,10 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 		return diag.FromErr(err)
 	}
 
+	if err := d.Set("type", utils.GetDataSourceType(response.DataSource.GetType())); err != nil {
+		return diag.FromErr(err)
+	}
+
 	if err := d.Set("created_at", response.DataSource.GetCreatedAt().String()); err != nil {
 		return diag.FromErr(err)
 	}
