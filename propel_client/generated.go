@@ -2168,6 +2168,11 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetTable() stri
 	return v.DataPoolData.Table
 }
 
+// GetTenant returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.Tenant, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetTenant() *DataPoolDataTenant {
+	return v.DataPoolData.Tenant
+}
+
 // GetTimestamp returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.Timestamp, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetTimestamp() *DataPoolDataTimestamp {
 	return v.DataPoolData.Timestamp
@@ -2289,6 +2294,8 @@ type __premarshalCreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 
 	Table string `json:"table"`
 
+	Tenant *DataPoolDataTenant `json:"tenant"`
+
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
@@ -2340,6 +2347,7 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 	retval.Status = v.DataPoolData.Status
 	retval.Error = v.DataPoolData.Error
 	retval.Table = v.DataPoolData.Table
+	retval.Tenant = v.DataPoolData.Tenant
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
 	retval.UniqueId = v.DataPoolData.UniqueId
@@ -5033,6 +5041,9 @@ func (v *DataPoolByNameDataPool) GetError() *DataPoolDataError { return v.DataPo
 // GetTable returns DataPoolByNameDataPool.Table, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetTable() string { return v.DataPoolData.Table }
 
+// GetTenant returns DataPoolByNameDataPool.Tenant, and is useful for accessing the field via an interface.
+func (v *DataPoolByNameDataPool) GetTenant() *DataPoolDataTenant { return v.DataPoolData.Tenant }
+
 // GetTimestamp returns DataPoolByNameDataPool.Timestamp, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetTimestamp() *DataPoolDataTimestamp {
 	return v.DataPoolData.Timestamp
@@ -5152,6 +5163,8 @@ type __premarshalDataPoolByNameDataPool struct {
 
 	Table string `json:"table"`
 
+	Tenant *DataPoolDataTenant `json:"tenant"`
+
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
@@ -5203,6 +5216,7 @@ func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByName
 	retval.Status = v.DataPoolData.Status
 	retval.Error = v.DataPoolData.Error
 	retval.Table = v.DataPoolData.Table
+	retval.Tenant = v.DataPoolData.Tenant
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
 	retval.UniqueId = v.DataPoolData.UniqueId
@@ -5288,6 +5302,8 @@ type DataPoolData struct {
 	Error  *DataPoolDataError `json:"error"`
 	// The name of the Data Pool's table.
 	Table string `json:"table"`
+	// The Data Pool's tenant ID, if configured.
+	Tenant *DataPoolDataTenant `json:"tenant"`
 	// The Data Pool's primary timestamp column.
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
 	// The Data Pool's columns.
@@ -5325,6 +5341,9 @@ func (v *DataPoolData) GetError() *DataPoolDataError { return v.Error }
 
 // GetTable returns DataPoolData.Table, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetTable() string { return v.Table }
+
+// GetTenant returns DataPoolData.Tenant, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetTenant() *DataPoolDataTenant { return v.Tenant }
 
 // GetTimestamp returns DataPoolData.Timestamp, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetTimestamp() *DataPoolDataTimestamp { return v.Timestamp }
@@ -5421,6 +5440,8 @@ type __premarshalDataPoolData struct {
 
 	Table string `json:"table"`
 
+	Tenant *DataPoolDataTenant `json:"tenant"`
+
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
@@ -5472,6 +5493,7 @@ func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
 	retval.Status = v.Status
 	retval.Error = v.Error
 	retval.Table = v.Table
+	retval.Tenant = v.Tenant
 	retval.Timestamp = v.Timestamp
 	retval.Columns = v.Columns
 	retval.UniqueId = v.UniqueId
@@ -6051,6 +6073,9 @@ func (v *DataPoolDataPool) GetError() *DataPoolDataError { return v.DataPoolData
 // GetTable returns DataPoolDataPool.Table, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetTable() string { return v.DataPoolData.Table }
 
+// GetTenant returns DataPoolDataPool.Tenant, and is useful for accessing the field via an interface.
+func (v *DataPoolDataPool) GetTenant() *DataPoolDataTenant { return v.DataPoolData.Tenant }
+
 // GetTimestamp returns DataPoolDataPool.Timestamp, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetTimestamp() *DataPoolDataTimestamp { return v.DataPoolData.Timestamp }
 
@@ -6162,6 +6187,8 @@ type __premarshalDataPoolDataPool struct {
 
 	Table string `json:"table"`
 
+	Tenant *DataPoolDataTenant `json:"tenant"`
+
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
@@ -6213,6 +6240,7 @@ func (v *DataPoolDataPool) __premarshalJSON() (*__premarshalDataPoolDataPool, er
 	retval.Status = v.DataPoolData.Status
 	retval.Error = v.DataPoolData.Error
 	retval.Table = v.DataPoolData.Table
+	retval.Tenant = v.DataPoolData.Tenant
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
 	retval.UniqueId = v.DataPoolData.UniqueId
@@ -6534,6 +6562,67 @@ func (v *DataPoolDataSyncsSyncConnectionNodesSync) __premarshalJSON() (*__premar
 	return &retval, nil
 }
 
+// DataPoolDataTenant includes the requested fields of the GraphQL type Tenant.
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's tenant ID column. The tenant ID column is used to control access to your data with access policies.
+type DataPoolDataTenant struct {
+	TenantData `json:"-"`
+}
+
+// GetColumnName returns DataPoolDataTenant.ColumnName, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTenant) GetColumnName() string { return v.TenantData.ColumnName }
+
+// GetType returns DataPoolDataTenant.Type, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTenant) GetType() string { return v.TenantData.Type }
+
+func (v *DataPoolDataTenant) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolDataTenant
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolDataTenant = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.TenantData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolDataTenant struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+}
+
+func (v *DataPoolDataTenant) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolDataTenant) __premarshalJSON() (*__premarshalDataPoolDataTenant, error) {
+	var retval __premarshalDataPoolDataTenant
+
+	retval.ColumnName = v.TenantData.ColumnName
+	retval.Type = v.TenantData.Type
+	return &retval, nil
+}
+
 // DataPoolDataTimestamp includes the requested fields of the GraphQL type Timestamp.
 // The GraphQL type's documentation follows.
 //
@@ -6788,6 +6877,11 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetT
 	return v.DataPoolData.Table
 }
 
+// GetTenant returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Tenant, and is useful for accessing the field via an interface.
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetTenant() *DataPoolDataTenant {
+	return v.DataPoolData.Tenant
+}
+
 // GetTimestamp returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Timestamp, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetTimestamp() *DataPoolDataTimestamp {
 	return v.DataPoolData.Timestamp
@@ -6909,6 +7003,8 @@ type __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPo
 
 	Table string `json:"table"`
 
+	Tenant *DataPoolDataTenant `json:"tenant"`
+
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
@@ -6960,6 +7056,7 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) __pr
 	retval.Status = v.DataPoolData.Status
 	retval.Error = v.DataPoolData.Error
 	retval.Table = v.DataPoolData.Table
+	retval.Tenant = v.DataPoolData.Tenant
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
 	retval.UniqueId = v.DataPoolData.UniqueId
@@ -9779,6 +9876,9 @@ func (v *MetricDataDataPool) GetError() *DataPoolDataError { return v.DataPoolDa
 // GetTable returns MetricDataDataPool.Table, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetTable() string { return v.DataPoolData.Table }
 
+// GetTenant returns MetricDataDataPool.Tenant, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetTenant() *DataPoolDataTenant { return v.DataPoolData.Tenant }
+
 // GetTimestamp returns MetricDataDataPool.Timestamp, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetTimestamp() *DataPoolDataTimestamp { return v.DataPoolData.Timestamp }
 
@@ -9894,6 +9994,8 @@ type __premarshalMetricDataDataPool struct {
 
 	Table string `json:"table"`
 
+	Tenant *DataPoolDataTenant `json:"tenant"`
+
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
@@ -9945,6 +10047,7 @@ func (v *MetricDataDataPool) __premarshalJSON() (*__premarshalMetricDataDataPool
 	retval.Status = v.DataPoolData.Status
 	retval.Error = v.DataPoolData.Error
 	retval.Table = v.DataPoolData.Table
+	retval.Tenant = v.DataPoolData.Tenant
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
 	retval.UniqueId = v.DataPoolData.UniqueId
@@ -12806,6 +12909,11 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTable() string
 	return v.DataPoolData.Table
 }
 
+// GetTenant returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Tenant, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTenant() *DataPoolDataTenant {
+	return v.DataPoolData.Tenant
+}
+
 // GetTimestamp returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Timestamp, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTimestamp() *DataPoolDataTimestamp {
 	return v.DataPoolData.Timestamp
@@ -12927,6 +13035,8 @@ type __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 
 	Table string `json:"table"`
 
+	Tenant *DataPoolDataTenant `json:"tenant"`
+
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
 
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
@@ -12978,6 +13088,7 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON(
 	retval.Status = v.DataPoolData.Status
 	retval.Error = v.DataPoolData.Error
 	retval.Table = v.DataPoolData.Table
+	retval.Tenant = v.DataPoolData.Tenant
 	retval.Timestamp = v.DataPoolData.Timestamp
 	retval.Columns = v.DataPoolData.Columns
 	retval.UniqueId = v.DataPoolData.UniqueId
@@ -15330,6 +15441,23 @@ const (
 	TableIntrospectionStatusFailed TableIntrospectionStatus = "FAILED"
 )
 
+// TenantData includes the GraphQL fields of Tenant requested by the fragment TenantData.
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's tenant ID column. The tenant ID column is used to control access to your data with access policies.
+type TenantData struct {
+	// The name of the column that represents the tenant ID.
+	ColumnName string `json:"columnName"`
+	// The tenant ID column's type.
+	Type string `json:"type"`
+}
+
+// GetColumnName returns TenantData.ColumnName, and is useful for accessing the field via an interface.
+func (v *TenantData) GetColumnName() string { return v.ColumnName }
+
+// GetType returns TenantData.Type, and is useful for accessing the field via an interface.
+func (v *TenantData) GetType() string { return v.Type }
+
 // The fields to specify the Data Pool's tenant ID column. The tenant ID column is used to control access to your data with access policies.
 type TenantInput struct {
 	// The name of the column that represents the tenant ID.
@@ -16117,6 +16245,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -16275,6 +16406,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -16477,6 +16612,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -16635,6 +16773,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -16837,6 +16979,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -16995,6 +17140,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -17197,6 +17346,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -17356,6 +17508,10 @@ fragment DataSourceData on DataSource {
 		}
 	}
 }
+fragment TenantData on Tenant {
+	columnName
+	type
+}
 fragment TimestampData on Timestamp {
 	columnName
 	type
@@ -17466,6 +17622,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -17617,6 +17776,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -18075,6 +18238,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -18233,6 +18399,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -18435,6 +18605,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -18593,6 +18766,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -19182,6 +19359,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -19340,6 +19520,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -19610,6 +19794,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -19761,6 +19948,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -19962,6 +20153,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -20113,6 +20307,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -20247,6 +20445,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -20398,6 +20599,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -21387,6 +21592,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -21545,6 +21753,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -21744,6 +21956,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -21902,6 +22117,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -22118,6 +22337,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -22277,6 +22499,10 @@ fragment DataSourceData on DataSource {
 		}
 	}
 }
+fragment TenantData on Tenant {
+	columnName
+	type
+}
 fragment TimestampData on Timestamp {
 	columnName
 	type
@@ -22398,6 +22624,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -22553,6 +22782,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName
@@ -23011,6 +23244,9 @@ fragment DataPoolData on DataPool {
 		message
 	}
 	table
+	tenant {
+		... TenantData
+	}
 	timestamp {
 		... TimestampData
 	}
@@ -23169,6 +23405,10 @@ fragment DataSourceData on DataSource {
 			... TableIntrospectionData
 		}
 	}
+}
+fragment TenantData on Tenant {
+	columnName
+	type
 }
 fragment TimestampData on Timestamp {
 	columnName

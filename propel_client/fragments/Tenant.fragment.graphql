@@ -1,0 +1,4 @@
+fragment TenantData on Tenant {
+  columnName
+  type
+}

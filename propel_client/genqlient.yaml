@@ -12,6 +12,7 @@ operations:
 - fragments/DataPoolAccessPolicy.fragment.graphql
 - fragments/DataSource.fragment.graphql
 - fragments/Dimension.fragment.graphql
+- fragments/Tenant.fragment.graphql
 - fragments/Timestamp.fragment.graphql
 - fragments/Error.fragment.graphql
 - fragments/Filter.fragment.graphql
