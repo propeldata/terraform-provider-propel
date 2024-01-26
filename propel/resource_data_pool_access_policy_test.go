@@ -77,7 +77,6 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 			type = "STRING"
 			nullable = false
 		}
-		tenant_id = "account_id"
 		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
 		data_source = "${propel_data_source.foo.id}"
 		access_control_enabled = true

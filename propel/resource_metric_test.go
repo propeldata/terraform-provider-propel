@@ -258,7 +258,6 @@ func testAccCheckPropelMetricConfigBasic(ctx map[string]any) string {
 			type = "STRING"
 			nullable = false
 		}
-		tenant_id = "account_id"
 		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
 		data_source = "${propel_data_source.foo.id}"
 	}
