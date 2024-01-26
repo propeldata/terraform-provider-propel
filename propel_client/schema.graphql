@@ -856,7 +856,7 @@ type DataPool implements Node & Common {
   "The Data Pool's primary timestamp column."
   timestamp: Timestamp!
   "The Data Pool's tenant ID, if configured."
-  tenant: Tenant
+  tenant: Tenant @deprecated(reason: "Will be removed; use Data Pool Access Policies instead")
   "The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool."
   uniqueId: UniqueId
   "The number of records in the Data Pool."
@@ -970,19 +970,19 @@ you could write
 
 ```
 {
-"column": "value",
-"operator": "GREATER_THAN",
-"value": "0",
-"and": [{
-"column": "value",
-"operator": "LESS_THAN_OR_EQUAL_TO",
-"value": "0"
-}],
-"or": [{
-"column": "status",
-"operator": "EQUALS",
-"value": "confirmed"
-}]
+  "column": "value",
+  "operator": "GREATER_THAN",
+  "value": "0",
+  "and": [{
+    "column": "value",
+    "operator": "LESS_THAN_OR_EQUAL_TO",
+    "value": "0"
+  }],
+  "or": [{
+    "column": "status",
+    "operator": "EQUALS",
+    "value": "confirmed"
+  }]
 }
 ```
 
@@ -1176,7 +1176,7 @@ input CreateDataPoolInputV2 {
   "The list of columns."
   columns: [DataPoolColumnInput!]!
   "The Data Pool's optional tenant ID column. The tenant ID column is used to control access to your data with access policies."
-  tenant: TenantInput
+  tenant: TenantInput @deprecated(reason: "Will be removed; use Data Pool Access Policies instead")
   """
   The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
   """
@@ -1542,9 +1542,9 @@ type Metric implements Node & Common {
   """
   leaderboard(input: LeaderboardInput!): LeaderboardResponse
   """List the Policies associated to the Metric."""
-  policies(first: Int, after: String, last: Int, before: String): PolicyConnection!
+  policies(first: Int, after: String, last: Int, before: String): PolicyConnection! @deprecated(reason: "Use Data Pool Access Policies instead")
   """Whether or not access control is enabled for the Metric."""
-  accessControlEnabled: Boolean!
+  accessControlEnabled: Boolean! @deprecated(reason: "Use Data Pool Access Policies instead")
 }
 
 """A Metric's settings, depending on its type."""
@@ -2228,19 +2228,19 @@ you could write
 
 ```
 {
-"column": "value",
-"operator": "GREATER_THAN",
-"value": "0",
-"and": [{
-"column": "value",
-"operator": "LESS_THAN_OR_EQUAL_TO",
-"value": "0"
-}],
-"or": [{
-"column": "status",
-"operator": "EQUALS",
-"value": "confirmed"
-}]
+  "column": "value",
+  "operator": "GREATER_THAN",
+  "value": "0",
+  "and": [{
+    "column": "value",
+    "operator": "LESS_THAN_OR_EQUAL_TO",
+    "value": "0"
+  }],
+  "or": [{
+    "column": "status",
+    "operator": "EQUALS",
+    "value": "confirmed"
+  }]
 }
 ```
 
@@ -2402,6 +2402,8 @@ enum QueryType {
   REPORT
   """Indicates a Record Table Query."""
   RECORDS
+  """Indicates records queried by unique ID."""
+  RECORDS_BY_UNIQUE_ID
   """Indicates a SelectV1 Query."""
   SELECT
   """Indicates a SQL Query."""
@@ -3085,15 +3087,15 @@ type Mutation {
   """
   Creates a new Policy granting an Application access to a Metric's data.
   """
-  createPolicy(input: CreatePolicyInput!): PolicyResponse
+  createPolicy(input: CreatePolicyInput!): PolicyResponse @deprecated(reason: "Use Data Pool Access Policies instead")
   """
   Modifies an existing Policy. You can modify the Application's level of access to the Metric's data.
   """
-  modifyPolicy(input: ModifyPolicyInput!): PolicyResponse
+  modifyPolicy(input: ModifyPolicyInput!): PolicyResponse @deprecated(reason: "Use Data Pool Access Policies instead")
   """
   Deletes a Policy. The associated Application will no longer have access to the Metric's data.
   """
-  deletePolicy(id: ID!): ID
+  deletePolicy(id: ID!): ID @deprecated(reason: "Use Data Pool Access Policies instead")
   """Schedules a new Deletion Job on the specified Data Pool."""
   requestDelete(input: DeletionRequestInput!): RequestDeleteResponse! @deprecated(reason: "This has been renamed to `createDeletionJob`")
   """Schedules a new Deletion Job on the specified Data Pool."""

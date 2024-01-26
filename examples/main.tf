@@ -218,12 +218,6 @@ resource "propel_metric" "custom_metric" {
   dimensions = ["column_1", "column_2"]
 }
 
-resource "propel_policy" "sum_metric_policy" {
-  type = "ALL_ACCESS"
-  metric = propel_metric.sum_metric.id
-  application = var.client_id
-}
-
 output "snowflake_data_source_id" {
   value = propel_data_source.snowflake_data_source.id
 }
@@ -262,8 +256,4 @@ output "max_metric_id" {
 
 output "custom_metric_id" {
   value = propel_metric.custom_metric.id
-}
-
-output "sum_metric_policy_id" {
-  value = propel_policy.sum_metric_policy.id
 }
