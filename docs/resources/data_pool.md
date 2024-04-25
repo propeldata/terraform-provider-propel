@@ -10,6 +10,8 @@ description: |-
 
 Provides a Propel Data Pool resource. This can be used to create and manage Propel Data Pools.
 
+For Webhook Data Pools, you just need to create a Webhook Data Source and the Data Pool will be created automatically.
+
 ## Example Usage
 
 ```terraform
