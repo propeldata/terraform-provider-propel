@@ -207,13 +207,14 @@ Optional:
 Required:
 
 - `timestamp` (String) The primary timestamp column.
+- `tenant` (String) The tenant ID column, if configured.
+- `unique_id` (String) The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 
 Optional:
 
 - `basic_auth` (Block List, Max: 1) The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it. (see [below for nested schema](#nestedblock--webhook_connection_settings--basic_auth))
 - `column` (Block List) The additional column for the Webhook Data Source table. (see [below for nested schema](#nestedblock--webhook_connection_settings--column))
-- `tenant` (String) The tenant ID column, if configured.
-- `unique_id` (String) The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
+
 
 Read-Only:
 
