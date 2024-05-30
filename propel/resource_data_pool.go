@@ -167,10 +167,11 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 
 	var diags diag.Diagnostics
 
-	id := d.Get("data_source").(string)
+	dataSourceId := d.Get("data_source").(string)
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
 	accessControlEnabled := d.Get("access_control_enabled").(bool)
+	table := d.Get("table").(string)
 
 	columns := make([]*pc.DataPoolColumnInput, 0)
 	if def, ok := d.Get("column").([]any); ok && len(def) > 0 {
@@ -180,8 +181,8 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 	input := &pc.CreateDataPoolInputV2{
 		UniqueName:  &uniqueName,
 		Description: &description,
-		DataSource:  id,
-		Table:       d.Get("table").(string),
+		DataSource:  &dataSourceId,
+		Table:       &table,
 		Timestamp: &pc.TimestampInput{
 			ColumnName: d.Get("timestamp").(string),
 		},

@@ -1,0 +1,3 @@
+mutation DeleteMaterializedView($id: ID!) {
+    deleteMaterializedView(id: $id)
+}

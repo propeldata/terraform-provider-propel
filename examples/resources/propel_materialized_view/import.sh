@@ -1,0 +1,1 @@
+terraform import propel_materialized_view.my_materialized_view MAT00000000000000000000000000

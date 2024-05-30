@@ -49,7 +49,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckPropelDataSourceDestroy,
 		Steps: []resource.TestStep{
-			// should create the data source
+			// should create the Data Source
 			{
 				Config: testAccCheckPropelDataSourceConfigBasic(httpCtx),
 				Check: resource.ComposeTestCheckFunc(

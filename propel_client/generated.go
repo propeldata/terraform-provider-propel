@@ -9561,6 +9561,19 @@ type DeleteDataSourceResponse struct {
 // GetDeleteDataSource returns DeleteDataSourceResponse.DeleteDataSource, and is useful for accessing the field via an interface.
 func (v *DeleteDataSourceResponse) GetDeleteDataSource() *string { return v.DeleteDataSource }
 
+// DeleteMaterializedViewResponse is returned by DeleteMaterializedView on success.
+type DeleteMaterializedViewResponse struct {
+	// Deletes a Materialized View and returns its ID if the Materialized View was deleted successfully.
+	// Note that deleting a Materialized View does not delete its target Data Pool. If you want to delete its target
+	// Data Pool, you must use the `deleteDataPool` mutation.
+	DeleteMaterializedView *string `json:"deleteMaterializedView"`
+}
+
+// GetDeleteMaterializedView returns DeleteMaterializedViewResponse.DeleteMaterializedView, and is useful for accessing the field via an interface.
+func (v *DeleteMaterializedViewResponse) GetDeleteMaterializedView() *string {
+	return v.DeleteMaterializedView
+}
+
 // DeleteMetricByNameResponse is returned by DeleteMetricByName on success.
 type DeleteMetricByNameResponse struct {
 	// Deletes a Metric by unique name and returns its ID if the Metric was deleted successfully.
@@ -16838,6 +16851,14 @@ type __DeleteDataSourceInput struct {
 // GetId returns __DeleteDataSourceInput.Id, and is useful for accessing the field via an interface.
 func (v *__DeleteDataSourceInput) GetId() string { return v.Id }
 
+// __DeleteMaterializedViewInput is used internally by genqlient
+type __DeleteMaterializedViewInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __DeleteMaterializedViewInput.Id, and is useful for accessing the field via an interface.
+func (v *__DeleteMaterializedViewInput) GetId() string { return v.Id }
+
 // __DeleteMetricByNameInput is used internally by genqlient
 type __DeleteMetricByNameInput struct {
 	UniqueName string `json:"uniqueName"`
@@ -22441,6 +22462,39 @@ func DeleteDataSourceByName(
 	var err error
 
 	var data DeleteDataSourceByNameResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by DeleteMaterializedView.
+const DeleteMaterializedView_Operation = `
+mutation DeleteMaterializedView ($id: ID!) {
+	deleteMaterializedView(id: $id)
+}
+`
+
+func DeleteMaterializedView(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*DeleteMaterializedViewResponse, error) {
+	req := &graphql.Request{
+		OpName: "DeleteMaterializedView",
+		Query:  DeleteMaterializedView_Operation,
+		Variables: &__DeleteMaterializedViewInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data DeleteMaterializedViewResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(

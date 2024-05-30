@@ -48,6 +48,7 @@ operations:
 - mutations/deleteDataPoolAccessPolicy.mutation.graphql
 - mutations/deleteDataSource.mutation.graphql
 - mutations/deleteDataSourceByName.mutation.graphql
+- mutations/deleteMaterializedView.mutation.graphql
 - mutations/deleteMetric.mutation.graphql
 - mutations/deleteMetricByName.mutation.graphql
 - mutations/deletePolicy.mutation.graphql
