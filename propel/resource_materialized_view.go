@@ -14,6 +14,8 @@ import (
 func resourceMaterializedView() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: resourceMaterializedViewCreate,
+		ReadContext:   resourceMaterializedViewRead,
+		DeleteContext: resourceMaterializedViewDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
@@ -51,6 +53,7 @@ func resourceMaterializedView() *schema.Resource {
 			"existing_data_pool": {
 				Type:          schema.TypeList,
 				Optional:      true,
+				ForceNew:      true,
 				Description:   "If specified, the Materialized View will target an existing Data Pool. Ensure the Data Pool's schema is compatible with your Materialized View's SQL statement.",
 				ConflictsWith: []string{"new_data_pool"},
 				MaxItems:      1,
@@ -67,6 +70,7 @@ func resourceMaterializedView() *schema.Resource {
 			"new_data_pool": {
 				Type:          schema.TypeList,
 				Optional:      true,
+				ForceNew:      true,
 				Description:   "If specified, the Materialized View will create and target a new Data Pool. You can further customize the new Data Pool's engine settings.",
 				ConflictsWith: []string{"existing_data_pool"},
 				MaxItems:      1,
@@ -125,71 +129,12 @@ func resourceMaterializedView() *schema.Resource {
 													Type:        schema.TypeString,
 													Optional:    true,
 													Description: "The `ver` parameter to the ReplacingMergeTree table engine.",
-													Elem: &schema.Resource{
-														Schema: map[string]*schema.Schema{},
-													},
 												},
 												"columns": {
 													Type:        schema.TypeSet,
 													Optional:    true,
 													Description: "The columns argument for the SummingMergeTree table engine.",
 													Elem:        &schema.Schema{Type: schema.TypeString},
-												},
-												"merge_tree": {
-													Type:          schema.TypeList,
-													Optional:      true,
-													Description:   "",
-													ConflictsWith: []string{"replacing_merge_tree", "summing_merge_tree", "aggregating_merge_tree"},
-													MaxItems:      1,
-													Elem: &schema.Resource{
-														Schema: map[string]*schema.Schema{},
-													},
-												},
-												"replacing_merge_tree": {
-													Type:          schema.TypeList,
-													Optional:      true,
-													Description:   "",
-													ConflictsWith: []string{"merge_tree", "summing_merge_tree", "aggregating_merge_tree"},
-													MaxItems:      1,
-													Elem: &schema.Resource{
-														Schema: map[string]*schema.Schema{
-															"ver": {
-																Type:        schema.TypeString,
-																Optional:    true,
-																Description: "The column with the version number",
-																Elem: &schema.Resource{
-																	Schema: map[string]*schema.Schema{},
-																},
-															},
-														},
-													},
-												},
-												"summing_merge_tree": {
-													Type:          schema.TypeList,
-													Optional:      true,
-													Description:   "",
-													ConflictsWith: []string{"merge_tree", "replacing_merge_tree", "aggregating_merge_tree"},
-													MaxItems:      1,
-													Elem: &schema.Resource{
-														Schema: map[string]*schema.Schema{
-															"columns": {
-																Type:        schema.TypeSet,
-																Optional:    true,
-																Description: "The columns argument for the SummingMergeTree table engine",
-																Elem:        &schema.Schema{Type: schema.TypeString},
-															},
-														},
-													},
-												},
-												"aggregating_merge_tree": {
-													Type:          schema.TypeList,
-													Optional:      true,
-													Description:   "",
-													ConflictsWith: []string{"replacing_merge_tree", "summing_merge_tree", ""},
-													MaxItems:      1,
-													Elem: &schema.Resource{
-														Schema: map[string]*schema.Schema{},
-													},
 												},
 											},
 										},
@@ -221,6 +166,7 @@ func resourceMaterializedView() *schema.Resource {
 			"backfill": {
 				Type:        schema.TypeBool,
 				Optional:    true,
+				ForceNew:    true,
 				Description: "Whether historical data should be backfilled or not",
 			},
 			"destination": {
@@ -239,8 +185,6 @@ func resourceMaterializedView() *schema.Resource {
 
 func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
-
-	var diags diag.Diagnostics
 
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
@@ -278,6 +222,69 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 			accessControl := attrs["access_control_enabled"].(bool)
 			destination.NewDataPool.AccessControlEnabled = &accessControl
 		}
+
+		if t, ok := attrs["table_settings"]; ok && len(t.([]any)) == 1 {
+			destination.NewDataPool.TableSettings = &pc.TableSettingsInput{}
+			settings := attrs["table_settings"].([]any)[0].(map[string]any)
+
+			if t, ok := settings["engine"]; ok && len(t.([]any)) == 1 {
+				destination.NewDataPool.TableSettings.Engine = &pc.TableEngineInput{}
+				engine := settings["engine"].([]any)[0].(map[string]any)
+				engineType := pc.TableEngineType(engine["type"].(string))
+
+				switch engine["type"].(string) {
+				case "MERGE_TREE":
+					destination.NewDataPool.TableSettings.Engine.MergeTree = &pc.MergeTreeTableEngineInput{Type: &engineType}
+				case "REPLACING_MERGE_TREE":
+					destination.NewDataPool.TableSettings.Engine.ReplacingMergeTree = &pc.ReplacingMergeTreeTableEngineInput{Type: &engineType}
+
+					if v, ok := engine["ver"]; ok && v.(string) != "" {
+						ver := engine["ver"].(string)
+						destination.NewDataPool.TableSettings.Engine.ReplacingMergeTree.Ver = &ver
+					}
+				case "SUMMING_MERGE_TREE":
+					destination.NewDataPool.TableSettings.Engine.SummingMergeTree = &pc.SummingMergeTreeTableEngineInput{Type: &engineType}
+
+					if v, ok := engine["columns"]; ok && len(v.(*schema.Set).List()) > 0 {
+						columns := make([]string, 0)
+						for _, col := range engine["columns"].(*schema.Set).List() {
+							columns = append(columns, col.(string))
+						}
+
+						destination.NewDataPool.TableSettings.Engine.SummingMergeTree.Columns = columns
+					}
+				case "AGGREGATING_MERGE_TREE":
+					destination.NewDataPool.TableSettings.Engine.AggregatingMergeTree = &pc.AggregatingMergeTreeTableEngineInput{Type: &engineType}
+				}
+			}
+
+			if v, ok := settings["partition_by"]; ok && len(v.(*schema.Set).List()) > 0 {
+				partitions := make([]string, 0)
+				for _, part := range settings["partition_by"].(*schema.Set).List() {
+					partitions = append(partitions, part.(string))
+				}
+
+				destination.NewDataPool.TableSettings.PartitionBy = partitions
+			}
+
+			if v, ok := settings["primary_key"]; ok && len(v.(*schema.Set).List()) > 0 {
+				primaryKeys := make([]string, 0)
+				for _, k := range settings["primary_key"].(*schema.Set).List() {
+					primaryKeys = append(primaryKeys, k.(string))
+				}
+
+				destination.NewDataPool.TableSettings.PrimaryKey = primaryKeys
+			}
+
+			if v, ok := settings["order_by"]; ok && len(v.(*schema.Set).List()) > 0 {
+				orderBy := make([]string, 0)
+				for _, k := range settings["order_by"].(*schema.Set).List() {
+					orderBy = append(orderBy, k.(string))
+				}
+
+				destination.NewDataPool.TableSettings.OrderBy = orderBy
+			}
+		}
 	}
 
 	input := &pc.CreateMaterializedViewInput{
@@ -297,5 +304,39 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 
 	d.SetId(response.CreateMaterializedView.MaterializedView.Id)
 
-	return diags
+	return nil
+}
+
+func resourceMaterializedViewRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
+	c := m.(graphql.Client)
+
+	response, err := pc.MaterializedView(ctx, c, d.Id())
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	d.SetId(response.MaterializedView.Id)
+
+	if err := d.Set("unique_name", response.MaterializedView.UniqueName); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("description", response.MaterializedView.Description); err != nil {
+		return diag.FromErr(err)
+	}
+
+	return nil
+}
+
+func resourceMaterializedViewDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
+	c := m.(graphql.Client)
+
+	_, err := pc.DeleteMaterializedView(ctx, c, d.Id())
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	d.SetId("")
+
+	return nil
 }

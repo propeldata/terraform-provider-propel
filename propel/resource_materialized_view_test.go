@@ -63,6 +63,13 @@ func testAccCheckPropelMaterializedViewConfigBasic(ctx map[string]any) string {
 					nullable = false
 					json_property = "timestamp_tz"
 				}
+
+				column {
+					name = "value"
+					type = "INT64"
+					nullable = false
+					json_property = "value"
+				}
 		
 				unique_id = "id"
 			}
@@ -70,16 +77,18 @@ func testAccCheckPropelMaterializedViewConfigBasic(ctx map[string]any) string {
 
 		resource "propel_materialized_view" "foo" {
 			unique_name = "terraform-mv-1"
-			sql = "SELECT customer_id, timestamp_tz AS timestamp FROM \"terraform-mv-source-dp\""
-			new_data_pool = {
+			sql = "SELECT customer_id, value, \"timestamp_tz\" AS timestamp FROM \"${propel_data_source.terraform-mv-source-dp.webhook_connection_settings[0].data_pool_id}\""
+
+			new_data_pool {
 				unique_name = "terraform-mv-data-pool"
 				description = "terraform MV Data Pool"
-				timestamp = "timestamp_tz"
+				timestamp = "timestamp"
 				unique_id = "customer_id"
 				access_control_enabled = true
-				table_settings = {
-					engine = {
+				table_settings {
+					engine {
 						type = "SUMMING_MERGE_TREE"
+						columns = ["value"]
 					}
 				}
 			}
