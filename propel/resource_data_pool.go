@@ -267,20 +267,26 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) di
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("data_source", response.DataPool.DataSource.Id); err != nil {
-		return diag.FromErr(err)
+	if response.DataPool.DataSource != nil {
+		if err := d.Set("data_source", response.DataPool.DataSource.Id); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	if err := d.Set("table", response.DataPool.Table); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("timestamp", response.DataPool.Timestamp.ColumnName); err != nil {
-		return diag.FromErr(err)
+	if response.DataPool.Timestamp != nil {
+		if err := d.Set("timestamp", response.DataPool.Timestamp.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
-	if err := d.Set("tenant_id", response.DataPool.Tenant.ColumnName); err != nil {
-		return diag.FromErr(err)
+	if response.DataPool.Tenant != nil {
+		if err := d.Set("tenant_id", response.DataPool.Tenant.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	if err := d.Set("access_control_enabled", response.DataPool.AccessControlEnabled); err != nil {
