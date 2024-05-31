@@ -15,6 +15,7 @@ func resourceMaterializedView() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: resourceMaterializedViewCreate,
 		ReadContext:   resourceMaterializedViewRead,
+		UpdateContext: resourceMaterializedViewUpdate,
 		DeleteContext: resourceMaterializedViewDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
@@ -62,7 +63,7 @@ func resourceMaterializedView() *schema.Resource {
 						"id": {
 							Type:        schema.TypeString,
 							Required:    true,
-							Description: "The ID of the Data Pool",
+							Description: "The ID of the Data Pool.",
 						},
 					},
 				},
@@ -167,7 +168,7 @@ func resourceMaterializedView() *schema.Resource {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				ForceNew:    true,
-				Description: "Whether historical data should be backfilled or not",
+				Description: "Whether historical data should be backfilled or not.",
 			},
 			"destination": {
 				Type:        schema.TypeString,
@@ -178,6 +179,12 @@ func resourceMaterializedView() *schema.Resource {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The Materialized View's source Data Pool.",
+			},
+			"others": {
+				Type:        schema.TypeSet,
+				Computed:    true,
+				Description: "Other Data Pools queried by the Materialized View.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 		},
 	}
@@ -325,7 +332,59 @@ func resourceMaterializedViewRead(ctx context.Context, d *schema.ResourceData, m
 		return diag.FromErr(err)
 	}
 
+	if err := d.Set("account", response.MaterializedView.Account.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("environment", response.MaterializedView.Environment.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("sql", response.MaterializedView.Sql); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("destination", response.MaterializedView.Destination.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("source", response.MaterializedView.Source.Id); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if len(response.MaterializedView.Others) > 0 {
+		others := make([]string, 0, len(response.MaterializedView.Others))
+
+		for _, dp := range response.MaterializedView.Others {
+			others = append(others, dp.Id)
+		}
+
+		if err := d.Set("others", others); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
 	return nil
+}
+
+func resourceMaterializedViewUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
+	c := m.(graphql.Client)
+
+	input := &pc.ModifyMaterializedViewInput{Id: d.Id()}
+
+	if d.HasChanges("unique_name", "description") {
+		uniqueName := d.Get("unique_name").(string)
+		description := d.Get("description").(string)
+
+		input.UniqueName = &uniqueName
+		input.Description = &description
+	}
+
+	if _, err := pc.ModifyMaterializedView(ctx, c, input); err != nil {
+		return diag.FromErr(err)
+	}
+
+	return resourceMaterializedViewRead(ctx, d, m)
 }
 
 func resourceMaterializedViewDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {

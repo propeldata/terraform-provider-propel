@@ -1,0 +1,7 @@
+mutation ModifyMaterializedView($input: ModifyMaterializedViewInput!) {
+    modifyMaterializedView(input: $input) {
+        materializedView {
+            ...MaterializedViewData
+        }
+    }
+}

@@ -14398,6 +14398,200 @@ func (v *ModifyHttpDataSourceResponse) GetModifyHttpDataSource() *ModifyHttpData
 	return v.ModifyHttpDataSource
 }
 
+// The fields for modifying a Materialized View.
+type ModifyMaterializedViewInput struct {
+	// The ID of the Materialized View to modify.
+	Id string `json:"id"`
+	// The Materialized View's new unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Materialized View's new description.
+	Description *string `json:"description"`
+}
+
+// GetId returns ModifyMaterializedViewInput.Id, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewInput) GetId() string { return v.Id }
+
+// GetUniqueName returns ModifyMaterializedViewInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewInput) GetUniqueName() *string { return v.UniqueName }
+
+// GetDescription returns ModifyMaterializedViewInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewInput) GetDescription() *string { return v.Description }
+
+// ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse includes the requested fields of the GraphQL type MaterializedViewResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Materialized View.
+type ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse struct {
+	// The Materialized View which was created or modified.
+	MaterializedView *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView `json:"materializedView"`
+}
+
+// GetMaterializedView returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse.MaterializedView, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse) GetMaterializedView() *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView {
+	return v.MaterializedView
+}
+
+// ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView includes the requested fields of the GraphQL type MaterializedView.
+type ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView struct {
+	MaterializedViewData `json:"-"`
+}
+
+// GetId returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Id, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetId() string {
+	return v.MaterializedViewData.Id
+}
+
+// GetSql returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Sql, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetSql() string {
+	return v.MaterializedViewData.Sql
+}
+
+// GetDestination returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Destination, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetDestination() *MaterializedViewDataDestinationDataPool {
+	return v.MaterializedViewData.Destination
+}
+
+// GetSource returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Source, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetSource() *MaterializedViewDataSourceDataPool {
+	return v.MaterializedViewData.Source
+}
+
+// GetOthers returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Others, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetOthers() []*MaterializedViewDataOthersDataPool {
+	return v.MaterializedViewData.Others
+}
+
+// GetUniqueName returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetUniqueName() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.UniqueName
+}
+
+// GetDescription returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Description, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetDescription() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.Description
+}
+
+// GetAccount returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Account, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetAccount() *CommonDataAccount {
+	return v.MaterializedViewData.CommonDataMaterializedView.Account
+}
+
+// GetEnvironment returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetEnvironment() *CommonDataEnvironment {
+	return v.MaterializedViewData.CommonDataMaterializedView.Environment
+}
+
+// GetCreatedAt returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetCreatedAt() time.Time {
+	return v.MaterializedViewData.CommonDataMaterializedView.CreatedAt
+}
+
+// GetModifiedAt returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetModifiedAt() time.Time {
+	return v.MaterializedViewData.CommonDataMaterializedView.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetCreatedBy() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.CreatedBy
+}
+
+// GetModifiedBy returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetModifiedBy() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.ModifiedBy
+}
+
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.MaterializedViewData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView struct {
+	Id string `json:"id"`
+
+	Sql string `json:"sql"`
+
+	Destination *MaterializedViewDataDestinationDataPool `json:"destination"`
+
+	Source *MaterializedViewDataSourceDataPool `json:"source"`
+
+	Others []*MaterializedViewDataOthersDataPool `json:"others"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) __premarshalJSON() (*__premarshalModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView, error) {
+	var retval __premarshalModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView
+
+	retval.Id = v.MaterializedViewData.Id
+	retval.Sql = v.MaterializedViewData.Sql
+	retval.Destination = v.MaterializedViewData.Destination
+	retval.Source = v.MaterializedViewData.Source
+	retval.Others = v.MaterializedViewData.Others
+	retval.UniqueName = v.MaterializedViewData.CommonDataMaterializedView.UniqueName
+	retval.Description = v.MaterializedViewData.CommonDataMaterializedView.Description
+	retval.Account = v.MaterializedViewData.CommonDataMaterializedView.Account
+	retval.Environment = v.MaterializedViewData.CommonDataMaterializedView.Environment
+	retval.CreatedAt = v.MaterializedViewData.CommonDataMaterializedView.CreatedAt
+	retval.ModifiedAt = v.MaterializedViewData.CommonDataMaterializedView.ModifiedAt
+	retval.CreatedBy = v.MaterializedViewData.CommonDataMaterializedView.CreatedBy
+	retval.ModifiedBy = v.MaterializedViewData.CommonDataMaterializedView.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyMaterializedViewResponse is returned by ModifyMaterializedView on success.
+type ModifyMaterializedViewResponse struct {
+	// Modifies a Materialized View. If any of the optional arguments are omitted, those properties will be unchanged on the Materialized View.
+	ModifyMaterializedView *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse `json:"modifyMaterializedView"`
+}
+
+// GetModifyMaterializedView returns ModifyMaterializedViewResponse.ModifyMaterializedView, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewResponse) GetModifyMaterializedView() *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse {
+	return v.ModifyMaterializedView
+}
+
 // The fields for modifying a Metric.
 type ModifyMetricInput struct {
 	// The ID of the Metric to modify.
@@ -16952,6 +17146,14 @@ type __ModifyHttpDataSourceInput struct {
 
 // GetInput returns __ModifyHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifyHttpDataSourceInput) GetInput() *ModifyHttpDataSourceInput { return v.Input }
+
+// __ModifyMaterializedViewInput is used internally by genqlient
+type __ModifyMaterializedViewInput struct {
+	Input *ModifyMaterializedViewInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyMaterializedViewInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyMaterializedViewInput) GetInput() *ModifyMaterializedViewInput { return v.Input }
 
 // __ModifyMetricInput is used internally by genqlient
 type __ModifyMetricInput struct {
@@ -24306,6 +24508,71 @@ func ModifyHttpDataSource(
 	var err error
 
 	var data ModifyHttpDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by ModifyMaterializedView.
+const ModifyMaterializedView_Operation = `
+mutation ModifyMaterializedView ($input: ModifyMaterializedViewInput!) {
+	modifyMaterializedView(input: $input) {
+		materializedView {
+			... MaterializedViewData
+		}
+	}
+}
+fragment MaterializedViewData on MaterializedView {
+	id
+	... CommonData
+	sql
+	destination {
+		id
+	}
+	source {
+		id
+	}
+	others {
+		id
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+`
+
+func ModifyMaterializedView(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyMaterializedViewInput,
+) (*ModifyMaterializedViewResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyMaterializedView",
+		Query:  ModifyMaterializedView_Operation,
+		Variables: &__ModifyMaterializedViewInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyMaterializedViewResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(

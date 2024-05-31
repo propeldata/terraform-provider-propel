@@ -57,6 +57,7 @@ operations:
 - mutations/modifyDataPool.mutation.graphql
 - mutations/modifyDataPoolAccessPolicy.mutation.graphql
 - mutations/modifyDataSource.mutation.graphql
+- mutations/modifyMaterializedView.mutation.graphql
 - mutations/modifyMetric.mutation.graphql
 - mutations/modifyPolicy.mutation.graphql
 #- mutations/reconnectDataPool.mutation.graphql

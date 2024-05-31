@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	apiURL   = "https://api.us-east-2.propeldata.com/graphql"
-	oauthURL = "https://auth.us-east-2.propeldata.com/oauth2/token"
+	apiURL   = "https://api.us-east-2.dev.propeldata.com/graphql"
+	oauthURL = "https://auth.us-east-2.dev.propeldata.com/oauth2/token"
 )
 
 type withHeaders struct {

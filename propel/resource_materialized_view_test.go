@@ -105,10 +105,15 @@ func testAccCheckPropelMaterializedViewDestroy(s *terraform.State) error {
 			continue
 		}
 
+		destinationDataPool := rs.Primary.Attributes["destination"]
+
+		if _, err := pc.DeleteDataPool(context.Background(), c, destinationDataPool); err != nil {
+			return err
+		}
+
 		materializedViewID := rs.Primary.ID
 
-		_, err := pc.DeleteMaterializedView(context.Background(), c, materializedViewID)
-		if err != nil {
+		if _, err := pc.DeleteMaterializedView(context.Background(), c, materializedViewID); err != nil {
 			return err
 		}
 	}
