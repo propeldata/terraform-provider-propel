@@ -57,12 +57,13 @@ func resourceDataPool() *schema.Resource {
 			},
 			"data_source": {
 				Type:        schema.TypeString,
-				Required:    true,
+				Optional:    true,
+				ForceNew:    true,
 				Description: "The Data Source that the Data Pool belongs to.",
 			},
 			"table": {
 				Type:        schema.TypeString,
-				Required:    true,
+				Optional:    true,
 				ForceNew:    true,
 				Description: "The name of the Data Pool's table.",
 			},
@@ -167,11 +168,9 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 
 	var diags diag.Diagnostics
 
-	dataSourceId := d.Get("data_source").(string)
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
 	accessControlEnabled := d.Get("access_control_enabled").(bool)
-	table := d.Get("table").(string)
 
 	columns := make([]*pc.DataPoolColumnInput, 0)
 	if def, ok := d.Get("column").([]any); ok && len(def) > 0 {
@@ -181,13 +180,21 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 	input := &pc.CreateDataPoolInputV2{
 		UniqueName:  &uniqueName,
 		Description: &description,
-		DataSource:  &dataSourceId,
-		Table:       &table,
 		Timestamp: &pc.TimestampInput{
 			ColumnName: d.Get("timestamp").(string),
 		},
 		Columns:              columns,
 		AccessControlEnabled: &accessControlEnabled,
+	}
+
+	if t, exists := d.GetOk("data_source"); exists && t.(string) != "" {
+		dataSourceId := t.(string)
+		input.DataSource = &dataSourceId
+	}
+
+	if t, exists := d.GetOk("table"); exists && t.(string) != "" {
+		table := t.(string)
+		input.Table = &table
 	}
 
 	if _, exists := d.GetOk("tenant_id"); exists {
