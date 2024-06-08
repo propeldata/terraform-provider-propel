@@ -232,6 +232,25 @@ resource "propel_metric" "custom_metric" {
   dimensions = ["column_1", "column_2"]
 }
 
+resource "propel_materialized_view" "materialized_view" {
+  unique_name = "My Materialized View"
+  sql = "SELECT customer_id, value, timestamp FROM \"${propel_data_pool.data_pool.id}\""
+
+  new_data_pool {
+    unique_name = "My SummingMergeTree Data Pool"
+    timestamp = "timestamp"
+    unique_id = "customer_id"
+    access_control_enabled = true
+    table_settings {
+      engine {
+        type = "SUMMING_MERGE_TREE"
+        columns = ["value"]
+      }
+    }
+  }
+  backfill = true
+}
+
 output "snowflake_data_source_id" {
   value = propel_data_source.snowflake_data_source.id
 }
@@ -270,4 +289,8 @@ output "max_metric_id" {
 
 output "custom_metric_id" {
   value = propel_metric.custom_metric.id
+}
+
+output "materialized_view_id" {
+  value = propel_materialized_view.materialized_view.id
 }
