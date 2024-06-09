@@ -12,8 +12,6 @@ Provides a Propel Data Source resource. This can be used to create and manage Pr
 
 ## Example Usage
 
-### Snowflake Data Source
-
 ```terraform
 variable "snowflake_password" {
   type = string
@@ -33,62 +31,6 @@ resource "propel_data_source" "my_data_source" {
     role      = "Snowflake Role"
     username  = "Snowflake Username"
     password  = var.snowflake_password
-  }
-}
-```
-
-### Webhook Data Source
-
-The Webhook Data Source will automatically create a Data Pool with the same name and schema.
-
-```terraform
-variable "http_basic_auth_password" {
-  type = string
-  sensitive = true
-}
-
-resource "propel_data_source" "my_webhook_data_source" {
-  unique_name = "MyWebhookDataPool"
-  description = "This is an example of a Webhook Data Source"
-  type        = "WEBHOOK"
-
-  webhook_connection_settings {
-    timestamp = "event_timestamp"
-    unique_id = "event_id"
-    tenant = "customer_id"
-
-    column {
-      name = "event_id"
-      type = "STRING"
-      nullable = false
-      json_property = "event_id"
-    }
-
-    column {
-      name = "customer_id"
-      type = "STRING"
-      nullable = false
-      json_property = "customer_id"
-    }
-
-    column {
-      name = "event_timestamp"
-      type = "TIMESTAMP"
-      nullable = false
-      json_property = "event_timestamp"
-    }
-
-    column {
-      name = "customer_name"
-      type = "STRING"
-      nullable = true
-      json_property = "customer_name"
-    }
-
-    basic_auth {
-      username = "foo"
-      password = var.http_basic_auth_password
-    }
   }
 }
 ```
@@ -207,14 +149,14 @@ Optional:
 Required:
 
 - `timestamp` (String) The primary timestamp column.
-- `tenant` (String) The tenant ID column, if configured.
-- `unique_id` (String) The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 
 Optional:
 
+- `access_control_enabled` (Boolean) Whether the resulting Data Pool has access control enabled or not. If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.
 - `basic_auth` (Block List, Max: 1) The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it. (see [below for nested schema](#nestedblock--webhook_connection_settings--basic_auth))
 - `column` (Block List) The additional column for the Webhook Data Source table. (see [below for nested schema](#nestedblock--webhook_connection_settings--column))
-
+- `tenant` (String) The tenant ID column, if configured.
+- `unique_id` (String) The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 
 Read-Only:
 
