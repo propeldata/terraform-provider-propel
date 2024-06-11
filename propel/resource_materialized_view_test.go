@@ -36,7 +36,7 @@ func TestAccPropelMaterializedViewBasic(t *testing.T) {
 func testAccCheckPropelMaterializedViewConfigBasic(ctx map[string]any) string {
 	// language=hcl-terraform
 	return Nprintf(`
-		resource "propel_data_source" "terraform-mv-source-dp" {
+		resource "propel_data_source" "terraform_mv_source_dp" {
 			unique_name = "terraform-mv-source-dp"
 			type = "Webhook"
 	
