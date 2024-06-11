@@ -251,6 +251,14 @@ resource "propel_materialized_view" "materialized_view" {
   backfill = true
 }
 
+resource "propel_materialized_view" "materialized_view_existing_data_pool" {
+  unique_name = "My Materialized View"
+  sql = "SELECT customer_id, value, timestamp FROM \"Sales\""
+  existing_data_pool {
+    id = "${propel_data_pool.data_pool.id}"
+  }
+}
+
 output "snowflake_data_source_id" {
   value = propel_data_source.snowflake_data_source.id
 }

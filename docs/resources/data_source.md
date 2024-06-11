@@ -40,7 +40,7 @@ variable "http_basic_auth_password" {
 }
 
 resource "propel_data_source" "my_webhook_data_source" {
-  unique_name = "MyWebhookDataPool"
+  unique_name = "My Webhook Data Pool"
   description = "This is an example of a Webhook Data Source"
   type        = "WEBHOOK"
   webhook_connection_settings {

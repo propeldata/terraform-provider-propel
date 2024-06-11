@@ -21,7 +21,6 @@ resource "propel_materialized_view" "my_materialized_view" {
   new_data_pool {
     unique_name = "My MV destination Data Pool"
     timestamp = "date"
-    unique_id = "account_id"
     access_control_enabled = true
 
     table_settings {
@@ -88,7 +87,6 @@ Optional:
 - `description` (String) The Data Pool's description.
 - `table_settings` (Block List, Max: 1) Override the Data Pool's table settings. These describe how the Data Pool's table is created in ClickHouse, and a default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if any. You can override these defaults in order to specify a custom table engine, custom ORDER BY, etc. (see [below for nested schema](#nestedblock--new_data_pool--table_settings))
 - `timestamp` (String) Optionally specify the Data Pool's primary timestamp. This will influence the Data Pool's engine settings.
-- `unique_id` (String) .Optionally specify the Data Pool's unique ID. This will influence the Data Pool's engine settings.
 - `unique_name` (String) The Data Pool's unique name.
 
 <a id="nestedblock--new_data_pool--table_settings"></a>

@@ -83,7 +83,6 @@ func testAccCheckPropelMaterializedViewConfigBasic(ctx map[string]any) string {
 				unique_name = "terraform-mv-data-pool"
 				description = "terraform MV Data Pool"
 				timestamp = "timestamp"
-				unique_id = "customer_id"
 				access_control_enabled = true
 				table_settings {
 					engine {
@@ -93,6 +92,14 @@ func testAccCheckPropelMaterializedViewConfigBasic(ctx map[string]any) string {
 				}
 			}
 			backfill = false
+		}
+
+		resource "propel_materialized_view" "bar" {
+			unique_name = "terraform-mv-2"
+			sql = "SELECT customer_id, value, \"timestamp_tz\" AS timestamp FROM \"${propel_data_source.terraform-mv-source-dp.webhook_connection_settings[0].data_pool_id}\""
+			existing_data_pool {
+				id = "${propel_materialized_view.foo.destination}"
+			}
 		}
 	`, ctx)
 }
