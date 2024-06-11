@@ -913,7 +913,7 @@ type DataPool implements Node & Common {
   "Validates a custom expression against the Data Pool's available columns. If the provided expression is invalid, the ValidateExpressionResult response will contain a reason explaining why."
   validateExpression(expression: String!): ValidateExpressionResult!
   "The Data Pool's table settings."
-  tableSettings: TableSettings
+  tableSettings: TableSettings!
   "The Data Pool's columns that participate in its PARTITION BY clause."
   partitionByColumns: [DataPoolColumn!]
   "The Data Pool's columns that participate in its PRIMARY KEY clause."
@@ -1258,19 +1258,19 @@ you could write
 
 ```
 {
-  "column": "value",
-  "operator": "GREATER_THAN",
-  "value": "0",
-  "and": [{
-    "column": "value",
-    "operator": "LESS_THAN_OR_EQUAL_TO",
-    "value": "0"
-  }],
-  "or": [{
-    "column": "status",
-    "operator": "EQUALS",
-    "value": "confirmed"
-  }]
+"column": "value",
+"operator": "GREATER_THAN",
+"value": "0",
+"and": [{
+"column": "value",
+"operator": "LESS_THAN_OR_EQUAL_TO",
+"value": "0"
+}],
+"or": [{
+"column": "status",
+"operator": "EQUALS",
+"value": "confirmed"
+}]
 }
 ```
 
@@ -1482,7 +1482,7 @@ input CreateDataPoolInputV2 {
   """
   The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool.
   """
-  uniqueId: UniqueIdInput
+  uniqueId: UniqueIdInput @deprecated(reason: "Will be removed; use Table Settings to define the primary key.")
   """ The Data Pool's syncing settings. """
   syncing: DataPoolSyncingInput
   """
@@ -2652,19 +2652,19 @@ you could write
 
 ```
 {
-  "column": "value",
-  "operator": "GREATER_THAN",
-  "value": "0",
-  "and": [{
-    "column": "value",
-    "operator": "LESS_THAN_OR_EQUAL_TO",
-    "value": "0"
-  }],
-  "or": [{
-    "column": "status",
-    "operator": "EQUALS",
-    "value": "confirmed"
-  }]
+"column": "value",
+"operator": "GREATER_THAN",
+"value": "0",
+"and": [{
+"column": "value",
+"operator": "LESS_THAN_OR_EQUAL_TO",
+"value": "0"
+}],
+"or": [{
+"column": "status",
+"operator": "EQUALS",
+"value": "confirmed"
+}]
 }
 ```
 
