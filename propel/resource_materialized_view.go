@@ -203,9 +203,9 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 		destination.ExistingDataPool = &pc.DataPoolInput{Id: &id}
 	}
 
-	if _, exists := d.GetOk("new_data_pool.0"); exists {
+	if v, exists := d.GetOk("new_data_pool.0"); exists {
 		destination.NewDataPool = &pc.CreateMaterializedViewDestinationNewDataPoolInput{}
-		attrs := d.Get("new_data_pool").([]any)[0].(map[string]any)
+		attrs := v.(map[string]any)
 
 		if v, ok := attrs["unique_name"]; ok && v.(string) != "" {
 			dpUniqueName := attrs["unique_name"].(string)
@@ -241,8 +241,20 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 
 				switch engine["type"].(string) {
 				case "MERGE_TREE":
+					if _, ok := engine["ver"]; ok {
+						diag.Errorf("%q field should not be set for MERGE_TREE engine", "ver")
+					}
+
+					if _, ok := engine["columns"]; ok {
+						diag.Errorf("%q field should not be set for MERGE_TREE engine", "columns")
+					}
+
 					destination.NewDataPool.TableSettings.Engine.MergeTree = &pc.MergeTreeTableEngineInput{Type: &engineType}
 				case "REPLACING_MERGE_TREE":
+					if _, ok := engine["columns"]; ok {
+						diag.Errorf("%q field should not be set for REPLACING_MERGE_TREE engine", "columns")
+					}
+
 					destination.NewDataPool.TableSettings.Engine.ReplacingMergeTree = &pc.ReplacingMergeTreeTableEngineInput{Type: &engineType}
 
 					if v, ok := engine["ver"]; ok && v.(string) != "" {
@@ -250,6 +262,10 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 						destination.NewDataPool.TableSettings.Engine.ReplacingMergeTree.Ver = &ver
 					}
 				case "SUMMING_MERGE_TREE":
+					if _, ok := engine["ver"]; ok {
+						diag.Errorf("%q field should not be set for SUMMING_MERGE_TREE engine", "ver")
+					}
+
 					destination.NewDataPool.TableSettings.Engine.SummingMergeTree = &pc.SummingMergeTreeTableEngineInput{Type: &engineType}
 
 					if v, ok := engine["columns"]; ok && len(v.(*schema.Set).List()) > 0 {
@@ -261,6 +277,14 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 						destination.NewDataPool.TableSettings.Engine.SummingMergeTree.Columns = columns
 					}
 				case "AGGREGATING_MERGE_TREE":
+					if _, ok := engine["ver"]; ok {
+						diag.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "ver")
+					}
+
+					if _, ok := engine["columns"]; ok {
+						diag.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "columns")
+					}
+
 					destination.NewDataPool.TableSettings.Engine.AggregatingMergeTree = &pc.AggregatingMergeTreeTableEngineInput{Type: &engineType}
 				}
 			}
