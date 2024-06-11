@@ -10,8 +10,6 @@ description: |-
 
 Provides a Propel Data Pool resource. This can be used to create and manage Propel Data Pools.
 
-For Webhook Data Pools, you just need to create a Webhook Data Source and the Data Pool will be created automatically.
-
 ## Example Usage
 
 ```terraform
@@ -21,6 +19,8 @@ resource "propel_data_pool" "my_data_pool" {
   data_source = propel_data_source.my_data_source.id
   table       = "events"
   timestamp   = "date"
+
+  access_control_enabled = false
 
   column {
     name     = "date"
@@ -52,9 +52,10 @@ resource "propel_data_pool" "my_data_pool" {
 
 ### Optional
 
+- `access_control_enabled` (Boolean) Whether the Data Pool has access control enabled or not. If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.
 - `description` (String) The Data Pool's description.
 - `syncing` (Block List, Max: 1) The Data Pool's syncing settings. (see [below for nested schema](#nestedblock--syncing))
-- `tenant_id` (String) The tenant ID for restricting access between customers.
+- `tenant_id` (String, Deprecated) The tenant ID for restricting access between customers.
 - `unique_id` (String) The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool. Only for Snowflake Data Pools.
 - `unique_name` (String) The Data Pool's name.
 
