@@ -92,11 +92,6 @@ func resourceMaterializedView() *schema.Resource {
 							Optional:    true,
 							Description: "Optionally specify the Data Pool's primary timestamp. This will influence the Data Pool's engine settings.",
 						},
-						"unique_id": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: ".Optionally specify the Data Pool's unique ID. This will influence the Data Pool's engine settings.",
-						},
 						"access_control_enabled": {
 							Type:        schema.TypeBool,
 							Optional:    true,

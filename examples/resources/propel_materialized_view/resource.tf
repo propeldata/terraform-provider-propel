@@ -6,7 +6,6 @@ resource "propel_materialized_view" "my_materialized_view" {
   new_data_pool {
     unique_name = "My MV destination Data Pool"
     timestamp = "date"
-    unique_id = "account_id"
     access_control_enabled = true
 
     table_settings {
