@@ -97,6 +97,7 @@ func resourceDataPool() *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 				Description: "The tenant ID for restricting access between customers.",
+				Deprecated:  "Remove this attribute's configuration as it no longer is used and the attribute will be removed in the next major version of the provider.",
 			},
 			"timestamp": {
 				Type:        schema.TypeString,

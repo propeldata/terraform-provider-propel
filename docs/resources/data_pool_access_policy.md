@@ -43,12 +43,12 @@ resource "propel_data_pool_access_policy" "my_data_pool_access_policy" {
 
 ### Required
 
-- `applications` (List of String) The list of columns that the Access Policy makes available for querying. Set "*" to allow all columns.
-- `columns` (List of String) The list of columns that the Access Policy makes available for querying. Set "*" to allow all columns.
+- `columns` (Set of String) The list of columns that the Access Policy makes available for querying. Set "*" to allow all columns.
 - `data_pool` (String) The Data Pool to which this Access Policy belongs.
 
 ### Optional
 
+- `applications` (Set of String) The list of applications to which the Access Policy is assigned.
 - `description` (String) The Data Pool Access Policy's description.
 - `row` (Block List) Row-level filters that the Access Policy applies before executing queries. Not setting any row filters means all rows can be queried. (see [below for nested schema](#nestedblock--row))
 - `unique_name` (String) The Data Pool Access Policy's name.

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     propel = {
       source  = "propeldata/propel"
-      version = "1.1.0"
+      version = "1.2.0"
     }
   }
 }
@@ -41,21 +41,21 @@ resource "propel_data_source" "http_data_source" {
   }
 }
 
-resource "propel_data_source" "webhook_data_source" {
-  unique_name = "My Webhook Data Source"
+resource "propel_data_source" "my_webhook_data_source" {
+  unique_name = "MyWebhookDataPool"
   description = "This is an example of a Webhook Data Source"
-  type        = "Webhook"
+  type        = "WEBHOOK"
 
   webhook_connection_settings {
-    timestamp = "date"
-    unique_id = "id"
+    timestamp = "event_timestamp"
+    unique_id = "event_id"
     tenant = "customer_id"
 
     column {
-      name = "id"
+      name = "event_id"
       type = "STRING"
       nullable = false
-      json_property = "id"
+      json_property = "event_id"
     }
 
     column {
@@ -63,6 +63,20 @@ resource "propel_data_source" "webhook_data_source" {
       type = "STRING"
       nullable = false
       json_property = "customer_id"
+    }
+
+    column {
+      name = "event_timestamp"
+      type = "TIMESTAMP"
+      nullable = false
+      json_property = "event_timestamp"
+    }
+
+    column {
+      name = "customer_name"
+      type = "STRING"
+      nullable = true
+      json_property = "customer_name"
     }
 
     basic_auth {
@@ -218,12 +232,6 @@ resource "propel_metric" "custom_metric" {
   dimensions = ["column_1", "column_2"]
 }
 
-resource "propel_policy" "sum_metric_policy" {
-  type = "ALL_ACCESS"
-  metric = propel_metric.sum_metric.id
-  application = var.client_id
-}
-
 output "snowflake_data_source_id" {
   value = propel_data_source.snowflake_data_source.id
 }
@@ -262,8 +270,4 @@ output "max_metric_id" {
 
 output "custom_metric_id" {
   value = propel_metric.custom_metric.id
-}
-
-output "sum_metric_policy_id" {
-  value = propel_policy.sum_metric_policy.id
 }

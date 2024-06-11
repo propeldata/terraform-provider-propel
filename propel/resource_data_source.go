@@ -264,6 +264,7 @@ func resourceDataSource() *schema.Resource {
 							Optional:    true,
 							ForceNew:    true,
 							Description: "The tenant ID column, if configured.",
+							Deprecated:  "Remove this attribute's configuration as it's no longer in use and the attribute will be removed in the next major version of the provider.",
 						},
 						"timestamp": {
 							Type:        schema.TypeString,
