@@ -1,0 +1,14 @@
+fragment MaterializedViewData on MaterializedView {
+    id
+    ...CommonData
+    sql
+    destination {
+        id
+    }
+    source {
+        id
+    }
+    others {
+        id
+    }
+}

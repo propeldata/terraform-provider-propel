@@ -244,6 +244,15 @@ func (v *AddColumnToDataPoolJobResponse) GetAddColumnToDataPoolJob() *AddColumnT
 	return v.AddColumnToDataPoolJob
 }
 
+// Parameters for the AggregatingMergeTree table engine.
+type AggregatingMergeTreeTableEngineInput struct {
+	// The type is always `AGGREGATING_MERGE_TREE`.
+	Type *TableEngineType `json:"type"`
+}
+
+// GetType returns AggregatingMergeTreeTableEngineInput.Type, and is useful for accessing the field via an interface.
+func (v *AggregatingMergeTreeTableEngineInput) GetType() *TableEngineType { return v.Type }
+
 // AssignDataPoolAccessPolicyResponse is returned by AssignDataPoolAccessPolicy on success.
 type AssignDataPoolAccessPolicyResponse struct {
 	// Assign a Data Pool Access Policy to an Application.
@@ -263,6 +272,14 @@ type AssignDataPoolAccessPolicyResponse struct {
 func (v *AssignDataPoolAccessPolicyResponse) GetAssignDataPoolAccessPolicyToApplication() *string {
 	return v.AssignDataPoolAccessPolicyToApplication
 }
+
+type BackfillOptionsInput struct {
+	// Whether historical data should be backfilled or not
+	Backfill *bool `json:"backfill"`
+}
+
+// GetBackfill returns BackfillOptionsInput.Backfill, and is useful for accessing the field via an interface.
+func (v *BackfillOptionsInput) GetBackfill() *bool { return v.Backfill }
 
 // ColumnData includes the GraphQL fields of Column requested by the fragment ColumnData.
 // The GraphQL type's documentation follows.
@@ -314,6 +331,8 @@ const (
 	ColumnTypeTimestamp ColumnType = "TIMESTAMP"
 	// A JavaScript Object Notation (JSON) document.
 	ColumnTypeJson ColumnType = "JSON"
+	// A ClickHouse-specific type.
+	ColumnTypeClickhouse ColumnType = "CLICKHOUSE"
 )
 
 // CommonData includes the GraphQL fields of Common requested by the fragment CommonData.
@@ -327,6 +346,7 @@ const (
 // CommonDataApplication
 // CommonDataDataSource
 // CommonDataDataPool
+// CommonDataMaterializedView
 // CommonDataMetric
 // CommonDataDataPoolAccessPolicy
 type CommonData interface {
@@ -376,6 +396,7 @@ type CommonData interface {
 func (v *CommonDataApplication) implementsGraphQLInterfaceCommonData()          {}
 func (v *CommonDataDataSource) implementsGraphQLInterfaceCommonData()           {}
 func (v *CommonDataDataPool) implementsGraphQLInterfaceCommonData()             {}
+func (v *CommonDataMaterializedView) implementsGraphQLInterfaceCommonData()     {}
 func (v *CommonDataMetric) implementsGraphQLInterfaceCommonData()               {}
 func (v *CommonDataDataPoolAccessPolicy) implementsGraphQLInterfaceCommonData() {}
 
@@ -401,6 +422,9 @@ func __unmarshalCommonData(b []byte, v *CommonData) error {
 		return json.Unmarshal(b, *v)
 	case "DataPool":
 		*v = new(CommonDataDataPool)
+		return json.Unmarshal(b, *v)
+	case "MaterializedView":
+		*v = new(CommonDataMaterializedView)
 		return json.Unmarshal(b, *v)
 	case "Metric":
 		*v = new(CommonDataMetric)
@@ -443,6 +467,14 @@ func __marshalCommonData(v *CommonData) ([]byte, error) {
 		result := struct {
 			TypeName string `json:"__typename"`
 			*CommonDataDataPool
+		}{typename, v}
+		return json.Marshal(result)
+	case *CommonDataMaterializedView:
+		typename = "MaterializedView"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CommonDataMaterializedView
 		}{typename, v}
 		return json.Marshal(result)
 	case *CommonDataMetric:
@@ -692,6 +724,55 @@ type CommonDataEnvironment struct {
 
 // GetId returns CommonDataEnvironment.Id, and is useful for accessing the field via an interface.
 func (v *CommonDataEnvironment) GetId() string { return v.Id }
+
+// CommonData includes the GraphQL fields of MaterializedView requested by the fragment CommonData.
+// The GraphQL type's documentation follows.
+//
+// All Propel resources, such as Applications and Metrics, have a set of common properties, such as the Propel Account and Environment that they are associated with. They also have a unique ID, which is specified in the interface `Node`.
+//
+// Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
+type CommonDataMaterializedView struct {
+	// The resource's unique name.
+	UniqueName string `json:"uniqueName"`
+	// The resource's description.
+	Description string `json:"description"`
+	// The resource's Account.
+	Account *CommonDataAccount `json:"account"`
+	// The resource's Environment.
+	Environment *CommonDataEnvironment `json:"environment"`
+	// The resource's creation date and time in UTC.
+	CreatedAt time.Time `json:"createdAt"`
+	// The resource's last modification date and time in UTC.
+	ModifiedAt time.Time `json:"modifiedAt"`
+	// The resource's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
+	CreatedBy string `json:"createdBy"`
+	// The resource's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+// GetUniqueName returns CommonDataMaterializedView.UniqueName, and is useful for accessing the field via an interface.
+func (v *CommonDataMaterializedView) GetUniqueName() string { return v.UniqueName }
+
+// GetDescription returns CommonDataMaterializedView.Description, and is useful for accessing the field via an interface.
+func (v *CommonDataMaterializedView) GetDescription() string { return v.Description }
+
+// GetAccount returns CommonDataMaterializedView.Account, and is useful for accessing the field via an interface.
+func (v *CommonDataMaterializedView) GetAccount() *CommonDataAccount { return v.Account }
+
+// GetEnvironment returns CommonDataMaterializedView.Environment, and is useful for accessing the field via an interface.
+func (v *CommonDataMaterializedView) GetEnvironment() *CommonDataEnvironment { return v.Environment }
+
+// GetCreatedAt returns CommonDataMaterializedView.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataMaterializedView) GetCreatedAt() time.Time { return v.CreatedAt }
+
+// GetModifiedAt returns CommonDataMaterializedView.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CommonDataMaterializedView) GetModifiedAt() time.Time { return v.ModifiedAt }
+
+// GetCreatedBy returns CommonDataMaterializedView.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataMaterializedView) GetCreatedBy() string { return v.CreatedBy }
+
+// GetModifiedBy returns CommonDataMaterializedView.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CommonDataMaterializedView) GetModifiedBy() string { return v.ModifiedBy }
 
 // CommonData includes the GraphQL fields of Metric requested by the fragment CommonData.
 // The GraphQL type's documentation follows.
@@ -1114,6 +1195,8 @@ type CreateAverageMetricInput struct {
 	Description *string `json:"description"`
 	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
 	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's Filters, in the form of SQL. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+	FilterSql *string `json:"filterSql"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The column to be averaged.
@@ -1131,6 +1214,9 @@ func (v *CreateAverageMetricInput) GetDescription() *string { return v.Descripti
 
 // GetFilters returns CreateAverageMetricInput.Filters, and is useful for accessing the field via an interface.
 func (v *CreateAverageMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetFilterSql returns CreateAverageMetricInput.FilterSql, and is useful for accessing the field via an interface.
+func (v *CreateAverageMetricInput) GetFilterSql() *string { return v.FilterSql }
 
 // GetDimensions returns CreateAverageMetricInput.Dimensions, and is useful for accessing the field via an interface.
 func (v *CreateAverageMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
@@ -1373,6 +1459,8 @@ type CreateCountDistinctMetricInput struct {
 	Description *string `json:"description"`
 	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
 	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's Filters, in the form of SQL. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+	FilterSql *string `json:"filterSql"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The Dimension over which the count distinct operation is going to be performed.
@@ -1390,6 +1478,9 @@ func (v *CreateCountDistinctMetricInput) GetDescription() *string { return v.Des
 
 // GetFilters returns CreateCountDistinctMetricInput.Filters, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetFilterSql returns CreateCountDistinctMetricInput.FilterSql, and is useful for accessing the field via an interface.
+func (v *CreateCountDistinctMetricInput) GetFilterSql() *string { return v.FilterSql }
 
 // GetDimensions returns CreateCountDistinctMetricInput.Dimensions, and is useful for accessing the field via an interface.
 func (v *CreateCountDistinctMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
@@ -1630,6 +1721,8 @@ type CreateCountMetricInput struct {
 	Description *string `json:"description"`
 	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
 	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's Filters, in the form of SQL. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+	FilterSql *string `json:"filterSql"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 }
@@ -1645,6 +1738,9 @@ func (v *CreateCountMetricInput) GetDescription() *string { return v.Description
 
 // GetFilters returns CreateCountMetricInput.Filters, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetFilterSql returns CreateCountMetricInput.FilterSql, and is useful for accessing the field via an interface.
+func (v *CreateCountMetricInput) GetFilterSql() *string { return v.FilterSql }
 
 // GetDimensions returns CreateCountMetricInput.Dimensions, and is useful for accessing the field via an interface.
 func (v *CreateCountMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
@@ -1882,6 +1978,8 @@ type CreateCustomMetricInput struct {
 	Description *string `json:"description"`
 	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
 	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's Filters, in the form of SQL. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+	FilterSql *string `json:"filterSql"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The expression that defines the aggregation function for this Metric.
@@ -1899,6 +1997,9 @@ func (v *CreateCustomMetricInput) GetDescription() *string { return v.Descriptio
 
 // GetFilters returns CreateCustomMetricInput.Filters, and is useful for accessing the field via an interface.
 func (v *CreateCustomMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetFilterSql returns CreateCustomMetricInput.FilterSql, and is useful for accessing the field via an interface.
+func (v *CreateCustomMetricInput) GetFilterSql() *string { return v.FilterSql }
 
 // GetDimensions returns CreateCustomMetricInput.Dimensions, and is useful for accessing the field via an interface.
 func (v *CreateCustomMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
@@ -2085,6 +2186,8 @@ type CreateDataPoolAccessPolicyInput struct {
 	Columns []string `json:"columns"`
 	// Row-level filters that the Access Policy applies before executing queries.
 	Rows []*FilterInput `json:"rows,omitempty"`
+	// Row-level filters that the Access Policy applies before executing queries, in the form of SQL.
+	FilterSql *string `json:"filterSql"`
 }
 
 // GetUniqueName returns CreateDataPoolAccessPolicyInput.UniqueName, and is useful for accessing the field via an interface.
@@ -2101,6 +2204,9 @@ func (v *CreateDataPoolAccessPolicyInput) GetColumns() []string { return v.Colum
 
 // GetRows returns CreateDataPoolAccessPolicyInput.Rows, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolAccessPolicyInput) GetRows() []*FilterInput { return v.Rows }
+
+// GetFilterSql returns CreateDataPoolAccessPolicyInput.FilterSql, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolAccessPolicyInput) GetFilterSql() *string { return v.FilterSql }
 
 // CreateDataPoolAccessPolicyResponse is returned by CreateDataPoolAccessPolicy on success.
 type CreateDataPoolAccessPolicyResponse struct {
@@ -2371,10 +2477,16 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 // The fields for creating a Data Pool.
 type CreateDataPoolInputV2 struct {
 	// The Data Source that will be used to create the Data Pool.
-	DataSource string `json:"dataSource"`
+	DataSource *string `json:"dataSource"`
 	// The table that the Data Pool will sync from.
-	Table string `json:"table"`
-	// The table's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
+	Table *string `json:"table"`
+	// The table's primary timestamp column.
+	//
+	// Propel uses the primary timestamp to order and partition your data in Data Pools. It's part of what makes Propel
+	// fast for larger data sets. It will also serve as the time dimension for your Metrics.
+	//
+	// If you do not provide a primary timestamp column, you will need to supply an alternate timestamp when querying your
+	// Data Pool or its Metrics using the TimeRangeInput.
 	Timestamp *TimestampInput `json:"timestamp,omitempty"`
 	// The Data Pool's unique name. If not specified, Propel will set the ID as the unique name.
 	UniqueName *string `json:"uniqueName"`
@@ -2393,13 +2505,17 @@ type CreateDataPoolInputV2 struct {
 	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
 	// Policies in order to query the Data Pool and its Metrics.
 	AccessControlEnabled *bool `json:"accessControlEnabled"`
+	// Override the Data Pool's table settings. These describe how the Data Pool's table is created in ClickHouse, and a
+	// default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if any. You can override these
+	// defaults in order to specify a custom table engine, custom ORDER BY, etc.
+	TableSettings *TableSettingsInput `json:"tableSettings,omitempty"`
 }
 
 // GetDataSource returns CreateDataPoolInputV2.DataSource, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInputV2) GetDataSource() string { return v.DataSource }
+func (v *CreateDataPoolInputV2) GetDataSource() *string { return v.DataSource }
 
 // GetTable returns CreateDataPoolInputV2.Table, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolInputV2) GetTable() string { return v.Table }
+func (v *CreateDataPoolInputV2) GetTable() *string { return v.Table }
 
 // GetTimestamp returns CreateDataPoolInputV2.Timestamp, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInputV2) GetTimestamp() *TimestampInput { return v.Timestamp }
@@ -2424,6 +2540,9 @@ func (v *CreateDataPoolInputV2) GetSyncing() *DataPoolSyncingInput { return v.Sy
 
 // GetAccessControlEnabled returns CreateDataPoolInputV2.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolInputV2) GetAccessControlEnabled() *bool { return v.AccessControlEnabled }
+
+// GetTableSettings returns CreateDataPoolInputV2.TableSettings, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolInputV2) GetTableSettings() *TableSettingsInput { return v.TableSettings }
 
 // CreateDataPoolResponse is returned by CreateDataPool on success.
 type CreateDataPoolResponse struct {
@@ -2687,6 +2806,295 @@ func (v *CreateHttpDataSourceResponse) GetCreateHttpDataSource() *CreateHttpData
 	return v.CreateHttpDataSource
 }
 
+// CreateMaterializedViewCreateMaterializedViewMaterializedViewResponse includes the requested fields of the GraphQL type MaterializedViewResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Materialized View.
+type CreateMaterializedViewCreateMaterializedViewMaterializedViewResponse struct {
+	Typename *string `json:"__typename"`
+	// The Materialized View which was created or modified.
+	MaterializedView *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView `json:"materializedView"`
+}
+
+// GetTypename returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponse.Typename, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponse) GetTypename() *string {
+	return v.Typename
+}
+
+// GetMaterializedView returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponse.MaterializedView, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponse) GetMaterializedView() *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView {
+	return v.MaterializedView
+}
+
+// CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView includes the requested fields of the GraphQL type MaterializedView.
+type CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView struct {
+	MaterializedViewData `json:"-"`
+}
+
+// GetId returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.Id, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetId() string {
+	return v.MaterializedViewData.Id
+}
+
+// GetSql returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.Sql, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetSql() string {
+	return v.MaterializedViewData.Sql
+}
+
+// GetDestination returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.Destination, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetDestination() *MaterializedViewDataDestinationDataPool {
+	return v.MaterializedViewData.Destination
+}
+
+// GetSource returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.Source, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetSource() *MaterializedViewDataSourceDataPool {
+	return v.MaterializedViewData.Source
+}
+
+// GetOthers returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.Others, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetOthers() []*MaterializedViewDataOthersDataPool {
+	return v.MaterializedViewData.Others
+}
+
+// GetUniqueName returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetUniqueName() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.UniqueName
+}
+
+// GetDescription returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.Description, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetDescription() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.Description
+}
+
+// GetAccount returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.Account, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetAccount() *CommonDataAccount {
+	return v.MaterializedViewData.CommonDataMaterializedView.Account
+}
+
+// GetEnvironment returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.Environment, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetEnvironment() *CommonDataEnvironment {
+	return v.MaterializedViewData.CommonDataMaterializedView.Environment
+}
+
+// GetCreatedAt returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetCreatedAt() time.Time {
+	return v.MaterializedViewData.CommonDataMaterializedView.CreatedAt
+}
+
+// GetModifiedAt returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetModifiedAt() time.Time {
+	return v.MaterializedViewData.CommonDataMaterializedView.ModifiedAt
+}
+
+// GetCreatedBy returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetCreatedBy() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.CreatedBy
+}
+
+// GetModifiedBy returns CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) GetModifiedBy() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.ModifiedBy
+}
+
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.MaterializedViewData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView struct {
+	Id string `json:"id"`
+
+	Sql string `json:"sql"`
+
+	Destination *MaterializedViewDataDestinationDataPool `json:"destination"`
+
+	Source *MaterializedViewDataSourceDataPool `json:"source"`
+
+	Others []*MaterializedViewDataOthersDataPool `json:"others"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView) __premarshalJSON() (*__premarshalCreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView, error) {
+	var retval __premarshalCreateMaterializedViewCreateMaterializedViewMaterializedViewResponseMaterializedView
+
+	retval.Id = v.MaterializedViewData.Id
+	retval.Sql = v.MaterializedViewData.Sql
+	retval.Destination = v.MaterializedViewData.Destination
+	retval.Source = v.MaterializedViewData.Source
+	retval.Others = v.MaterializedViewData.Others
+	retval.UniqueName = v.MaterializedViewData.CommonDataMaterializedView.UniqueName
+	retval.Description = v.MaterializedViewData.CommonDataMaterializedView.Description
+	retval.Account = v.MaterializedViewData.CommonDataMaterializedView.Account
+	retval.Environment = v.MaterializedViewData.CommonDataMaterializedView.Environment
+	retval.CreatedAt = v.MaterializedViewData.CommonDataMaterializedView.CreatedAt
+	retval.ModifiedAt = v.MaterializedViewData.CommonDataMaterializedView.ModifiedAt
+	retval.CreatedBy = v.MaterializedViewData.CommonDataMaterializedView.CreatedBy
+	retval.ModifiedBy = v.MaterializedViewData.CommonDataMaterializedView.ModifiedBy
+	return &retval, nil
+}
+
+// The fields for targeting an existing Data Pool or a new Data Pool.
+type CreateMaterializedViewDestinationInput struct {
+	// If specified, the Materialized View will target an existing Data Pool.
+	// Ensure the Data Pool's schema is compatible with your Materialized View's SQL statement.
+	ExistingDataPool *DataPoolInput `json:"existingDataPool,omitempty"`
+	// If specified, the Materialized View will create and target a new Data Pool.
+	// You can further customize the new Data Pool's engine settings.
+	NewDataPool *CreateMaterializedViewDestinationNewDataPoolInput `json:"newDataPool,omitempty"`
+}
+
+// GetExistingDataPool returns CreateMaterializedViewDestinationInput.ExistingDataPool, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewDestinationInput) GetExistingDataPool() *DataPoolInput {
+	return v.ExistingDataPool
+}
+
+// GetNewDataPool returns CreateMaterializedViewDestinationInput.NewDataPool, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewDestinationInput) GetNewDataPool() *CreateMaterializedViewDestinationNewDataPoolInput {
+	return v.NewDataPool
+}
+
+// The fields for customizing a new Data Pool that a Materialized View will target.
+type CreateMaterializedViewDestinationNewDataPoolInput struct {
+	// The Data Pool's unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Data Pool's description.
+	Description *string `json:"description"`
+	// Optionally specify the Data Pool's primary timestamp. This will influence the Data Pool's engine settings.
+	Timestamp *TimestampInput `json:"timestamp,omitempty"`
+	// Optionally specify the Data Pool's unique ID. This will influence the Data Pool's engine settings.
+	UniqueId *UniqueIdInput `json:"uniqueId,omitempty"`
+	// Enables or disables access control for the Data Pool.
+	//
+	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
+	// Policies in order to query the Data Pool and its Metrics.
+	AccessControlEnabled *bool `json:"accessControlEnabled"`
+	// Override the Data Pool's table settings. These describe how the Data Pool's table is created in ClickHouse, and a
+	// default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if any. You can override these
+	// defaults in order to specify a custom table engine, custom ORDER BY, etc.
+	TableSettings *TableSettingsInput `json:"tableSettings,omitempty"`
+}
+
+// GetUniqueName returns CreateMaterializedViewDestinationNewDataPoolInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewDestinationNewDataPoolInput) GetUniqueName() *string {
+	return v.UniqueName
+}
+
+// GetDescription returns CreateMaterializedViewDestinationNewDataPoolInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewDestinationNewDataPoolInput) GetDescription() *string {
+	return v.Description
+}
+
+// GetTimestamp returns CreateMaterializedViewDestinationNewDataPoolInput.Timestamp, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewDestinationNewDataPoolInput) GetTimestamp() *TimestampInput {
+	return v.Timestamp
+}
+
+// GetUniqueId returns CreateMaterializedViewDestinationNewDataPoolInput.UniqueId, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewDestinationNewDataPoolInput) GetUniqueId() *UniqueIdInput {
+	return v.UniqueId
+}
+
+// GetAccessControlEnabled returns CreateMaterializedViewDestinationNewDataPoolInput.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewDestinationNewDataPoolInput) GetAccessControlEnabled() *bool {
+	return v.AccessControlEnabled
+}
+
+// GetTableSettings returns CreateMaterializedViewDestinationNewDataPoolInput.TableSettings, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewDestinationNewDataPoolInput) GetTableSettings() *TableSettingsInput {
+	return v.TableSettings
+}
+
+// The fields for creating a Materialized View.
+type CreateMaterializedViewInput struct {
+	// The Materialized View's unique name. If not specified, Propel will set the ID as the unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Materialized View's description.
+	Description *string `json:"description"`
+	// The SQL that the Materialized View will execute.
+	Sql string `json:"sql"`
+	// By default, a destination Data Pool with default settings will be created for the Materialized View;
+	// however, you can customize the destination Data Pool (or point to an existing Data Pool), by setting
+	// this field. Use this to target an existing Data Pool or the engine settings of a new Data Pool.
+	Destination *CreateMaterializedViewDestinationInput `json:"destination,omitempty"`
+	// By default, a Materialized View only applies to records added after its creation. This option allows
+	// to backfill all the data that was present before the Materialized View creation.
+	BackfillOptions *BackfillOptionsInput `json:"backfillOptions,omitempty"`
+}
+
+// GetUniqueName returns CreateMaterializedViewInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewInput) GetUniqueName() *string { return v.UniqueName }
+
+// GetDescription returns CreateMaterializedViewInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewInput) GetDescription() *string { return v.Description }
+
+// GetSql returns CreateMaterializedViewInput.Sql, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewInput) GetSql() string { return v.Sql }
+
+// GetDestination returns CreateMaterializedViewInput.Destination, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewInput) GetDestination() *CreateMaterializedViewDestinationInput {
+	return v.Destination
+}
+
+// GetBackfillOptions returns CreateMaterializedViewInput.BackfillOptions, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewInput) GetBackfillOptions() *BackfillOptionsInput {
+	return v.BackfillOptions
+}
+
+// CreateMaterializedViewResponse is returned by CreateMaterializedView on success.
+type CreateMaterializedViewResponse struct {
+	// Creates a new Materialized View.
+	// Returns the newly created Materialized View (or an error message if creating the Materialized View fails).
+	CreateMaterializedView *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponse `json:"createMaterializedView"`
+}
+
+// GetCreateMaterializedView returns CreateMaterializedViewResponse.CreateMaterializedView, and is useful for accessing the field via an interface.
+func (v *CreateMaterializedViewResponse) GetCreateMaterializedView() *CreateMaterializedViewCreateMaterializedViewMaterializedViewResponse {
+	return v.CreateMaterializedView
+}
+
 // CreateMaxMetricCreateMaxMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
 // The GraphQL type's documentation follows.
 //
@@ -2905,6 +3313,8 @@ type CreateMaxMetricInput struct {
 	Description *string `json:"description"`
 	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
 	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's Filters, in the form of SQL. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+	FilterSql *string `json:"filterSql"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The column to calculate the maximum from.
@@ -2922,6 +3332,9 @@ func (v *CreateMaxMetricInput) GetDescription() *string { return v.Description }
 
 // GetFilters returns CreateMaxMetricInput.Filters, and is useful for accessing the field via an interface.
 func (v *CreateMaxMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetFilterSql returns CreateMaxMetricInput.FilterSql, and is useful for accessing the field via an interface.
+func (v *CreateMaxMetricInput) GetFilterSql() *string { return v.FilterSql }
 
 // GetDimensions returns CreateMaxMetricInput.Dimensions, and is useful for accessing the field via an interface.
 func (v *CreateMaxMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
@@ -3160,6 +3573,8 @@ type CreateMinMetricInput struct {
 	Description *string `json:"description"`
 	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
 	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's Filters, in the form of SQL. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+	FilterSql *string `json:"filterSql"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	Measure    *DimensionInput   `json:"measure,omitempty"`
@@ -3176,6 +3591,9 @@ func (v *CreateMinMetricInput) GetDescription() *string { return v.Description }
 
 // GetFilters returns CreateMinMetricInput.Filters, and is useful for accessing the field via an interface.
 func (v *CreateMinMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetFilterSql returns CreateMinMetricInput.FilterSql, and is useful for accessing the field via an interface.
+func (v *CreateMinMetricInput) GetFilterSql() *string { return v.FilterSql }
 
 // GetDimensions returns CreateMinMetricInput.Dimensions, and is useful for accessing the field via an interface.
 func (v *CreateMinMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
@@ -4266,6 +4684,8 @@ type CreateSumMetricInput struct {
 	Description *string `json:"description"`
 	// The Metric's Filters. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
 	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's Filters, in the form of SQL. Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Filters are present, all records will be included.
+	FilterSql *string `json:"filterSql"`
 	// The Metric's Dimensions. Dimensions define the columns that will be available to filter the Metric at query time.
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The column to be summed.
@@ -4283,6 +4703,9 @@ func (v *CreateSumMetricInput) GetDescription() *string { return v.Description }
 
 // GetFilters returns CreateSumMetricInput.Filters, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetFilterSql returns CreateSumMetricInput.FilterSql, and is useful for accessing the field via an interface.
+func (v *CreateSumMetricInput) GetFilterSql() *string { return v.FilterSql }
 
 // GetDimensions returns CreateSumMetricInput.Dimensions, and is useful for accessing the field via an interface.
 func (v *CreateSumMetricInput) GetDimensions() []*DimensionInput { return v.Dimensions }
@@ -5272,6 +5695,8 @@ type DataPoolColumnInput struct {
 	ColumnName string `json:"columnName"`
 	// The Data Pool column's type. This may differ from the corresponding Data Source column's type.
 	Type ColumnType `json:"type"`
+	// The ClickHouse type to use when `type` is set to `CLICKHOUSE`.
+	ClickHouseType *string `json:"clickHouseType"`
 	// Whether the column is nullable, meaning whether it accepts a null value.
 	IsNullable bool `json:"isNullable"`
 }
@@ -5281,6 +5706,9 @@ func (v *DataPoolColumnInput) GetColumnName() string { return v.ColumnName }
 
 // GetType returns DataPoolColumnInput.Type, and is useful for accessing the field via an interface.
 func (v *DataPoolColumnInput) GetType() ColumnType { return v.Type }
+
+// GetClickHouseType returns DataPoolColumnInput.ClickHouseType, and is useful for accessing the field via an interface.
+func (v *DataPoolColumnInput) GetClickHouseType() *string { return v.ClickHouseType }
 
 // GetIsNullable returns DataPoolColumnInput.IsNullable, and is useful for accessing the field via an interface.
 func (v *DataPoolColumnInput) GetIsNullable() bool { return v.IsNullable }
@@ -5304,7 +5732,7 @@ type DataPoolData struct {
 	Table string `json:"table"`
 	// The Data Pool's tenant ID, if configured.
 	Tenant *DataPoolDataTenant `json:"tenant"`
-	// The Data Pool's primary timestamp column.
+	// The Data Pool's primary timestamp column, if any.
 	Timestamp *DataPoolDataTimestamp `json:"timestamp"`
 	// The Data Pool's columns.
 	Columns *DataPoolDataColumnsDataPoolColumnConnection `json:"columns"`
@@ -6696,6 +7124,19 @@ type DataPoolDataUniqueId struct {
 // GetColumnName returns DataPoolDataUniqueId.ColumnName, and is useful for accessing the field via an interface.
 func (v *DataPoolDataUniqueId) GetColumnName() string { return v.ColumnName }
 
+type DataPoolInput struct {
+	// The ID of the Data Pool.
+	Id *string `json:"id"`
+	// The name of the Data Pool.
+	Name *string `json:"name"`
+}
+
+// GetId returns DataPoolInput.Id, and is useful for accessing the field via an interface.
+func (v *DataPoolInput) GetId() *string { return v.Id }
+
+// GetName returns DataPoolInput.Name, and is useful for accessing the field via an interface.
+func (v *DataPoolInput) GetName() *string { return v.Name }
+
 // DataPoolResponse is returned by DataPool on success.
 type DataPoolResponse struct {
 	// This query returns the Data Pool specified by the given ID.
@@ -7660,6 +8101,8 @@ func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return 
 //
 // DataSourceDataConnectionSettings is implemented by the following types:
 // DataSourceDataConnectionSettingsHttpConnectionSettings
+// DataSourceDataConnectionSettingsInternalConnectionSettings
+// DataSourceDataConnectionSettingsKafkaConnectionSettings
 // DataSourceDataConnectionSettingsS3ConnectionSettings
 // DataSourceDataConnectionSettingsSnowflakeConnectionSettings
 // DataSourceDataConnectionSettingsWebhookConnectionSettings
@@ -7670,6 +8113,10 @@ type DataSourceDataConnectionSettings interface {
 }
 
 func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
+}
+func (v *DataSourceDataConnectionSettingsInternalConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
+}
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
@@ -7694,6 +8141,12 @@ func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConn
 	switch tn.TypeName {
 	case "HttpConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsHttpConnectionSettings)
+		return json.Unmarshal(b, *v)
+	case "InternalConnectionSettings":
+		*v = new(DataSourceDataConnectionSettingsInternalConnectionSettings)
+		return json.Unmarshal(b, *v)
+	case "KafkaConnectionSettings":
+		*v = new(DataSourceDataConnectionSettingsKafkaConnectionSettings)
 		return json.Unmarshal(b, *v)
 	case "S3ConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsS3ConnectionSettings)
@@ -7723,6 +8176,22 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 		result := struct {
 			TypeName string `json:"__typename"`
 			*DataSourceDataConnectionSettingsHttpConnectionSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case *DataSourceDataConnectionSettingsInternalConnectionSettings:
+		typename = "InternalConnectionSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DataSourceDataConnectionSettingsInternalConnectionSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case *DataSourceDataConnectionSettingsKafkaConnectionSettings:
+		typename = "KafkaConnectionSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DataSourceDataConnectionSettingsKafkaConnectionSettings
 		}{typename, v}
 		return json.Marshal(result)
 	case *DataSourceDataConnectionSettingsS3ConnectionSettings:
@@ -7861,6 +8330,29 @@ func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSou
 // GetNullable returns DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn.Nullable, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsHttpConnectionSettingsTablesHttpDataSourceTableColumnsHttpDataSourceColumn) GetNullable() bool {
 	return v.Nullable
+}
+
+// DataSourceDataConnectionSettingsInternalConnectionSettings includes the requested fields of the GraphQL type InternalConnectionSettings.
+type DataSourceDataConnectionSettingsInternalConnectionSettings struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns DataSourceDataConnectionSettingsInternalConnectionSettings.Typename, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsInternalConnectionSettings) GetTypename() *string {
+	return v.Typename
+}
+
+// DataSourceDataConnectionSettingsKafkaConnectionSettings includes the requested fields of the GraphQL type KafkaConnectionSettings.
+// The GraphQL type's documentation follows.
+//
+// The Kafka Data Source connection settings.
+type DataSourceDataConnectionSettingsKafkaConnectionSettings struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns DataSourceDataConnectionSettingsKafkaConnectionSettings.Typename, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetTypename() *string {
+	return v.Typename
 }
 
 // DataSourceDataConnectionSettingsS3ConnectionSettings includes the requested fields of the GraphQL type S3ConnectionSettings.
@@ -8021,11 +8513,11 @@ type DataSourceDataConnectionSettingsWebhookConnectionSettings struct {
 	BasicAuth *DataSourceDataConnectionSettingsWebhookConnectionSettingsBasicAuthHttpBasicAuthSettings `json:"basicAuth"`
 	// The additional columns for the Webhook Data Source table.
 	Columns []*DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn `json:"columns"`
-	// The tenant ID column, if configured.
+	// The tenant ID column, if any.
 	Tenant *string `json:"tenant"`
-	// The primary timestamp column.
-	Timestamp string `json:"timestamp"`
-	// The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
+	// The primary timestamp column, if any.
+	Timestamp *string `json:"timestamp"`
+	// The unique ID column, if any. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 	UniqueId *string `json:"uniqueId"`
 	// The Webhook URL for posting JSON events
 	WebhookUrl string `json:"webhookUrl"`
@@ -8052,7 +8544,7 @@ func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTenant() 
 }
 
 // GetTimestamp returns DataSourceDataConnectionSettingsWebhookConnectionSettings.Timestamp, and is useful for accessing the field via an interface.
-func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTimestamp() string {
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTimestamp() *string {
 	return v.Timestamp
 }
 
@@ -8663,12 +9155,18 @@ const (
 	DataSourceTypeS3 DataSourceType = "S3"
 	// Indicates a Redshift Data Source.
 	DataSourceTypeRedshift DataSourceType = "Redshift"
+	// Indicates a Kafka Data Source.
+	DataSourceTypeKafka DataSourceType = "KAFKA"
 	// Indicates an Http Data Source.
 	DataSourceTypeHttp DataSourceType = "Http"
+	// Indicates a ClickHouse Data Source.
+	DataSourceTypeClickhouse DataSourceType = "CLICKHOUSE"
 	// Indicates a BigQuery Data Source.
 	DataSourceTypeBigquery DataSourceType = "BIGQUERY"
 	// Indicates a Snowflake Data Source.
 	DataSourceTypeSnowflake DataSourceType = "Snowflake"
+	// Indicates an internal Data Source.
+	DataSourceTypeInternal DataSourceType = "INTERNAL"
 )
 
 // DataSourcesDataSourcesDataSourceConnection includes the requested fields of the GraphQL type DataSourceConnection.
@@ -9063,6 +9561,19 @@ type DeleteDataSourceResponse struct {
 // GetDeleteDataSource returns DeleteDataSourceResponse.DeleteDataSource, and is useful for accessing the field via an interface.
 func (v *DeleteDataSourceResponse) GetDeleteDataSource() *string { return v.DeleteDataSource }
 
+// DeleteMaterializedViewResponse is returned by DeleteMaterializedView on success.
+type DeleteMaterializedViewResponse struct {
+	// Deletes a Materialized View and returns its ID if the Materialized View was deleted successfully.
+	// Note that deleting a Materialized View does not delete its target Data Pool. If you want to delete its target
+	// Data Pool, you must use the `deleteDataPool` mutation.
+	DeleteMaterializedView *string `json:"deleteMaterializedView"`
+}
+
+// GetDeleteMaterializedView returns DeleteMaterializedViewResponse.DeleteMaterializedView, and is useful for accessing the field via an interface.
+func (v *DeleteMaterializedViewResponse) GetDeleteMaterializedView() *string {
+	return v.DeleteMaterializedView
+}
+
 // DeleteMetricByNameResponse is returned by DeleteMetricByName on success.
 type DeleteMetricByNameResponse struct {
 	// Deletes a Metric by unique name and returns its ID if the Metric was deleted successfully.
@@ -9363,6 +9874,10 @@ const (
 	FilterOperatorIsNull FilterOperator = "IS_NULL"
 	// Selects values that are not null. This operator does not accept a value.
 	FilterOperatorIsNotNull FilterOperator = "IS_NOT_NULL"
+	// Selects values that match the specified pattern.
+	FilterOperatorLike FilterOperator = "LIKE"
+	// "Selects values that do not match the specified pattern.
+	FilterOperatorNotLike FilterOperator = "NOT_LIKE"
 )
 
 // GqlError includes the GraphQL fields of Error requested by the fragment GqlError.
@@ -9418,6 +9933,8 @@ type HttpDataSourceColumnInput struct {
 	Name string `json:"name"`
 	// The column type.
 	Type ColumnType `json:"type"`
+	// The ClickHouse type to use when `type` is set to `CLICKHOUSE`.
+	ClickHouseType *string `json:"clickHouseType"`
 	// Whether the column's type is nullable or not.
 	Nullable bool `json:"nullable"`
 }
@@ -9427,6 +9944,9 @@ func (v *HttpDataSourceColumnInput) GetName() string { return v.Name }
 
 // GetType returns HttpDataSourceColumnInput.Type, and is useful for accessing the field via an interface.
 func (v *HttpDataSourceColumnInput) GetType() ColumnType { return v.Type }
+
+// GetClickHouseType returns HttpDataSourceColumnInput.ClickHouseType, and is useful for accessing the field via an interface.
+func (v *HttpDataSourceColumnInput) GetClickHouseType() *string { return v.ClickHouseType }
 
 // GetNullable returns HttpDataSourceColumnInput.Nullable, and is useful for accessing the field via an interface.
 func (v *HttpDataSourceColumnInput) GetNullable() bool { return v.Nullable }
@@ -9473,6 +9993,360 @@ const (
 	// The Job failed. Check the error message.
 	JobStatusFailed JobStatus = "FAILED"
 )
+
+// MaterializedViewData includes the GraphQL fields of MaterializedView requested by the fragment MaterializedViewData.
+type MaterializedViewData struct {
+	// The Materialized View's unique identifier.
+	Id                         string `json:"id"`
+	CommonDataMaterializedView `json:"-"`
+	// The SQL that the Materialized View executes.
+	Sql string `json:"sql"`
+	// The Materialized View's destination (AKA "target") Data Pool.
+	Destination *MaterializedViewDataDestinationDataPool `json:"destination"`
+	// The Materialized View's source Data Pool.
+	Source *MaterializedViewDataSourceDataPool `json:"source"`
+	// Other Data Pools queried by the Materialized View.
+	Others []*MaterializedViewDataOthersDataPool `json:"others"`
+}
+
+// GetId returns MaterializedViewData.Id, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetId() string { return v.Id }
+
+// GetSql returns MaterializedViewData.Sql, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetSql() string { return v.Sql }
+
+// GetDestination returns MaterializedViewData.Destination, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetDestination() *MaterializedViewDataDestinationDataPool {
+	return v.Destination
+}
+
+// GetSource returns MaterializedViewData.Source, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetSource() *MaterializedViewDataSourceDataPool { return v.Source }
+
+// GetOthers returns MaterializedViewData.Others, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetOthers() []*MaterializedViewDataOthersDataPool { return v.Others }
+
+// GetUniqueName returns MaterializedViewData.UniqueName, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetUniqueName() string { return v.CommonDataMaterializedView.UniqueName }
+
+// GetDescription returns MaterializedViewData.Description, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetDescription() string {
+	return v.CommonDataMaterializedView.Description
+}
+
+// GetAccount returns MaterializedViewData.Account, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetAccount() *CommonDataAccount {
+	return v.CommonDataMaterializedView.Account
+}
+
+// GetEnvironment returns MaterializedViewData.Environment, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetEnvironment() *CommonDataEnvironment {
+	return v.CommonDataMaterializedView.Environment
+}
+
+// GetCreatedAt returns MaterializedViewData.CreatedAt, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetCreatedAt() time.Time {
+	return v.CommonDataMaterializedView.CreatedAt
+}
+
+// GetModifiedAt returns MaterializedViewData.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetModifiedAt() time.Time {
+	return v.CommonDataMaterializedView.ModifiedAt
+}
+
+// GetCreatedBy returns MaterializedViewData.CreatedBy, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetCreatedBy() string { return v.CommonDataMaterializedView.CreatedBy }
+
+// GetModifiedBy returns MaterializedViewData.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *MaterializedViewData) GetModifiedBy() string { return v.CommonDataMaterializedView.ModifiedBy }
+
+func (v *MaterializedViewData) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MaterializedViewData
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MaterializedViewData = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.CommonDataMaterializedView)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMaterializedViewData struct {
+	Id string `json:"id"`
+
+	Sql string `json:"sql"`
+
+	Destination *MaterializedViewDataDestinationDataPool `json:"destination"`
+
+	Source *MaterializedViewDataSourceDataPool `json:"source"`
+
+	Others []*MaterializedViewDataOthersDataPool `json:"others"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *MaterializedViewData) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MaterializedViewData) __premarshalJSON() (*__premarshalMaterializedViewData, error) {
+	var retval __premarshalMaterializedViewData
+
+	retval.Id = v.Id
+	retval.Sql = v.Sql
+	retval.Destination = v.Destination
+	retval.Source = v.Source
+	retval.Others = v.Others
+	retval.UniqueName = v.CommonDataMaterializedView.UniqueName
+	retval.Description = v.CommonDataMaterializedView.Description
+	retval.Account = v.CommonDataMaterializedView.Account
+	retval.Environment = v.CommonDataMaterializedView.Environment
+	retval.CreatedAt = v.CommonDataMaterializedView.CreatedAt
+	retval.ModifiedAt = v.CommonDataMaterializedView.ModifiedAt
+	retval.CreatedBy = v.CommonDataMaterializedView.CreatedBy
+	retval.ModifiedBy = v.CommonDataMaterializedView.ModifiedBy
+	return &retval, nil
+}
+
+// MaterializedViewDataDestinationDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
+//
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
+type MaterializedViewDataDestinationDataPool struct {
+	// The Data Pool's unique identifier.
+	Id string `json:"id"`
+}
+
+// GetId returns MaterializedViewDataDestinationDataPool.Id, and is useful for accessing the field via an interface.
+func (v *MaterializedViewDataDestinationDataPool) GetId() string { return v.Id }
+
+// MaterializedViewDataOthersDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
+//
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
+type MaterializedViewDataOthersDataPool struct {
+	// The Data Pool's unique identifier.
+	Id string `json:"id"`
+}
+
+// GetId returns MaterializedViewDataOthersDataPool.Id, and is useful for accessing the field via an interface.
+func (v *MaterializedViewDataOthersDataPool) GetId() string { return v.Id }
+
+// MaterializedViewDataSourceDataPool includes the requested fields of the GraphQL type DataPool.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool object. Data Pools are Propel's high-speed data store and cache
+//
+// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
+type MaterializedViewDataSourceDataPool struct {
+	// The Data Pool's unique identifier.
+	Id string `json:"id"`
+}
+
+// GetId returns MaterializedViewDataSourceDataPool.Id, and is useful for accessing the field via an interface.
+func (v *MaterializedViewDataSourceDataPool) GetId() string { return v.Id }
+
+// MaterializedViewMaterializedView includes the requested fields of the GraphQL type MaterializedView.
+type MaterializedViewMaterializedView struct {
+	MaterializedViewData `json:"-"`
+}
+
+// GetId returns MaterializedViewMaterializedView.Id, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetId() string { return v.MaterializedViewData.Id }
+
+// GetSql returns MaterializedViewMaterializedView.Sql, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetSql() string { return v.MaterializedViewData.Sql }
+
+// GetDestination returns MaterializedViewMaterializedView.Destination, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetDestination() *MaterializedViewDataDestinationDataPool {
+	return v.MaterializedViewData.Destination
+}
+
+// GetSource returns MaterializedViewMaterializedView.Source, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetSource() *MaterializedViewDataSourceDataPool {
+	return v.MaterializedViewData.Source
+}
+
+// GetOthers returns MaterializedViewMaterializedView.Others, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetOthers() []*MaterializedViewDataOthersDataPool {
+	return v.MaterializedViewData.Others
+}
+
+// GetUniqueName returns MaterializedViewMaterializedView.UniqueName, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetUniqueName() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.UniqueName
+}
+
+// GetDescription returns MaterializedViewMaterializedView.Description, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetDescription() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.Description
+}
+
+// GetAccount returns MaterializedViewMaterializedView.Account, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetAccount() *CommonDataAccount {
+	return v.MaterializedViewData.CommonDataMaterializedView.Account
+}
+
+// GetEnvironment returns MaterializedViewMaterializedView.Environment, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetEnvironment() *CommonDataEnvironment {
+	return v.MaterializedViewData.CommonDataMaterializedView.Environment
+}
+
+// GetCreatedAt returns MaterializedViewMaterializedView.CreatedAt, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetCreatedAt() time.Time {
+	return v.MaterializedViewData.CommonDataMaterializedView.CreatedAt
+}
+
+// GetModifiedAt returns MaterializedViewMaterializedView.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetModifiedAt() time.Time {
+	return v.MaterializedViewData.CommonDataMaterializedView.ModifiedAt
+}
+
+// GetCreatedBy returns MaterializedViewMaterializedView.CreatedBy, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetCreatedBy() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.CreatedBy
+}
+
+// GetModifiedBy returns MaterializedViewMaterializedView.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *MaterializedViewMaterializedView) GetModifiedBy() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.ModifiedBy
+}
+
+func (v *MaterializedViewMaterializedView) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*MaterializedViewMaterializedView
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.MaterializedViewMaterializedView = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.MaterializedViewData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalMaterializedViewMaterializedView struct {
+	Id string `json:"id"`
+
+	Sql string `json:"sql"`
+
+	Destination *MaterializedViewDataDestinationDataPool `json:"destination"`
+
+	Source *MaterializedViewDataSourceDataPool `json:"source"`
+
+	Others []*MaterializedViewDataOthersDataPool `json:"others"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *MaterializedViewMaterializedView) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *MaterializedViewMaterializedView) __premarshalJSON() (*__premarshalMaterializedViewMaterializedView, error) {
+	var retval __premarshalMaterializedViewMaterializedView
+
+	retval.Id = v.MaterializedViewData.Id
+	retval.Sql = v.MaterializedViewData.Sql
+	retval.Destination = v.MaterializedViewData.Destination
+	retval.Source = v.MaterializedViewData.Source
+	retval.Others = v.MaterializedViewData.Others
+	retval.UniqueName = v.MaterializedViewData.CommonDataMaterializedView.UniqueName
+	retval.Description = v.MaterializedViewData.CommonDataMaterializedView.Description
+	retval.Account = v.MaterializedViewData.CommonDataMaterializedView.Account
+	retval.Environment = v.MaterializedViewData.CommonDataMaterializedView.Environment
+	retval.CreatedAt = v.MaterializedViewData.CommonDataMaterializedView.CreatedAt
+	retval.ModifiedAt = v.MaterializedViewData.CommonDataMaterializedView.ModifiedAt
+	retval.CreatedBy = v.MaterializedViewData.CommonDataMaterializedView.CreatedBy
+	retval.ModifiedBy = v.MaterializedViewData.CommonDataMaterializedView.ModifiedBy
+	return &retval, nil
+}
+
+// MaterializedViewResponse is returned by MaterializedView on success.
+type MaterializedViewResponse struct {
+	// This query returns the Materialized View specified by the given ID.
+	MaterializedView *MaterializedViewMaterializedView `json:"materializedView"`
+}
+
+// GetMaterializedView returns MaterializedViewResponse.MaterializedView, and is useful for accessing the field via an interface.
+func (v *MaterializedViewResponse) GetMaterializedView() *MaterializedViewMaterializedView {
+	return v.MaterializedView
+}
+
+// Parameters for the MergeTree table engine.
+type MergeTreeTableEngineInput struct {
+	// The type is always `MERGE_TREE`.
+	Type *TableEngineType `json:"type"`
+}
+
+// GetType returns MergeTreeTableEngineInput.Type, and is useful for accessing the field via an interface.
+func (v *MergeTreeTableEngineInput) GetType() *TableEngineType { return v.Type }
 
 // MetricByNameMetric includes the requested fields of the GraphQL type Metric.
 // The GraphQL type's documentation follows.
@@ -9679,7 +10553,7 @@ type MetricData struct {
 	DataPool *MetricDataDataPool `json:"dataPool"`
 	// The Metric's Dimensions. These Dimensions are available to Query Filters.
 	Dimensions []*MetricDataDimensionsDimension `json:"dimensions"`
-	// The Metric's timestamp. This is the same as its Data Pool's timestamp.
+	// The Metric's timestamp, if any. This is the same as its Data Pool's timestamp, if any.
 	Timestamp *MetricDataTimestampDimension `json:"timestamp"`
 	// The Metric's measure. Access this from the Metric's `settings` object instead.
 	Measure *MetricDataMeasureDimension `json:"measure"`
@@ -12557,6 +13431,8 @@ type ModifyDataPoolAccessPolicyInput struct {
 	Columns []string `json:"columns"`
 	// Row-level filters that the Access Policy applies before executing queries. If not provided this property will not be modified.
 	Rows []*FilterInput `json:"rows,omitempty"`
+	// Row-level filters that the Access Policy applies before executing queries, in the form of SQL. If not provided this property will not be modified.
+	FilterSql *string `json:"filterSql"`
 }
 
 // GetId returns ModifyDataPoolAccessPolicyInput.Id, and is useful for accessing the field via an interface.
@@ -12573,6 +13449,9 @@ func (v *ModifyDataPoolAccessPolicyInput) GetColumns() []string { return v.Colum
 
 // GetRows returns ModifyDataPoolAccessPolicyInput.Rows, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolAccessPolicyInput) GetRows() []*FilterInput { return v.Rows }
+
+// GetFilterSql returns ModifyDataPoolAccessPolicyInput.FilterSql, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolAccessPolicyInput) GetFilterSql() *string { return v.FilterSql }
 
 // ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponse includes the requested fields of the GraphQL type DataPoolAccessPolicyResponse.
 type ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponse struct {
@@ -13519,6 +14398,200 @@ func (v *ModifyHttpDataSourceResponse) GetModifyHttpDataSource() *ModifyHttpData
 	return v.ModifyHttpDataSource
 }
 
+// The fields for modifying a Materialized View.
+type ModifyMaterializedViewInput struct {
+	// The ID of the Materialized View to modify.
+	Id string `json:"id"`
+	// The Materialized View's new unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Materialized View's new description.
+	Description *string `json:"description"`
+}
+
+// GetId returns ModifyMaterializedViewInput.Id, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewInput) GetId() string { return v.Id }
+
+// GetUniqueName returns ModifyMaterializedViewInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewInput) GetUniqueName() *string { return v.UniqueName }
+
+// GetDescription returns ModifyMaterializedViewInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewInput) GetDescription() *string { return v.Description }
+
+// ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse includes the requested fields of the GraphQL type MaterializedViewResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Materialized View.
+type ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse struct {
+	// The Materialized View which was created or modified.
+	MaterializedView *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView `json:"materializedView"`
+}
+
+// GetMaterializedView returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse.MaterializedView, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse) GetMaterializedView() *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView {
+	return v.MaterializedView
+}
+
+// ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView includes the requested fields of the GraphQL type MaterializedView.
+type ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView struct {
+	MaterializedViewData `json:"-"`
+}
+
+// GetId returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Id, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetId() string {
+	return v.MaterializedViewData.Id
+}
+
+// GetSql returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Sql, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetSql() string {
+	return v.MaterializedViewData.Sql
+}
+
+// GetDestination returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Destination, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetDestination() *MaterializedViewDataDestinationDataPool {
+	return v.MaterializedViewData.Destination
+}
+
+// GetSource returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Source, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetSource() *MaterializedViewDataSourceDataPool {
+	return v.MaterializedViewData.Source
+}
+
+// GetOthers returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Others, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetOthers() []*MaterializedViewDataOthersDataPool {
+	return v.MaterializedViewData.Others
+}
+
+// GetUniqueName returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetUniqueName() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.UniqueName
+}
+
+// GetDescription returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Description, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetDescription() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.Description
+}
+
+// GetAccount returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Account, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetAccount() *CommonDataAccount {
+	return v.MaterializedViewData.CommonDataMaterializedView.Account
+}
+
+// GetEnvironment returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetEnvironment() *CommonDataEnvironment {
+	return v.MaterializedViewData.CommonDataMaterializedView.Environment
+}
+
+// GetCreatedAt returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetCreatedAt() time.Time {
+	return v.MaterializedViewData.CommonDataMaterializedView.CreatedAt
+}
+
+// GetModifiedAt returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetModifiedAt() time.Time {
+	return v.MaterializedViewData.CommonDataMaterializedView.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetCreatedBy() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.CreatedBy
+}
+
+// GetModifiedBy returns ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) GetModifiedBy() string {
+	return v.MaterializedViewData.CommonDataMaterializedView.ModifiedBy
+}
+
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.MaterializedViewData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView struct {
+	Id string `json:"id"`
+
+	Sql string `json:"sql"`
+
+	Destination *MaterializedViewDataDestinationDataPool `json:"destination"`
+
+	Source *MaterializedViewDataSourceDataPool `json:"source"`
+
+	Others []*MaterializedViewDataOthersDataPool `json:"others"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView) __premarshalJSON() (*__premarshalModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView, error) {
+	var retval __premarshalModifyMaterializedViewModifyMaterializedViewMaterializedViewResponseMaterializedView
+
+	retval.Id = v.MaterializedViewData.Id
+	retval.Sql = v.MaterializedViewData.Sql
+	retval.Destination = v.MaterializedViewData.Destination
+	retval.Source = v.MaterializedViewData.Source
+	retval.Others = v.MaterializedViewData.Others
+	retval.UniqueName = v.MaterializedViewData.CommonDataMaterializedView.UniqueName
+	retval.Description = v.MaterializedViewData.CommonDataMaterializedView.Description
+	retval.Account = v.MaterializedViewData.CommonDataMaterializedView.Account
+	retval.Environment = v.MaterializedViewData.CommonDataMaterializedView.Environment
+	retval.CreatedAt = v.MaterializedViewData.CommonDataMaterializedView.CreatedAt
+	retval.ModifiedAt = v.MaterializedViewData.CommonDataMaterializedView.ModifiedAt
+	retval.CreatedBy = v.MaterializedViewData.CommonDataMaterializedView.CreatedBy
+	retval.ModifiedBy = v.MaterializedViewData.CommonDataMaterializedView.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyMaterializedViewResponse is returned by ModifyMaterializedView on success.
+type ModifyMaterializedViewResponse struct {
+	// Modifies a Materialized View. If any of the optional arguments are omitted, those properties will be unchanged on the Materialized View.
+	ModifyMaterializedView *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse `json:"modifyMaterializedView"`
+}
+
+// GetModifyMaterializedView returns ModifyMaterializedViewResponse.ModifyMaterializedView, and is useful for accessing the field via an interface.
+func (v *ModifyMaterializedViewResponse) GetModifyMaterializedView() *ModifyMaterializedViewModifyMaterializedViewMaterializedViewResponse {
+	return v.ModifyMaterializedView
+}
+
 // The fields for modifying a Metric.
 type ModifyMetricInput struct {
 	// The ID of the Metric to modify.
@@ -13531,6 +14604,8 @@ type ModifyMetricInput struct {
 	Dimensions []*DimensionInput `json:"dimensions,omitempty"`
 	// The Metric's new Filters. Used to add or remove Metric Filters.
 	Filters []*FilterInput `json:"filters,omitempty"`
+	// The Metric's new Filters, in the form of SQL. Used to add or remove Metric Filters.
+	FilterSql *string `json:"filterSql"`
 	// Enables or disables access control for the Metric.
 	AccessControlEnabled *bool `json:"accessControlEnabled"`
 }
@@ -13549,6 +14624,9 @@ func (v *ModifyMetricInput) GetDimensions() []*DimensionInput { return v.Dimensi
 
 // GetFilters returns ModifyMetricInput.Filters, and is useful for accessing the field via an interface.
 func (v *ModifyMetricInput) GetFilters() []*FilterInput { return v.Filters }
+
+// GetFilterSql returns ModifyMetricInput.FilterSql, and is useful for accessing the field via an interface.
+func (v *ModifyMetricInput) GetFilterSql() *string { return v.FilterSql }
 
 // GetAccessControlEnabled returns ModifyMetricInput.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *ModifyMetricInput) GetAccessControlEnabled() *bool { return v.AccessControlEnabled }
@@ -15159,6 +16237,20 @@ const (
 	PolicyTypeTenantAccess PolicyType = "TENANT_ACCESS"
 )
 
+// Parameters for the ReplacingMergeTree table engine.
+type ReplacingMergeTreeTableEngineInput struct {
+	// The type is always `REPLACING_MERGE_TREE`.
+	Type *TableEngineType `json:"type"`
+	// The `ver` parameter to the ReplacingMergeTree engine.
+	Ver *string `json:"ver"`
+}
+
+// GetType returns ReplacingMergeTreeTableEngineInput.Type, and is useful for accessing the field via an interface.
+func (v *ReplacingMergeTreeTableEngineInput) GetType() *TableEngineType { return v.Type }
+
+// GetVer returns ReplacingMergeTreeTableEngineInput.Ver, and is useful for accessing the field via an interface.
+func (v *ReplacingMergeTreeTableEngineInput) GetVer() *string { return v.Ver }
+
 // The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, and the tables (along with their paths). We do not allow fetching the AWS secret access key after it has been set.
 type S3ConnectionSettingsInput struct {
 	// The AWS access key ID for an IAM user with sufficient access to the S3 bucket.
@@ -15259,6 +16351,20 @@ func (v *SnowflakeConnectionSettingsInput) GetPassword() string { return v.Passw
 
 // GetRole returns SnowflakeConnectionSettingsInput.Role, and is useful for accessing the field via an interface.
 func (v *SnowflakeConnectionSettingsInput) GetRole() string { return v.Role }
+
+// Parameters for the SummingMergeTree table engine.
+type SummingMergeTreeTableEngineInput struct {
+	// The type is always `SUMMING_MERGE_TREE`.
+	Type *TableEngineType `json:"type"`
+	// The columns argument for the SummingMergeTree table engine
+	Columns []string `json:"columns"`
+}
+
+// GetType returns SummingMergeTreeTableEngineInput.Type, and is useful for accessing the field via an interface.
+func (v *SummingMergeTreeTableEngineInput) GetType() *TableEngineType { return v.Type }
+
+// GetColumns returns SummingMergeTreeTableEngineInput.Columns, and is useful for accessing the field via an interface.
+func (v *SummingMergeTreeTableEngineInput) GetColumns() []string { return v.Columns }
 
 // SyncData includes the GraphQL fields of Sync requested by the fragment SyncData.
 // The GraphQL type's documentation follows.
@@ -15365,6 +16471,50 @@ const (
 	SyncStatusDeleting SyncStatus = "DELETING"
 )
 
+// A Data Pool's table engine.
+type TableEngineInput struct {
+	// Field for specifying the MergeTree table engine.
+	MergeTree *MergeTreeTableEngineInput `json:"mergeTree,omitempty"`
+	// Field for specifying the ReplacingMergeTree table engine.
+	ReplacingMergeTree *ReplacingMergeTreeTableEngineInput `json:"replacingMergeTree,omitempty"`
+	// Field for specifying the SummingMergeTree table engine.
+	SummingMergeTree *SummingMergeTreeTableEngineInput `json:"summingMergeTree,omitempty"`
+	// Field for specifying the AggregatingMergeTree table engine.
+	AggregatingMergeTree *AggregatingMergeTreeTableEngineInput `json:"aggregatingMergeTree,omitempty"`
+}
+
+// GetMergeTree returns TableEngineInput.MergeTree, and is useful for accessing the field via an interface.
+func (v *TableEngineInput) GetMergeTree() *MergeTreeTableEngineInput { return v.MergeTree }
+
+// GetReplacingMergeTree returns TableEngineInput.ReplacingMergeTree, and is useful for accessing the field via an interface.
+func (v *TableEngineInput) GetReplacingMergeTree() *ReplacingMergeTreeTableEngineInput {
+	return v.ReplacingMergeTree
+}
+
+// GetSummingMergeTree returns TableEngineInput.SummingMergeTree, and is useful for accessing the field via an interface.
+func (v *TableEngineInput) GetSummingMergeTree() *SummingMergeTreeTableEngineInput {
+	return v.SummingMergeTree
+}
+
+// GetAggregatingMergeTree returns TableEngineInput.AggregatingMergeTree, and is useful for accessing the field via an interface.
+func (v *TableEngineInput) GetAggregatingMergeTree() *AggregatingMergeTreeTableEngineInput {
+	return v.AggregatingMergeTree
+}
+
+// ClickHouse table engine types.
+type TableEngineType string
+
+const (
+	// The MergeTree table engine.
+	TableEngineTypeMergeTree TableEngineType = "MERGE_TREE"
+	// The ReplacingMergeTree table engine.
+	TableEngineTypeReplacingMergeTree TableEngineType = "REPLACING_MERGE_TREE"
+	// The SummingMergeTree table engine.
+	TableEngineTypeSummingMergeTree TableEngineType = "SUMMING_MERGE_TREE"
+	// The AggregatingMergeTree table engine.
+	TableEngineTypeAggregatingMergeTree TableEngineType = "AGGREGATING_MERGE_TREE"
+)
+
 // TableIntrospectionData includes the GraphQL fields of TableIntrospection requested by the fragment TableIntrospectionData.
 // The GraphQL type's documentation follows.
 //
@@ -15440,6 +16590,40 @@ const (
 	// The table introspection failed.
 	TableIntrospectionStatusFailed TableIntrospectionStatus = "FAILED"
 )
+
+// A Data Pool's table settings.
+//
+// These describe how the Data Pool's table is created in ClickHouse.
+type TableSettingsInput struct {
+	// The ClickHouse table engine for the Data Pool's table.
+	//
+	// This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
+	Engine *TableEngineInput `json:"engine,omitempty"`
+	// The PARTITION BY clause for the Data Pool's table.
+	//
+	// This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
+	PartitionBy []string `json:"partitionBy"`
+	// The PRIMARY KEY clause for the Data Pool's table.
+	//
+	// This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
+	PrimaryKey []string `json:"primaryKey"`
+	// The ORDER BY clause for the Data Pool's table.
+	//
+	// This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
+	OrderBy []string `json:"orderBy"`
+}
+
+// GetEngine returns TableSettingsInput.Engine, and is useful for accessing the field via an interface.
+func (v *TableSettingsInput) GetEngine() *TableEngineInput { return v.Engine }
+
+// GetPartitionBy returns TableSettingsInput.PartitionBy, and is useful for accessing the field via an interface.
+func (v *TableSettingsInput) GetPartitionBy() []string { return v.PartitionBy }
+
+// GetPrimaryKey returns TableSettingsInput.PrimaryKey, and is useful for accessing the field via an interface.
+func (v *TableSettingsInput) GetPrimaryKey() []string { return v.PrimaryKey }
+
+// GetOrderBy returns TableSettingsInput.OrderBy, and is useful for accessing the field via an interface.
+func (v *TableSettingsInput) GetOrderBy() []string { return v.OrderBy }
 
 // TenantData includes the GraphQL fields of Tenant requested by the fragment TenantData.
 // The GraphQL type's documentation follows.
@@ -15525,11 +16709,15 @@ type WebhookConnectionSettingsInput struct {
 	BasicAuth *HttpBasicAuthInput `json:"basicAuth,omitempty"`
 	// The additional columns for the Webhook Data Source table.
 	Columns []*WebhookDataSourceColumnInput `json:"columns,omitempty"`
-	// The tenant ID column, if configured.
+	// Override the Data Pool's table settings. These describe how the Data Pool's table is created in ClickHouse, and a
+	// default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if any. You can override these
+	// defaults in order to specify a custom table engine, custom ORDER BY, etc.
+	TableSettings *TableSettingsInput `json:"tableSettings,omitempty"`
+	// The tenant ID column, if any.
 	Tenant *string `json:"tenant"`
-	// The primary timestamp column.
-	Timestamp string `json:"timestamp"`
-	// The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
+	// The primary timestamp column, if any.
+	Timestamp *string `json:"timestamp"`
+	// The unique ID column, if any. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 	UniqueId *string `json:"uniqueId"`
 }
 
@@ -15541,11 +16729,16 @@ func (v *WebhookConnectionSettingsInput) GetColumns() []*WebhookDataSourceColumn
 	return v.Columns
 }
 
+// GetTableSettings returns WebhookConnectionSettingsInput.TableSettings, and is useful for accessing the field via an interface.
+func (v *WebhookConnectionSettingsInput) GetTableSettings() *TableSettingsInput {
+	return v.TableSettings
+}
+
 // GetTenant returns WebhookConnectionSettingsInput.Tenant, and is useful for accessing the field via an interface.
 func (v *WebhookConnectionSettingsInput) GetTenant() *string { return v.Tenant }
 
 // GetTimestamp returns WebhookConnectionSettingsInput.Timestamp, and is useful for accessing the field via an interface.
-func (v *WebhookConnectionSettingsInput) GetTimestamp() string { return v.Timestamp }
+func (v *WebhookConnectionSettingsInput) GetTimestamp() *string { return v.Timestamp }
 
 // GetUniqueId returns WebhookConnectionSettingsInput.UniqueId, and is useful for accessing the field via an interface.
 func (v *WebhookConnectionSettingsInput) GetUniqueId() *string { return v.UniqueId }
@@ -15667,6 +16860,14 @@ type __CreateHttpDataSourceInput struct {
 
 // GetInput returns __CreateHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateHttpDataSourceInput) GetInput() *CreateHttpDataSourceInput { return v.Input }
+
+// __CreateMaterializedViewInput is used internally by genqlient
+type __CreateMaterializedViewInput struct {
+	Input *CreateMaterializedViewInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateMaterializedViewInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateMaterializedViewInput) GetInput() *CreateMaterializedViewInput { return v.Input }
 
 // __CreateMaxMetricInput is used internally by genqlient
 type __CreateMaxMetricInput struct {
@@ -15844,6 +17045,14 @@ type __DeleteDataSourceInput struct {
 // GetId returns __DeleteDataSourceInput.Id, and is useful for accessing the field via an interface.
 func (v *__DeleteDataSourceInput) GetId() string { return v.Id }
 
+// __DeleteMaterializedViewInput is used internally by genqlient
+type __DeleteMaterializedViewInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __DeleteMaterializedViewInput.Id, and is useful for accessing the field via an interface.
+func (v *__DeleteMaterializedViewInput) GetId() string { return v.Id }
+
 // __DeleteMetricByNameInput is used internally by genqlient
 type __DeleteMetricByNameInput struct {
 	UniqueName string `json:"uniqueName"`
@@ -15867,6 +17076,14 @@ type __DeletePolicyInput struct {
 
 // GetId returns __DeletePolicyInput.Id, and is useful for accessing the field via an interface.
 func (v *__DeletePolicyInput) GetId() string { return v.Id }
+
+// __MaterializedViewInput is used internally by genqlient
+type __MaterializedViewInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __MaterializedViewInput.Id, and is useful for accessing the field via an interface.
+func (v *__MaterializedViewInput) GetId() string { return v.Id }
 
 // __MetricByNameInput is used internally by genqlient
 type __MetricByNameInput struct {
@@ -15929,6 +17146,14 @@ type __ModifyHttpDataSourceInput struct {
 
 // GetInput returns __ModifyHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifyHttpDataSourceInput) GetInput() *ModifyHttpDataSourceInput { return v.Input }
+
+// __ModifyMaterializedViewInput is used internally by genqlient
+type __ModifyMaterializedViewInput struct {
+	Input *ModifyMaterializedViewInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyMaterializedViewInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyMaterializedViewInput) GetInput() *ModifyMaterializedViewInput { return v.Input }
 
 // __ModifyMetricInput is used internally by genqlient
 type __ModifyMetricInput struct {
@@ -18113,6 +19338,74 @@ func CreateHttpDataSource(
 	var err error
 
 	var data CreateHttpDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by CreateMaterializedView.
+const CreateMaterializedView_Operation = `
+mutation CreateMaterializedView ($input: CreateMaterializedViewInput!) {
+	createMaterializedView(input: $input) {
+		__typename
+		... on MaterializedViewResponse {
+			materializedView {
+				... MaterializedViewData
+			}
+		}
+	}
+}
+fragment MaterializedViewData on MaterializedView {
+	id
+	... CommonData
+	sql
+	destination {
+		id
+	}
+	source {
+		id
+	}
+	others {
+		id
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+`
+
+func CreateMaterializedView(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateMaterializedViewInput,
+) (*CreateMaterializedViewResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateMaterializedView",
+		Query:  CreateMaterializedView_Operation,
+		Variables: &__CreateMaterializedViewInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateMaterializedViewResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -21382,6 +22675,39 @@ func DeleteDataSourceByName(
 	return &data, err
 }
 
+// The query or mutation executed by DeleteMaterializedView.
+const DeleteMaterializedView_Operation = `
+mutation DeleteMaterializedView ($id: ID!) {
+	deleteMaterializedView(id: $id)
+}
+`
+
+func DeleteMaterializedView(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*DeleteMaterializedViewResponse, error) {
+	req := &graphql.Request{
+		OpName: "DeleteMaterializedView",
+		Query:  DeleteMaterializedView_Operation,
+		Variables: &__DeleteMaterializedViewInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data DeleteMaterializedViewResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
 // The query or mutation executed by DeleteMetric.
 const DeleteMetric_Operation = `
 mutation DeleteMetric ($id: ID!) {
@@ -21470,6 +22796,69 @@ func DeletePolicy(
 	var err error
 
 	var data DeletePolicyResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by MaterializedView.
+const MaterializedView_Operation = `
+query MaterializedView ($id: ID!) {
+	materializedView(id: $id) {
+		... MaterializedViewData
+	}
+}
+fragment MaterializedViewData on MaterializedView {
+	id
+	... CommonData
+	sql
+	destination {
+		id
+	}
+	source {
+		id
+	}
+	others {
+		id
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+`
+
+func MaterializedView(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*MaterializedViewResponse, error) {
+	req := &graphql.Request{
+		OpName: "MaterializedView",
+		Query:  MaterializedView_Operation,
+		Variables: &__MaterializedViewInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data MaterializedViewResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -23119,6 +24508,71 @@ func ModifyHttpDataSource(
 	var err error
 
 	var data ModifyHttpDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by ModifyMaterializedView.
+const ModifyMaterializedView_Operation = `
+mutation ModifyMaterializedView ($input: ModifyMaterializedViewInput!) {
+	modifyMaterializedView(input: $input) {
+		materializedView {
+			... MaterializedViewData
+		}
+	}
+}
+fragment MaterializedViewData on MaterializedView {
+	id
+	... CommonData
+	sql
+	destination {
+		id
+	}
+	source {
+		id
+	}
+	others {
+		id
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+`
+
+func ModifyMaterializedView(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyMaterializedViewInput,
+) (*ModifyMaterializedViewResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyMaterializedView",
+		Query:  ModifyMaterializedView_Operation,
+		Variables: &__ModifyMaterializedViewInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyMaterializedViewResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(

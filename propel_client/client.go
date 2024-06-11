@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	apiURL   = "https://api.us-east-2.propeldata.com/graphql"
-	oauthURL = "https://auth.us-east-2.propeldata.com/oauth2/token"
+	defaultApiURL   = "https://api.us-east-2.propeldata.com/graphql"
+	defaultOauthURL = "https://auth.us-east-2.propeldata.com/oauth2/token"
 )
 
 type withHeaders struct {
@@ -36,7 +36,11 @@ func newAuthenticatedHttpClientWithHeaders(headers map[string]string) *http.Clie
 	return client
 }
 
-func NewPropelClient(clientId string, secret string, userAgent string) (graphql.Client, error) {
+func NewPropelClient(clientId string, secret string, userAgent string, oauthURL string, apiURL string) (graphql.Client, error) {
+	if oauthURL == "" {
+		oauthURL = defaultOauthURL
+	}
+
 	token, err := getToken(oauthURL, clientId, secret)
 	if err != nil {
 		return nil, err
@@ -46,6 +50,11 @@ func NewPropelClient(clientId string, secret string, userAgent string) (graphql.
 		"Authorization": "Bearer " + token,
 		"User-Agent":    userAgent,
 	})
+
+	if apiURL == "" {
+		apiURL = defaultApiURL
+	}
+
 	gqlClient := graphql.NewClient(apiURL, httpClient)
 
 	return gqlClient, nil

@@ -1,0 +1,5 @@
+query MaterializedView($id: ID!) {
+    materializedView(id: $id) {
+        ...MaterializedViewData
+    }
+}

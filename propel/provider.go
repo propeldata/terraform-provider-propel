@@ -30,6 +30,20 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("PROPEL_CLIENT_SECRET", nil),
 				Description: "Your Propel Application's secret.",
 			},
+			"oauth_url": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Sensitive:   false,
+				DefaultFunc: schema.EnvDefaultFunc("PROPEL_OAUTH_URL", nil),
+				Description: "The Propel OAuth URL",
+			},
+			"api_url": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Sensitive:   false,
+				DefaultFunc: schema.EnvDefaultFunc("PROPEL_API_URL", nil),
+				Description: "The Propel API URL",
+			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"propel_data_source":             resourceDataSource(),
@@ -37,6 +51,7 @@ func Provider() *schema.Provider {
 			"propel_data_pool_access_policy": resourceDataPoolAccessPolicy(),
 			"propel_metric":                  resourceMetric(),
 			"propel_policy":                  resourcePolicy(),
+			"propel_materialized_view":       resourceMaterializedView(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}
@@ -66,7 +81,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (any, diag.D
 		runtime.GOARCH,
 	))
 
-	c, err := pc.NewPropelClient(clientID, clientSecret, userAgent)
+	c, err := pc.NewPropelClient(clientID, clientSecret, userAgent, d.Get("oauth_url").(string), d.Get("api_url").(string))
 	if err != nil {
 		return nil, diag.FromErr(err)
 	}

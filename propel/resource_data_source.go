@@ -268,7 +268,7 @@ func resourceDataSource() *schema.Resource {
 						},
 						"timestamp": {
 							Type:        schema.TypeString,
-							Required:    true,
+							Optional:    true,
 							ForceNew:    true,
 							Description: "The primary timestamp column.",
 						},
@@ -523,8 +523,12 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 			columns = expandWebhookColumns(def)
 		}
 
-		connectionSettings.Timestamp = cs["timestamp"].(string)
 		connectionSettings.Columns = columns
+
+		if t, ok := cs["timestamp"]; ok && t.(string) != "" {
+			timestamp := t.(string)
+			connectionSettings.Timestamp = &timestamp
+		}
 
 		if t, ok := cs["tenant"]; ok && t.(string) != "" {
 			tenant := t.(string)

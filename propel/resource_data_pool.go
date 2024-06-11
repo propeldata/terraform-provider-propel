@@ -57,12 +57,13 @@ func resourceDataPool() *schema.Resource {
 			},
 			"data_source": {
 				Type:        schema.TypeString,
-				Required:    true,
+				Optional:    true,
+				ForceNew:    true,
 				Description: "The Data Source that the Data Pool belongs to.",
 			},
 			"table": {
 				Type:        schema.TypeString,
-				Required:    true,
+				Optional:    true,
 				ForceNew:    true,
 				Description: "The name of the Data Pool's table.",
 			},
@@ -167,7 +168,6 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 
 	var diags diag.Diagnostics
 
-	id := d.Get("data_source").(string)
 	uniqueName := d.Get("unique_name").(string)
 	description := d.Get("description").(string)
 	accessControlEnabled := d.Get("access_control_enabled").(bool)
@@ -180,13 +180,21 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 	input := &pc.CreateDataPoolInputV2{
 		UniqueName:  &uniqueName,
 		Description: &description,
-		DataSource:  id,
-		Table:       d.Get("table").(string),
 		Timestamp: &pc.TimestampInput{
 			ColumnName: d.Get("timestamp").(string),
 		},
 		Columns:              columns,
 		AccessControlEnabled: &accessControlEnabled,
+	}
+
+	if t, exists := d.GetOk("data_source"); exists && t.(string) != "" {
+		dataSourceId := t.(string)
+		input.DataSource = &dataSourceId
+	}
+
+	if t, exists := d.GetOk("table"); exists && t.(string) != "" {
+		table := t.(string)
+		input.Table = &table
 	}
 
 	if _, exists := d.GetOk("tenant_id"); exists {
@@ -259,20 +267,26 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) di
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("data_source", response.DataPool.DataSource.Id); err != nil {
-		return diag.FromErr(err)
+	if response.DataPool.DataSource != nil {
+		if err := d.Set("data_source", response.DataPool.DataSource.Id); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	if err := d.Set("table", response.DataPool.Table); err != nil {
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("timestamp", response.DataPool.Timestamp.ColumnName); err != nil {
-		return diag.FromErr(err)
+	if response.DataPool.Timestamp != nil {
+		if err := d.Set("timestamp", response.DataPool.Timestamp.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
-	if err := d.Set("tenant_id", response.DataPool.Tenant.ColumnName); err != nil {
-		return diag.FromErr(err)
+	if response.DataPool.Tenant != nil {
+		if err := d.Set("tenant_id", response.DataPool.Tenant.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	if err := d.Set("access_control_enabled", response.DataPool.AccessControlEnabled); err != nil {

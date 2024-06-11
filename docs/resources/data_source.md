@@ -40,7 +40,7 @@ variable "http_basic_auth_password" {
 }
 
 resource "propel_data_source" "my_webhook_data_source" {
-  unique_name = "MyWebhookDataPool"
+  unique_name = "My Webhook Data Pool"
   description = "This is an example of a Webhook Data Source"
   type        = "WEBHOOK"
   webhook_connection_settings {
@@ -190,16 +190,13 @@ Optional:
 <a id="nestedblock--webhook_connection_settings"></a>
 ### Nested Schema for `webhook_connection_settings`
 
-Required:
-
-- `timestamp` (String) The primary timestamp column.
-
 Optional:
 
 - `access_control_enabled` (Boolean) Whether the resulting Data Pool has access control enabled or not. If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.
 - `basic_auth` (Block List, Max: 1) The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it. (see [below for nested schema](#nestedblock--webhook_connection_settings--basic_auth))
 - `column` (Block List) The additional column for the Webhook Data Source table. (see [below for nested schema](#nestedblock--webhook_connection_settings--column))
 - `tenant` (String, Deprecated) The tenant ID column, if configured.
+- `timestamp` (String) The primary timestamp column.
 - `unique_id` (String) The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 
 Read-Only:

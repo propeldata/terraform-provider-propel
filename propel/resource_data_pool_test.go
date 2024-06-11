@@ -47,6 +47,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 }
 
 func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
+	// language=hcl-terraform
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
 		unique_name = "terraform-test-3"
@@ -98,6 +99,7 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
 }
 
 func testAccUpdatePropelDataPoolConfigBasic(ctx map[string]any) string {
+	// language=hcl-terraform
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
 		unique_name = "terraform-test-3"

@@ -2,6 +2,7 @@ package propel
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/Khan/genqlient/graphql"
@@ -13,6 +14,10 @@ import (
 
 func TestAccPropelDataPoolAccessPolicyBasic(t *testing.T) {
 	ctx := map[string]any{}
+
+	if v := os.Getenv("PROPEL_CLIENT_ID"); v != "" {
+		ctx["app_id"] = v
+	}
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
@@ -95,7 +100,7 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 			operator = "IS_NOT_NULL"
 		}
 
-		applications = ["APP01FXSFB8AJJBNKCAQTFV3J29G4"]
+		applications = ["%{app_id}"]
 	}`, ctx)
 }
 

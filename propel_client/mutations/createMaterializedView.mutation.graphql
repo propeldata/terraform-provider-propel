@@ -1,0 +1,10 @@
+mutation CreateMaterializedView($input: CreateMaterializedViewInput!) {
+    createMaterializedView(input: $input) {
+        __typename
+        ... on MaterializedViewResponse {
+            materializedView {
+                ...MaterializedViewData
+            }
+        }
+    }
+}

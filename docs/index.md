@@ -17,7 +17,7 @@ terraform {
   required_providers {
     propel = {
       source = "propeldata/propel"
-      version = "1.2.0"
+      version = "1.2.1"
     }
   }
 }
@@ -38,3 +38,8 @@ provider "propel" {
 
 - `client_id` (String) Your Propel Application's ID.
 - `client_secret` (String, Sensitive) Your Propel Application's secret.
+
+### Optional
+
+- `api_url` (String) The Propel API URL
+- `oauth_url` (String) The Propel OAuth URL
