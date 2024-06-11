@@ -330,6 +330,8 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 
 	d.SetId(response.CreateMaterializedView.MaterializedView.Id)
 
+	resourceMaterializedViewRead(ctx, d, meta)
+
 	return nil
 }
 

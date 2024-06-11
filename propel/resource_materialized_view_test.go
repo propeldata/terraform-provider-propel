@@ -27,6 +27,8 @@ func TestAccPropelMaterializedViewBasic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelMaterializedViewExists("propel_materialized_view.foo"),
 					resource.TestCheckResourceAttr("propel_materialized_view.foo", "unique_name", "terraform-mv-1"),
+					testAccCheckPropelMaterializedViewExists("propel_materialized_view.bar"),
+					resource.TestCheckResourceAttr("propel_materialized_view.bar", "unique_name", "terraform-mv-2"),
 				),
 			},
 		},
@@ -77,7 +79,7 @@ func testAccCheckPropelMaterializedViewConfigBasic(ctx map[string]any) string {
 
 		resource "propel_materialized_view" "foo" {
 			unique_name = "terraform-mv-1"
-			sql = "SELECT customer_id, value, \"timestamp_tz\" AS timestamp FROM \"${propel_data_source.terraform-mv-source-dp.webhook_connection_settings[0].data_pool_id}\""
+			sql = "SELECT customer_id, value, \"timestamp_tz\" AS timestamp FROM \"${propel_data_source.terraform_mv_source_dp.webhook_connection_settings[0].data_pool_id}\""
 
 			new_data_pool {
 				unique_name = "terraform-mv-data-pool"
@@ -96,7 +98,7 @@ func testAccCheckPropelMaterializedViewConfigBasic(ctx map[string]any) string {
 
 		resource "propel_materialized_view" "bar" {
 			unique_name = "terraform-mv-2"
-			sql = "SELECT customer_id, value, \"timestamp_tz\" AS timestamp FROM \"${propel_data_source.terraform-mv-source-dp.webhook_connection_settings[0].data_pool_id}\""
+			sql = "SELECT customer_id, value, \"timestamp_tz\" AS timestamp FROM \"${propel_data_source.terraform_mv_source_dp.webhook_connection_settings[0].data_pool_id}\""
 			existing_data_pool {
 				id = "${propel_materialized_view.foo.destination}"
 			}
