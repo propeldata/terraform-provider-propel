@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/retry"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
+	"github.com/propeldata/terraform-provider-propel/propel/internal"
 	"github.com/propeldata/terraform-provider-propel/propel/internal/utils"
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
@@ -111,6 +112,7 @@ func resourceDataPool() *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 				Description: "The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool. Only for Snowflake Data Pools.",
+				Deprecated:  "Remove this attribute's configuration as it no longer is used and the attribute will be removed in the next major version of the provider.",
 			},
 			"syncing": {
 				Type:        schema.TypeList,
@@ -143,6 +145,7 @@ func resourceDataPool() *schema.Resource {
 				Optional:    true,
 				Description: "Whether the Data Pool has access control enabled or not. If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.",
 			},
+			"table_settings": internal.TableSettingsSchema(),
 		},
 	}
 }
@@ -197,16 +200,20 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 		input.Table = &table
 	}
 
-	if _, exists := d.GetOk("tenant_id"); exists {
+	if v, exists := d.GetOk("tenant_id"); exists && v.(string) != "" {
 		input.Tenant = &pc.TenantInput{
-			ColumnName: d.Get("tenant_id").(string),
+			ColumnName: v.(string),
 		}
 	}
 
-	if _, exists := d.GetOk("unique_id"); exists {
+	if v, exists := d.GetOk("unique_id"); exists && v.(string) != "" {
 		input.UniqueId = &pc.UniqueIdInput{
-			ColumnName: d.Get("unique_id").(string),
+			ColumnName: v.(string),
 		}
+	}
+
+	if v, exists := d.GetOk("table_settings.0"); exists {
+		input.TableSettings = internal.ParseTableSettingsInput(v.(map[string]any))
 	}
 
 	if _, exists := d.GetOk("syncing"); exists {
@@ -295,6 +302,12 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) di
 
 	if response.DataPool.UniqueId != nil {
 		if err := d.Set("unique_id", response.DataPool.UniqueId.ColumnName); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	if response.DataPool.TableSettings != nil {
+		if err := d.Set("table_settings", []map[string]any{internal.ParseTableSettingsRead(response.DataPool.TableSettings.TableSettingsData)}); err != nil {
 			return diag.FromErr(err)
 		}
 	}

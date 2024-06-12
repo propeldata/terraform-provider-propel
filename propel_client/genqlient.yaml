@@ -23,6 +23,7 @@ operations:
 - fragments/Sync.fragment.graphql
 - fragments/DataPoolSyncing.fragment.graphql
 - fragments/TableIntrospection.fragment.graphql
+- fragments/TableSettings.fragment.graphql
 - mutations/createAddColumnToDataPoolJob.mutation.graphql
 #- mutations/createApplication.mutation.graphql
 - mutations/assignDataPoolAccessPolicy.mutation.graphql

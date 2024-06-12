@@ -65,6 +65,9 @@ fragment DataSourceData on DataSource {
             tenant
             timestamp
             uniqueId
+            tableSettings {
+                ...TableSettingsData
+            }
             webhookUrl
         }
     }

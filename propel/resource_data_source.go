@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
+	"github.com/propeldata/terraform-provider-propel/propel/internal"
 	"github.com/propeldata/terraform-provider-propel/propel/internal/utils"
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
@@ -277,7 +278,9 @@ func resourceDataSource() *schema.Resource {
 							Optional:    true,
 							ForceNew:    true,
 							Description: "The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.",
+							Deprecated:  "Will be removed; use Table Settings to define the primary key.",
 						},
+						"table_settings": internal.TableSettingsSchema(),
 						"webhook_url": {
 							Type:        schema.TypeString,
 							Computed:    true,
@@ -542,6 +545,11 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 
 		if enabled, ok := cs["access_control_enabled"]; ok && enabled.(bool) {
 			accessControlEnabled = true
+		}
+
+		if v, exists := cs["table_settings"]; exists && len(v.([]any)) == 1 {
+			settings := v.([]any)[0].(map[string]any)
+			connectionSettings.TableSettings = internal.ParseTableSettingsInput(settings)
 		}
 	}
 
@@ -845,6 +853,10 @@ func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 		if len(response.DataSource.DataPools.GetNodes()) == 1 {
 			settings["data_pool_id"] = response.DataSource.DataPools.Nodes[0].Id
 			settings["access_control_enabled"] = response.DataSource.DataPools.Nodes[0].AccessControlEnabled
+		}
+
+		if s.GetTableSettings() != nil {
+			settings["table_settings"] = internal.ParseTableSettingsRead(s.GetTableSettings().TableSettingsData)
 		}
 
 		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {

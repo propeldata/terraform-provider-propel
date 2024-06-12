@@ -2324,6 +2324,11 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetAccessContro
 	return v.DataPoolData.AccessControlEnabled
 }
 
+// GetTableSettings returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
+}
+
 // GetUniqueName returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -2420,6 +2425,8 @@ type __premarshalCreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
 
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -2463,6 +2470,7 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -5510,6 +5518,11 @@ func (v *DataPoolByNameDataPool) GetAccessControlEnabled() bool {
 	return v.DataPoolData.AccessControlEnabled
 }
 
+// GetTableSettings returns DataPoolByNameDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *DataPoolByNameDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
+}
+
 // GetUniqueName returns DataPoolByNameDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -5606,6 +5619,8 @@ type __premarshalDataPoolByNameDataPool struct {
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
 
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -5649,6 +5664,7 @@ func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByName
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -5753,6 +5769,8 @@ type DataPoolData struct {
 	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
 	// Policies in order to query the Data Pool and its Metrics.
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+	// The Data Pool's table settings.
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
 }
 
 // GetId returns DataPoolData.Id, and is useful for accessing the field via an interface.
@@ -5805,6 +5823,9 @@ func (v *DataPoolData) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPo
 
 // GetAccessControlEnabled returns DataPoolData.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetAccessControlEnabled() bool { return v.AccessControlEnabled }
+
+// GetTableSettings returns DataPoolData.TableSettings, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetTableSettings() *DataPoolDataTableSettings { return v.TableSettings }
 
 // GetUniqueName returns DataPoolData.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetUniqueName() string { return v.CommonDataDataPool.UniqueName }
@@ -5888,6 +5909,8 @@ type __premarshalDataPoolData struct {
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
 
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -5931,6 +5954,7 @@ func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
 	retval.Syncs = v.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.AccessControlEnabled
+	retval.TableSettings = v.TableSettings
 	retval.UniqueName = v.CommonDataDataPool.UniqueName
 	retval.Description = v.CommonDataDataPool.Description
 	retval.Account = v.CommonDataDataPool.Account
@@ -6541,6 +6565,11 @@ func (v *DataPoolDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAcce
 // GetAccessControlEnabled returns DataPoolDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetAccessControlEnabled() bool { return v.DataPoolData.AccessControlEnabled }
 
+// GetTableSettings returns DataPoolDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *DataPoolDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
+}
+
 // GetUniqueName returns DataPoolDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -6635,6 +6664,8 @@ type __premarshalDataPoolDataPool struct {
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
 
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -6678,6 +6709,7 @@ func (v *DataPoolDataPool) __premarshalJSON() (*__premarshalDataPoolDataPool, er
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -6987,6 +7019,96 @@ func (v *DataPoolDataSyncsSyncConnectionNodesSync) __premarshalJSON() (*__premar
 	retval.CreatedBy = v.SyncData.CreatedBy
 	retval.ModifiedAt = v.SyncData.ModifiedAt
 	retval.ModifiedBy = v.SyncData.ModifiedBy
+	return &retval, nil
+}
+
+// DataPoolDataTableSettings includes the requested fields of the GraphQL type TableSettings.
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's table settings.
+//
+// These describe how the Data Pool's table is created in ClickHouse.
+type DataPoolDataTableSettings struct {
+	TableSettingsData `json:"-"`
+}
+
+// GetEngine returns DataPoolDataTableSettings.Engine, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTableSettings) GetEngine() *TableSettingsDataEngineTableEngine {
+	return v.TableSettingsData.Engine
+}
+
+// GetPartitionBy returns DataPoolDataTableSettings.PartitionBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTableSettings) GetPartitionBy() []string { return v.TableSettingsData.PartitionBy }
+
+// GetPrimaryKey returns DataPoolDataTableSettings.PrimaryKey, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTableSettings) GetPrimaryKey() []string { return v.TableSettingsData.PrimaryKey }
+
+// GetOrderBy returns DataPoolDataTableSettings.OrderBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTableSettings) GetOrderBy() []string { return v.TableSettingsData.OrderBy }
+
+func (v *DataPoolDataTableSettings) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataPoolDataTableSettings
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataPoolDataTableSettings = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.TableSettingsData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataPoolDataTableSettings struct {
+	Engine json.RawMessage `json:"engine"`
+
+	PartitionBy []string `json:"partitionBy"`
+
+	PrimaryKey []string `json:"primaryKey"`
+
+	OrderBy []string `json:"orderBy"`
+}
+
+func (v *DataPoolDataTableSettings) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataPoolDataTableSettings) __premarshalJSON() (*__premarshalDataPoolDataTableSettings, error) {
+	var retval __premarshalDataPoolDataTableSettings
+
+	{
+
+		dst := &retval.Engine
+		src := v.TableSettingsData.Engine
+		if src != nil {
+			var err error
+			*dst, err = __marshalTableSettingsDataEngineTableEngine(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal DataPoolDataTableSettings.TableSettingsData.Engine: %w", err)
+			}
+		}
+	}
+	retval.PartitionBy = v.TableSettingsData.PartitionBy
+	retval.PrimaryKey = v.TableSettingsData.PrimaryKey
+	retval.OrderBy = v.TableSettingsData.OrderBy
 	return &retval, nil
 }
 
@@ -7368,6 +7490,11 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetA
 	return v.DataPoolData.AccessControlEnabled
 }
 
+// GetTableSettings returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
+}
+
 // GetUniqueName returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -7464,6 +7591,8 @@ type __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPo
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
 
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -7507,6 +7636,7 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) __pr
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -8519,6 +8649,10 @@ type DataSourceDataConnectionSettingsWebhookConnectionSettings struct {
 	Timestamp *string `json:"timestamp"`
 	// The unique ID column, if any. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 	UniqueId *string `json:"uniqueId"`
+	// Override the Data Pool's table settings. These describe how the Data Pool's table is created in ClickHouse, and a
+	// default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if any. You can override these
+	// defaults in order to specify a custom table engine, custom ORDER BY, etc.
+	TableSettings *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings `json:"tableSettings"`
 	// The Webhook URL for posting JSON events
 	WebhookUrl string `json:"webhookUrl"`
 }
@@ -8551,6 +8685,11 @@ func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTimestamp
 // GetUniqueId returns DataSourceDataConnectionSettingsWebhookConnectionSettings.UniqueId, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetUniqueId() *string {
 	return v.UniqueId
+}
+
+// GetTableSettings returns DataSourceDataConnectionSettingsWebhookConnectionSettings.TableSettings, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTableSettings() *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings {
+	return v.TableSettings
 }
 
 // GetWebhookUrl returns DataSourceDataConnectionSettingsWebhookConnectionSettings.WebhookUrl, and is useful for accessing the field via an interface.
@@ -8616,6 +8755,102 @@ func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhook
 // GetNullable returns DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn.Nullable, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn) GetNullable() bool {
 	return v.Nullable
+}
+
+// DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings includes the requested fields of the GraphQL type TableSettings.
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's table settings.
+//
+// These describe how the Data Pool's table is created in ClickHouse.
+type DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings struct {
+	TableSettingsData `json:"-"`
+}
+
+// GetEngine returns DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings.Engine, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) GetEngine() *TableSettingsDataEngineTableEngine {
+	return v.TableSettingsData.Engine
+}
+
+// GetPartitionBy returns DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings.PartitionBy, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) GetPartitionBy() []string {
+	return v.TableSettingsData.PartitionBy
+}
+
+// GetPrimaryKey returns DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings.PrimaryKey, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) GetPrimaryKey() []string {
+	return v.TableSettingsData.PrimaryKey
+}
+
+// GetOrderBy returns DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings.OrderBy, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) GetOrderBy() []string {
+	return v.TableSettingsData.OrderBy
+}
+
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.TableSettingsData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings struct {
+	Engine json.RawMessage `json:"engine"`
+
+	PartitionBy []string `json:"partitionBy"`
+
+	PrimaryKey []string `json:"primaryKey"`
+
+	OrderBy []string `json:"orderBy"`
+}
+
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) __premarshalJSON() (*__premarshalDataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings, error) {
+	var retval __premarshalDataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings
+
+	{
+
+		dst := &retval.Engine
+		src := v.TableSettingsData.Engine
+		if src != nil {
+			var err error
+			*dst, err = __marshalTableSettingsDataEngineTableEngine(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings.TableSettingsData.Engine: %w", err)
+			}
+		}
+	}
+	retval.PartitionBy = v.TableSettingsData.PartitionBy
+	retval.PrimaryKey = v.TableSettingsData.PrimaryKey
+	retval.OrderBy = v.TableSettingsData.OrderBy
+	return &retval, nil
 }
 
 // DataSourceDataDataPoolsDataPoolConnection includes the requested fields of the GraphQL type DataPoolConnection.
@@ -10792,6 +11027,11 @@ func (v *MetricDataDataPool) GetAccessControlEnabled() bool {
 	return v.DataPoolData.AccessControlEnabled
 }
 
+// GetTableSettings returns MetricDataDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
+}
+
 // GetUniqueName returns MetricDataDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -10888,6 +11128,8 @@ type __premarshalMetricDataDataPool struct {
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
 
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -10931,6 +11173,7 @@ func (v *MetricDataDataPool) __premarshalJSON() (*__premarshalMetricDataDataPool
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -13838,6 +14081,11 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAccessControlE
 	return v.DataPoolData.AccessControlEnabled
 }
 
+// GetTableSettings returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
+}
+
 // GetUniqueName returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetUniqueName() string {
 	return v.DataPoolData.CommonDataDataPool.UniqueName
@@ -13934,6 +14182,8 @@ type __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
 
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
+
 	UniqueName string `json:"uniqueName"`
 
 	Description string `json:"description"`
@@ -13977,6 +14227,7 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON(
 	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -16591,6 +16842,296 @@ const (
 	TableIntrospectionStatusFailed TableIntrospectionStatus = "FAILED"
 )
 
+// TableSettingsData includes the GraphQL fields of TableSettings requested by the fragment TableSettingsData.
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's table settings.
+//
+// These describe how the Data Pool's table is created in ClickHouse.
+type TableSettingsData struct {
+	// The ClickHouse table engine for the Data Pool's table.
+	Engine *TableSettingsDataEngineTableEngine `json:"-"`
+	// The PARTITION BY clause for the Data Pool's table.
+	PartitionBy []string `json:"partitionBy"`
+	// The PRIMARY KEY clause for the Data Pool's table.
+	PrimaryKey []string `json:"primaryKey"`
+	// The ORDER BY clause for the Data Pool's table.
+	OrderBy []string `json:"orderBy"`
+}
+
+// GetEngine returns TableSettingsData.Engine, and is useful for accessing the field via an interface.
+func (v *TableSettingsData) GetEngine() *TableSettingsDataEngineTableEngine { return v.Engine }
+
+// GetPartitionBy returns TableSettingsData.PartitionBy, and is useful for accessing the field via an interface.
+func (v *TableSettingsData) GetPartitionBy() []string { return v.PartitionBy }
+
+// GetPrimaryKey returns TableSettingsData.PrimaryKey, and is useful for accessing the field via an interface.
+func (v *TableSettingsData) GetPrimaryKey() []string { return v.PrimaryKey }
+
+// GetOrderBy returns TableSettingsData.OrderBy, and is useful for accessing the field via an interface.
+func (v *TableSettingsData) GetOrderBy() []string { return v.OrderBy }
+
+func (v *TableSettingsData) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*TableSettingsData
+		Engine json.RawMessage `json:"engine"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.TableSettingsData = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.Engine
+		src := firstPass.Engine
+		if len(src) != 0 && string(src) != "null" {
+			*dst = new(TableSettingsDataEngineTableEngine)
+			err = __unmarshalTableSettingsDataEngineTableEngine(
+				src, *dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal TableSettingsData.Engine: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalTableSettingsData struct {
+	Engine json.RawMessage `json:"engine"`
+
+	PartitionBy []string `json:"partitionBy"`
+
+	PrimaryKey []string `json:"primaryKey"`
+
+	OrderBy []string `json:"orderBy"`
+}
+
+func (v *TableSettingsData) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *TableSettingsData) __premarshalJSON() (*__premarshalTableSettingsData, error) {
+	var retval __premarshalTableSettingsData
+
+	{
+
+		dst := &retval.Engine
+		src := v.Engine
+		if src != nil {
+			var err error
+			*dst, err = __marshalTableSettingsDataEngineTableEngine(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal TableSettingsData.Engine: %w", err)
+			}
+		}
+	}
+	retval.PartitionBy = v.PartitionBy
+	retval.PrimaryKey = v.PrimaryKey
+	retval.OrderBy = v.OrderBy
+	return &retval, nil
+}
+
+// TableSettingsDataEngineAggregatingMergeTreeTableEngine includes the requested fields of the GraphQL type AggregatingMergeTreeTableEngine.
+// The GraphQL type's documentation follows.
+//
+// Parameters for the AggregatingMergeTree table engine.
+type TableSettingsDataEngineAggregatingMergeTreeTableEngine struct {
+	Typename *string `json:"__typename"`
+	// The type is always `AGGREGATING_MERGE_TREE`.
+	Type TableEngineType `json:"type"`
+}
+
+// GetTypename returns TableSettingsDataEngineAggregatingMergeTreeTableEngine.Typename, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineAggregatingMergeTreeTableEngine) GetTypename() *string {
+	return v.Typename
+}
+
+// GetType returns TableSettingsDataEngineAggregatingMergeTreeTableEngine.Type, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineAggregatingMergeTreeTableEngine) GetType() TableEngineType {
+	return v.Type
+}
+
+// TableSettingsDataEngineMergeTreeTableEngine includes the requested fields of the GraphQL type MergeTreeTableEngine.
+// The GraphQL type's documentation follows.
+//
+// Parameters for the MergeTree table engine.
+type TableSettingsDataEngineMergeTreeTableEngine struct {
+	Typename *string `json:"__typename"`
+	// The type is always `MERGE_TREE`.
+	Type TableEngineType `json:"type"`
+}
+
+// GetTypename returns TableSettingsDataEngineMergeTreeTableEngine.Typename, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineMergeTreeTableEngine) GetTypename() *string { return v.Typename }
+
+// GetType returns TableSettingsDataEngineMergeTreeTableEngine.Type, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineMergeTreeTableEngine) GetType() TableEngineType { return v.Type }
+
+// TableSettingsDataEngineReplacingMergeTreeTableEngine includes the requested fields of the GraphQL type ReplacingMergeTreeTableEngine.
+// The GraphQL type's documentation follows.
+//
+// Parameters for the ReplacingMergeTree table engine.
+type TableSettingsDataEngineReplacingMergeTreeTableEngine struct {
+	Typename *string `json:"__typename"`
+	// The type is always `REPLACING_MERGE_TREE`.
+	Type TableEngineType `json:"type"`
+	// The `ver` parameter to the ReplacingMergeTree engine.
+	Ver *string `json:"ver"`
+}
+
+// GetTypename returns TableSettingsDataEngineReplacingMergeTreeTableEngine.Typename, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineReplacingMergeTreeTableEngine) GetTypename() *string {
+	return v.Typename
+}
+
+// GetType returns TableSettingsDataEngineReplacingMergeTreeTableEngine.Type, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineReplacingMergeTreeTableEngine) GetType() TableEngineType {
+	return v.Type
+}
+
+// GetVer returns TableSettingsDataEngineReplacingMergeTreeTableEngine.Ver, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineReplacingMergeTreeTableEngine) GetVer() *string { return v.Ver }
+
+// TableSettingsDataEngineSummingMergeTreeTableEngine includes the requested fields of the GraphQL type SummingMergeTreeTableEngine.
+// The GraphQL type's documentation follows.
+//
+// Parameters for the SummingMergeTree table engine.
+type TableSettingsDataEngineSummingMergeTreeTableEngine struct {
+	Typename *string `json:"__typename"`
+	// The type is always `SUMMING_MERGE_TREE`.
+	Type TableEngineType `json:"type"`
+	// The columns argument for the SummingMergeTree table engine
+	Columns []string `json:"columns"`
+}
+
+// GetTypename returns TableSettingsDataEngineSummingMergeTreeTableEngine.Typename, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineSummingMergeTreeTableEngine) GetTypename() *string { return v.Typename }
+
+// GetType returns TableSettingsDataEngineSummingMergeTreeTableEngine.Type, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineSummingMergeTreeTableEngine) GetType() TableEngineType { return v.Type }
+
+// GetColumns returns TableSettingsDataEngineSummingMergeTreeTableEngine.Columns, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineSummingMergeTreeTableEngine) GetColumns() []string { return v.Columns }
+
+// TableSettingsDataEngineTableEngine includes the requested fields of the GraphQL interface TableEngine.
+//
+// TableSettingsDataEngineTableEngine is implemented by the following types:
+// TableSettingsDataEngineAggregatingMergeTreeTableEngine
+// TableSettingsDataEngineMergeTreeTableEngine
+// TableSettingsDataEngineReplacingMergeTreeTableEngine
+// TableSettingsDataEngineSummingMergeTreeTableEngine
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's table engine.
+type TableSettingsDataEngineTableEngine interface {
+	implementsGraphQLInterfaceTableSettingsDataEngineTableEngine()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *TableSettingsDataEngineAggregatingMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
+}
+func (v *TableSettingsDataEngineMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
+}
+func (v *TableSettingsDataEngineReplacingMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
+}
+func (v *TableSettingsDataEngineSummingMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
+}
+
+func __unmarshalTableSettingsDataEngineTableEngine(b []byte, v *TableSettingsDataEngineTableEngine) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "AggregatingMergeTreeTableEngine":
+		*v = new(TableSettingsDataEngineAggregatingMergeTreeTableEngine)
+		return json.Unmarshal(b, *v)
+	case "MergeTreeTableEngine":
+		*v = new(TableSettingsDataEngineMergeTreeTableEngine)
+		return json.Unmarshal(b, *v)
+	case "ReplacingMergeTreeTableEngine":
+		*v = new(TableSettingsDataEngineReplacingMergeTreeTableEngine)
+		return json.Unmarshal(b, *v)
+	case "SummingMergeTreeTableEngine":
+		*v = new(TableSettingsDataEngineSummingMergeTreeTableEngine)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing TableEngine.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for TableSettingsDataEngineTableEngine: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalTableSettingsDataEngineTableEngine(v *TableSettingsDataEngineTableEngine) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *TableSettingsDataEngineAggregatingMergeTreeTableEngine:
+		typename = "AggregatingMergeTreeTableEngine"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*TableSettingsDataEngineAggregatingMergeTreeTableEngine
+		}{typename, v}
+		return json.Marshal(result)
+	case *TableSettingsDataEngineMergeTreeTableEngine:
+		typename = "MergeTreeTableEngine"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*TableSettingsDataEngineMergeTreeTableEngine
+		}{typename, v}
+		return json.Marshal(result)
+	case *TableSettingsDataEngineReplacingMergeTreeTableEngine:
+		typename = "ReplacingMergeTreeTableEngine"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*TableSettingsDataEngineReplacingMergeTreeTableEngine
+		}{typename, v}
+		return json.Marshal(result)
+	case *TableSettingsDataEngineSummingMergeTreeTableEngine:
+		typename = "SummingMergeTreeTableEngine"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*TableSettingsDataEngineSummingMergeTreeTableEngine
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for TableSettingsDataEngineTableEngine: "%T"`, v)
+	}
+}
+
 // A Data Pool's table settings.
 //
 // These describe how the Data Pool's table is created in ClickHouse.
@@ -17513,6 +18054,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -17602,6 +18146,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -17678,6 +18225,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -17880,6 +18449,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -17969,6 +18541,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -18045,6 +18620,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -18247,6 +18844,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -18336,6 +18936,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -18412,6 +19015,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -18614,6 +19239,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -18703,6 +19331,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -18779,6 +19410,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -18890,6 +19543,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -18972,6 +19628,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -19048,6 +19707,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -19261,6 +19942,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -19304,6 +19988,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -19574,6 +20280,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -19663,6 +20372,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -19739,6 +20451,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -19941,6 +20675,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -20030,6 +20767,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -20106,6 +20846,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -20274,6 +21036,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -20317,6 +21082,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -20446,6 +21233,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -20493,6 +21283,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -20695,6 +21507,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -20784,6 +21599,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -20860,6 +21678,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -20981,6 +21821,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -21024,6 +21867,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -21130,6 +21995,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -21212,6 +22080,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -21288,6 +22159,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -21489,6 +22382,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -21571,6 +22467,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -21647,6 +22546,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -21781,6 +22702,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -21863,6 +22787,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -21939,6 +22866,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -22079,6 +23028,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -22122,6 +23074,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -22241,6 +23215,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -22284,6 +23261,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -22416,6 +23415,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -22459,6 +23461,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -23024,6 +24048,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -23113,6 +24140,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -23189,6 +24219,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -23388,6 +24440,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -23477,6 +24532,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -23553,6 +24611,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -23769,6 +24849,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -23858,6 +24941,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -23934,6 +25020,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -24056,6 +25164,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment GqlError on Error {
 	code
@@ -24142,6 +25253,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -24218,6 +25332,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -24431,6 +25567,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -24474,6 +25613,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -24741,6 +25902,9 @@ fragment DataPoolData on DataPool {
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -24830,6 +25994,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -24906,6 +26073,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -25074,6 +26263,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -25117,6 +26309,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -25246,6 +26460,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -25293,6 +26510,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -25414,6 +26653,9 @@ fragment DataSourceData on DataSource {
 			tenant
 			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
 		}
 	}
@@ -25457,6 +26699,28 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
