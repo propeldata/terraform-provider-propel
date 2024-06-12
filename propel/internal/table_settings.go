@@ -24,8 +24,10 @@ func TableSettingsSchema() *schema.Schema {
 					Elem: &schema.Resource{
 						Schema: map[string]*schema.Schema{
 							"type": {
-								Type:     schema.TypeString,
-								Optional: true,
+								Type:        schema.TypeString,
+								Optional:    true,
+								ForceNew:    true,
+								Description: "The ClickHouse table engine.",
 								ValidateFunc: validation.StringInSlice([]string{
 									"MERGE_TREE",
 									"REPLACING_MERGE_TREE",
@@ -36,11 +38,13 @@ func TableSettingsSchema() *schema.Schema {
 							"ver": {
 								Type:        schema.TypeString,
 								Optional:    true,
+								ForceNew:    true,
 								Description: "The `ver` parameter to the ReplacingMergeTree table engine.",
 							},
 							"columns": {
 								Type:        schema.TypeSet,
 								Optional:    true,
+								ForceNew:    true,
 								Description: "The columns argument for the SummingMergeTree table engine.",
 								Elem:        &schema.Schema{Type: schema.TypeString},
 							},
@@ -50,18 +54,21 @@ func TableSettingsSchema() *schema.Schema {
 				"partition_by": {
 					Type:        schema.TypeSet,
 					Optional:    true,
+					ForceNew:    true,
 					Description: "The PARTITION BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.",
 					Elem:        &schema.Schema{Type: schema.TypeString},
 				},
 				"primary_key": {
 					Type:        schema.TypeSet,
 					Optional:    true,
+					ForceNew:    true,
 					Description: "The PRIMARY KEY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.",
 					Elem:        &schema.Schema{Type: schema.TypeString},
 				},
 				"order_by": {
 					Type:        schema.TypeSet,
 					Optional:    true,
+					ForceNew:    true,
 					Description: "The ORDER BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.",
 					Elem:        &schema.Schema{Type: schema.TypeString},
 				},
@@ -70,7 +77,7 @@ func TableSettingsSchema() *schema.Schema {
 	}
 }
 
-func ParseTableSettingsInput(settings map[string]any) *pc.TableSettingsInput {
+func BuildTableSettingsInput(settings map[string]any) *pc.TableSettingsInput {
 	tableSettingsInput := &pc.TableSettingsInput{}
 
 	if t, ok := settings["engine"]; ok && len(t.([]any)) == 1 {
@@ -158,7 +165,7 @@ func ParseTableSettingsInput(settings map[string]any) *pc.TableSettingsInput {
 	return tableSettingsInput
 }
 
-func ParseTableSettingsRead(settingsData pc.TableSettingsData) map[string]any {
+func ParseTableSettings(settingsData pc.TableSettingsData) map[string]any {
 	settings := map[string]any{
 		"partition_by": settingsData.GetPartitionBy(),
 		"primary_key":  settingsData.GetPrimaryKey(),

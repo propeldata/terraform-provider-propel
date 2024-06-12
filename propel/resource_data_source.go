@@ -355,7 +355,6 @@ func resourceDataSource() *schema.Resource {
 }
 
 func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
-	// TODO(mroberts): The Propel GraphQL API should eventually return this uppercase.
 	dataSourceType := d.Get("type").(string)
 	switch strings.ToUpper(dataSourceType) {
 	case "SNOWFLAKE":
@@ -549,7 +548,7 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 
 		if v, exists := cs["table_settings"]; exists && len(v.([]any)) == 1 {
 			settings := v.([]any)[0].(map[string]any)
-			connectionSettings.TableSettings = internal.ParseTableSettingsInput(settings)
+			connectionSettings.TableSettings = internal.BuildTableSettingsInput(settings)
 		}
 	}
 
@@ -643,7 +642,6 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 		return diag.FromErr(err)
 	}
 
-	// TODO(mroberts): The Propel GraphQL API should eventually return this uppercase.
 	dataSourceType := string(response.DataSource.Type)
 	switch strings.ToUpper(dataSourceType) {
 	case "SNOWFLAKE":
@@ -856,7 +854,7 @@ func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 		}
 
 		if s.GetTableSettings() != nil {
-			settings["table_settings"] = internal.ParseTableSettingsRead(s.GetTableSettings().TableSettingsData)
+			settings["table_settings"] = internal.ParseTableSettings(s.GetTableSettings().TableSettingsData)
 		}
 
 		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {

@@ -213,7 +213,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 	}
 
 	if v, exists := d.GetOk("table_settings.0"); exists {
-		input.TableSettings = internal.ParseTableSettingsInput(v.(map[string]any))
+		input.TableSettings = internal.BuildTableSettingsInput(v.(map[string]any))
 	}
 
 	if _, exists := d.GetOk("syncing"); exists {
@@ -307,7 +307,7 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) di
 	}
 
 	if response.DataPool.TableSettings != nil {
-		if err := d.Set("table_settings", []map[string]any{internal.ParseTableSettingsRead(response.DataPool.TableSettings.TableSettingsData)}); err != nil {
+		if err := d.Set("table_settings", []map[string]any{internal.ParseTableSettings(response.DataPool.TableSettings.TableSettingsData)}); err != nil {
 			return diag.FromErr(err)
 		}
 	}
