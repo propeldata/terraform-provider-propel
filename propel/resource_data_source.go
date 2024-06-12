@@ -50,6 +50,7 @@ func resourceDataSource() *schema.Resource {
 					"S3",
 					"Http",
 					"Webhook",
+					"Kafka",
 				}, true),
 				Description: "The Data Source's type. Depending on this, you will need to specify one of `http_connection_settings`, `s3_connection_settings`, `webhook_connection_settings` or `snowflake_connection_settings`.",
 			},
@@ -91,7 +92,7 @@ func resourceDataSource() *schema.Resource {
 			"snowflake_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"http_connection_settings", "s3_connection_settings", "webhook_connection_settings"},
+				ConflictsWith: []string{"http_connection_settings", "s3_connection_settings", "webhook_connection_settings", "kafka_connection_settings"},
 				MaxItems:      1,
 				Description:   "Snowflake connection settings. Specify these for Snowflake Data Sources.",
 				Elem: &schema.Resource{
@@ -138,7 +139,7 @@ func resourceDataSource() *schema.Resource {
 			"http_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "s3_connection_settings", "webhook_connection_settings"},
+				ConflictsWith: []string{"snowflake_connection_settings", "s3_connection_settings", "webhook_connection_settings", "kafka_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Description: "HTTP connection settings. Specify these for HTTP Data Sources.",
@@ -170,7 +171,7 @@ func resourceDataSource() *schema.Resource {
 			"s3_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "webhook_connection_settings"},
+				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "webhook_connection_settings", "kafka_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Description: "The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, the AWS secret access key, and the tables (along with their paths).",
@@ -197,7 +198,7 @@ func resourceDataSource() *schema.Resource {
 			"webhook_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings"},
+				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings", "kafka_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Description: "Webhook connection settings. Specify these for Webhook Data Sources.",
@@ -294,6 +295,50 @@ func resourceDataSource() *schema.Resource {
 					},
 				},
 			},
+			"kafka_connection_settings": {
+				Type:          schema.TypeList,
+				Optional:      true,
+				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings", "webhook_connection_settings"},
+				MaxItems:      1,
+				Elem: &schema.Resource{
+					Description: "The connection settings for a Kafka Data Source.",
+					Schema: map[string]*schema.Schema{
+						"auth": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The type of authentication to use. Can be SCRAM-SHA-256, SCRAM-SHA-512, PLAIN or NONE.",
+							ValidateFunc: validation.StringInSlice([]string{
+								"SCRAM-SHA-256",
+								"SCRAM-SHA-512",
+								"PLAIN",
+								"NONE",
+							}, true),
+						},
+						"user": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The user for authenticating against the Kafka servers.",
+						},
+						"password": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Sensitive:   true,
+							Description: "The password for the provided user.",
+						},
+						"tls": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: "Whether the the connection to the Kafka servers is encrypted or not.",
+						},
+						"bootstrap_servers": {
+							Type:        schema.TypeSet,
+							Required:    true,
+							Description: "The bootstrap server(s) to connect to.",
+							Elem:        &schema.Schema{Type: schema.TypeString},
+						},
+					},
+				},
+			},
 			"table": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -365,6 +410,8 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 		return resourceS3DataSourceCreate(ctx, d, meta)
 	case "WEBHOOK":
 		return resourceWebhookDataSourceCreate(ctx, d, meta)
+	case "KAFKA":
+		return resourceKafkaDataSourceCreate(ctx, d, meta)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
@@ -592,6 +639,54 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 	return nil
 }
 
+func resourceKafkaDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
+	c := meta.(graphql.Client)
+
+	uniqueName := d.Get("unique_name").(string)
+	description := d.Get("description").(string)
+	connectionSettings := d.Get("kafka_connection_settings.0").(map[string]any)
+
+	bootstrapServers := make([]string, 0)
+	if v, exists := connectionSettings["bootstrap_servers"]; exists {
+		for _, bServer := range v.(*schema.Set).List() {
+			bootstrapServers = append(bootstrapServers, bServer.(string))
+		}
+	}
+
+	input := &pc.CreateKafkaDataSourceInput{
+		UniqueName:  &uniqueName,
+		Description: &description,
+		ConnectionSettings: &pc.KafkaConnectionSettingsInput{
+			Auth:             connectionSettings["auth"].(string),
+			User:             connectionSettings["user"].(string),
+			Password:         connectionSettings["password"].(string),
+			BootstrapServers: bootstrapServers,
+		},
+	}
+
+	if v, exists := connectionSettings["tls"]; exists && v.(bool) {
+		tls := v.(bool)
+		input.ConnectionSettings.Tls = &tls
+	}
+
+	response, err := pc.CreateKafkaDataSource(ctx, c, input)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	r := response.CreateKafkaDataSource
+	d.SetId(r.DataSource.Id)
+
+	timeout := d.Timeout(schema.TimeoutCreate)
+
+	err = waitForDataSourceConnected(ctx, c, d.Id(), timeout)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	return resourceDataSourceRead(ctx, d, meta)
+}
+
 func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
@@ -658,6 +753,8 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 		return handleS3ConnectionSettings(response, d)
 	case "WEBHOOK":
 		return handleWebhookConnectionSettings(response, d)
+	case "KAFKA":
+		return handleKafkaConnectionSettings(response, d)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
@@ -854,7 +951,7 @@ func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 		}
 
 		if s.GetTableSettings() != nil {
-			settings["table_settings"] = internal.ParseTableSettings(s.GetTableSettings().TableSettingsData)
+			settings["table_settings"] = []map[string]any{internal.ParseTableSettings(s.GetTableSettings().TableSettingsData)}
 		}
 
 		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {
@@ -862,6 +959,27 @@ func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 		}
 	default:
 		return diag.Errorf("Missing WebhookConnectionSettings")
+	}
+
+	return nil
+}
+
+func handleKafkaConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
+	switch s := response.DataSource.GetConnectionSettings().(type) {
+	case *pc.DataSourceDataConnectionSettingsKafkaConnectionSettings:
+		settings := map[string]any{
+			"auth":              s.GetAuth(),
+			"user":              s.GetUser(),
+			"password":          s.GetPassword(),
+			"tls":               s.GetTls(),
+			"bootstrap_servers": s.GetBootstrapServers(),
+		}
+
+		if err := d.Set("kafka_connection_settings", []map[string]any{settings}); err != nil {
+			return diag.FromErr(err)
+		}
+	default:
+		return diag.Errorf("Missing KafkaConnectionSettings")
 	}
 
 	return nil
@@ -1127,6 +1245,69 @@ func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData
 	return resourceDataSourceRead(ctx, d, m)
 }
 
+func resourceKafkaDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
+	c := m.(graphql.Client)
+
+	id := d.Id()
+	input := &pc.ModifyKafkaDataSourceInput{
+		IdOrUniqueName: &pc.IdOrUniqueName{Id: &id},
+	}
+
+	if d.HasChanges("unique_name", "description") {
+		uniqueName := d.Get("unique_name").(string)
+		description := d.Get("description").(string)
+
+		input.UniqueName = &uniqueName
+		input.Description = &description
+	}
+
+	if d.HasChanges("kafka_connection_settings") {
+		connectionSettings := d.Get("kafka_connection_settings.0").(map[string]any)
+
+		bootstrapServers := make([]string, 0)
+		if v, exists := connectionSettings["bootstrap_servers"]; exists {
+			for _, bServer := range v.(*schema.Set).List() {
+				bootstrapServers = append(bootstrapServers, bServer.(string))
+			}
+		}
+
+		csPartialInput := &pc.PartialKafkaConnectionSettingsInput{
+			BootstrapServers: bootstrapServers,
+		}
+
+		if def, ok := connectionSettings["auth"]; ok {
+			auth := def.(string)
+			csPartialInput.Auth = &auth
+		}
+
+		if def, ok := connectionSettings["user"]; ok {
+			user := def.(string)
+			csPartialInput.User = &user
+		}
+
+		if def, ok := connectionSettings["password"]; ok {
+			password := def.(string)
+			csPartialInput.Password = &password
+		}
+
+		if def, ok := connectionSettings["tls"]; ok {
+			tls := def.(bool)
+			csPartialInput.Tls = &tls
+		}
+	}
+
+	if _, err := pc.ModifyKafkaDataSource(ctx, c, input); err != nil {
+		return diag.FromErr(err)
+	}
+
+	timeout := d.Timeout(schema.TimeoutCreate)
+
+	if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
+		return diag.FromErr(err)
+	}
+	return resourceDataSourceRead(ctx, d, m)
+}
+
 func getNewDataSourceColumns(oldItemDef []any, newItemDef []any) (map[string]pc.WebhookDataSourceColumnInput, error) {
 	newColumns := map[string]pc.WebhookDataSourceColumnInput{}
 
@@ -1209,6 +1390,8 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta 
 		return resourceS3DataSourceUpdate(ctx, d, meta)
 	case "WEBHOOK":
 		return resourceWebhookDataSourceUpdate(ctx, d, meta)
+	case "KAFKA":
+		return resourceKafkaDataSourceUpdate(ctx, d, meta)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}

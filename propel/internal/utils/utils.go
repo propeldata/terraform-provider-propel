@@ -5,16 +5,17 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/meta"
 
-	client "github.com/propeldata/terraform-provider-propel/propel_client"
+	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 	"github.com/propeldata/terraform-provider-propel/version"
 )
 
 var (
-	dataSourceTypeMap = map[client.DataSourceType]string{
-		client.DataSourceTypeSnowflake: "Snowflake",
-		client.DataSourceTypeS3:        "S3",
-		client.DataSourceTypeHttp:      "Http",
-		client.DataSourceTypeWebhook:   "Webhook",
+	dataSourceTypeMap = map[pc.DataSourceType]string{
+		pc.DataSourceTypeSnowflake: "Snowflake",
+		pc.DataSourceTypeS3:        "S3",
+		pc.DataSourceTypeHttp:      "Http",
+		pc.DataSourceTypeWebhook:   "Webhook",
+		pc.DataSourceTypeKafka:     "Kafka",
 	}
 )
 
@@ -26,7 +27,7 @@ func GetUserAgent(clientUserAgent string) string {
 		clientUserAgent)
 }
 
-func GetDataSourceType(dataSourceType client.DataSourceType) string {
+func GetDataSourceType(dataSourceType pc.DataSourceType) string {
 	if dsType, ok := dataSourceTypeMap[dataSourceType]; ok {
 		return dsType
 	}

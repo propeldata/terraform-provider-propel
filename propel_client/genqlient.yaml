@@ -34,6 +34,7 @@ operations:
 - mutations/createDataPool.mutation.graphql
 - mutations/createDataPoolAccessPolicy.mutation.graphql
 - mutations/createHttpDataSource.mutation.graphql
+- mutations/createKafkaDataSource.mutation.graphql
 - mutations/createMaterializedView.mutation.graphql
 - mutations/createMaxMetric.mutation.graphql
 - mutations/createMinMetric.mutation.graphql

@@ -70,6 +70,13 @@ fragment DataSourceData on DataSource {
             }
             webhookUrl
         }
+        ... on KafkaConnectionSettings {
+            auth
+            user
+            password
+            tls
+            bootstrapServers
+        }
     }
     tables (first: 100) {
         nodes {

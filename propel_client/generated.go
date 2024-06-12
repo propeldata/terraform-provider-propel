@@ -2814,6 +2814,253 @@ func (v *CreateHttpDataSourceResponse) GetCreateHttpDataSource() *CreateHttpData
 	return v.CreateHttpDataSource
 }
 
+// CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse) GetDataSource() *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetDataPools returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
+// GetConnectionSettings returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalCreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalCreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+type CreateKafkaDataSourceInput struct {
+	// The Kafka Data Source's connection settings
+	ConnectionSettings *KafkaConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The Kafka Data Source's description.
+	Description *string `json:"description"`
+	// The Kafka Data Source's unique name. If not specified, Propel will set the ID as unique name.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns CreateKafkaDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceInput) GetConnectionSettings() *KafkaConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns CreateKafkaDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetUniqueName returns CreateKafkaDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// CreateKafkaDataSourceResponse is returned by CreateKafkaDataSource on success.
+type CreateKafkaDataSourceResponse struct {
+	// This mutation creates a new Kafka Data Source.
+	//
+	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+	CreateKafkaDataSource *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse `json:"createKafkaDataSource"`
+}
+
+// GetCreateKafkaDataSource returns CreateKafkaDataSourceResponse.CreateKafkaDataSource, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceResponse) GetCreateKafkaDataSource() *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse {
+	return v.CreateKafkaDataSource
+}
+
 // CreateMaterializedViewCreateMaterializedViewMaterializedViewResponse includes the requested fields of the GraphQL type MaterializedViewResponse.
 // The GraphQL type's documentation follows.
 //
@@ -8478,11 +8725,40 @@ func (v *DataSourceDataConnectionSettingsInternalConnectionSettings) GetTypename
 // The Kafka Data Source connection settings.
 type DataSourceDataConnectionSettingsKafkaConnectionSettings struct {
 	Typename *string `json:"__typename"`
+	// The type of authentication to use. Can be SCRAM-SHA-256, SCRAM-SHA-512, PLAIN or NONE
+	Auth string `json:"auth"`
+	// The user for authenticating against the Kafka servers
+	User string `json:"user"`
+	// The password for the provided user
+	Password string `json:"password"`
+	// Whether the the connection to the Kafka servers is encrypted or not
+	Tls *bool `json:"tls"`
+	// The bootstrap server(s) to connect to
+	BootstrapServers []string `json:"bootstrapServers"`
 }
 
 // GetTypename returns DataSourceDataConnectionSettingsKafkaConnectionSettings.Typename, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetTypename() *string {
 	return v.Typename
+}
+
+// GetAuth returns DataSourceDataConnectionSettingsKafkaConnectionSettings.Auth, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetAuth() string { return v.Auth }
+
+// GetUser returns DataSourceDataConnectionSettingsKafkaConnectionSettings.User, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetUser() string { return v.User }
+
+// GetPassword returns DataSourceDataConnectionSettingsKafkaConnectionSettings.Password, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetPassword() string {
+	return v.Password
+}
+
+// GetTls returns DataSourceDataConnectionSettingsKafkaConnectionSettings.Tls, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetTls() *bool { return v.Tls }
+
+// GetBootstrapServers returns DataSourceDataConnectionSettingsKafkaConnectionSettings.BootstrapServers, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetBootstrapServers() []string {
+	return v.BootstrapServers
 }
 
 // DataSourceDataConnectionSettingsS3ConnectionSettings includes the requested fields of the GraphQL type S3ConnectionSettings.
@@ -10228,6 +10504,35 @@ const (
 	// The Job failed. Check the error message.
 	JobStatusFailed JobStatus = "FAILED"
 )
+
+// The Kafka Data Source connection settings.
+type KafkaConnectionSettingsInput struct {
+	// The type of authentication to use. Can be SCRAM-SHA-256, SCRAM-SHA-512, PLAIN or NONE
+	Auth string `json:"auth"`
+	// The bootstrap server(s) to connect to
+	BootstrapServers []string `json:"bootstrapServers"`
+	// The password for the provided user
+	Password string `json:"password"`
+	// Whether the the connection to the Kafka servers is encrypted or not
+	Tls *bool `json:"tls"`
+	// The user for authenticating against the Kafka servers
+	User string `json:"user"`
+}
+
+// GetAuth returns KafkaConnectionSettingsInput.Auth, and is useful for accessing the field via an interface.
+func (v *KafkaConnectionSettingsInput) GetAuth() string { return v.Auth }
+
+// GetBootstrapServers returns KafkaConnectionSettingsInput.BootstrapServers, and is useful for accessing the field via an interface.
+func (v *KafkaConnectionSettingsInput) GetBootstrapServers() []string { return v.BootstrapServers }
+
+// GetPassword returns KafkaConnectionSettingsInput.Password, and is useful for accessing the field via an interface.
+func (v *KafkaConnectionSettingsInput) GetPassword() string { return v.Password }
+
+// GetTls returns KafkaConnectionSettingsInput.Tls, and is useful for accessing the field via an interface.
+func (v *KafkaConnectionSettingsInput) GetTls() *bool { return v.Tls }
+
+// GetUser returns KafkaConnectionSettingsInput.User, and is useful for accessing the field via an interface.
+func (v *KafkaConnectionSettingsInput) GetUser() string { return v.User }
 
 // MaterializedViewData includes the GraphQL fields of MaterializedView requested by the fragment MaterializedViewData.
 type MaterializedViewData struct {
@@ -14649,6 +14954,258 @@ func (v *ModifyHttpDataSourceResponse) GetModifyHttpDataSource() *ModifyHttpData
 	return v.ModifyHttpDataSource
 }
 
+type ModifyKafkaDataSourceInput struct {
+	// The Kafka Data Source's new connection settings. If not provided this property will not be modified.
+	ConnectionSettings *PartialKafkaConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The Kafka Data Source's new description. If not provided this property will not be modified.
+	Description *string `json:"description"`
+	// The ID or unique name of the Kafka Data Source to modify.
+	IdOrUniqueName *IdOrUniqueName `json:"idOrUniqueName,omitempty"`
+	// The Kafka Data Source's new unique name. If not provided this property will not be modified.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns ModifyKafkaDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceInput) GetConnectionSettings() *PartialKafkaConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns ModifyKafkaDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetIdOrUniqueName returns ModifyKafkaDataSourceInput.IdOrUniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceInput) GetIdOrUniqueName() *IdOrUniqueName { return v.IdOrUniqueName }
+
+// GetUniqueName returns ModifyKafkaDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse) GetDataSource() *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetDataPools returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
+// GetConnectionSettings returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyKafkaDataSourceResponse is returned by ModifyKafkaDataSource on success.
+type ModifyKafkaDataSourceResponse struct {
+	// This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
+	//
+	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+	ModifyKafkaDataSource *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse `json:"modifyKafkaDataSource"`
+}
+
+// GetModifyKafkaDataSource returns ModifyKafkaDataSourceResponse.ModifyKafkaDataSource, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceResponse) GetModifyKafkaDataSource() *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse {
+	return v.ModifyKafkaDataSource
+}
+
 // The fields for modifying a Materialized View.
 type ModifyMaterializedViewInput struct {
 	// The ID of the Materialized View to modify.
@@ -16254,6 +16811,37 @@ func (v *PartialHttpConnectionSettingsInput) GetBasicAuthEnabled() *bool { retur
 // GetTables returns PartialHttpConnectionSettingsInput.Tables, and is useful for accessing the field via an interface.
 func (v *PartialHttpConnectionSettingsInput) GetTables() []*HttpDataSourceTableInput { return v.Tables }
 
+// The Kafka Data Source connection settings.
+type PartialKafkaConnectionSettingsInput struct {
+	// The type of authentication to use. Can be SCRAM-SHA-256, SCRAM-SHA-512, PLAIN or NONE If not provided this property will not be modified.
+	Auth *string `json:"auth"`
+	// The bootstrap server(s) to connect to If not provided this property will not be modified.
+	BootstrapServers []string `json:"bootstrapServers"`
+	// The password for the provided user If not provided this property will not be modified.
+	Password *string `json:"password"`
+	// Whether the the connection to the Kafka servers is encrypted or not If not provided this property will not be modified.
+	Tls *bool `json:"tls"`
+	// The user for authenticating against the Kafka servers If not provided this property will not be modified.
+	User *string `json:"user"`
+}
+
+// GetAuth returns PartialKafkaConnectionSettingsInput.Auth, and is useful for accessing the field via an interface.
+func (v *PartialKafkaConnectionSettingsInput) GetAuth() *string { return v.Auth }
+
+// GetBootstrapServers returns PartialKafkaConnectionSettingsInput.BootstrapServers, and is useful for accessing the field via an interface.
+func (v *PartialKafkaConnectionSettingsInput) GetBootstrapServers() []string {
+	return v.BootstrapServers
+}
+
+// GetPassword returns PartialKafkaConnectionSettingsInput.Password, and is useful for accessing the field via an interface.
+func (v *PartialKafkaConnectionSettingsInput) GetPassword() *string { return v.Password }
+
+// GetTls returns PartialKafkaConnectionSettingsInput.Tls, and is useful for accessing the field via an interface.
+func (v *PartialKafkaConnectionSettingsInput) GetTls() *bool { return v.Tls }
+
+// GetUser returns PartialKafkaConnectionSettingsInput.User, and is useful for accessing the field via an interface.
+func (v *PartialKafkaConnectionSettingsInput) GetUser() *string { return v.User }
+
 // The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, and the tables (along with their paths). We do not allow fetching the AWS secret access key after it has been set.
 type PartialS3ConnectionSettingsInput struct {
 	// The AWS access key ID for an IAM user with sufficient access to the S3 bucket. If not provided this property will not be modified.
@@ -17402,6 +17990,14 @@ type __CreateHttpDataSourceInput struct {
 // GetInput returns __CreateHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateHttpDataSourceInput) GetInput() *CreateHttpDataSourceInput { return v.Input }
 
+// __CreateKafkaDataSourceInput is used internally by genqlient
+type __CreateKafkaDataSourceInput struct {
+	Input *CreateKafkaDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateKafkaDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateKafkaDataSourceInput) GetInput() *CreateKafkaDataSourceInput { return v.Input }
+
 // __CreateMaterializedViewInput is used internally by genqlient
 type __CreateMaterializedViewInput struct {
 	Input *CreateMaterializedViewInput `json:"input,omitempty"`
@@ -17687,6 +18283,14 @@ type __ModifyHttpDataSourceInput struct {
 
 // GetInput returns __ModifyHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifyHttpDataSourceInput) GetInput() *ModifyHttpDataSourceInput { return v.Input }
+
+// __ModifyKafkaDataSourceInput is used internally by genqlient
+type __ModifyKafkaDataSourceInput struct {
+	Input *ModifyKafkaDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyKafkaDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyKafkaDataSourceInput) GetInput() *ModifyKafkaDataSourceInput { return v.Input }
 
 // __ModifyMaterializedViewInput is used internally by genqlient
 type __ModifyMaterializedViewInput struct {
@@ -18151,6 +18755,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -18545,6 +19156,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {
@@ -18941,6 +19559,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -19336,6 +19961,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -19632,6 +20264,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {
@@ -19947,6 +20586,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -20044,6 +20690,202 @@ func CreateHttpDataSource(
 	var err error
 
 	var data CreateHttpDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by CreateKafkaDataSource.
+const CreateKafkaDataSource_Operation = `
+mutation CreateKafkaDataSource ($input: CreateKafkaDataSourceInput!) {
+	createKafkaDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	dataPools {
+		nodes {
+			id
+			accessControlEnabled
+		}
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				path
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			tenant
+			timestamp
+			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
+			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`
+
+func CreateKafkaDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateKafkaDataSourceInput,
+) (*CreateKafkaDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateKafkaDataSource",
+		Query:  CreateKafkaDataSource_Operation,
+		Variables: &__CreateKafkaDataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateKafkaDataSourceResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -20376,6 +21218,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {
@@ -20772,6 +21621,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -21041,6 +21897,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -21237,6 +22100,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {
@@ -21604,6 +22474,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -21825,6 +22702,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {
@@ -22084,6 +22968,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {
@@ -22472,6 +23363,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -22792,6 +23690,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -23033,6 +23938,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -23219,6 +24131,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {
@@ -23419,6 +24338,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {
@@ -24145,6 +25071,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -24536,6 +25469,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {
@@ -24946,6 +25886,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -25257,6 +26204,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {
@@ -25572,6 +26526,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -25669,6 +26630,202 @@ func ModifyHttpDataSource(
 	var err error
 
 	var data ModifyHttpDataSourceResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by ModifyKafkaDataSource.
+const ModifyKafkaDataSource_Operation = `
+mutation ModifyKafkaDataSource ($input: ModifyKafkaDataSourceInput!) {
+	modifyKafkaDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	dataPools {
+		nodes {
+			id
+			accessControlEnabled
+		}
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				path
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			tenant
+			timestamp
+			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
+			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`
+
+func ModifyKafkaDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyKafkaDataSourceInput,
+) (*ModifyKafkaDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyKafkaDataSource",
+		Query:  ModifyKafkaDataSource_Operation,
+		Variables: &__ModifyKafkaDataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyKafkaDataSourceResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -25999,6 +27156,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -26268,6 +27432,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -26465,6 +27636,13 @@ fragment DataSourceData on DataSource {
 			}
 			webhookUrl
 		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -26657,6 +27835,13 @@ fragment DataSourceData on DataSource {
 				... TableSettingsData
 			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
 		}
 	}
 	tables(first: 100) {

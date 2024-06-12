@@ -12,6 +12,7 @@ func TableSettingsSchema() *schema.Schema {
 	return &schema.Schema{
 		Type:        schema.TypeList,
 		Optional:    true,
+		Computed:    true,
 		Description: "Override the Data Pool's table settings. These describe how the Data Pool's table is created in ClickHouse, and a default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if any. You can override these defaults in order to specify a custom table engine, custom ORDER BY, etc.",
 		MaxItems:    1,
 		Elem: &schema.Resource{

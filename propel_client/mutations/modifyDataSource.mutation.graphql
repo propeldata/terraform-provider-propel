@@ -37,3 +37,11 @@ mutation ModifyWebhookDataSource($input: ModifyWebhookDataSourceInput!) {
         }
     }
 }
+
+mutation ModifyKafkaDataSource($input: ModifyKafkaDataSourceInput!) {
+    modifyKafkaDataSource(input: $input) {
+        dataSource {
+            ...DataSourceData
+        }
+    }
+}
