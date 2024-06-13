@@ -18443,6 +18443,9 @@ func (v *UniqueIdInput) GetColumnName() string { return v.ColumnName }
 
 // The Webhook Data Source connection settings.
 type WebhookConnectionSettingsInput struct {
+	// Enables or disables access control for the Data Pool.
+	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.
+	AccessControlEnabled *bool `json:"accessControlEnabled"`
 	// The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
 	BasicAuth *HttpBasicAuthInput `json:"basicAuth,omitempty"`
 	// The additional columns for the Webhook Data Source table.
@@ -18457,6 +18460,11 @@ type WebhookConnectionSettingsInput struct {
 	Timestamp *string `json:"timestamp"`
 	// The unique ID column, if any. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 	UniqueId *string `json:"uniqueId"`
+}
+
+// GetAccessControlEnabled returns WebhookConnectionSettingsInput.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *WebhookConnectionSettingsInput) GetAccessControlEnabled() *bool {
+	return v.AccessControlEnabled
 }
 
 // GetBasicAuth returns WebhookConnectionSettingsInput.BasicAuth, and is useful for accessing the field via an interface.

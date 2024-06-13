@@ -2,7 +2,6 @@ package propel
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -90,38 +89,7 @@ func resourceDataSource() *schema.Resource {
 				Description: "The user who modified the Data Source.",
 			},
 			"snowflake_connection_settings": internal.SnowflakeDataSourceSchema(),
-			"http_connection_settings": {
-				Type:          schema.TypeList,
-				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "s3_connection_settings", "webhook_connection_settings", "kafka_connection_settings", "clickhouse_connection_settings"},
-				MaxItems:      1,
-				Elem: &schema.Resource{
-					Description: "HTTP connection settings. Specify these for HTTP Data Sources.",
-					Schema: map[string]*schema.Schema{
-						"basic_auth": {
-							Type:        schema.TypeList,
-							Optional:    true,
-							MaxItems:    1,
-							Description: "The HTTP Basic authentication settings for uploading new data.\n\nIf this parameter is not provided, anyone with the URL to your tables will be able to upload data. While it's OK to test without HTTP Basic authentication, we recommend enabling it.",
-							Elem: &schema.Resource{
-								Schema: map[string]*schema.Schema{
-									"username": {
-										Type:        schema.TypeString,
-										Required:    true,
-										Description: "The username for HTTP Basic authentication that must be included in the Authorization header when uploading new data.",
-									},
-									"password": {
-										Type:        schema.TypeString,
-										Required:    true,
-										Sensitive:   true,
-										Description: "The password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
+			"http_connection_settings":      internal.HttpDataSourceSchema(),
 			"s3_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
@@ -149,106 +117,7 @@ func resourceDataSource() *schema.Resource {
 					},
 				},
 			},
-			"webhook_connection_settings": {
-				Type:          schema.TypeList,
-				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings", "kafka_connection_settings", "clickhouse_connection_settings"},
-				MaxItems:      1,
-				Elem: &schema.Resource{
-					Description: "Webhook connection settings. Specify these for Webhook Data Sources.",
-					Schema: map[string]*schema.Schema{
-						"basic_auth": {
-							Type:        schema.TypeList,
-							Optional:    true,
-							MaxItems:    1,
-							Description: "The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.",
-							Elem: &schema.Resource{
-								Schema: map[string]*schema.Schema{
-									"username": {
-										Type:        schema.TypeString,
-										Required:    true,
-										Description: "Username for HTTP Basic authentication that must be included in the Authorization header when uploading new data.",
-									},
-									"password": {
-										Type:        schema.TypeString,
-										Required:    true,
-										Sensitive:   true,
-										Description: "Password for HTTP Basic authentication that must be included in the Authorization header when uploading new data.",
-									},
-								},
-							},
-						},
-						"column": {
-							Type:        schema.TypeList,
-							Optional:    true,
-							Description: "The additional column for the Webhook Data Source table.",
-							Elem: &schema.Resource{
-								Schema: map[string]*schema.Schema{
-									"name": {
-										Type:        schema.TypeString,
-										Required:    true,
-										Description: "The column name.",
-									},
-									"json_property": {
-										Type:     schema.TypeString,
-										Required: true,
-										Description: `The JSON property that the column will be derived from. For example, if you POST a JSON event like this:
-														{ "greeting": { "message": "hello, world" } }
-													Then you can use the JSON property "greeting.message" to extract "hello, world" to a column.`,
-									},
-									"type": {
-										Type:         schema.TypeString,
-										Required:     true,
-										Description:  "The column type.",
-										ValidateFunc: utils.IsValidColumnType,
-									},
-									"nullable": {
-										Type:        schema.TypeBool,
-										Required:    true,
-										Description: "Whether the column's type is nullable or not.",
-									},
-								},
-							},
-						},
-						"access_control_enabled": {
-							Type:        schema.TypeBool,
-							Optional:    true,
-							Description: "Whether the resulting Data Pool has access control enabled or not. If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.",
-						},
-						"tenant": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							ForceNew:    true,
-							Description: "The tenant ID column, if configured.",
-							Deprecated:  "Remove this attribute's configuration as it's no longer in use and the attribute will be removed in the next major version of the provider.",
-						},
-						"timestamp": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							ForceNew:    true,
-							Description: "The primary timestamp column.",
-						},
-						"unique_id": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							ForceNew:    true,
-							Description: "The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.",
-							Deprecated:  "Will be removed; use Table Settings to define the primary key.",
-						},
-						"table_settings": internal.TableSettingsSchema(),
-						"webhook_url": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: "The Webhook URL for posting JSON events.",
-						},
-						"data_pool_id": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: "The Webhook Data Pool ID.",
-						},
-					},
-				},
-			},
+			"webhook_connection_settings": internal.WebhookDataSourceSchema(),
 			"kafka_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
@@ -365,17 +234,17 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 	case "SNOWFLAKE":
 		id, err = internal.SnowflakeDataSourceCreate(ctx, d, c)
 	case "HTTP":
-		return resourceHttpDataSourceCreate(ctx, d, meta)
+		id, err = internal.HttpDataSourceCreate(ctx, d, c)
 	case "S3":
 		return resourceS3DataSourceCreate(ctx, d, meta)
 	case "WEBHOOK":
-		return resourceWebhookDataSourceCreate(ctx, d, meta)
+		id, err = internal.WebhookDataSourceCreate(ctx, d, c)
 	case "KAFKA":
 		return resourceKafkaDataSourceCreate(ctx, d, meta)
 	case "CLICKHOUSE":
 		id, err = internal.ClickHouseDataSourceCreate(ctx, d, c)
 	default:
-		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
+		err = fmt.Errorf("unsupported Data Source type \"%v\"", dataSourceType)
 	}
 
 	if err != nil {
@@ -386,51 +255,6 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 
 	timeout := d.Timeout(schema.TimeoutCreate)
 	if err := waitForDataSourceConnected(ctx, c, id, timeout); err != nil {
-		return diag.FromErr(err)
-	}
-
-	return resourceDataSourceRead(ctx, d, meta)
-}
-
-func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
-	c := meta.(graphql.Client)
-
-	var basicAuth *pc.HttpBasicAuthInput
-	if d.Get("http_connection_settings") != nil && len(d.Get("http_connection_settings").([]any)) > 0 {
-		cs := d.Get("http_connection_settings").([]any)[0].(map[string]any)
-
-		if def, ok := cs["basic_auth"]; ok {
-			basicAuth = expandBasicAuth(def.([]any))
-		}
-	}
-
-	tables := make([]*pc.HttpDataSourceTableInput, 0)
-	if def, ok := d.Get("table").([]any); ok && len(def) > 0 {
-		tables = expandHttpTables(def)
-	}
-
-	uniqueName := d.Get("unique_name").(string)
-	description := d.Get("description").(string)
-	input := &pc.CreateHttpDataSourceInput{
-		UniqueName:  &uniqueName,
-		Description: &description,
-		ConnectionSettings: &pc.HttpConnectionSettingsInput{
-			BasicAuth: basicAuth,
-			Tables:    tables,
-		},
-	}
-
-	response, err := pc.CreateHttpDataSource(ctx, c, input)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	r := response.CreateHttpDataSource
-	d.SetId(r.DataSource.Id)
-
-	timeout := d.Timeout(schema.TimeoutCreate)
-
-	if err = waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -476,97 +300,6 @@ func resourceS3DataSourceCreate(ctx context.Context, d *schema.ResourceData, met
 	}
 
 	return resourceDataSourceRead(ctx, d, meta)
-}
-
-func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
-	c := meta.(graphql.Client)
-
-	connectionSettings := &pc.WebhookConnectionSettingsInput{}
-	accessControlEnabled := false
-
-	if d.Get("webhook_connection_settings") != nil && len(d.Get("webhook_connection_settings").([]any)) > 0 {
-		cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
-
-		if def, ok := cs["basic_auth"]; ok && len(def.([]any)) > 0 {
-			connectionSettings.BasicAuth = expandBasicAuth(def.([]any))
-		}
-
-		columns := make([]*pc.WebhookDataSourceColumnInput, 0)
-		if def, ok := cs["column"].([]any); ok && len(def) > 0 {
-			columns = expandWebhookColumns(def)
-		}
-
-		connectionSettings.Columns = columns
-
-		if t, ok := cs["timestamp"]; ok && t.(string) != "" {
-			timestamp := t.(string)
-			connectionSettings.Timestamp = &timestamp
-		}
-
-		if t, ok := cs["tenant"]; ok && t.(string) != "" {
-			tenant := t.(string)
-			connectionSettings.Tenant = &tenant
-		}
-
-		if u, ok := cs["unique_id"]; ok && u.(string) != "" {
-			uniqueID := u.(string)
-			connectionSettings.UniqueId = &uniqueID
-		}
-
-		if enabled, ok := cs["access_control_enabled"]; ok && enabled.(bool) {
-			accessControlEnabled = true
-		}
-
-		if v, exists := cs["table_settings"]; exists && len(v.([]any)) == 1 {
-			settings := v.([]any)[0].(map[string]any)
-
-			s, err := internal.BuildTableSettingsInput(settings)
-			if err != nil {
-				return diag.FromErr(err)
-			}
-
-			connectionSettings.TableSettings = s
-		}
-	}
-
-	uniqueName := d.Get("unique_name").(string)
-	description := d.Get("description").(string)
-
-	input := &pc.CreateWebhookDataSourceInput{
-		UniqueName:         &uniqueName,
-		Description:        &description,
-		ConnectionSettings: connectionSettings,
-	}
-
-	response, err := pc.CreateWebhookDataSource(ctx, c, input)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	r := response.CreateWebhookDataSource
-	d.SetId(r.DataSource.Id)
-
-	timeout := d.Timeout(schema.TimeoutCreate)
-
-	if err = waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
-		return diag.FromErr(err)
-	}
-
-	if accessControlEnabled {
-		if _, err = pc.ModifyDataPool(ctx, c, &pc.ModifyDataPoolInput{
-			IdOrUniqueName:       &pc.IdOrUniqueName{UniqueName: &uniqueName},
-			AccessControlEnabled: &accessControlEnabled,
-		}); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-
-	dsResponse := resourceDataSourceRead(ctx, d, meta)
-	if dsResponse != nil {
-		return dsResponse
-	}
-
-	return nil
 }
 
 func resourceKafkaDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
@@ -672,10 +405,7 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 	case "SNOWFLAKE":
 		err = internal.HandleSnowflakeConnectionSettings(response, d)
 	case "HTTP":
-		if diags := handleHttpTables(response, d); diags != nil {
-			return diags
-		}
-		return handleHttpConnectionSettings(response, d)
+		err = internal.HandleHttpConnectionSettings(response, d)
 	case "S3":
 		if diags := handleS3Tables(response, d); diags != nil {
 			return diags
@@ -693,39 +423,6 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 
 	if err != nil {
 		return diag.FromErr(err)
-	}
-
-	return nil
-}
-
-func handleHttpTables(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	if response.DataSource.GetConnectionSettings().GetTypename() == nil {
-		return nil
-	}
-
-	switch s := response.DataSource.GetConnectionSettings().(type) {
-	case *pc.DataSourceDataConnectionSettingsHttpConnectionSettings:
-		tables := make([]any, 0, len(s.Tables))
-
-		for _, table := range s.Tables {
-			columns := make([]any, 0, len(table.Columns))
-			for _, column := range table.Columns {
-				columns = append(columns, map[string]any{
-					"name":     column.Name,
-					"type":     column.Type,
-					"nullable": column.Nullable,
-				})
-			}
-			tables = append(tables, map[string]any{
-				"id":     table.Id,
-				"name":   table.Name,
-				"column": columns,
-			})
-		}
-
-		if err := d.Set("table", (any)(tables)); err != nil {
-			return diag.FromErr(err)
-		}
 	}
 
 	return nil
@@ -760,36 +457,6 @@ func handleS3Tables(response *pc.DataSourceResponse, d *schema.ResourceData) dia
 		if err := d.Set("table", (any)(tables)); err != nil {
 			return diag.FromErr(err)
 		}
-	}
-
-	return nil
-}
-
-func handleHttpConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	if d.Get("http_connection_settings") == nil || len(d.Get("http_connection_settings").([]any)) == 0 {
-		return nil
-	}
-
-	switch s := response.DataSource.GetConnectionSettings().(type) {
-	case *pc.DataSourceDataConnectionSettingsHttpConnectionSettings:
-		settings := map[string]any{
-			"basic_auth": nil,
-		}
-
-		if s.BasicAuth != nil {
-			settings["basic_auth"] = []map[string]any{
-				{
-					"username": s.BasicAuth.GetUsername(),
-					"password": s.BasicAuth.GetPassword(),
-				},
-			}
-		}
-
-		if err := d.Set("http_connection_settings", []map[string]any{settings}); err != nil {
-			return diag.FromErr(err)
-		}
-	default:
-		return diag.Errorf("Missing HttpConnectionSettings")
 	}
 
 	return nil
@@ -894,54 +561,6 @@ func handleKafkaConnectionSettings(response *pc.DataSourceResponse, d *schema.Re
 	return nil
 }
 
-func resourceHttpDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
-	c := m.(graphql.Client)
-
-	if d.HasChanges("unique_name", "description", "table", "http_connection_settings") {
-		id := d.Id()
-		uniqueName := d.Get("unique_name").(string)
-		description := d.Get("description").(string)
-
-		var basicAuth *pc.HttpBasicAuthInput
-		if d.Get("http_connection_settings") != nil && len(d.Get("http_connection_settings").([]any)) > 0 {
-			cs := d.Get("http_connection_settings").([]any)[0].(map[string]any)
-
-			if def, ok := cs["basic_auth"]; ok {
-				basicAuth = expandBasicAuth(def.([]any))
-			}
-		}
-
-		tables := make([]*pc.HttpDataSourceTableInput, 0)
-		if _, ok := d.GetOk("table"); ok {
-			tables = expandHttpTables(d.Get("table").([]any))
-		}
-
-		input := &pc.ModifyHttpDataSourceInput{
-			IdOrUniqueName: &pc.IdOrUniqueName{
-				Id: &id,
-			},
-			UniqueName:  &uniqueName,
-			Description: &description,
-			ConnectionSettings: &pc.PartialHttpConnectionSettingsInput{
-				BasicAuth: basicAuth,
-				Tables:    tables,
-			},
-		}
-
-		if _, err := pc.ModifyHttpDataSource(ctx, c, input); err != nil {
-			return diag.FromErr(err)
-		}
-
-		timeout := d.Timeout(schema.TimeoutCreate)
-
-		if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-
-	return resourceDataSourceRead(ctx, d, m)
-}
-
 func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
@@ -998,89 +617,6 @@ func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m a
 			return diag.FromErr(err)
 		}
 	}
-	return resourceDataSourceRead(ctx, d, m)
-}
-
-func resourceWebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
-	c := m.(graphql.Client)
-	id := d.Id()
-
-	input := &pc.ModifyWebhookDataSourceInput{
-		IdOrUniqueName: &pc.IdOrUniqueName{Id: &id},
-	}
-
-	if d.HasChanges("unique_name", "description") {
-		uniqueName := d.Get("unique_name").(string)
-		description := d.Get("description").(string)
-
-		input.UniqueName = &uniqueName
-		input.Description = &description
-	}
-
-	if !d.HasChange("webhook_connection_settings") {
-		if _, err := pc.ModifyWebhookDataSource(ctx, c, input); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-
-	oldItem, newItem := d.GetChange("webhook_connection_settings")
-	oldDef, oldOk := oldItem.([]any)
-	newDef, newOk := newItem.([]any)
-
-	if !oldOk || !newOk || len(newDef) < 1 {
-		diag.FromErr(errors.New("invalid webhook connection settings format"))
-	}
-
-	oldCS, newCS := oldDef[0].(map[string]any), newDef[0].(map[string]any)
-
-	def, ok := newCS["basic_auth"]
-	var basicAuth *pc.HttpBasicAuthInput
-
-	basicAuthEnabled := ok && len(def.([]any)) > 0
-	if basicAuthEnabled {
-		basicAuth = expandBasicAuth(def.([]any))
-	}
-
-	input.ConnectionSettings = &pc.PartialWebhookConnectionSettingsInput{
-		BasicAuth:        basicAuth,
-		BasicAuthEnabled: &basicAuthEnabled,
-	}
-
-	if _, err := pc.ModifyWebhookDataSource(ctx, c, input); err != nil {
-		return diag.FromErr(err)
-	}
-
-	timeout := d.Timeout(schema.TimeoutCreate)
-
-	if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
-		return diag.FromErr(err)
-	}
-
-	dataPoolId := oldCS["data_pool_id"].(string)
-	accessControlEnabled := newCS["access_control_enabled"].(bool)
-
-	oldColumnItem, okOld := oldCS["column"]
-	newColumnItem, okNew := newCS["column"]
-	if !okNew || !okOld {
-		return diag.FromErr(errors.New("invalid webhook columns"))
-	}
-
-	newColumns, err := getNewDataSourceColumns(oldColumnItem.([]any), newColumnItem.([]any))
-	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	if len(newColumns) > 0 {
-		if err := addNewDataSourceColumns(ctx, d, c, dataPoolId, newColumns); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-
-	_, err = pc.ModifyDataPool(ctx, c, &pc.ModifyDataPoolInput{
-		IdOrUniqueName:       &pc.IdOrUniqueName{Id: &dataPoolId},
-		AccessControlEnabled: &accessControlEnabled,
-	})
-
 	return resourceDataSourceRead(ctx, d, m)
 }
 
@@ -1149,76 +685,6 @@ func resourceKafkaDataSourceUpdate(ctx context.Context, d *schema.ResourceData, 
 	return resourceDataSourceRead(ctx, d, m)
 }
 
-func getNewDataSourceColumns(oldItemDef []any, newItemDef []any) (map[string]pc.WebhookDataSourceColumnInput, error) {
-	newColumns := map[string]pc.WebhookDataSourceColumnInput{}
-
-	for _, rawColumn := range newItemDef {
-		column := rawColumn.(map[string]any)
-		columnInput := pc.WebhookDataSourceColumnInput{
-			Name:         column["name"].(string),
-			Type:         pc.ColumnType(column["type"].(string)),
-			Nullable:     column["nullable"].(bool),
-			JsonProperty: column["json_property"].(string),
-		}
-
-		if _, ok := newColumns[columnInput.Name]; ok {
-			return nil, fmt.Errorf(`column "%s" already exists`, columnInput.Name)
-		}
-
-		newColumns[columnInput.Name] = columnInput
-	}
-
-	for _, rawColumn := range oldItemDef {
-		column := rawColumn.(map[string]any)
-		columnInput := pc.WebhookDataSourceColumnInput{
-			Name:         column["name"].(string),
-			Type:         pc.ColumnType(column["type"].(string)),
-			Nullable:     column["nullable"].(bool),
-			JsonProperty: column["json_property"].(string),
-		}
-
-		newColumnInput, ok := newColumns[columnInput.Name]
-		if !ok {
-			return nil, fmt.Errorf(`column "%s" was removed, column deletions are not supported`, columnInput.Name)
-		}
-
-		if columnInput.Type != newColumnInput.Type || columnInput.Nullable != newColumnInput.Nullable || columnInput.JsonProperty != newColumnInput.JsonProperty {
-			return nil, fmt.Errorf(`column "%s" was modified, column updates are not supported`, columnInput.Name)
-		}
-
-		delete(newColumns, columnInput.Name)
-	}
-
-	return newColumns, nil
-}
-
-func addNewDataSourceColumns(ctx context.Context, d *schema.ResourceData, c graphql.Client, dataPoolId string, newColumns map[string]pc.WebhookDataSourceColumnInput) error {
-	for _, newColumn := range newColumns {
-		if !newColumn.Nullable {
-			return fmt.Errorf(`new column "%s" must be nullable`, newColumn.Name)
-		}
-
-		jobResponse, err := pc.CreateAddColumnToDataPoolJob(ctx, c, &pc.CreateAddColumnToDataPoolJobInput{
-			DataPool:     dataPoolId,
-			ColumnName:   newColumn.Name,
-			ColumnType:   newColumn.Type,
-			JsonProperty: &newColumn.JsonProperty,
-		})
-		if err != nil {
-			return err
-		}
-
-		timeout := d.Timeout(schema.TimeoutUpdate)
-
-		err = waitForAddColumnJob(ctx, c, jobResponse.CreateAddColumnToDataPoolJob.Job.Id, timeout)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
 func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	var err error
 	c := meta.(graphql.Client)
@@ -1228,11 +694,11 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta 
 	case "SNOWFLAKE":
 		err = internal.SnowflakeDataSourceUpdate(ctx, d, c)
 	case "HTTP":
-		return resourceHttpDataSourceUpdate(ctx, d, meta)
+		err = internal.HttpDataSourceUpdate(ctx, d, c)
 	case "S3":
 		return resourceS3DataSourceUpdate(ctx, d, meta)
 	case "WEBHOOK":
-		return resourceWebhookDataSourceUpdate(ctx, d, meta)
+		err = internal.WebhookDataSourceUpdate(ctx, d, c)
 	case "KAFKA":
 		return resourceKafkaDataSourceUpdate(ctx, d, meta)
 	case "CLICKHOUSE":
@@ -1353,39 +819,6 @@ func waitForDataSourceDeletion(ctx context.Context, client graphql.Client, id st
 	return nil
 }
 
-func expandHttpTables(def []any) []*pc.HttpDataSourceTableInput {
-	tables := make([]*pc.HttpDataSourceTableInput, 0, len(def))
-
-	for _, rawTable := range def {
-		table := rawTable.(map[string]any)
-
-		columns := expandHttpColumns(table["column"].([]any))
-
-		tables = append(tables, &pc.HttpDataSourceTableInput{
-			Name:    table["name"].(string),
-			Columns: columns,
-		})
-	}
-
-	return tables
-}
-
-func expandHttpColumns(def []any) []*pc.HttpDataSourceColumnInput {
-	columns := make([]*pc.HttpDataSourceColumnInput, len(def))
-
-	for i, rawColumn := range def {
-		column := rawColumn.(map[string]any)
-
-		columns[i] = &pc.HttpDataSourceColumnInput{
-			Name:     column["name"].(string),
-			Type:     pc.ColumnType(column["type"].(string)),
-			Nullable: column["nullable"].(bool),
-		}
-	}
-
-	return columns
-}
-
 func expandS3Tables(def []any) []*pc.S3DataSourceTableInput {
 	tables := make([]*pc.S3DataSourceTableInput, len(def))
 
@@ -1415,32 +848,6 @@ func expandS3Columns(def []any) []*pc.S3DataSourceColumnInput {
 			Name:     column["name"].(string),
 			Type:     pc.ColumnType(column["type"].(string)),
 			Nullable: column["nullable"].(bool),
-		}
-	}
-
-	return columns
-}
-
-func expandBasicAuth(def []any) *pc.HttpBasicAuthInput {
-	basicAuth := def[0].(map[string]any)
-
-	return &pc.HttpBasicAuthInput{
-		Username: basicAuth["username"].(string),
-		Password: basicAuth["password"].(string),
-	}
-}
-
-func expandWebhookColumns(def []any) []*pc.WebhookDataSourceColumnInput {
-	columns := make([]*pc.WebhookDataSourceColumnInput, len(def))
-
-	for i, rawColumn := range def {
-		column := rawColumn.(map[string]any)
-
-		columns[i] = &pc.WebhookDataSourceColumnInput{
-			Name:         column["name"].(string),
-			Type:         pc.ColumnType(column["type"].(string)),
-			Nullable:     column["nullable"].(bool),
-			JsonProperty: column["json_property"].(string),
 		}
 	}
 

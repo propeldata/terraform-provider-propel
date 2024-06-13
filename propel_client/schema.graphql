@@ -4756,6 +4756,11 @@ input PartialWebhookConnectionSettingsInput {
 """The Webhook Data Source connection settings."""
 type WebhookConnectionSettings {
   """
+  Enables or disables access control for the Data Pool.
+  If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.
+  """
+  accessControlEnabled: Boolean
+  """
   The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
   """
   basicAuth: HttpBasicAuthSettings
@@ -4768,19 +4773,24 @@ type WebhookConnectionSettings {
   """
   tableSettings: TableSettings
   """The tenant ID column, if any."""
-  tenant: String
+  tenant: String @deprecated(reason: "Will be removed; use Data Pool Access Policies instead")
   """The primary timestamp column, if any."""
   timestamp: String
   """
   The unique ID column, if any. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
   """
-  uniqueId: String
+  uniqueId: String @deprecated(reason: "Will be removed; use Table Settings to define the primary key.")
   """The Webhook URL for posting JSON events"""
   webhookUrl: String!
 }
 
 """The Webhook Data Source connection settings."""
 input WebhookConnectionSettingsInput {
+  """
+  Enables or disables access control for the Data Pool.
+  If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.
+  """
+  accessControlEnabled: Boolean
   """
   The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
   """
