@@ -89,53 +89,7 @@ func resourceDataSource() *schema.Resource {
 				Computed:    true,
 				Description: "The user who modified the Data Source.",
 			},
-			"snowflake_connection_settings": {
-				Type:          schema.TypeList,
-				Optional:      true,
-				ConflictsWith: []string{"http_connection_settings", "s3_connection_settings", "webhook_connection_settings", "kafka_connection_settings", "clickhouse_connection_settings"},
-				MaxItems:      1,
-				Description:   "Snowflake connection settings. Specify these for Snowflake Data Sources.",
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"account": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The Snowflake account. Only include the part before the \"snowflakecomputing.com\" part of your Snowflake URL (make sure you are in classic console, not Snowsight). For AWS-based accounts, this looks like \"znXXXXX.us-east-2.aws\". For Google Cloud-based accounts, this looks like \"ffXXXXX.us-central1.gcp\".",
-						},
-						"database": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The Snowflake database name.",
-						},
-						"warehouse": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The Snowflake warehouse name. It should be \"PROPELLING\" if you used the default name in the setup script.",
-						},
-						"schema": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The Snowflake schema.",
-						},
-						"role": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The Snowflake role. It should be \"PROPELLER\" if you used the default name in the setup script.",
-						},
-						"username": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The Snowflake username. It should be \"PROPEL\" if you used the default name in the setup script.",
-						},
-						"password": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Sensitive:   true,
-							Description: "The Snowflake password.",
-						},
-					},
-				},
-			},
+			"snowflake_connection_settings": internal.SnowflakeDataSourceSchema(),
 			"http_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
@@ -403,12 +357,13 @@ func resourceDataSource() *schema.Resource {
 func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	var id string
 	var err error
-	c := meta.(graphql.Client)
 
+	c := meta.(graphql.Client)
 	dataSourceType := d.Get("type").(string)
+
 	switch strings.ToUpper(dataSourceType) {
 	case "SNOWFLAKE":
-		return resourceSnowflakeDataSourceCreate(ctx, d, meta)
+		id, err = internal.SnowflakeDataSourceCreate(ctx, d, c)
 	case "HTTP":
 		return resourceHttpDataSourceCreate(ctx, d, meta)
 	case "S3":
@@ -435,57 +390,6 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 	}
 
 	return resourceDataSourceRead(ctx, d, meta)
-}
-
-func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
-	c := meta.(graphql.Client)
-
-	// Warning or errors can be collected in a slice type
-	var diags diag.Diagnostics
-
-	connectionSettings := d.Get("snowflake_connection_settings").([]any)[0].(map[string]any)
-
-	uniqueName := d.Get("unique_name").(string)
-	description := d.Get("description").(string)
-	input := &pc.CreateSnowflakeDataSourceInput{
-		UniqueName:  &uniqueName,
-		Description: &description,
-		ConnectionSettings: &pc.SnowflakeConnectionSettingsInput{
-			Account:   connectionSettings["account"].(string),
-			Database:  connectionSettings["database"].(string),
-			Warehouse: connectionSettings["warehouse"].(string),
-			Schema:    connectionSettings["schema"].(string),
-			Role:      connectionSettings["role"].(string),
-			Username:  connectionSettings["username"].(string),
-			Password:  connectionSettings["password"].(string),
-		},
-	}
-
-	response, err := pc.CreateSnowflakeDataSource(ctx, c, input)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	switch r := (*response.GetCreateSnowflakeDataSource()).(type) {
-	case *pc.CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse:
-		d.SetId(r.DataSource.Id)
-
-		timeout := d.Timeout(schema.TimeoutCreate)
-
-		err = waitForDataSourceConnected(ctx, c, d.Id(), timeout)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-
-		return resourceDataSourceRead(ctx, d, meta)
-	case *pc.CreateSnowflakeDataSourceCreateSnowflakeDataSourceFailureResponse:
-		diags = append(diags, diag.Diagnostic{
-			Severity: diag.Error,
-			Summary:  "Failed to create Data Source",
-		})
-	}
-
-	return diags
 }
 
 func resourceHttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
@@ -766,7 +670,7 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 	dataSourceType := string(response.DataSource.Type)
 	switch strings.ToUpper(dataSourceType) {
 	case "SNOWFLAKE":
-		return handleSnowflakeConnectionSettings(response, d)
+		err = internal.HandleSnowflakeConnectionSettings(response, d)
 	case "HTTP":
 		if diags := handleHttpTables(response, d); diags != nil {
 			return diags
@@ -788,35 +692,6 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 	}
 
 	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	return nil
-}
-
-func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	settings := make(map[string]any)
-
-	csList := d.Get("snowflake_connection_settings").([]any)
-	if len(csList) == 1 {
-		cs := csList[0].(map[string]any)
-
-		settings["password"] = cs["password"]
-	}
-
-	switch s := response.DataSource.GetConnectionSettings().(type) {
-	case *pc.DataSourceDataConnectionSettingsSnowflakeConnectionSettings:
-		settings["account"] = s.GetAccount()
-		settings["database"] = s.GetDatabase()
-		settings["warehouse"] = s.GetWarehouse()
-		settings["schema"] = s.GetSchema()
-		settings["role"] = s.GetRole()
-		settings["username"] = s.GetUsername()
-	default:
-		return diag.Errorf("Missing SnowflakeConnectionSettings")
-	}
-
-	if err := d.Set("snowflake_connection_settings", []map[string]any{settings}); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -1017,76 +892,6 @@ func handleKafkaConnectionSettings(response *pc.DataSourceResponse, d *schema.Re
 	}
 
 	return nil
-}
-
-func resourceSnowflakeDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
-	c := m.(graphql.Client)
-
-	if d.HasChanges("unique_name", "description", "snowflake_connection_settings") {
-		id := d.Id()
-		uniqueName := d.Get("unique_name").(string)
-		description := d.Get("description").(string)
-
-		connectionSettings := d.Get("snowflake_connection_settings").([]any)[0].(map[string]any)
-		connectionSettingsInput := &pc.PartialSnowflakeConnectionSettingsInput{}
-
-		if def, ok := connectionSettings["account"]; ok {
-			account := def.(string)
-			connectionSettingsInput.Account = &account
-		}
-
-		if def, ok := connectionSettings["database"]; ok {
-			database := def.(string)
-			connectionSettingsInput.Database = &database
-		}
-
-		if def, ok := connectionSettings["warehouse"]; ok {
-			warehouse := def.(string)
-			connectionSettingsInput.Warehouse = &warehouse
-		}
-
-		if def, ok := connectionSettings["schema"]; ok {
-			schemaF := def.(string)
-			connectionSettingsInput.Schema = &schemaF
-		}
-
-		if def, ok := connectionSettings["role"]; ok {
-			role := def.(string)
-			connectionSettingsInput.Role = &role
-		}
-
-		if def, ok := connectionSettings["username"]; ok {
-			username := def.(string)
-			connectionSettingsInput.Username = &username
-		}
-
-		if def, ok := connectionSettings["password"]; ok {
-			password := def.(string)
-			connectionSettingsInput.Password = &password
-		}
-
-		modifyDataSource := &pc.ModifySnowflakeDataSourceInput{
-			IdOrUniqueName: &pc.IdOrUniqueName{
-				Id: &id,
-			},
-			UniqueName:         &uniqueName,
-			Description:        &description,
-			ConnectionSettings: connectionSettingsInput,
-		}
-
-		_, err := pc.ModifySnowflakeDataSource(ctx, c, modifyDataSource)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-
-		timeout := d.Timeout(schema.TimeoutCreate)
-
-		if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-
-	return resourceDataSourceRead(ctx, d, m)
 }
 
 func resourceHttpDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
@@ -1421,7 +1226,7 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta 
 	dataSourceType := d.Get("type").(string)
 	switch strings.ToUpper(dataSourceType) {
 	case "SNOWFLAKE":
-		return resourceSnowflakeDataSourceUpdate(ctx, d, meta)
+		err = internal.SnowflakeDataSourceUpdate(ctx, d, c)
 	case "HTTP":
 		return resourceHttpDataSourceUpdate(ctx, d, meta)
 	case "S3":
