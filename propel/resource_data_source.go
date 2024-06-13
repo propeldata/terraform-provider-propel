@@ -92,7 +92,7 @@ func resourceDataSource() *schema.Resource {
 			"snowflake_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"http_connection_settings", "s3_connection_settings", "webhook_connection_settings", "kafka_connection_settings"},
+				ConflictsWith: []string{"http_connection_settings", "s3_connection_settings", "webhook_connection_settings", "kafka_connection_settings", "clickhouse_connection_settings"},
 				MaxItems:      1,
 				Description:   "Snowflake connection settings. Specify these for Snowflake Data Sources.",
 				Elem: &schema.Resource{
@@ -139,7 +139,7 @@ func resourceDataSource() *schema.Resource {
 			"http_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "s3_connection_settings", "webhook_connection_settings", "kafka_connection_settings"},
+				ConflictsWith: []string{"snowflake_connection_settings", "s3_connection_settings", "webhook_connection_settings", "kafka_connection_settings", "clickhouse_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Description: "HTTP connection settings. Specify these for HTTP Data Sources.",
@@ -171,7 +171,7 @@ func resourceDataSource() *schema.Resource {
 			"s3_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "webhook_connection_settings", "kafka_connection_settings"},
+				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "webhook_connection_settings", "kafka_connection_settings", "clickhouse_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Description: "The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, the AWS secret access key, and the tables (along with their paths).",
@@ -198,7 +198,7 @@ func resourceDataSource() *schema.Resource {
 			"webhook_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings", "kafka_connection_settings"},
+				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings", "kafka_connection_settings", "clickhouse_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Description: "Webhook connection settings. Specify these for Webhook Data Sources.",
@@ -298,7 +298,7 @@ func resourceDataSource() *schema.Resource {
 			"kafka_connection_settings": {
 				Type:          schema.TypeList,
 				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings", "webhook_connection_settings"},
+				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings", "webhook_connection_settings", "clickhouse_connection_settings"},
 				MaxItems:      1,
 				Elem: &schema.Resource{
 					Description: "The connection settings for a Kafka Data Source.",
@@ -339,6 +339,7 @@ func resourceDataSource() *schema.Resource {
 					},
 				},
 			},
+			"clickhouse_connection_settings": internal.ClickHouseDataSourceSchema(),
 			"table": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -400,6 +401,10 @@ func resourceDataSource() *schema.Resource {
 }
 
 func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
+	var id string
+	var err error
+	c := meta.(graphql.Client)
+
 	dataSourceType := d.Get("type").(string)
 	switch strings.ToUpper(dataSourceType) {
 	case "SNOWFLAKE":
@@ -412,9 +417,24 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 		return resourceWebhookDataSourceCreate(ctx, d, meta)
 	case "KAFKA":
 		return resourceKafkaDataSourceCreate(ctx, d, meta)
+	case "CLICKHOUSE":
+		id, err = internal.ClickHouseDataSourceCreate(ctx, d, c)
 	default:
 		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
 	}
+
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	d.SetId(id)
+
+	timeout := d.Timeout(schema.TimeoutCreate)
+	if err := waitForDataSourceConnected(ctx, c, id, timeout); err != nil {
+		return diag.FromErr(err)
+	}
+
+	return resourceDataSourceRead(ctx, d, meta)
 }
 
 func resourceSnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
@@ -595,7 +615,13 @@ func resourceWebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData
 
 		if v, exists := cs["table_settings"]; exists && len(v.([]any)) == 1 {
 			settings := v.([]any)[0].(map[string]any)
-			connectionSettings.TableSettings = internal.BuildTableSettingsInput(settings)
+
+			s, err := internal.BuildTableSettingsInput(settings)
+			if err != nil {
+				return diag.FromErr(err)
+			}
+
+			connectionSettings.TableSettings = s
 		}
 	}
 
@@ -755,9 +781,17 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 		return handleWebhookConnectionSettings(response, d)
 	case "KAFKA":
 		return handleKafkaConnectionSettings(response, d)
+	case "CLICKHOUSE":
+		err = internal.HandleClickHouseConnectionSettings(response, d)
 	default:
-		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
+		err = fmt.Errorf("unsupported Data Source type \"%v\"", dataSourceType)
 	}
+
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	return nil
 }
 
 func handleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
@@ -1294,6 +1328,8 @@ func resourceKafkaDataSourceUpdate(ctx context.Context, d *schema.ResourceData, 
 			tls := def.(bool)
 			csPartialInput.Tls = &tls
 		}
+
+		input.ConnectionSettings = csPartialInput
 	}
 
 	if _, err := pc.ModifyKafkaDataSource(ctx, c, input); err != nil {
@@ -1379,6 +1415,8 @@ func addNewDataSourceColumns(ctx context.Context, d *schema.ResourceData, c grap
 }
 
 func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
+	var err error
+	c := meta.(graphql.Client)
 
 	dataSourceType := d.Get("type").(string)
 	switch strings.ToUpper(dataSourceType) {
@@ -1392,9 +1430,22 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta 
 		return resourceWebhookDataSourceUpdate(ctx, d, meta)
 	case "KAFKA":
 		return resourceKafkaDataSourceUpdate(ctx, d, meta)
+	case "CLICKHOUSE":
+		err = internal.ClickHouseDataSourceUpdate(ctx, d, c)
 	default:
-		return diag.Errorf("Unsupported Data Source type \"%v\"", dataSourceType)
+		err = fmt.Errorf("unsupported Data Source type \"%v\"", dataSourceType)
 	}
+
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	timeout := d.Timeout(schema.TimeoutCreate)
+
+	if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
+		return diag.FromErr(err)
+	}
+	return resourceDataSourceRead(ctx, d, meta)
 
 }
 

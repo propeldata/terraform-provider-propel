@@ -169,7 +169,13 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 
 		if t, ok := attrs["table_settings"]; ok && len(t.([]any)) == 1 {
 			settings := t.([]any)[0].(map[string]any)
-			destination.NewDataPool.TableSettings = internal.BuildTableSettingsInput(settings)
+
+			s, err := internal.BuildTableSettingsInput(settings)
+			if err != nil {
+				return diag.FromErr(err)
+			}
+
+			destination.NewDataPool.TableSettings = s
 		}
 	}
 

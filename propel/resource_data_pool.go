@@ -213,7 +213,12 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 	}
 
 	if v, exists := d.GetOk("table_settings.0"); exists {
-		input.TableSettings = internal.BuildTableSettingsInput(v.(map[string]any))
+		s, err := internal.BuildTableSettingsInput(v.(map[string]any))
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		input.TableSettings = s
 	}
 
 	if _, exists := d.GetOk("syncing"); exists {

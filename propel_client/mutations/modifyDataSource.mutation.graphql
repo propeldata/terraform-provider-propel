@@ -45,3 +45,11 @@ mutation ModifyKafkaDataSource($input: ModifyKafkaDataSourceInput!) {
         }
     }
 }
+
+mutation ModifyClickHouseDataSource($input: ModifyClickHouseDataSourceInput!) {
+    modifyClickHouseDataSource(input: $input) {
+        dataSource {
+            ...DataSourceData
+        }
+    }
+}

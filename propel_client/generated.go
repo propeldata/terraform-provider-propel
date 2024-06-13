@@ -281,6 +281,30 @@ type BackfillOptionsInput struct {
 // GetBackfill returns BackfillOptionsInput.Backfill, and is useful for accessing the field via an interface.
 func (v *BackfillOptionsInput) GetBackfill() *bool { return v.Backfill }
 
+// The ClickHouse Data Source connection settings.
+type ClickHouseConnectionSettingsInput struct {
+	// Which database to connect to
+	Database string `json:"database"`
+	// The password for the provided user
+	Password string `json:"password"`
+	// The URL where the ClickHouse host is listening to HTTP[S] connections
+	Url string `json:"url"`
+	// The user for authenticating against the ClickHouse host
+	User string `json:"user"`
+}
+
+// GetDatabase returns ClickHouseConnectionSettingsInput.Database, and is useful for accessing the field via an interface.
+func (v *ClickHouseConnectionSettingsInput) GetDatabase() string { return v.Database }
+
+// GetPassword returns ClickHouseConnectionSettingsInput.Password, and is useful for accessing the field via an interface.
+func (v *ClickHouseConnectionSettingsInput) GetPassword() string { return v.Password }
+
+// GetUrl returns ClickHouseConnectionSettingsInput.Url, and is useful for accessing the field via an interface.
+func (v *ClickHouseConnectionSettingsInput) GetUrl() string { return v.Url }
+
+// GetUser returns ClickHouseConnectionSettingsInput.User, and is useful for accessing the field via an interface.
+func (v *ClickHouseConnectionSettingsInput) GetUser() string { return v.User }
+
 // ColumnData includes the GraphQL fields of Column requested by the fragment ColumnData.
 // The GraphQL type's documentation follows.
 //
@@ -1235,6 +1259,253 @@ type CreateAverageMetricResponse struct {
 // GetCreateAverageMetric returns CreateAverageMetricResponse.CreateAverageMetric, and is useful for accessing the field via an interface.
 func (v *CreateAverageMetricResponse) GetCreateAverageMetric() *CreateAverageMetricCreateAverageMetricMetricResponse {
 	return v.CreateAverageMetric
+}
+
+// CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse) GetDataSource() *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetDataPools returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
+// GetConnectionSettings returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalCreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalCreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+type CreateClickHouseDataSourceInput struct {
+	// The ClickHouse Data Source's connection settings
+	ConnectionSettings *ClickHouseConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The ClickHouse Data Source's description.
+	Description *string `json:"description"`
+	// The ClickHouse Data Source's unique name. If not specified, Propel will set the ID as unique name.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns CreateClickHouseDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceInput) GetConnectionSettings() *ClickHouseConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns CreateClickHouseDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetUniqueName returns CreateClickHouseDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// CreateClickHouseDataSourceResponse is returned by CreateClickHouseDataSource on success.
+type CreateClickHouseDataSourceResponse struct {
+	// This mutation creates a new ClickHouse Data Source.
+	//
+	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+	CreateClickHouseDataSource *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse `json:"createClickHouseDataSource"`
+}
+
+// GetCreateClickHouseDataSource returns CreateClickHouseDataSourceResponse.CreateClickHouseDataSource, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceResponse) GetCreateClickHouseDataSource() *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse {
+	return v.CreateClickHouseDataSource
 }
 
 // CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
@@ -8477,6 +8748,7 @@ func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return 
 // DataSourceDataConnectionSettings includes the requested fields of the GraphQL interface ConnectionSettings.
 //
 // DataSourceDataConnectionSettings is implemented by the following types:
+// DataSourceDataConnectionSettingsClickHouseConnectionSettings
 // DataSourceDataConnectionSettingsHttpConnectionSettings
 // DataSourceDataConnectionSettingsInternalConnectionSettings
 // DataSourceDataConnectionSettingsKafkaConnectionSettings
@@ -8489,6 +8761,8 @@ type DataSourceDataConnectionSettings interface {
 	GetTypename() *string
 }
 
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
+}
 func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 func (v *DataSourceDataConnectionSettingsInternalConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
@@ -8516,6 +8790,9 @@ func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConn
 	}
 
 	switch tn.TypeName {
+	case "ClickHouseConnectionSettings":
+		*v = new(DataSourceDataConnectionSettingsClickHouseConnectionSettings)
+		return json.Unmarshal(b, *v)
 	case "HttpConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsHttpConnectionSettings)
 		return json.Unmarshal(b, *v)
@@ -8547,6 +8824,14 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 
 	var typename string
 	switch v := (*v).(type) {
+	case *DataSourceDataConnectionSettingsClickHouseConnectionSettings:
+		typename = "ClickHouseConnectionSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DataSourceDataConnectionSettingsClickHouseConnectionSettings
+		}{typename, v}
+		return json.Marshal(result)
 	case *DataSourceDataConnectionSettingsHttpConnectionSettings:
 		typename = "HttpConnectionSettings"
 
@@ -8601,6 +8886,52 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 		return nil, fmt.Errorf(
 			`unexpected concrete type for DataSourceDataConnectionSettings: "%T"`, v)
 	}
+}
+
+// DataSourceDataConnectionSettingsClickHouseConnectionSettings includes the requested fields of the GraphQL type ClickHouseConnectionSettings.
+// The GraphQL type's documentation follows.
+//
+// The ClickHouse Data Source connection settings.
+type DataSourceDataConnectionSettingsClickHouseConnectionSettings struct {
+	Typename *string `json:"__typename"`
+	// The URL where the ClickHouse host is listening to HTTP[S] connections
+	Url string `json:"url"`
+	// Which database to connect to
+	Database string `json:"database"`
+	// The user for authenticating against the ClickHouse host
+	User string `json:"user"`
+	// The password for the provided user
+	Password string `json:"password"`
+	// Whether the user has readonly permissions or not for querying ClickHouse
+	Readonly *bool `json:"readonly"`
+}
+
+// GetTypename returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.Typename, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetTypename() *string {
+	return v.Typename
+}
+
+// GetUrl returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.Url, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetUrl() string { return v.Url }
+
+// GetDatabase returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.Database, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetDatabase() string {
+	return v.Database
+}
+
+// GetUser returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.User, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetUser() string {
+	return v.User
+}
+
+// GetPassword returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.Password, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetPassword() string {
+	return v.Password
+}
+
+// GetReadonly returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.Readonly, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetReadonly() *bool {
+	return v.Readonly
 }
 
 // DataSourceDataConnectionSettingsHttpConnectionSettings includes the requested fields of the GraphQL type HttpConnectionSettings.
@@ -13969,6 +14300,260 @@ type MetricsResponse struct {
 // GetMetrics returns MetricsResponse.Metrics, and is useful for accessing the field via an interface.
 func (v *MetricsResponse) GetMetrics() *MetricsMetricsMetricConnection { return v.Metrics }
 
+type ModifyClickHouseDataSourceInput struct {
+	// The ClickHouse Data Source's new connection settings. If not provided this property will not be modified.
+	ConnectionSettings *PartialClickHouseConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The ClickHouse Data Source's new description. If not provided this property will not be modified.
+	Description *string `json:"description"`
+	// The ID or unique name of the ClickHouse Data Source to modify.
+	IdOrUniqueName *IdOrUniqueName `json:"idOrUniqueName,omitempty"`
+	// The ClickHouse Data Source's new unique name. If not provided this property will not be modified.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns ModifyClickHouseDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceInput) GetConnectionSettings() *PartialClickHouseConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns ModifyClickHouseDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetIdOrUniqueName returns ModifyClickHouseDataSourceInput.IdOrUniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceInput) GetIdOrUniqueName() *IdOrUniqueName {
+	return v.IdOrUniqueName
+}
+
+// GetUniqueName returns ModifyClickHouseDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse) GetDataSource() *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetDataPools returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
+// GetConnectionSettings returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyClickHouseDataSourceResponse is returned by ModifyClickHouseDataSource on success.
+type ModifyClickHouseDataSourceResponse struct {
+	// This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
+	//
+	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+	ModifyClickHouseDataSource *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse `json:"modifyClickHouseDataSource"`
+}
+
+// GetModifyClickHouseDataSource returns ModifyClickHouseDataSourceResponse.ModifyClickHouseDataSource, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceResponse) GetModifyClickHouseDataSource() *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse {
+	return v.ModifyClickHouseDataSource
+}
+
 type ModifyDataPoolAccessPolicyInput struct {
 	Id string `json:"id"`
 	// The Data Pool Access Policy's new unique name.
@@ -16790,6 +17375,30 @@ func (v *PageInfoData) GetHasNextPage() bool { return v.HasNextPage }
 // GetHasPreviousPage returns PageInfoData.HasPreviousPage, and is useful for accessing the field via an interface.
 func (v *PageInfoData) GetHasPreviousPage() bool { return v.HasPreviousPage }
 
+// The ClickHouse Data Source connection settings.
+type PartialClickHouseConnectionSettingsInput struct {
+	// Which database to connect to If not provided this property will not be modified.
+	Database *string `json:"database"`
+	// The password for the provided user If not provided this property will not be modified.
+	Password *string `json:"password"`
+	// The URL where the ClickHouse host is listening to HTTP[S] connections If not provided this property will not be modified.
+	Url *string `json:"url"`
+	// The user for authenticating against the ClickHouse host If not provided this property will not be modified.
+	User *string `json:"user"`
+}
+
+// GetDatabase returns PartialClickHouseConnectionSettingsInput.Database, and is useful for accessing the field via an interface.
+func (v *PartialClickHouseConnectionSettingsInput) GetDatabase() *string { return v.Database }
+
+// GetPassword returns PartialClickHouseConnectionSettingsInput.Password, and is useful for accessing the field via an interface.
+func (v *PartialClickHouseConnectionSettingsInput) GetPassword() *string { return v.Password }
+
+// GetUrl returns PartialClickHouseConnectionSettingsInput.Url, and is useful for accessing the field via an interface.
+func (v *PartialClickHouseConnectionSettingsInput) GetUrl() *string { return v.Url }
+
+// GetUser returns PartialClickHouseConnectionSettingsInput.User, and is useful for accessing the field via an interface.
+func (v *PartialClickHouseConnectionSettingsInput) GetUser() *string { return v.User }
+
 // The HTTP Data Source connection settings.
 type PartialHttpConnectionSettingsInput struct {
 	// The HTTP Basic authentication settings for uploading new data.
@@ -17940,6 +18549,16 @@ type __CreateAverageMetricInput struct {
 // GetInput returns __CreateAverageMetricInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateAverageMetricInput) GetInput() *CreateAverageMetricInput { return v.Input }
 
+// __CreateClickHouseDataSourceInput is used internally by genqlient
+type __CreateClickHouseDataSourceInput struct {
+	Input *CreateClickHouseDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateClickHouseDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateClickHouseDataSourceInput) GetInput() *CreateClickHouseDataSourceInput {
+	return v.Input
+}
+
 // __CreateCountDistinctMetricInput is used internally by genqlient
 type __CreateCountDistinctMetricInput struct {
 	Input *CreateCountDistinctMetricInput `json:"input,omitempty"`
@@ -18257,6 +18876,16 @@ func (v *__MetricsInput) GetAfter() *string { return v.After }
 
 // GetBefore returns __MetricsInput.Before, and is useful for accessing the field via an interface.
 func (v *__MetricsInput) GetBefore() *string { return v.Before }
+
+// __ModifyClickHouseDataSourceInput is used internally by genqlient
+type __ModifyClickHouseDataSourceInput struct {
+	Input *ModifyClickHouseDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyClickHouseDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyClickHouseDataSourceInput) GetInput() *ModifyClickHouseDataSourceInput {
+	return v.Input
+}
 
 // __ModifyDataPoolAccessPolicyInput is used internally by genqlient
 type __ModifyDataPoolAccessPolicyInput struct {
@@ -18762,6 +19391,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -18892,6 +19528,209 @@ func CreateAverageMetric(
 	var err error
 
 	var data CreateAverageMetricResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by CreateClickHouseDataSource.
+const CreateClickHouseDataSource_Operation = `
+mutation CreateClickHouseDataSource ($input: CreateClickHouseDataSourceInput!) {
+	createClickHouseDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	dataPools {
+		nodes {
+			id
+			accessControlEnabled
+		}
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				path
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			tenant
+			timestamp
+			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
+			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`
+
+func CreateClickHouseDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *CreateClickHouseDataSourceInput,
+) (*CreateClickHouseDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "CreateClickHouseDataSource",
+		Query:  CreateClickHouseDataSource_Operation,
+		Variables: &__CreateClickHouseDataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data CreateClickHouseDataSourceResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -19163,6 +20002,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -19566,6 +20412,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -19968,6 +20821,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -20271,6 +21131,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -20593,6 +21460,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -20788,6 +21662,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -21226,6 +22107,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -21628,6 +22516,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -21904,6 +22799,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -22107,6 +23009,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -22481,6 +23390,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -22709,6 +23625,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -22975,6 +23898,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -23370,6 +24300,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -23697,6 +24634,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -23945,6 +24889,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -24138,6 +25089,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -24345,6 +25303,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -25078,6 +26043,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -25476,6 +26448,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -25893,6 +26872,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -26029,6 +27015,209 @@ func Metrics(
 	var err error
 
 	var data MetricsResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by ModifyClickHouseDataSource.
+const ModifyClickHouseDataSource_Operation = `
+mutation ModifyClickHouseDataSource ($input: ModifyClickHouseDataSourceInput!) {
+	modifyClickHouseDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	dataPools {
+		nodes {
+			id
+			accessControlEnabled
+		}
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				path
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			tenant
+			timestamp
+			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
+			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`
+
+func ModifyClickHouseDataSource(
+	ctx context.Context,
+	client graphql.Client,
+	input *ModifyClickHouseDataSourceInput,
+) (*ModifyClickHouseDataSourceResponse, error) {
+	req := &graphql.Request{
+		OpName: "ModifyClickHouseDataSource",
+		Query:  ModifyClickHouseDataSource_Operation,
+		Variables: &__ModifyClickHouseDataSourceInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data ModifyClickHouseDataSourceResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -26211,6 +27400,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -26533,6 +27729,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -26728,6 +27931,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -27163,6 +28373,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -27439,6 +28656,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -27643,6 +28867,13 @@ fragment DataSourceData on DataSource {
 			tls
 			bootstrapServers
 		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
 	}
 	tables(first: 100) {
 		nodes {
@@ -27842,6 +29073,13 @@ fragment DataSourceData on DataSource {
 			password
 			tls
 			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {

@@ -77,6 +77,13 @@ fragment DataSourceData on DataSource {
             tls
             bootstrapServers
         }
+        ... on ClickHouseConnectionSettings {
+            url
+            database
+            user
+            password
+            readonly
+        }
     }
     tables (first: 100) {
         nodes {

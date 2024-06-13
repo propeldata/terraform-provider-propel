@@ -11,11 +11,12 @@ import (
 
 var (
 	dataSourceTypeMap = map[pc.DataSourceType]string{
-		pc.DataSourceTypeSnowflake: "Snowflake",
-		pc.DataSourceTypeS3:        "S3",
-		pc.DataSourceTypeHttp:      "Http",
-		pc.DataSourceTypeWebhook:   "Webhook",
-		pc.DataSourceTypeKafka:     "Kafka",
+		pc.DataSourceTypeSnowflake:  "Snowflake",
+		pc.DataSourceTypeS3:         "S3",
+		pc.DataSourceTypeHttp:       "Http",
+		pc.DataSourceTypeWebhook:    "Webhook",
+		pc.DataSourceTypeKafka:      "Kafka",
+		pc.DataSourceTypeClickhouse: "ClickHouse",
 	}
 )
 

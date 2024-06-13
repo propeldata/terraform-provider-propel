@@ -28,6 +28,7 @@ operations:
 #- mutations/createApplication.mutation.graphql
 - mutations/assignDataPoolAccessPolicy.mutation.graphql
 - mutations/createAverageMetric.mutation.graphql
+- mutations/createClickHouseDataSource.mutation.graphql
 - mutations/createCountDistinctMetric.mutation.graphql
 - mutations/createCountMetric.mutation.graphql
 - mutations/createCustomMetric.mutation.graphql

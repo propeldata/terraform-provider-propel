@@ -1,7 +1,8 @@
 package internal
 
 import (
-	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
+	"fmt"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
@@ -78,7 +79,7 @@ func TableSettingsSchema() *schema.Schema {
 	}
 }
 
-func BuildTableSettingsInput(settings map[string]any) *pc.TableSettingsInput {
+func BuildTableSettingsInput(settings map[string]any) (*pc.TableSettingsInput, error) {
 	tableSettingsInput := &pc.TableSettingsInput{}
 
 	if t, ok := settings["engine"]; ok && len(t.([]any)) == 1 {
@@ -89,17 +90,17 @@ func BuildTableSettingsInput(settings map[string]any) *pc.TableSettingsInput {
 		switch engine["type"].(string) {
 		case "MERGE_TREE":
 			if _, ok := engine["ver"]; ok {
-				diag.Errorf("%q field should not be set for MERGE_TREE engine", "ver")
+				return nil, fmt.Errorf("%q field should not be set for MERGE_TREE engine", "ver")
 			}
 
 			if _, ok := engine["columns"]; ok {
-				diag.Errorf("%q field should not be set for MERGE_TREE engine", "columns")
+				return nil, fmt.Errorf("%q field should not be set for MERGE_TREE engine", "columns")
 			}
 
 			tableSettingsInput.Engine.MergeTree = &pc.MergeTreeTableEngineInput{Type: &engineType}
 		case "REPLACING_MERGE_TREE":
 			if _, ok := engine["columns"]; ok {
-				diag.Errorf("%q field should not be set for REPLACING_MERGE_TREE engine", "columns")
+				return nil, fmt.Errorf("%q field should not be set for REPLACING_MERGE_TREE engine", "columns")
 			}
 
 			tableSettingsInput.Engine.ReplacingMergeTree = &pc.ReplacingMergeTreeTableEngineInput{Type: &engineType}
@@ -110,7 +111,7 @@ func BuildTableSettingsInput(settings map[string]any) *pc.TableSettingsInput {
 			}
 		case "SUMMING_MERGE_TREE":
 			if _, ok := engine["ver"]; ok {
-				diag.Errorf("%q field should not be set for SUMMING_MERGE_TREE engine", "ver")
+				return nil, fmt.Errorf("%q field should not be set for SUMMING_MERGE_TREE engine", "ver")
 			}
 
 			tableSettingsInput.Engine.SummingMergeTree = &pc.SummingMergeTreeTableEngineInput{Type: &engineType}
@@ -125,11 +126,11 @@ func BuildTableSettingsInput(settings map[string]any) *pc.TableSettingsInput {
 			}
 		case "AGGREGATING_MERGE_TREE":
 			if _, ok := engine["ver"]; ok {
-				diag.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "ver")
+				return nil, fmt.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "ver")
 			}
 
 			if _, ok := engine["columns"]; ok {
-				diag.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "columns")
+				return nil, fmt.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "columns")
 			}
 
 			tableSettingsInput.Engine.AggregatingMergeTree = &pc.AggregatingMergeTreeTableEngineInput{Type: &engineType}
@@ -163,7 +164,7 @@ func BuildTableSettingsInput(settings map[string]any) *pc.TableSettingsInput {
 		tableSettingsInput.OrderBy = orderBy
 	}
 
-	return tableSettingsInput
+	return tableSettingsInput, nil
 }
 
 func ParseTableSettings(settingsData pc.TableSettingsData) map[string]any {
