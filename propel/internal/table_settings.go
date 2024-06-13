@@ -89,17 +89,17 @@ func BuildTableSettingsInput(settings map[string]any) (*pc.TableSettingsInput, e
 
 		switch engine["type"].(string) {
 		case "MERGE_TREE":
-			if _, ok := engine["ver"]; ok {
+			if v, ok := engine["ver"]; ok && v.(string) != "" {
 				return nil, fmt.Errorf("%q field should not be set for MERGE_TREE engine", "ver")
 			}
 
-			if _, ok := engine["columns"]; ok {
+			if v, ok := engine["columns"]; ok && len(v.(*schema.Set).List()) > 0 {
 				return nil, fmt.Errorf("%q field should not be set for MERGE_TREE engine", "columns")
 			}
 
 			tableSettingsInput.Engine.MergeTree = &pc.MergeTreeTableEngineInput{Type: &engineType}
 		case "REPLACING_MERGE_TREE":
-			if _, ok := engine["columns"]; ok {
+			if v, ok := engine["columns"]; ok && len(v.(*schema.Set).List()) > 0 {
 				return nil, fmt.Errorf("%q field should not be set for REPLACING_MERGE_TREE engine", "columns")
 			}
 
@@ -110,7 +110,7 @@ func BuildTableSettingsInput(settings map[string]any) (*pc.TableSettingsInput, e
 				tableSettingsInput.Engine.ReplacingMergeTree.Ver = &ver
 			}
 		case "SUMMING_MERGE_TREE":
-			if _, ok := engine["ver"]; ok {
+			if v, ok := engine["ver"]; ok && v.(string) != "" {
 				return nil, fmt.Errorf("%q field should not be set for SUMMING_MERGE_TREE engine", "ver")
 			}
 
@@ -125,11 +125,11 @@ func BuildTableSettingsInput(settings map[string]any) (*pc.TableSettingsInput, e
 				tableSettingsInput.Engine.SummingMergeTree.Columns = columns
 			}
 		case "AGGREGATING_MERGE_TREE":
-			if _, ok := engine["ver"]; ok {
+			if v, ok := engine["ver"]; ok && v.(string) != "" {
 				return nil, fmt.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "ver")
 			}
 
-			if _, ok := engine["columns"]; ok {
+			if v, ok := engine["columns"]; ok && len(v.(*schema.Set).List()) > 0 {
 				return nil, fmt.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "columns")
 			}
 
