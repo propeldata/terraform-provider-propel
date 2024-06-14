@@ -143,6 +143,7 @@ func resourceMetric() *schema.Resource {
 				Optional:    true,
 				Computed:    true,
 				Description: "Whether or not access control is enabled for the Metric.",
+				Deprecated:  "Use Data Pool Access Policies instead. This attribute will be removed in the next major version of the provider.",
 			},
 		},
 	}

@@ -67,7 +67,7 @@ Then you can use the JSON property "greeting.message" to extract "hello, world" 
 					Optional:    true,
 					ForceNew:    true,
 					Description: "The tenant ID column, if configured.",
-					Deprecated:  "Remove this attribute's configuration as it's no longer in use and the attribute will be removed in the next major version of the provider.",
+					Deprecated:  "Use Data Pool Access Policies instead. This attribute will be removed in the next major version of the provider.",
 				},
 				"timestamp": {
 					Type:        schema.TypeString,
@@ -80,7 +80,7 @@ Then you can use the JSON property "greeting.message" to extract "hello, world" 
 					Optional:    true,
 					ForceNew:    true,
 					Description: "The unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.",
-					Deprecated:  "Will be removed; use Table Settings to define the primary key.",
+					Deprecated:  "Use Table Settings to define the primary key. This attribute will be removed in the next major version of the provider.",
 				},
 				"table_settings": TableSettingsSchema(),
 				"webhook_url": {

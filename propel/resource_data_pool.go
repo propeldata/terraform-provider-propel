@@ -99,7 +99,7 @@ func resourceDataPool() *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 				Description: "The tenant ID for restricting access between customers.",
-				Deprecated:  "Remove this attribute's configuration as it no longer is used and the attribute will be removed in the next major version of the provider.",
+				Deprecated:  "Use Data Pool Access Policies instead. This attribute will be removed in the next major version of the provider.",
 			},
 			"timestamp": {
 				Type:        schema.TypeString,
@@ -112,7 +112,7 @@ func resourceDataPool() *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 				Description: "The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool. Only for Snowflake Data Pools.",
-				Deprecated:  "Remove this attribute's configuration as it no longer is used and the attribute will be removed in the next major version of the provider.",
+				Deprecated:  "Use Table Settings to define the primary key. This attribute will be removed in the next major version of the provider.",
 			},
 			"syncing": {
 				Type:        schema.TypeList,
