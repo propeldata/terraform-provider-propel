@@ -3,6 +3,7 @@ package internal
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -51,24 +52,31 @@ func ClickHouseDataSourceSchema() *schema.Schema {
 }
 
 func ClickHouseDataSourceCreate(ctx context.Context, d *schema.ResourceData, c graphql.Client) (string, error) {
-	uniqueName := d.Get("unique_name").(string)
-	description := d.Get("description").(string)
-	connectionSettings := d.Get("clickhouse_connection_settings.0").(map[string]any)
+	input := &pc.CreateClickHouseDataSourceInput{}
 
-	input := &pc.CreateClickHouseDataSourceInput{
-		UniqueName:  &uniqueName,
-		Description: &description,
-		ConnectionSettings: &pc.ClickHouseConnectionSettingsInput{
+	if v, ok := d.GetOk("unique_name"); ok && v.(string) != "" {
+		uniqueName := v.(string)
+		input.UniqueName = &uniqueName
+	}
+
+	if v, ok := d.GetOk("description"); ok && v.(string) != "" {
+		description := v.(string)
+		input.Description = &description
+	}
+
+	if v, ok := d.GetOk("clickhouse_connection_settings.0"); ok {
+		connectionSettings := v.(map[string]any)
+		input.ConnectionSettings = &pc.ClickHouseConnectionSettingsInput{
 			Url:      connectionSettings["url"].(string),
 			Database: connectionSettings["database"].(string),
 			User:     connectionSettings["user"].(string),
 			Password: connectionSettings["password"].(string),
-		},
+		}
 	}
 
 	response, err := pc.CreateClickHouseDataSource(ctx, c, input)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to create ClickHouse Data Source: %w", err)
 	}
 
 	return response.CreateClickHouseDataSource.DataSource.Id, nil
@@ -115,11 +123,18 @@ func ClickHouseDataSourceUpdate(ctx context.Context, d *schema.ResourceData, c g
 		input.ConnectionSettings = partialInput
 	}
 
-	_, err := pc.ModifyClickHouseDataSource(ctx, c, input)
-	return err
+	if _, err := pc.ModifyClickHouseDataSource(ctx, c, input); err != nil {
+		return fmt.Errorf("failed to modify ClickHouse Data Source: %w", err)
+	}
+
+	return nil
 }
 
 func HandleClickHouseConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) error {
+	if _, exists := d.GetOk("clickhouse_connection_settings.0"); !exists {
+		return nil
+	}
+
 	switch s := response.DataSource.GetConnectionSettings().(type) {
 	case *pc.DataSourceDataConnectionSettingsClickHouseConnectionSettings:
 		settings := map[string]any{

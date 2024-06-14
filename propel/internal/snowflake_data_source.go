@@ -63,14 +63,21 @@ func SnowflakeDataSourceSchema() *schema.Schema {
 }
 
 func SnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceData, c graphql.Client) (string, error) {
-	uniqueName := d.Get("unique_name").(string)
-	description := d.Get("description").(string)
-	connectionSettings := d.Get("snowflake_connection_settings.0").(map[string]any)
+	input := &pc.CreateSnowflakeDataSourceInput{}
 
-	input := &pc.CreateSnowflakeDataSourceInput{
-		UniqueName:  &uniqueName,
-		Description: &description,
-		ConnectionSettings: &pc.SnowflakeConnectionSettingsInput{
+	if v, ok := d.GetOk("unique_name"); ok && v.(string) != "" {
+		uniqueName := v.(string)
+		input.UniqueName = &uniqueName
+	}
+
+	if v, ok := d.GetOk("description"); ok && v.(string) != "" {
+		description := v.(string)
+		input.Description = &description
+	}
+
+	if v, ok := d.GetOk("snowflake_connection_settings.0"); ok {
+		connectionSettings := v.(map[string]any)
+		input.ConnectionSettings = &pc.SnowflakeConnectionSettingsInput{
 			Account:   connectionSettings["account"].(string),
 			Database:  connectionSettings["database"].(string),
 			Warehouse: connectionSettings["warehouse"].(string),
@@ -78,7 +85,7 @@ func SnowflakeDataSourceCreate(ctx context.Context, d *schema.ResourceData, c gr
 			Role:      connectionSettings["role"].(string),
 			Username:  connectionSettings["username"].(string),
 			Password:  connectionSettings["password"].(string),
-		},
+		}
 	}
 
 	response, err := pc.CreateSnowflakeDataSource(ctx, c, input)
@@ -152,11 +159,18 @@ func SnowflakeDataSourceUpdate(ctx context.Context, d *schema.ResourceData, c gr
 		input.ConnectionSettings = partialInput
 	}
 
-	_, err := pc.ModifySnowflakeDataSource(ctx, c, input)
-	return err
+	if _, err := pc.ModifySnowflakeDataSource(ctx, c, input); err != nil {
+		return fmt.Errorf("failed to modify Snowflake Data Source: %w", err)
+	}
+
+	return nil
 }
 
 func HandleSnowflakeConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) error {
+	if _, exists := d.GetOk("snowflake_connection_settings.0"); !exists {
+		return nil
+	}
+
 	cs := d.Get("snowflake_connection_settings.0").(map[string]any)
 	settings := map[string]any{
 		"password": cs["password"],

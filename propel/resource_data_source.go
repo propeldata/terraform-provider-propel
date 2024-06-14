@@ -50,6 +50,7 @@ func resourceDataSource() *schema.Resource {
 					"Http",
 					"Webhook",
 					"Kafka",
+					"ClickHouse",
 				}, true),
 				Description: "The Data Source's type. Depending on this, you will need to specify one of `http_connection_settings`, `s3_connection_settings`, `webhook_connection_settings` or `snowflake_connection_settings`.",
 			},
@@ -88,80 +89,11 @@ func resourceDataSource() *schema.Resource {
 				Computed:    true,
 				Description: "The user who modified the Data Source.",
 			},
-			"snowflake_connection_settings": internal.SnowflakeDataSourceSchema(),
-			"http_connection_settings":      internal.HttpDataSourceSchema(),
-			"s3_connection_settings": {
-				Type:          schema.TypeList,
-				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "webhook_connection_settings", "kafka_connection_settings", "clickhouse_connection_settings"},
-				MaxItems:      1,
-				Elem: &schema.Resource{
-					Description: "The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, the AWS secret access key, and the tables (along with their paths).",
-					Schema: map[string]*schema.Schema{
-						"bucket": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The name of the S3 bucket.",
-						},
-						"aws_access_key_id": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The AWS access key ID for an IAM user with sufficient access to the S3 bucket.",
-						},
-						"aws_secret_access_key": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Sensitive:   true,
-							Description: "The AWS secret access key for an IAM user with sufficient access to the S3 bucket.",
-						},
-					},
-				},
-			},
-			"webhook_connection_settings": internal.WebhookDataSourceSchema(),
-			"kafka_connection_settings": {
-				Type:          schema.TypeList,
-				Optional:      true,
-				ConflictsWith: []string{"snowflake_connection_settings", "http_connection_settings", "s3_connection_settings", "webhook_connection_settings", "clickhouse_connection_settings"},
-				MaxItems:      1,
-				Elem: &schema.Resource{
-					Description: "The connection settings for a Kafka Data Source.",
-					Schema: map[string]*schema.Schema{
-						"auth": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The type of authentication to use. Can be SCRAM-SHA-256, SCRAM-SHA-512, PLAIN or NONE.",
-							ValidateFunc: validation.StringInSlice([]string{
-								"SCRAM-SHA-256",
-								"SCRAM-SHA-512",
-								"PLAIN",
-								"NONE",
-							}, true),
-						},
-						"user": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "The user for authenticating against the Kafka servers.",
-						},
-						"password": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Sensitive:   true,
-							Description: "The password for the provided user.",
-						},
-						"tls": {
-							Type:        schema.TypeBool,
-							Optional:    true,
-							Description: "Whether the the connection to the Kafka servers is encrypted or not.",
-						},
-						"bootstrap_servers": {
-							Type:        schema.TypeSet,
-							Required:    true,
-							Description: "The bootstrap server(s) to connect to.",
-							Elem:        &schema.Schema{Type: schema.TypeString},
-						},
-					},
-				},
-			},
+			"snowflake_connection_settings":  internal.SnowflakeDataSourceSchema(),
+			"http_connection_settings":       internal.HttpDataSourceSchema(),
+			"s3_connection_settings":         internal.S3DataSourceSchema(),
+			"webhook_connection_settings":    internal.WebhookDataSourceSchema(),
+			"kafka_connection_settings":      internal.KafkaDataSourceSchema(),
 			"clickhouse_connection_settings": internal.ClickHouseDataSourceSchema(),
 			"table": {
 				Type:     schema.TypeList,
@@ -236,11 +168,11 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 	case "HTTP":
 		id, err = internal.HttpDataSourceCreate(ctx, d, c)
 	case "S3":
-		return resourceS3DataSourceCreate(ctx, d, meta)
+		id, err = internal.S3DataSourceCreate(ctx, d, c)
 	case "WEBHOOK":
 		id, err = internal.WebhookDataSourceCreate(ctx, d, c)
 	case "KAFKA":
-		return resourceKafkaDataSourceCreate(ctx, d, meta)
+		id, err = internal.KafkaDataSourceCreate(ctx, d, c)
 	case "CLICKHOUSE":
 		id, err = internal.ClickHouseDataSourceCreate(ctx, d, c)
 	default:
@@ -255,95 +187,6 @@ func resourceDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta 
 
 	timeout := d.Timeout(schema.TimeoutCreate)
 	if err := waitForDataSourceConnected(ctx, c, id, timeout); err != nil {
-		return diag.FromErr(err)
-	}
-
-	return resourceDataSourceRead(ctx, d, meta)
-}
-
-func resourceS3DataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
-	c := meta.(graphql.Client)
-
-	tables := make([]*pc.S3DataSourceTableInput, 0)
-	if def, ok := d.Get("table").([]any); ok && len(def) > 0 {
-		tables = expandS3Tables(def)
-	}
-
-	connectionSettings := d.Get("s3_connection_settings").([]any)[0].(map[string]any)
-
-	uniqueName := d.Get("unique_name").(string)
-	description := d.Get("description").(string)
-	input := &pc.CreateS3DataSourceInput{
-		UniqueName:  &uniqueName,
-		Description: &description,
-		ConnectionSettings: &pc.S3ConnectionSettingsInput{
-			Bucket:             connectionSettings["bucket"].(string),
-			AwsAccessKeyId:     connectionSettings["aws_access_key_id"].(string),
-			AwsSecretAccessKey: connectionSettings["aws_secret_access_key"].(string),
-			Tables:             tables,
-		},
-	}
-
-	response, err := pc.CreateS3DataSource(ctx, c, input)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	r := response.CreateS3DataSource
-	d.SetId(r.DataSource.Id)
-
-	timeout := d.Timeout(schema.TimeoutCreate)
-
-	err = waitForDataSourceConnected(ctx, c, d.Id(), timeout)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	return resourceDataSourceRead(ctx, d, meta)
-}
-
-func resourceKafkaDataSourceCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
-	c := meta.(graphql.Client)
-
-	uniqueName := d.Get("unique_name").(string)
-	description := d.Get("description").(string)
-	connectionSettings := d.Get("kafka_connection_settings.0").(map[string]any)
-
-	bootstrapServers := make([]string, 0)
-	if v, exists := connectionSettings["bootstrap_servers"]; exists {
-		for _, bServer := range v.(*schema.Set).List() {
-			bootstrapServers = append(bootstrapServers, bServer.(string))
-		}
-	}
-
-	input := &pc.CreateKafkaDataSourceInput{
-		UniqueName:  &uniqueName,
-		Description: &description,
-		ConnectionSettings: &pc.KafkaConnectionSettingsInput{
-			Auth:             connectionSettings["auth"].(string),
-			User:             connectionSettings["user"].(string),
-			Password:         connectionSettings["password"].(string),
-			BootstrapServers: bootstrapServers,
-		},
-	}
-
-	if v, exists := connectionSettings["tls"]; exists && v.(bool) {
-		tls := v.(bool)
-		input.ConnectionSettings.Tls = &tls
-	}
-
-	response, err := pc.CreateKafkaDataSource(ctx, c, input)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	r := response.CreateKafkaDataSource
-	d.SetId(r.DataSource.Id)
-
-	timeout := d.Timeout(schema.TimeoutCreate)
-
-	err = waitForDataSourceConnected(ctx, c, d.Id(), timeout)
-	if err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -407,14 +250,11 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 	case "HTTP":
 		err = internal.HandleHttpConnectionSettings(response, d)
 	case "S3":
-		if diags := handleS3Tables(response, d); diags != nil {
-			return diags
-		}
-		return handleS3ConnectionSettings(response, d)
+		err = internal.HandleS3ConnectionSettings(response, d)
 	case "WEBHOOK":
-		return handleWebhookConnectionSettings(response, d)
+		err = internal.HandleWebhookConnectionSettings(response, d)
 	case "KAFKA":
-		return handleKafkaConnectionSettings(response, d)
+		err = internal.HandleKafkaConnectionSettings(response, d)
 	case "CLICKHOUSE":
 		err = internal.HandleClickHouseConnectionSettings(response, d)
 	default:
@@ -428,263 +268,6 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 	return nil
 }
 
-func handleS3Tables(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	if response.DataSource.GetConnectionSettings().GetTypename() == nil {
-		return nil
-	}
-
-	switch s := response.DataSource.GetConnectionSettings().(type) {
-	case *pc.DataSourceDataConnectionSettingsS3ConnectionSettings:
-		tables := make([]any, 0, len(s.Tables))
-
-		for _, table := range s.Tables {
-			columns := make([]any, 0, len(table.Columns))
-			for _, column := range table.Columns {
-				columns = append(columns, map[string]any{
-					"name":     column.Name,
-					"type":     column.Type,
-					"nullable": column.Nullable,
-				})
-			}
-			tables = append(tables, map[string]any{
-				"id":     table.Id,
-				"name":   table.Name,
-				"path":   table.Path,
-				"column": columns,
-			})
-		}
-
-		if err := d.Set("table", (any)(tables)); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-
-	return nil
-}
-
-func handleS3ConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	settings := make(map[string]any)
-
-	csList := d.Get("s3_connection_settings").([]any)
-	if len(csList) == 1 {
-		cs := csList[0].(map[string]any)
-
-		settings["aws_secret_access_key"] = cs["aws_secret_access_key"]
-	}
-
-	switch s := response.DataSource.GetConnectionSettings().(type) {
-	case *pc.DataSourceDataConnectionSettingsS3ConnectionSettings:
-		settings["bucket"] = s.GetBucket()
-		settings["aws_access_key_id"] = s.GetAwsAccessKeyId()
-
-		if err := d.Set("s3_connection_settings", []map[string]any{settings}); err != nil {
-			return diag.FromErr(err)
-		}
-	default:
-		return diag.Errorf("Missing S3ConnectionSettings")
-	}
-
-	return nil
-}
-
-func handleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	var settings map[string]any
-
-	switch s := response.DataSource.GetConnectionSettings().(type) {
-	case *pc.DataSourceDataConnectionSettingsWebhookConnectionSettings:
-		settings = map[string]any{
-			"timestamp":   s.GetTimestamp(),
-			"tenant":      s.GetTenant(),
-			"unique_id":   s.GetUniqueId(),
-			"webhook_url": s.GetWebhookUrl(),
-		}
-
-		if s.BasicAuth != nil {
-			settings["basic_auth"] = []map[string]any{
-				{
-					"username": s.BasicAuth.GetUsername(),
-					"password": s.BasicAuth.GetPassword(),
-				},
-			}
-		}
-
-		cols := make([]any, len(s.Columns))
-
-		for i, column := range s.Columns {
-			cols[i] = map[string]any{
-				"name":          column.Name,
-				"type":          column.Type,
-				"nullable":      column.Nullable,
-				"json_property": column.JsonProperty,
-			}
-		}
-
-		settings["column"] = cols
-
-		if len(response.DataSource.DataPools.GetNodes()) == 1 {
-			settings["data_pool_id"] = response.DataSource.DataPools.Nodes[0].Id
-			settings["access_control_enabled"] = response.DataSource.DataPools.Nodes[0].AccessControlEnabled
-		}
-
-		if s.GetTableSettings() != nil {
-			settings["table_settings"] = []map[string]any{internal.ParseTableSettings(s.GetTableSettings().TableSettingsData)}
-		}
-
-		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {
-			return diag.FromErr(err)
-		}
-	default:
-		return diag.Errorf("Missing WebhookConnectionSettings")
-	}
-
-	return nil
-}
-
-func handleKafkaConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) diag.Diagnostics {
-	switch s := response.DataSource.GetConnectionSettings().(type) {
-	case *pc.DataSourceDataConnectionSettingsKafkaConnectionSettings:
-		settings := map[string]any{
-			"auth":              s.GetAuth(),
-			"user":              s.GetUser(),
-			"password":          s.GetPassword(),
-			"tls":               s.GetTls(),
-			"bootstrap_servers": s.GetBootstrapServers(),
-		}
-
-		if err := d.Set("kafka_connection_settings", []map[string]any{settings}); err != nil {
-			return diag.FromErr(err)
-		}
-	default:
-		return diag.Errorf("Missing KafkaConnectionSettings")
-	}
-
-	return nil
-}
-
-func resourceS3DataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
-	c := m.(graphql.Client)
-
-	if d.HasChanges("unique_name", "description", "table", "s3_connection_settings") {
-		id := d.Id()
-		uniqueName := d.Get("unique_name").(string)
-		description := d.Get("description").(string)
-
-		tables := make([]*pc.S3DataSourceTableInput, 0)
-		if _, ok := d.GetOk("table"); ok {
-			tables = expandS3Tables(d.Get("table").([]any))
-		}
-
-		csPartialInput := &pc.PartialS3ConnectionSettingsInput{Tables: tables}
-
-		connectionSettings := d.Get("s3_connection_settings").([]any)[0].(map[string]any)
-
-		if def, ok := connectionSettings["bucket"]; ok {
-			bucket := def.(string)
-			csPartialInput.Bucket = &bucket
-		}
-
-		if def, ok := connectionSettings["aws_access_key_id"]; ok {
-			accessKeyID := def.(string)
-			csPartialInput.AwsAccessKeyId = &accessKeyID
-		}
-
-		if def, ok := connectionSettings["aws_access_key_id"]; ok {
-			accessKeyID := def.(string)
-			csPartialInput.AwsAccessKeyId = &accessKeyID
-		}
-
-		if def, ok := connectionSettings["aws_secret_access_key"]; ok {
-			secretAccessKey := def.(string)
-			csPartialInput.AwsSecretAccessKey = &secretAccessKey
-		}
-
-		input := &pc.ModifyS3DataSourceInput{
-			IdOrUniqueName: &pc.IdOrUniqueName{
-				Id: &id,
-			},
-			UniqueName:         &uniqueName,
-			Description:        &description,
-			ConnectionSettings: csPartialInput,
-		}
-
-		if _, err := pc.ModifyS3DataSource(ctx, c, input); err != nil {
-			return diag.FromErr(err)
-		}
-
-		timeout := d.Timeout(schema.TimeoutCreate)
-
-		if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-	return resourceDataSourceRead(ctx, d, m)
-}
-
-func resourceKafkaDataSourceUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
-	c := m.(graphql.Client)
-
-	id := d.Id()
-	input := &pc.ModifyKafkaDataSourceInput{
-		IdOrUniqueName: &pc.IdOrUniqueName{Id: &id},
-	}
-
-	if d.HasChanges("unique_name", "description") {
-		uniqueName := d.Get("unique_name").(string)
-		description := d.Get("description").(string)
-
-		input.UniqueName = &uniqueName
-		input.Description = &description
-	}
-
-	if d.HasChanges("kafka_connection_settings") {
-		connectionSettings := d.Get("kafka_connection_settings.0").(map[string]any)
-
-		bootstrapServers := make([]string, 0)
-		if v, exists := connectionSettings["bootstrap_servers"]; exists {
-			for _, bServer := range v.(*schema.Set).List() {
-				bootstrapServers = append(bootstrapServers, bServer.(string))
-			}
-		}
-
-		csPartialInput := &pc.PartialKafkaConnectionSettingsInput{
-			BootstrapServers: bootstrapServers,
-		}
-
-		if def, ok := connectionSettings["auth"]; ok {
-			auth := def.(string)
-			csPartialInput.Auth = &auth
-		}
-
-		if def, ok := connectionSettings["user"]; ok {
-			user := def.(string)
-			csPartialInput.User = &user
-		}
-
-		if def, ok := connectionSettings["password"]; ok {
-			password := def.(string)
-			csPartialInput.Password = &password
-		}
-
-		if def, ok := connectionSettings["tls"]; ok {
-			tls := def.(bool)
-			csPartialInput.Tls = &tls
-		}
-
-		input.ConnectionSettings = csPartialInput
-	}
-
-	if _, err := pc.ModifyKafkaDataSource(ctx, c, input); err != nil {
-		return diag.FromErr(err)
-	}
-
-	timeout := d.Timeout(schema.TimeoutCreate)
-
-	if err := waitForDataSourceConnected(ctx, c, d.Id(), timeout); err != nil {
-		return diag.FromErr(err)
-	}
-	return resourceDataSourceRead(ctx, d, m)
-}
-
 func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	var err error
 	c := meta.(graphql.Client)
@@ -696,11 +279,11 @@ func resourceDataSourceUpdate(ctx context.Context, d *schema.ResourceData, meta 
 	case "HTTP":
 		err = internal.HttpDataSourceUpdate(ctx, d, c)
 	case "S3":
-		return resourceS3DataSourceUpdate(ctx, d, meta)
+		err = internal.S3DataSourceUpdate(ctx, d, c)
 	case "WEBHOOK":
 		err = internal.WebhookDataSourceUpdate(ctx, d, c)
 	case "KAFKA":
-		return resourceKafkaDataSourceUpdate(ctx, d, meta)
+		err = internal.KafkaDataSourceUpdate(ctx, d, c)
 	case "CLICKHOUSE":
 		err = internal.ClickHouseDataSourceUpdate(ctx, d, c)
 	default:
@@ -817,39 +400,4 @@ func waitForDataSourceDeletion(ctx context.Context, client graphql.Client, id st
 		n++
 	}
 	return nil
-}
-
-func expandS3Tables(def []any) []*pc.S3DataSourceTableInput {
-	tables := make([]*pc.S3DataSourceTableInput, len(def))
-
-	for i, rawTable := range def {
-		table := rawTable.(map[string]any)
-
-		columns := expandS3Columns(table["column"].([]any))
-
-		path := table["path"].(string)
-		tables[i] = &pc.S3DataSourceTableInput{
-			Name:    table["name"].(string),
-			Path:    &path,
-			Columns: columns,
-		}
-	}
-
-	return tables
-}
-
-func expandS3Columns(def []any) []*pc.S3DataSourceColumnInput {
-	columns := make([]*pc.S3DataSourceColumnInput, len(def))
-
-	for i, rawColumn := range def {
-		column := rawColumn.(map[string]any)
-
-		columns[i] = &pc.S3DataSourceColumnInput{
-			Name:     column["name"].(string),
-			Type:     pc.ColumnType(column["type"].(string)),
-			Nullable: column["nullable"].(bool),
-		}
-	}
-
-	return columns
 }

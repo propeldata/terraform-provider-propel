@@ -43,6 +43,24 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 		"snowflake_password":  "invalid-password",
 	}
 
+	kafkaCtxInvalid := map[string]any{
+		"resource_name":          "kafka",
+		"unique_name":            acctest.RandString(10),
+		"kafka_auth":             "PLAIN",
+		"kafka_user":             "invalid-user",
+		"kafka_password":         "invalid-password",
+		"kafka_bootstrap_server": "192.168.90.84:9092",
+	}
+
+	clickHouseCtxInvalid := map[string]any{
+		"resource_name":       "clickhouse",
+		"unique_name":         acctest.RandString(10),
+		"clickhouse_url":      "http://192.168.90.84:8123",
+		"clickhouse_database": "invalid-database",
+		"clickhouse_user":     "invalid-user",
+		"clickhouse_password": "invalid-password",
+	}
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
@@ -103,6 +121,26 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "Webhook"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "status", "CONNECTED"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.column.3.name", "new"),
+				),
+			},
+			// should create Kafka Data Source
+			{
+				Config:      testAccCheckPropelDataSourceKafkaConfigBroken(kafkaCtxInvalid),
+				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckPropelDataSourceExists("propel_data_source.kafka"),
+					resource.TestCheckResourceAttr("propel_data_source.kafka", "type", "Kafka"),
+					resource.TestCheckResourceAttr("propel_data_source.kafka", "status", "BROKEN"),
+				),
+			},
+			// should create ClickHouse Data Source
+			{
+				Config:      testAccCheckPropelDataSourceClickHouseConfigBroken(clickHouseCtxInvalid),
+				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckPropelDataSourceExists("propel_data_source.clickhouse"),
+					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "type", "ClickHouse"),
+					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "status", "BROKEN"),
 				),
 			},
 		},
@@ -172,6 +210,36 @@ func testAccCheckPropelDataSourceS3ConfigBroken(ctx map[string]any) string {
 				type = "TIMESTAMP"
 				nullable = false
 			}
+		}
+	}`, ctx)
+}
+
+func testAccCheckPropelDataSourceClickHouseConfigBroken(ctx map[string]any) string {
+	return Nprintf(`
+	resource "propel_data_source" "%{resource_name}" {
+		unique_name = "%{unique_name}"
+		type = "ClickHouse"
+
+		clickhouse_connection_settings {
+			url = "%{clickhouse_url}"
+			database = "%{clickhouse_database}"
+			user = "%{clickhouse_user}"
+			password = "%{clickhouse_password}"
+		}
+	}`, ctx)
+}
+
+func testAccCheckPropelDataSourceKafkaConfigBroken(ctx map[string]any) string {
+	return Nprintf(`
+	resource "propel_data_source" "%{resource_name}" {
+		unique_name = "%{unique_name}"
+		type = "Kafka"
+
+		kafka_connection_settings {
+			auth = "%{kafka_auth}"
+			user = "%{kafka_user}"
+			password = "%{kafka_password}"
+			bootstrap_servers = ["%{kafka_bootstrap_server}"]
 		}
 	}`, ctx)
 }

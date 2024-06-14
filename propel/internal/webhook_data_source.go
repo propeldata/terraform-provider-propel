@@ -99,12 +99,16 @@ Then you can use the JSON property "greeting.message" to extract "hello, world" 
 }
 
 func WebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData, c graphql.Client) (string, error) {
-	uniqueName := d.Get("unique_name").(string)
-	description := d.Get("description").(string)
+	input := &pc.CreateWebhookDataSourceInput{}
 
-	input := &pc.CreateWebhookDataSourceInput{
-		UniqueName:  &uniqueName,
-		Description: &description,
+	if v, ok := d.GetOk("unique_name"); ok && v.(string) != "" {
+		uniqueName := v.(string)
+		input.UniqueName = &uniqueName
+	}
+
+	if v, ok := d.GetOk("description"); ok && v.(string) != "" {
+		description := v.(string)
+		input.Description = &description
 	}
 
 	cs := d.Get("webhook_connection_settings.0").(map[string]any)
@@ -226,6 +230,63 @@ func WebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData, c grap
 
 	_, err := pc.ModifyWebhookDataSource(ctx, c, input)
 	return err
+}
+
+func HandleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) error {
+	if _, exists := d.GetOk("webhook_connection_settings.0"); !exists {
+		return nil
+	}
+
+	var settings map[string]any
+
+	switch s := response.DataSource.GetConnectionSettings().(type) {
+	case *pc.DataSourceDataConnectionSettingsWebhookConnectionSettings:
+		settings = map[string]any{
+			"timestamp":   s.GetTimestamp(),
+			"tenant":      s.GetTenant(),
+			"unique_id":   s.GetUniqueId(),
+			"webhook_url": s.GetWebhookUrl(),
+		}
+
+		if s.BasicAuth != nil {
+			settings["basic_auth"] = []map[string]any{
+				{
+					"username": s.BasicAuth.GetUsername(),
+					"password": s.BasicAuth.GetPassword(),
+				},
+			}
+		}
+
+		cols := make([]any, len(s.Columns))
+
+		for i, column := range s.Columns {
+			cols[i] = map[string]any{
+				"name":          column.Name,
+				"type":          column.Type,
+				"nullable":      column.Nullable,
+				"json_property": column.JsonProperty,
+			}
+		}
+
+		settings["column"] = cols
+
+		if len(response.DataSource.DataPools.GetNodes()) == 1 {
+			settings["data_pool_id"] = response.DataSource.DataPools.Nodes[0].Id
+			settings["access_control_enabled"] = response.DataSource.DataPools.Nodes[0].AccessControlEnabled
+		}
+
+		if s.GetTableSettings() != nil {
+			settings["table_settings"] = []map[string]any{ParseTableSettings(s.GetTableSettings().TableSettingsData)}
+		}
+
+		if err := d.Set("webhook_connection_settings", []map[string]any{settings}); err != nil {
+			return err
+		}
+	default:
+		return errors.New("missing WebhookConnectionSettings")
+	}
+
+	return nil
 }
 
 func expandWebhookColumns(def []any) []*pc.WebhookDataSourceColumnInput {

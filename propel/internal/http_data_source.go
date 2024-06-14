@@ -3,6 +3,7 @@ package internal
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -26,32 +27,40 @@ func HttpDataSourceSchema() *schema.Schema {
 }
 
 func HttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, c graphql.Client) (string, error) {
-	uniqueName := d.Get("unique_name").(string)
-	description := d.Get("description").(string)
-	connectionSettings := d.Get("http_connection_settings.0").(map[string]any)
+	input := &pc.CreateHttpDataSourceInput{}
 
-	var basicAuth *pc.HttpBasicAuthInput
-	if def, ok := connectionSettings["basic_auth"]; ok && len(def.([]any)) > 0 {
-		basicAuth = expandBasicAuth(def.([]any))
+	if v, ok := d.GetOk("unique_name"); ok && v.(string) != "" {
+		uniqueName := v.(string)
+		input.UniqueName = &uniqueName
 	}
 
-	tables := make([]*pc.HttpDataSourceTableInput, 0)
-	if def, ok := d.Get("table").([]any); ok && len(def) > 0 {
-		tables = expandHttpTables(def)
+	if v, ok := d.GetOk("description"); ok && v.(string) != "" {
+		description := v.(string)
+		input.Description = &description
 	}
 
-	input := &pc.CreateHttpDataSourceInput{
-		UniqueName:  &uniqueName,
-		Description: &description,
-		ConnectionSettings: &pc.HttpConnectionSettingsInput{
+	if v, ok := d.GetOk("http_connection_settings.0"); ok {
+		connectionSettings := v.(map[string]any)
+
+		var basicAuth *pc.HttpBasicAuthInput
+		if def, ok := connectionSettings["basic_auth"]; ok && len(def.([]any)) > 0 {
+			basicAuth = expandBasicAuth(def.([]any))
+		}
+
+		tables := make([]*pc.HttpDataSourceTableInput, 0)
+		if def, ok := d.Get("table").([]any); ok && len(def) > 0 {
+			tables = expandHttpTables(def)
+		}
+
+		input.ConnectionSettings = &pc.HttpConnectionSettingsInput{
 			BasicAuth: basicAuth,
 			Tables:    tables,
-		},
+		}
 	}
 
 	response, err := pc.CreateHttpDataSource(ctx, c, input)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to create HTTP Data Source: %w", err)
 	}
 
 	return response.CreateHttpDataSource.DataSource.Id, nil
@@ -90,11 +99,18 @@ func HttpDataSourceUpdate(ctx context.Context, d *schema.ResourceData, c graphql
 		}
 	}
 
-	_, err := pc.ModifyHttpDataSource(ctx, c, input)
-	return err
+	if _, err := pc.ModifyHttpDataSource(ctx, c, input); err != nil {
+		return fmt.Errorf("failed to modify HTTP Data Source: %w", err)
+	}
+
+	return nil
 }
 
 func HandleHttpConnectionSettings(response *pc.DataSourceResponse, d *schema.ResourceData) error {
+	if _, exists := d.GetOk("http_connection_settings.0"); !exists {
+		return nil
+	}
+
 	switch s := response.DataSource.GetConnectionSettings().(type) {
 	case *pc.DataSourceDataConnectionSettingsHttpConnectionSettings:
 		settings := map[string]any{
