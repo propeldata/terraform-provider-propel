@@ -39,24 +39,21 @@ func HttpDataSourceCreate(ctx context.Context, d *schema.ResourceData, c graphql
 		input.Description = &description
 	}
 
+	connectionSettingsInput := &pc.HttpConnectionSettingsInput{}
+
+	if def, ok := d.GetOk("table"); ok && len(def.([]any)) > 0 {
+		connectionSettingsInput.Tables = expandHttpTables(def.([]any))
+	}
+
 	if v, ok := d.GetOk("http_connection_settings.0"); ok {
 		connectionSettings := v.(map[string]any)
 
-		var basicAuth *pc.HttpBasicAuthInput
 		if def, ok := connectionSettings["basic_auth"]; ok && len(def.([]any)) > 0 {
-			basicAuth = expandBasicAuth(def.([]any))
-		}
-
-		tables := make([]*pc.HttpDataSourceTableInput, 0)
-		if def, ok := d.Get("table").([]any); ok && len(def) > 0 {
-			tables = expandHttpTables(def)
-		}
-
-		input.ConnectionSettings = &pc.HttpConnectionSettingsInput{
-			BasicAuth: basicAuth,
-			Tables:    tables,
+			connectionSettingsInput.BasicAuth = expandBasicAuth(def.([]any))
 		}
 	}
+
+	input.ConnectionSettings = connectionSettingsInput
 
 	response, err := pc.CreateHttpDataSource(ctx, c, input)
 	if err != nil {

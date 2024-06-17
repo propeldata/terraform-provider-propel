@@ -111,51 +111,55 @@ func WebhookDataSourceCreate(ctx context.Context, d *schema.ResourceData, c grap
 		input.Description = &description
 	}
 
-	cs := d.Get("webhook_connection_settings.0").(map[string]any)
-	connectionSettingsInput := &pc.WebhookConnectionSettingsInput{}
+	if v, ok := d.GetOk("webhook_connection_settings.0"); ok {
+		cs := v.(map[string]any)
+		connectionSettingsInput := &pc.WebhookConnectionSettingsInput{}
 
-	if def, ok := cs["basic_auth"]; ok && len(def.([]any)) > 0 {
-		connectionSettingsInput.BasicAuth = expandBasicAuth(def.([]any))
-	}
-
-	if def, ok := cs["column"].([]any); ok && len(def) > 0 {
-		connectionSettingsInput.Columns = expandWebhookColumns(def)
-	}
-
-	if t, ok := cs["timestamp"]; ok && t.(string) != "" {
-		timestamp := t.(string)
-		connectionSettingsInput.Timestamp = &timestamp
-	}
-
-	if t, ok := cs["tenant"]; ok && t.(string) != "" {
-		tenant := t.(string)
-		connectionSettingsInput.Tenant = &tenant
-	}
-
-	if u, ok := cs["unique_id"]; ok && u.(string) != "" {
-		uniqueID := u.(string)
-		connectionSettingsInput.UniqueId = &uniqueID
-	}
-
-	if v, ok := cs["access_control_enabled"]; ok && v.(bool) {
-		accessControl := v.(bool)
-		connectionSettingsInput.AccessControlEnabled = &accessControl
-	}
-
-	if v, exists := cs["table_settings"]; exists && len(v.([]any)) > 0 {
-		settings := v.([]any)[0].(map[string]any)
-
-		ts, err := BuildTableSettingsInput(settings)
-		if err != nil {
-			return "", err
+		if def, ok := cs["basic_auth"]; ok && len(def.([]any)) > 0 {
+			connectionSettingsInput.BasicAuth = expandBasicAuth(def.([]any))
 		}
 
-		connectionSettingsInput.TableSettings = ts
+		if def, ok := cs["column"].([]any); ok && len(def) > 0 {
+			connectionSettingsInput.Columns = expandWebhookColumns(def)
+		}
+
+		if t, ok := cs["timestamp"]; ok && t.(string) != "" {
+			timestamp := t.(string)
+			connectionSettingsInput.Timestamp = &timestamp
+		}
+
+		if t, ok := cs["tenant"]; ok && t.(string) != "" {
+			tenant := t.(string)
+			connectionSettingsInput.Tenant = &tenant
+		}
+
+		if u, ok := cs["unique_id"]; ok && u.(string) != "" {
+			uniqueID := u.(string)
+			connectionSettingsInput.UniqueId = &uniqueID
+		}
+
+		if v, ok := cs["access_control_enabled"]; ok && v.(bool) {
+			accessControl := v.(bool)
+			connectionSettingsInput.AccessControlEnabled = &accessControl
+		}
+
+		if v, exists := cs["table_settings"]; exists && len(v.([]any)) > 0 {
+			settings := v.([]any)[0].(map[string]any)
+
+			ts, err := BuildTableSettingsInput(settings)
+			if err != nil {
+				return "", err
+			}
+
+			connectionSettingsInput.TableSettings = ts
+		}
+
+		input.ConnectionSettings = connectionSettingsInput
 	}
 
 	response, err := pc.CreateWebhookDataSource(ctx, c, input)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to create Webhook Data Source: %w", err)
 	}
 
 	return response.CreateWebhookDataSource.DataSource.Id, nil
