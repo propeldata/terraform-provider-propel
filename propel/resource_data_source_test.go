@@ -92,6 +92,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					testAccCheckPropelDataSourceExists("propel_data_source.fizz"),
 					resource.TestCheckResourceAttr("propel_data_source.fizz", "type", "S3"),
 					resource.TestCheckResourceAttr("propel_data_source.fizz", "status", "BROKEN"),
+					resource.TestCheckResourceAttr("propel_data_source.fizz", "s3_connection_settings.0.aws_access_key_id", "whatever"),
 				),
 			},
 			{
@@ -101,6 +102,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					testAccCheckPropelDataSourceExists("propel_data_source.foo"),
 					resource.TestCheckResourceAttr("propel_data_source.foo", "type", "Snowflake"),
 					resource.TestCheckResourceAttr("propel_data_source.foo", "status", "BROKEN"),
+					resource.TestCheckResourceAttr("propel_data_source.foo", "snowflake_connection_settings.0.database", "invalid-database"),
 				),
 			},
 			// should create Webhook data source
@@ -131,6 +133,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					testAccCheckPropelDataSourceExists("propel_data_source.kafka"),
 					resource.TestCheckResourceAttr("propel_data_source.kafka", "type", "Kafka"),
 					resource.TestCheckResourceAttr("propel_data_source.kafka", "status", "BROKEN"),
+					resource.TestCheckResourceAttr("propel_data_source.kafka", "kafka_connection_settings.0.auth", "PLAIN"),
 				),
 			},
 			// should create ClickHouse Data Source
@@ -141,6 +144,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					testAccCheckPropelDataSourceExists("propel_data_source.clickhouse"),
 					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "type", "ClickHouse"),
 					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "status", "BROKEN"),
+					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "clickhouse_connection_settings.0.database", "invalid-database"),
 				),
 			},
 		},
