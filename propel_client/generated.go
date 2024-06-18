@@ -9252,8 +9252,6 @@ type DataSourceDataConnectionSettingsWebhookConnectionSettings struct {
 	Columns []*DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn `json:"columns"`
 	// The tenant ID column, if any.
 	Tenant *string `json:"tenant"`
-	// The primary timestamp column, if any.
-	Timestamp *string `json:"timestamp"`
 	// The unique ID column, if any. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 	UniqueId *string `json:"uniqueId"`
 	// Override the Data Pool's table settings. These describe how the Data Pool's table is created in ClickHouse, and a
@@ -9282,11 +9280,6 @@ func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetColumns()
 // GetTenant returns DataSourceDataConnectionSettingsWebhookConnectionSettings.Tenant, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTenant() *string {
 	return v.Tenant
-}
-
-// GetTimestamp returns DataSourceDataConnectionSettingsWebhookConnectionSettings.Timestamp, and is useful for accessing the field via an interface.
-func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTimestamp() *string {
-	return v.Timestamp
 }
 
 // GetUniqueId returns DataSourceDataConnectionSettingsWebhookConnectionSettings.UniqueId, and is useful for accessing the field via an interface.
@@ -9490,6 +9483,8 @@ type DataSourceDataDataPoolsDataPoolConnectionNodesDataPool struct {
 	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
 	// Policies in order to query the Data Pool and its Metrics.
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+	// The Data Pool's primary timestamp column, if any.
+	Timestamp *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp `json:"timestamp"`
 }
 
 // GetId returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.Id, and is useful for accessing the field via an interface.
@@ -9498,6 +9493,76 @@ func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetId() string 
 // GetAccessControlEnabled returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetAccessControlEnabled() bool {
 	return v.AccessControlEnabled
+}
+
+// GetTimestamp returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.Timestamp, and is useful for accessing the field via an interface.
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetTimestamp() *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp {
+	return v.Timestamp
+}
+
+// DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp includes the requested fields of the GraphQL type Timestamp.
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
+type DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp struct {
+	TimestampData `json:"-"`
+}
+
+// GetColumnName returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp.ColumnName, and is useful for accessing the field via an interface.
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp) GetColumnName() string {
+	return v.TimestampData.ColumnName
+}
+
+// GetType returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp.Type, and is useful for accessing the field via an interface.
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp) GetType() string {
+	return v.TimestampData.Type
+}
+
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.TimestampData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+}
+
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp) __premarshalJSON() (*__premarshalDataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp, error) {
+	var retval __premarshalDataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp
+
+	retval.ColumnName = v.TimestampData.ColumnName
+	retval.Type = v.TimestampData.Type
+	return &retval, nil
 }
 
 // DataSourceDataError includes the requested fields of the GraphQL type Error.
@@ -14764,6 +14829,14 @@ type ModifyDataPoolInput struct {
 	DataRetentionInDays *int `json:"dataRetentionInDays"`
 	// The Data Pool's new syncing settings.
 	Syncing *DataPoolSyncingInput `json:"syncing,omitempty"`
+	// The table's primary timestamp column.
+	//
+	// Propel uses the primary timestamp to order and partition your data in Data Pools. It's part of what makes Propel
+	// fast for larger data sets. It will also serve as the time dimension for your Metrics.
+	//
+	// If you do not provide a primary timestamp column, you will need to supply an alternate timestamp when querying your
+	// Data Pool or its Metrics using the TimeRangeInput.
+	Timestamp *TimestampInput `json:"timestamp,omitempty"`
 	// Enables or disables access control for the Data Pool.
 	//
 	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
@@ -14785,6 +14858,9 @@ func (v *ModifyDataPoolInput) GetDataRetentionInDays() *int { return v.DataReten
 
 // GetSyncing returns ModifyDataPoolInput.Syncing, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolInput) GetSyncing() *DataPoolSyncingInput { return v.Syncing }
+
+// GetTimestamp returns ModifyDataPoolInput.Timestamp, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolInput) GetTimestamp() *TimestampInput { return v.Timestamp }
 
 // GetAccessControlEnabled returns ModifyDataPoolInput.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolInput) GetAccessControlEnabled() *bool { return v.AccessControlEnabled }
@@ -19332,6 +19408,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -19385,7 +19464,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -19568,6 +19646,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -19621,7 +19702,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -19683,6 +19763,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -19944,6 +20028,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -19997,7 +20084,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -20353,6 +20439,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -20406,7 +20495,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -20762,6 +20850,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -20815,7 +20906,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -21073,6 +21163,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -21126,7 +21219,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -21401,6 +21493,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -21454,7 +21549,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -21516,6 +21610,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -21604,6 +21702,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -21657,7 +21758,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -21719,6 +21819,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -22048,6 +22152,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -22101,7 +22208,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -22457,6 +22563,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -22510,7 +22619,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -22740,6 +22848,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -22793,7 +22904,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -22855,6 +22965,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -22951,6 +23065,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -23004,7 +23121,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -23070,6 +23186,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -23331,6 +23451,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -23384,7 +23507,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -23567,6 +23689,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -23620,7 +23745,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -23682,6 +23806,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -23840,6 +23968,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -23893,7 +24024,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -24241,6 +24371,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -24294,7 +24427,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -24575,6 +24707,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -24628,7 +24763,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -24830,6 +24964,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -24883,7 +25020,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -24945,6 +25081,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -25031,6 +25171,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -25084,7 +25227,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -25146,6 +25288,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -25245,6 +25391,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -25298,7 +25447,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -25360,6 +25508,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -25984,6 +26136,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -26037,7 +26192,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -26390,6 +26544,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -26443,7 +26600,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -26813,6 +26969,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -26866,7 +27025,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -27055,6 +27213,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -27108,7 +27269,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -27170,6 +27330,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -27342,6 +27506,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -27395,7 +27562,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -27670,6 +27836,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -27723,7 +27892,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -27785,6 +27953,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -27873,6 +28045,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -27926,7 +28101,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -27988,6 +28162,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -28314,6 +28492,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -28367,7 +28548,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -28597,6 +28777,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -28650,7 +28833,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -28712,6 +28894,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -28808,6 +28994,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -28861,7 +29050,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -28927,6 +29115,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {
@@ -29015,6 +29207,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -29068,7 +29263,6 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
 			tableSettings {
 				... TableSettingsData
@@ -29130,6 +29324,10 @@ fragment CommonData on Common {
 	modifiedAt
 	createdBy
 	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
 }
 fragment TableSettingsData on TableSettings {
 	engine {

@@ -72,7 +72,6 @@ Then you can use the JSON property "greeting.message" to extract "hello, world" 
 				"timestamp": {
 					Type:        schema.TypeString,
 					Optional:    true,
-					ForceNew:    true,
 					Description: "The primary timestamp column.",
 				},
 				"unique_id": {
@@ -201,14 +200,19 @@ func WebhookDataSourceUpdate(ctx context.Context, d *schema.ResourceData, c grap
 			}
 		}
 
+		modifyDataPoolInput := &pc.ModifyDataPoolInput{IdOrUniqueName: &pc.IdOrUniqueName{Id: &dataPoolId}}
+
 		if newConnectionSettings["access_control_enabled"].(bool) != oldConnectionSettings["access_control_enabled"].(bool) {
 			accessControlEnabled := newConnectionSettings["access_control_enabled"].(bool)
-			if _, err = pc.ModifyDataPool(ctx, c, &pc.ModifyDataPoolInput{
-				IdOrUniqueName:       &pc.IdOrUniqueName{Id: &dataPoolId},
-				AccessControlEnabled: &accessControlEnabled,
-			}); err != nil {
-				return err
-			}
+			modifyDataPoolInput.AccessControlEnabled = &accessControlEnabled
+		}
+
+		if newConnectionSettings["timestamp"].(string) != oldConnectionSettings["timestamp"].(string) {
+			modifyDataPoolInput.Timestamp = &pc.TimestampInput{ColumnName: newConnectionSettings["timestamp"].(string)}
+		}
+
+		if _, err = pc.ModifyDataPool(ctx, c, modifyDataPoolInput); err != nil {
+			return err
 		}
 
 		if basicAuthDef, ok := newConnectionSettings["basic_auth"]; ok {
@@ -246,7 +250,6 @@ func HandleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 	switch s := response.DataSource.GetConnectionSettings().(type) {
 	case *pc.DataSourceDataConnectionSettingsWebhookConnectionSettings:
 		settings = map[string]any{
-			"timestamp":   s.GetTimestamp(),
 			"tenant":      s.GetTenant(),
 			"unique_id":   s.GetUniqueId(),
 			"webhook_url": s.GetWebhookUrl(),
@@ -277,6 +280,7 @@ func HandleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 		if len(response.DataSource.DataPools.GetNodes()) == 1 {
 			settings["data_pool_id"] = response.DataSource.DataPools.Nodes[0].Id
 			settings["access_control_enabled"] = response.DataSource.DataPools.Nodes[0].AccessControlEnabled
+			settings["timestamp"] = response.DataSource.DataPools.Nodes[0].Timestamp.ColumnName
 		}
 
 		if s.GetTableSettings() != nil {

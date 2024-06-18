@@ -1513,6 +1513,16 @@ input modifyDataPoolInput {
   """ The Data Pool's new syncing settings. """
   syncing: DataPoolSyncingInput
   """
+  The table's primary timestamp column.
+
+  Propel uses the primary timestamp to order and partition your data in Data Pools. It's part of what makes Propel
+  fast for larger data sets. It will also serve as the time dimension for your Metrics.
+
+  If you do not provide a primary timestamp column, you will need to supply an alternate timestamp when querying your
+  Data Pool or its Metrics using the TimeRangeInput.
+  """
+  timestamp: TimestampInput
+  """
   Enables or disables access control for the Data Pool.
 
   If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
