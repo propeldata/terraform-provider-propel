@@ -311,17 +311,7 @@ func resourceDataSourceDelete(ctx context.Context, d *schema.ResourceData, m any
 
 	// Deletes default Data Pool first
 	if strings.ToUpper(d.Get("type").(string)) == "WEBHOOK" {
-		cs := d.Get("webhook_connection_settings").([]any)[0].(map[string]any)
-
-		dataPoolID := cs["data_pool_id"].(string)
-
-		_, err := pc.DeleteDataPool(ctx, c, dataPoolID)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-
-		timeout := d.Timeout(schema.TimeoutDelete)
-		if err := waitForDataPoolDeletion(ctx, c, dataPoolID, timeout); err != nil {
+		if err := internal.WebhookDataSourceDelete(ctx, d, c); err != nil {
 			return diag.FromErr(err)
 		}
 	}

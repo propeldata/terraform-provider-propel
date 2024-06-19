@@ -297,6 +297,22 @@ func HandleWebhookConnectionSettings(response *pc.DataSourceResponse, d *schema.
 	return nil
 }
 
+func WebhookDataSourceDelete(ctx context.Context, d *schema.ResourceData, c graphql.Client) error {
+	connectionSettings := d.Get("webhook_connection_settings.0").(map[string]any)
+	dataPoolID := connectionSettings["data_pool_id"].(string)
+
+	if _, err := pc.DeleteDataPool(ctx, c, dataPoolID); err != nil {
+		return err
+	}
+
+	timeout := d.Timeout(schema.TimeoutDelete)
+	if err := WaitForDataPoolDeletion(ctx, c, dataPoolID, timeout); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func expandWebhookColumns(def []any) []*pc.WebhookDataSourceColumnInput {
 	columns := make([]*pc.WebhookDataSourceColumnInput, len(def))
 
