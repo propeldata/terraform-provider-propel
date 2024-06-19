@@ -70,6 +70,7 @@ func resourceMetric() *schema.Resource {
 			"data_pool": {
 				Type:        schema.TypeString,
 				Required:    true,
+				ForceNew:    true,
 				Description: "The Data Pool that powers this Metric.",
 			},
 			"filter": {
