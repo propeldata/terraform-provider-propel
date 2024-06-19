@@ -45,14 +45,14 @@ func resourceDataSource() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 				ValidateFunc: validation.StringInSlice([]string{
-					"Snowflake",
+					"SNOWFLAKE",
 					"S3",
-					"Http",
-					"Webhook",
-					"Kafka",
-					"ClickHouse",
+					"HTTP",
+					"WEBHOOK",
+					"KAFKA",
+					"CLICKHOUSE",
 				}, true),
-				Description: "The Data Source's type. Depending on this, you will need to specify one of `http_connection_settings`, `s3_connection_settings`, `webhook_connection_settings` or `snowflake_connection_settings`.",
+				Description: "The Data Source's type. Depending on this, you will need to specify one of `snowflake_connection_settings`, `s3_connection_settings`, `http_connection_settings`, `webhook_connection_settings`, `kafka_connection_settings` or `clickhouse_connection_settings`. The valid values are `SNOWFLAKE`, `S3`, `HTTP`, `WEBHOOK`, `KAFKA` and `CLICKHOUSE`",
 			},
 			"status": {
 				Type:        schema.TypeString,
@@ -211,7 +211,8 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("type", utils.GetDataSourceType(response.DataSource.GetType())); err != nil {
+	dataSourceType := string(response.DataSource.GetType())
+	if err := d.Set("type", strings.ToUpper(dataSourceType)); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -243,7 +244,6 @@ func resourceDataSourceRead(ctx context.Context, d *schema.ResourceData, m any) 
 		return diag.FromErr(err)
 	}
 
-	dataSourceType := string(response.DataSource.Type)
 	switch strings.ToUpper(dataSourceType) {
 	case "SNOWFLAKE":
 		err = internal.HandleSnowflakeConnectionSettings(response, d)

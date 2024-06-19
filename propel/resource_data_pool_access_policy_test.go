@@ -42,7 +42,7 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
 		unique_name = "terraform-test-5"
-		type = "Http"
+		type = "HTTP"
 
 		http_connection_settings {
 			basic_auth {

@@ -40,7 +40,7 @@ func testAccCheckPropelMaterializedViewConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 		resource "propel_data_source" "terraform_mv_source_dp" {
 			unique_name = "terraform-mv-source-dp"
-			type = "Webhook"
+			type = "WEBHOOK"
 	
 			webhook_connection_settings {
 				timestamp = "timestamp_tz"

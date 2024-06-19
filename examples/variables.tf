@@ -16,3 +16,13 @@ variable "http_basic_auth_password" {
   type      = string
   sensitive = true
 }
+
+variable "kafka_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "clickhouse_password" {
+  type      = string
+  sensitive = true
+}

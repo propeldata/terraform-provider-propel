@@ -155,7 +155,7 @@ func testAccCheckPropelDataSourceConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Http"
+		type = "HTTP"
 
 		table {
 			name = "CLUSTER_TEST_TABLE_1"
@@ -173,7 +173,7 @@ func testAccUpdatePropelDataSourceConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Http"
+		type = "HTTP"
 
 		table {
 			name = "CLUSTER_TEST_TABLE_1"
@@ -222,7 +222,7 @@ func testAccCheckPropelDataSourceClickHouseConfigBroken(ctx map[string]any) stri
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "ClickHouse"
+		type = "CLICKHOUSE"
 
 		clickhouse_connection_settings {
 			url = "%{clickhouse_url}"
@@ -237,7 +237,7 @@ func testAccCheckPropelDataSourceKafkaConfigBroken(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Kafka"
+		type = "KAFKA"
 
 		kafka_connection_settings {
 			auth = "%{kafka_auth}"
@@ -252,7 +252,7 @@ func testAccCheckPropelDataSourceSnowflakeConfigBroken(ctx map[string]any) strin
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Snowflake"
+		type = "SNOWFLAKE"
 
 		snowflake_connection_settings {
 			account = "%{snowflake_account}"
@@ -270,7 +270,7 @@ func testAccWebhookDataSourceBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Webhook"
+		type = "WEBHOOK"
 
 		webhook_connection_settings {
 			timestamp = "timestamp_tz"
@@ -312,7 +312,7 @@ func testAccUpdateWebhookDataSourceBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Webhook"
+		type = "WEBHOOK"
 
 		webhook_connection_settings {
 			timestamp = "timestamp_tz"

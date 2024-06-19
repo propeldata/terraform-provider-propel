@@ -51,7 +51,7 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
 		unique_name = "terraform-test-3"
-		type = "Http"
+		type = "HTTP"
 
 		http_connection_settings {
 			basic_auth {
@@ -103,7 +103,7 @@ func testAccUpdatePropelDataPoolConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
 		unique_name = "terraform-test-3"
-		type = "Http"
+		type = "HTTP"
 
 		http_connection_settings {
 			basic_auth {
