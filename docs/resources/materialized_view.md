@@ -105,7 +105,7 @@ Optional:
 Optional:
 
 - `columns` (Set of String) The columns argument for the SummingMergeTree table engine.
-- `type` (String)
+- `type` (String) The ClickHouse table engine.
 - `ver` (String) The `ver` parameter to the ReplacingMergeTree table engine.
 
 ## Import
