@@ -72,7 +72,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.new"),
 					resource.TestCheckResourceAttr("propel_data_source.new", "description", ""),
-					resource.TestCheckResourceAttr("propel_data_source.new", "type", "Http"),
+					resource.TestCheckResourceAttr("propel_data_source.new", "type", "HTTP"),
 					resource.TestCheckResourceAttr("propel_data_source.new", "status", "CONNECTED"),
 					resource.TestCheckResourceAttr("propel_data_source.new", "table.0.column.#", "1"),
 				),
@@ -100,7 +100,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.foo"),
-					resource.TestCheckResourceAttr("propel_data_source.foo", "type", "Snowflake"),
+					resource.TestCheckResourceAttr("propel_data_source.foo", "type", "SNOWFLAKE"),
 					resource.TestCheckResourceAttr("propel_data_source.foo", "status", "BROKEN"),
 					resource.TestCheckResourceAttr("propel_data_source.foo", "snowflake_connection_settings.0.database", "invalid-database"),
 				),
@@ -110,7 +110,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				Config: testAccWebhookDataSourceBasic(webhookCtx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.webhook"),
-					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "Webhook"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "WEBHOOK"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "status", "CONNECTED"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.timestamp", "timestamp_tz"),
 				),
@@ -120,7 +120,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				Config: testAccUpdateWebhookDataSourceBasic(webhookCtx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.webhook"),
-					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "Webhook"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "WEBHOOK"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "status", "CONNECTED"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.column.3.name", "new"),
 				),
@@ -131,7 +131,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.kafka"),
-					resource.TestCheckResourceAttr("propel_data_source.kafka", "type", "Kafka"),
+					resource.TestCheckResourceAttr("propel_data_source.kafka", "type", "KAFKA"),
 					resource.TestCheckResourceAttr("propel_data_source.kafka", "status", "BROKEN"),
 					resource.TestCheckResourceAttr("propel_data_source.kafka", "kafka_connection_settings.0.auth", "PLAIN"),
 				),
@@ -142,7 +142,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.clickhouse"),
-					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "type", "ClickHouse"),
+					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "type", "CLICKHOUSE"),
 					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "status", "BROKEN"),
 					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "clickhouse_connection_settings.0.database", "invalid-database"),
 				),
