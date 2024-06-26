@@ -277,7 +277,11 @@ func resourceMaterializedViewUpdate(ctx context.Context, d *schema.ResourceData,
 func resourceMaterializedViewDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	// If Materialized View created a Data Pool, ensure it is deleted before the Materialized View.
+	if _, err := pc.DeleteMaterializedView(ctx, c, d.Id()); err != nil {
+		return diag.FromErr(err)
+	}
+
+	// If Materialized View created a Data Pool, ensure it is deleted.
 	if _, exists := d.GetOk("new_data_pool.0"); exists {
 		dataPoolID := d.Get("destination").(string)
 		if _, err := pc.DeleteDataPool(ctx, c, dataPoolID); err != nil {
@@ -288,10 +292,6 @@ func resourceMaterializedViewDelete(ctx context.Context, d *schema.ResourceData,
 		if err := internal.WaitForDataPoolDeletion(ctx, c, dataPoolID, timeout); err != nil {
 			return diag.FromErr(err)
 		}
-	}
-
-	if _, err := pc.DeleteMaterializedView(ctx, c, d.Id()); err != nil {
-		return diag.FromErr(err)
 	}
 
 	d.SetId("")
