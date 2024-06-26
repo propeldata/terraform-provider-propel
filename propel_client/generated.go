@@ -368,11 +368,11 @@ const (
 //
 // CommonData is implemented by the following types:
 // CommonDataApplication
-// CommonDataDataSource
 // CommonDataDataPool
+// CommonDataDataPoolAccessPolicy
+// CommonDataDataSource
 // CommonDataMaterializedView
 // CommonDataMetric
-// CommonDataDataPoolAccessPolicy
 type CommonData interface {
 	implementsGraphQLInterfaceCommonData()
 	// GetUniqueName returns the interface-field "uniqueName" from its implementation.
@@ -418,11 +418,11 @@ type CommonData interface {
 }
 
 func (v *CommonDataApplication) implementsGraphQLInterfaceCommonData()          {}
-func (v *CommonDataDataSource) implementsGraphQLInterfaceCommonData()           {}
 func (v *CommonDataDataPool) implementsGraphQLInterfaceCommonData()             {}
+func (v *CommonDataDataPoolAccessPolicy) implementsGraphQLInterfaceCommonData() {}
+func (v *CommonDataDataSource) implementsGraphQLInterfaceCommonData()           {}
 func (v *CommonDataMaterializedView) implementsGraphQLInterfaceCommonData()     {}
 func (v *CommonDataMetric) implementsGraphQLInterfaceCommonData()               {}
-func (v *CommonDataDataPoolAccessPolicy) implementsGraphQLInterfaceCommonData() {}
 
 func __unmarshalCommonData(b []byte, v *CommonData) error {
 	if string(b) == "null" {
@@ -441,20 +441,20 @@ func __unmarshalCommonData(b []byte, v *CommonData) error {
 	case "Application":
 		*v = new(CommonDataApplication)
 		return json.Unmarshal(b, *v)
-	case "DataSource":
-		*v = new(CommonDataDataSource)
-		return json.Unmarshal(b, *v)
 	case "DataPool":
 		*v = new(CommonDataDataPool)
+		return json.Unmarshal(b, *v)
+	case "DataPoolAccessPolicy":
+		*v = new(CommonDataDataPoolAccessPolicy)
+		return json.Unmarshal(b, *v)
+	case "DataSource":
+		*v = new(CommonDataDataSource)
 		return json.Unmarshal(b, *v)
 	case "MaterializedView":
 		*v = new(CommonDataMaterializedView)
 		return json.Unmarshal(b, *v)
 	case "Metric":
 		*v = new(CommonDataMetric)
-		return json.Unmarshal(b, *v)
-	case "DataPoolAccessPolicy":
-		*v = new(CommonDataDataPoolAccessPolicy)
 		return json.Unmarshal(b, *v)
 	case "":
 		return fmt.Errorf(
@@ -477,20 +477,28 @@ func __marshalCommonData(v *CommonData) ([]byte, error) {
 			*CommonDataApplication
 		}{typename, v}
 		return json.Marshal(result)
-	case *CommonDataDataSource:
-		typename = "DataSource"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*CommonDataDataSource
-		}{typename, v}
-		return json.Marshal(result)
 	case *CommonDataDataPool:
 		typename = "DataPool"
 
 		result := struct {
 			TypeName string `json:"__typename"`
 			*CommonDataDataPool
+		}{typename, v}
+		return json.Marshal(result)
+	case *CommonDataDataPoolAccessPolicy:
+		typename = "DataPoolAccessPolicy"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CommonDataDataPoolAccessPolicy
+		}{typename, v}
+		return json.Marshal(result)
+	case *CommonDataDataSource:
+		typename = "DataSource"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CommonDataDataSource
 		}{typename, v}
 		return json.Marshal(result)
 	case *CommonDataMaterializedView:
@@ -507,14 +515,6 @@ func __marshalCommonData(v *CommonData) ([]byte, error) {
 		result := struct {
 			TypeName string `json:"__typename"`
 			*CommonDataMetric
-		}{typename, v}
-		return json.Marshal(result)
-	case *CommonDataDataPoolAccessPolicy:
-		typename = "DataPoolAccessPolicy"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*CommonDataDataPoolAccessPolicy
 		}{typename, v}
 		return json.Marshal(result)
 	case nil:
@@ -19101,29 +19101,29 @@ fragment GqlError on Error {
 `
 
 func AddColumnToDataPoolJob(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*AddColumnToDataPoolJobResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "AddColumnToDataPoolJob",
 		Query:  AddColumnToDataPoolJob_Operation,
 		Variables: &__AddColumnToDataPoolJobInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data AddColumnToDataPoolJobResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ AddColumnToDataPoolJobResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by AssignDataPoolAccessPolicy.
@@ -19134,12 +19134,12 @@ mutation AssignDataPoolAccessPolicy ($application: ID!, $dataPoolAccessPolicy: I
 `
 
 func AssignDataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	application string,
 	dataPoolAccessPolicy string,
 ) (*AssignDataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "AssignDataPoolAccessPolicy",
 		Query:  AssignDataPoolAccessPolicy_Operation,
 		Variables: &__AssignDataPoolAccessPolicyInput{
@@ -19147,18 +19147,18 @@ func AssignDataPoolAccessPolicy(
 			DataPoolAccessPolicy: dataPoolAccessPolicy,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data AssignDataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ AssignDataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateAddColumnToDataPoolJob.
@@ -19189,29 +19189,29 @@ fragment GqlError on Error {
 `
 
 func CreateAddColumnToDataPoolJob(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateAddColumnToDataPoolJobInput,
 ) (*CreateAddColumnToDataPoolJobResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateAddColumnToDataPoolJob",
 		Query:  CreateAddColumnToDataPoolJob_Operation,
 		Variables: &__CreateAddColumnToDataPoolJobInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateAddColumnToDataPoolJobResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateAddColumnToDataPoolJobResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateAverageMetric.
@@ -19600,29 +19600,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateAverageMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateAverageMetricInput,
 ) (*CreateAverageMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateAverageMetric",
 		Query:  CreateAverageMetric_Operation,
 		Variables: &__CreateAverageMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateAverageMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateAverageMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateClickHouseDataSource.
@@ -19809,29 +19809,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateClickHouseDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateClickHouseDataSourceInput,
 ) (*CreateClickHouseDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateClickHouseDataSource",
 		Query:  CreateClickHouseDataSource_Operation,
 		Variables: &__CreateClickHouseDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateClickHouseDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateClickHouseDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateCountDistinctMetric.
@@ -20220,29 +20220,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateCountDistinctMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateCountDistinctMetricInput,
 ) (*CreateCountDistinctMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateCountDistinctMetric",
 		Query:  CreateCountDistinctMetric_Operation,
 		Variables: &__CreateCountDistinctMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateCountDistinctMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateCountDistinctMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateCountMetric.
@@ -20631,29 +20631,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateCountMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateCountMetricInput,
 ) (*CreateCountMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateCountMetric",
 		Query:  CreateCountMetric_Operation,
 		Variables: &__CreateCountMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateCountMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateCountMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateCustomMetric.
@@ -21042,29 +21042,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateCustomMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateCustomMetricInput,
 ) (*CreateCustomMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateCustomMetric",
 		Query:  CreateCustomMetric_Operation,
 		Variables: &__CreateCustomMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateCustomMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateCustomMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateDataPool.
@@ -21370,29 +21370,29 @@ fragment FilterData on Filter {
 `
 
 func CreateDataPool(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateDataPoolInputV2,
 ) (*CreateDataPoolResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateDataPool",
 		Query:  CreateDataPool_Operation,
 		Variables: &__CreateDataPoolInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateDataPoolResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateDataPoolResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateDataPoolAccessPolicy.
@@ -21447,29 +21447,29 @@ fragment FilterData on Filter {
 `
 
 func CreateDataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateDataPoolAccessPolicyInput,
 ) (*CreateDataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateDataPoolAccessPolicy",
 		Query:  CreateDataPoolAccessPolicy_Operation,
 		Variables: &__CreateDataPoolAccessPolicyInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateDataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateDataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateHttpDataSource.
@@ -21656,29 +21656,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateHttpDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateHttpDataSourceInput,
 ) (*CreateHttpDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateHttpDataSource",
 		Query:  CreateHttpDataSource_Operation,
 		Variables: &__CreateHttpDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateHttpDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateHttpDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateKafkaDataSource.
@@ -21865,29 +21865,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateKafkaDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateKafkaDataSourceInput,
 ) (*CreateKafkaDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateKafkaDataSource",
 		Query:  CreateKafkaDataSource_Operation,
 		Variables: &__CreateKafkaDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateKafkaDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateKafkaDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateMaterializedView.
@@ -21933,29 +21933,29 @@ fragment CommonData on Common {
 `
 
 func CreateMaterializedView(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateMaterializedViewInput,
 ) (*CreateMaterializedViewResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateMaterializedView",
 		Query:  CreateMaterializedView_Operation,
 		Variables: &__CreateMaterializedViewInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateMaterializedViewResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateMaterializedViewResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateMaxMetric.
@@ -22344,29 +22344,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateMaxMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateMaxMetricInput,
 ) (*CreateMaxMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateMaxMetric",
 		Query:  CreateMaxMetric_Operation,
 		Variables: &__CreateMaxMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateMaxMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateMaxMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateMinMetric.
@@ -22755,29 +22755,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateMinMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateMinMetricInput,
 ) (*CreateMinMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateMinMetric",
 		Query:  CreateMinMetric_Operation,
 		Variables: &__CreateMinMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateMinMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateMinMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreatePolicy.
@@ -22802,29 +22802,29 @@ fragment PolicyData on Policy {
 `
 
 func CreatePolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreatePolicyInput,
 ) (*CreatePolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreatePolicy",
 		Query:  CreatePolicy_Operation,
 		Variables: &__CreatePolicyInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreatePolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreatePolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateS3DataSource.
@@ -23011,29 +23011,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateS3DataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateS3DataSourceInput,
 ) (*CreateS3DataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateS3DataSource",
 		Query:  CreateS3DataSource_Operation,
 		Variables: &__CreateS3DataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateS3DataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateS3DataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateSnowflakeDataSource.
@@ -23232,29 +23232,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateSnowflakeDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateSnowflakeDataSourceInput,
 ) (*CreateSnowflakeDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateSnowflakeDataSource",
 		Query:  CreateSnowflakeDataSource_Operation,
 		Variables: &__CreateSnowflakeDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateSnowflakeDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateSnowflakeDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateSumMetric.
@@ -23643,29 +23643,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateSumMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateSumMetricInput,
 ) (*CreateSumMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateSumMetric",
 		Query:  CreateSumMetric_Operation,
 		Variables: &__CreateSumMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateSumMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateSumMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateWebhookDataSource.
@@ -23852,29 +23852,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateWebhookDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateWebhookDataSourceInput,
 ) (*CreateWebhookDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateWebhookDataSource",
 		Query:  CreateWebhookDataSource_Operation,
 		Variables: &__CreateWebhookDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateWebhookDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateWebhookDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataPool.
@@ -24175,29 +24175,29 @@ fragment FilterData on Filter {
 `
 
 func DataPool(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DataPoolResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataPool",
 		Query:  DataPool_Operation,
 		Variables: &__DataPoolInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataPoolResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataPoolResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataPoolAccessPolicy.
@@ -24255,29 +24255,29 @@ fragment FilterData on Filter {
 `
 
 func DataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataPoolAccessPolicy",
 		Query:  DataPoolAccessPolicy_Operation,
 		Variables: &__DataPoolAccessPolicyInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataPoolByName.
@@ -24578,29 +24578,29 @@ fragment FilterData on Filter {
 `
 
 func DataPoolByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*DataPoolByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataPoolByName",
 		Query:  DataPoolByName_Operation,
 		Variables: &__DataPoolByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataPoolByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataPoolByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataPools.
@@ -24914,14 +24914,14 @@ fragment FilterData on Filter {
 `
 
 func DataPools(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	first *int,
 	last *int,
 	after *string,
 	before *string,
 ) (*DataPoolsResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataPools",
 		Query:  DataPools_Operation,
 		Variables: &__DataPoolsInput{
@@ -24931,18 +24931,18 @@ func DataPools(
 			Before: before,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataPoolsResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataPoolsResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataSource.
@@ -25127,29 +25127,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func DataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataSource",
 		Query:  DataSource_Operation,
 		Variables: &__DataSourceInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataSourceByName.
@@ -25334,29 +25334,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func DataSourceByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*DataSourceByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataSourceByName",
 		Query:  DataSourceByName_Operation,
 		Variables: &__DataSourceByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataSourceByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataSourceByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataSources.
@@ -25554,14 +25554,14 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func DataSources(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	first *int,
 	last *int,
 	after *string,
 	before *string,
 ) (*DataSourcesResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataSources",
 		Query:  DataSources_Operation,
 		Variables: &__DataSourcesInput{
@@ -25571,18 +25571,18 @@ func DataSources(
 			Before: before,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataSourcesResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataSourcesResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteDataPool.
@@ -25593,29 +25593,29 @@ mutation DeleteDataPool ($id: ID!) {
 `
 
 func DeleteDataPool(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeleteDataPoolResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteDataPool",
 		Query:  DeleteDataPool_Operation,
 		Variables: &__DeleteDataPoolInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteDataPoolResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteDataPoolResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteDataPoolAccessPolicy.
@@ -25626,29 +25626,29 @@ mutation DeleteDataPoolAccessPolicy ($id: ID!) {
 `
 
 func DeleteDataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeleteDataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteDataPoolAccessPolicy",
 		Query:  DeleteDataPoolAccessPolicy_Operation,
 		Variables: &__DeleteDataPoolAccessPolicyInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteDataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteDataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteDataPoolByName.
@@ -25659,29 +25659,29 @@ mutation DeleteDataPoolByName ($uniqueName: String!) {
 `
 
 func DeleteDataPoolByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*DeleteDataPoolByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteDataPoolByName",
 		Query:  DeleteDataPoolByName_Operation,
 		Variables: &__DeleteDataPoolByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteDataPoolByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteDataPoolByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteDataSource.
@@ -25692,29 +25692,29 @@ mutation DeleteDataSource ($id: ID!) {
 `
 
 func DeleteDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeleteDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteDataSource",
 		Query:  DeleteDataSource_Operation,
 		Variables: &__DeleteDataSourceInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteDataSourceByName.
@@ -25725,29 +25725,29 @@ mutation DeleteDataSourceByName ($uniqueName: String!) {
 `
 
 func DeleteDataSourceByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*DeleteDataSourceByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteDataSourceByName",
 		Query:  DeleteDataSourceByName_Operation,
 		Variables: &__DeleteDataSourceByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteDataSourceByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteDataSourceByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteMaterializedView.
@@ -25758,29 +25758,29 @@ mutation DeleteMaterializedView ($id: ID!) {
 `
 
 func DeleteMaterializedView(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeleteMaterializedViewResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteMaterializedView",
 		Query:  DeleteMaterializedView_Operation,
 		Variables: &__DeleteMaterializedViewInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteMaterializedViewResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteMaterializedViewResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteMetric.
@@ -25791,29 +25791,29 @@ mutation DeleteMetric ($id: ID!) {
 `
 
 func DeleteMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeleteMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteMetric",
 		Query:  DeleteMetric_Operation,
 		Variables: &__DeleteMetricInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteMetricByName.
@@ -25824,29 +25824,29 @@ mutation DeleteMetricByName ($uniqueName: String!) {
 `
 
 func DeleteMetricByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*DeleteMetricByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteMetricByName",
 		Query:  DeleteMetricByName_Operation,
 		Variables: &__DeleteMetricByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteMetricByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteMetricByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeletePolicy.
@@ -25857,29 +25857,29 @@ mutation DeletePolicy ($id: ID!) {
 `
 
 func DeletePolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeletePolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeletePolicy",
 		Query:  DeletePolicy_Operation,
 		Variables: &__DeletePolicyInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeletePolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeletePolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by MaterializedView.
@@ -25920,29 +25920,29 @@ fragment CommonData on Common {
 `
 
 func MaterializedView(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*MaterializedViewResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "MaterializedView",
 		Query:  MaterializedView_Operation,
 		Variables: &__MaterializedViewInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data MaterializedViewResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ MaterializedViewResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by Metric.
@@ -26328,29 +26328,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func Metric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*MetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "Metric",
 		Query:  Metric_Operation,
 		Variables: &__MetricInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data MetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ MetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by MetricByName.
@@ -26736,29 +26736,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func MetricByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*MetricByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "MetricByName",
 		Query:  MetricByName_Operation,
 		Variables: &__MetricByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data MetricByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ MetricByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by Metrics.
@@ -27161,14 +27161,14 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func Metrics(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	first *int,
 	last *int,
 	after *string,
 	before *string,
 ) (*MetricsResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "Metrics",
 		Query:  Metrics_Operation,
 		Variables: &__MetricsInput{
@@ -27178,18 +27178,18 @@ func Metrics(
 			Before: before,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data MetricsResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ MetricsResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyClickHouseDataSource.
@@ -27376,29 +27376,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifyClickHouseDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyClickHouseDataSourceInput,
 ) (*ModifyClickHouseDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyClickHouseDataSource",
 		Query:  ModifyClickHouseDataSource_Operation,
 		Variables: &__ModifyClickHouseDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyClickHouseDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyClickHouseDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyDataPool.
@@ -27713,29 +27713,29 @@ fragment FilterData on Filter {
 `
 
 func ModifyDataPool(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyDataPoolInput,
 ) (*ModifyDataPoolResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyDataPool",
 		Query:  ModifyDataPool_Operation,
 		Variables: &__ModifyDataPoolInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyDataPoolResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyDataPoolResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyDataPoolAccessPolicy.
@@ -27790,29 +27790,29 @@ fragment FilterData on Filter {
 `
 
 func ModifyDataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyDataPoolAccessPolicyInput,
 ) (*ModifyDataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyDataPoolAccessPolicy",
 		Query:  ModifyDataPoolAccessPolicy_Operation,
 		Variables: &__ModifyDataPoolAccessPolicyInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyDataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyDataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyHttpDataSource.
@@ -27999,29 +27999,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifyHttpDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyHttpDataSourceInput,
 ) (*ModifyHttpDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyHttpDataSource",
 		Query:  ModifyHttpDataSource_Operation,
 		Variables: &__ModifyHttpDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyHttpDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyHttpDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyKafkaDataSource.
@@ -28208,29 +28208,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifyKafkaDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyKafkaDataSourceInput,
 ) (*ModifyKafkaDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyKafkaDataSource",
 		Query:  ModifyKafkaDataSource_Operation,
 		Variables: &__ModifyKafkaDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyKafkaDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyKafkaDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyMaterializedView.
@@ -28273,29 +28273,29 @@ fragment CommonData on Common {
 `
 
 func ModifyMaterializedView(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyMaterializedViewInput,
 ) (*ModifyMaterializedViewResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyMaterializedView",
 		Query:  ModifyMaterializedView_Operation,
 		Variables: &__ModifyMaterializedViewInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyMaterializedViewResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyMaterializedViewResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyMetric.
@@ -28684,29 +28684,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifyMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyMetricInput,
 ) (*ModifyMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyMetric",
 		Query:  ModifyMetric_Operation,
 		Variables: &__ModifyMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyPolicy.
@@ -28731,29 +28731,29 @@ fragment PolicyData on Policy {
 `
 
 func ModifyPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyPolicyInput,
 ) (*ModifyPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyPolicy",
 		Query:  ModifyPolicy_Operation,
 		Variables: &__ModifyPolicyInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyS3DataSource.
@@ -28940,29 +28940,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifyS3DataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyS3DataSourceInput,
 ) (*ModifyS3DataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyS3DataSource",
 		Query:  ModifyS3DataSource_Operation,
 		Variables: &__ModifyS3DataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyS3DataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyS3DataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifySnowflakeDataSource.
@@ -29161,29 +29161,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifySnowflakeDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifySnowflakeDataSourceInput,
 ) (*ModifySnowflakeDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifySnowflakeDataSource",
 		Query:  ModifySnowflakeDataSource_Operation,
 		Variables: &__ModifySnowflakeDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifySnowflakeDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifySnowflakeDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyWebhookDataSource.
@@ -29370,29 +29370,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifyWebhookDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyWebhookDataSourceInput,
 ) (*ModifyWebhookDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyWebhookDataSource",
 		Query:  ModifyWebhookDataSource_Operation,
 		Variables: &__ModifyWebhookDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyWebhookDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyWebhookDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by Policy.
@@ -29415,29 +29415,29 @@ fragment PolicyData on Policy {
 `
 
 func Policy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*PolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "Policy",
 		Query:  Policy_Operation,
 		Variables: &__PolicyInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data PolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ PolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by UnAssignDataPoolAccessPolicy.
@@ -29448,12 +29448,12 @@ mutation UnAssignDataPoolAccessPolicy ($dataPoolAccessPolicy: ID!, $application:
 `
 
 func UnAssignDataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	dataPoolAccessPolicy string,
 	application string,
 ) (*UnAssignDataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "UnAssignDataPoolAccessPolicy",
 		Query:  UnAssignDataPoolAccessPolicy_Operation,
 		Variables: &__UnAssignDataPoolAccessPolicyInput{
@@ -29461,16 +29461,16 @@ func UnAssignDataPoolAccessPolicy(
 			Application:          application,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data UnAssignDataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ UnAssignDataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
