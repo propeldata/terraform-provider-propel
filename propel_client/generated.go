@@ -2580,11 +2580,6 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetSetupTasks()
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
-	return v.DataPoolData.Syncs
-}
-
 // GetDataPoolAccessPolicies returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -2690,8 +2685,6 @@ type __premarshalCreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
@@ -2738,7 +2731,6 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.TableSettings = v.DataPoolData.TableSettings
@@ -6021,11 +6013,6 @@ func (v *DataPoolByNameDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPo
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns DataPoolByNameDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
-	return v.DataPoolData.Syncs
-}
-
 // GetDataPoolAccessPolicies returns DataPoolByNameDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -6131,8 +6118,6 @@ type __premarshalDataPoolByNameDataPool struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
@@ -6179,7 +6164,6 @@ func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByName
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.TableSettings = v.DataPoolData.TableSettings
@@ -6278,8 +6262,6 @@ type DataPoolData struct {
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 	// A list of setup tasks performed on the Data Pool during its most recent setup attempt.
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
-	// The list of Syncs of the Data Pool.
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 	// A paginated list of Data Pool Access Policies available on the Data Pool.
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 	// Whether the Data Pool has access control enabled or not.
@@ -6330,9 +6312,6 @@ func (v *DataPoolData) GetAvailableMeasures() *DataPoolDataAvailableMeasuresData
 func (v *DataPoolData) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetupTask {
 	return v.SetupTasks
 }
-
-// GetSyncs returns DataPoolData.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.Syncs }
 
 // GetDataPoolAccessPolicies returns DataPoolData.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
@@ -6421,8 +6400,6 @@ type __premarshalDataPoolData struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
@@ -6469,7 +6446,6 @@ func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
 	retval.Syncing = v.Syncing
 	retval.AvailableMeasures = v.AvailableMeasures
 	retval.SetupTasks = v.SetupTasks
-	retval.Syncs = v.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.AccessControlEnabled
 	retval.TableSettings = v.TableSettings
@@ -7072,9 +7048,6 @@ func (v *DataPoolDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetu
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns DataPoolDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
-
 // GetDataPoolAccessPolicies returns DataPoolDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -7176,8 +7149,6 @@ type __premarshalDataPoolDataPool struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
@@ -7224,7 +7195,6 @@ func (v *DataPoolDataPool) __premarshalJSON() (*__premarshalDataPoolDataPool, er
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.TableSettings = v.DataPoolData.TableSettings
@@ -7366,177 +7336,6 @@ func (v *DataPoolDataSyncingDataPoolSyncing) __premarshalJSON() (*__premarshalDa
 	retval.Status = v.DataPoolSyncingData.Status
 	retval.Interval = v.DataPoolSyncingData.Interval
 	retval.LastSyncedAt = v.DataPoolSyncingData.LastSyncedAt
-	return &retval, nil
-}
-
-// DataPoolDataSyncsSyncConnection includes the requested fields of the GraphQL type SyncConnection.
-// The GraphQL type's documentation follows.
-//
-// The Sync connection object.
-//
-// Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
-type DataPoolDataSyncsSyncConnection struct {
-	// The Sync connection's nodes.
-	Nodes []*DataPoolDataSyncsSyncConnectionNodesSync `json:"nodes"`
-}
-
-// GetNodes returns DataPoolDataSyncsSyncConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnection) GetNodes() []*DataPoolDataSyncsSyncConnectionNodesSync {
-	return v.Nodes
-}
-
-// DataPoolDataSyncsSyncConnectionNodesSync includes the requested fields of the GraphQL type Sync.
-// The GraphQL type's documentation follows.
-//
-// The Sync object.
-//
-// This represents the process of syncing data from your Data Source (for example, a Snowflake data warehouse) to your Data Pool.
-type DataPoolDataSyncsSyncConnectionNodesSync struct {
-	SyncData `json:"-"`
-}
-
-// GetId returns DataPoolDataSyncsSyncConnectionNodesSync.Id, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetId() string { return v.SyncData.Id }
-
-// GetStatus returns DataPoolDataSyncsSyncConnectionNodesSync.Status, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetStatus() SyncStatus { return v.SyncData.Status }
-
-// GetNewRecords returns DataPoolDataSyncsSyncConnectionNodesSync.NewRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetNewRecords() *string {
-	return v.SyncData.NewRecords
-}
-
-// GetUpdatedRecords returns DataPoolDataSyncsSyncConnectionNodesSync.UpdatedRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetUpdatedRecords() *string {
-	return v.SyncData.UpdatedRecords
-}
-
-// GetDeletedRecords returns DataPoolDataSyncsSyncConnectionNodesSync.DeletedRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetDeletedRecords() *string {
-	return v.SyncData.DeletedRecords
-}
-
-// GetInvalidRecords returns DataPoolDataSyncsSyncConnectionNodesSync.InvalidRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetInvalidRecords() *string {
-	return v.SyncData.InvalidRecords
-}
-
-// GetStartedAt returns DataPoolDataSyncsSyncConnectionNodesSync.StartedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetStartedAt() *time.Time {
-	return v.SyncData.StartedAt
-}
-
-// GetSucceededAt returns DataPoolDataSyncsSyncConnectionNodesSync.SucceededAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetSucceededAt() *time.Time {
-	return v.SyncData.SucceededAt
-}
-
-// GetFailedAt returns DataPoolDataSyncsSyncConnectionNodesSync.FailedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetFailedAt() *time.Time {
-	return v.SyncData.FailedAt
-}
-
-// GetError returns DataPoolDataSyncsSyncConnectionNodesSync.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetError() *SyncDataError { return v.SyncData.Error }
-
-// GetCreatedAt returns DataPoolDataSyncsSyncConnectionNodesSync.CreatedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetCreatedAt() time.Time {
-	return v.SyncData.CreatedAt
-}
-
-// GetCreatedBy returns DataPoolDataSyncsSyncConnectionNodesSync.CreatedBy, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetCreatedBy() string { return v.SyncData.CreatedBy }
-
-// GetModifiedAt returns DataPoolDataSyncsSyncConnectionNodesSync.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetModifiedAt() time.Time {
-	return v.SyncData.ModifiedAt
-}
-
-// GetModifiedBy returns DataPoolDataSyncsSyncConnectionNodesSync.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetModifiedBy() string {
-	return v.SyncData.ModifiedBy
-}
-
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*DataPoolDataSyncsSyncConnectionNodesSync
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.DataPoolDataSyncsSyncConnectionNodesSync = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(
-		b, &v.SyncData)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type __premarshalDataPoolDataSyncsSyncConnectionNodesSync struct {
-	Id string `json:"id"`
-
-	Status SyncStatus `json:"status"`
-
-	NewRecords *string `json:"newRecords"`
-
-	UpdatedRecords *string `json:"updatedRecords"`
-
-	DeletedRecords *string `json:"deletedRecords"`
-
-	InvalidRecords *string `json:"invalidRecords"`
-
-	StartedAt *time.Time `json:"startedAt"`
-
-	SucceededAt *time.Time `json:"succeededAt"`
-
-	FailedAt *time.Time `json:"failedAt"`
-
-	Error *SyncDataError `json:"error"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	ModifiedBy string `json:"modifiedBy"`
-}
-
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) __premarshalJSON() (*__premarshalDataPoolDataSyncsSyncConnectionNodesSync, error) {
-	var retval __premarshalDataPoolDataSyncsSyncConnectionNodesSync
-
-	retval.Id = v.SyncData.Id
-	retval.Status = v.SyncData.Status
-	retval.NewRecords = v.SyncData.NewRecords
-	retval.UpdatedRecords = v.SyncData.UpdatedRecords
-	retval.DeletedRecords = v.SyncData.DeletedRecords
-	retval.InvalidRecords = v.SyncData.InvalidRecords
-	retval.StartedAt = v.SyncData.StartedAt
-	retval.SucceededAt = v.SyncData.SucceededAt
-	retval.FailedAt = v.SyncData.FailedAt
-	retval.Error = v.SyncData.Error
-	retval.CreatedAt = v.SyncData.CreatedAt
-	retval.CreatedBy = v.SyncData.CreatedBy
-	retval.ModifiedAt = v.SyncData.ModifiedAt
-	retval.ModifiedBy = v.SyncData.ModifiedBy
 	return &retval, nil
 }
 
@@ -7993,11 +7792,6 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetS
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
-	return v.DataPoolData.Syncs
-}
-
 // GetDataPoolAccessPolicies returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -8103,8 +7897,6 @@ type __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPo
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
@@ -8151,7 +7943,6 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) __pr
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.TableSettings = v.DataPoolData.TableSettings
@@ -11715,9 +11506,6 @@ func (v *MetricDataDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSe
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns MetricDataDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
-
 // GetDataPoolAccessPolicies returns MetricDataDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -11823,8 +11611,6 @@ type __premarshalMetricDataDataPool struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
@@ -11871,7 +11657,6 @@ func (v *MetricDataDataPool) __premarshalJSON() (*__premarshalMetricDataDataPool
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.TableSettings = v.DataPoolData.TableSettings
@@ -15032,11 +14817,6 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSetupTasks() [
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
-	return v.DataPoolData.Syncs
-}
-
 // GetDataPoolAccessPolicies returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -15142,8 +14922,6 @@ type __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
@@ -15190,7 +14968,6 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON(
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
 	retval.TableSettings = v.DataPoolData.TableSettings
@@ -17890,111 +17667,6 @@ func (v *SummingMergeTreeTableEngineInput) GetType() *TableEngineType { return v
 // GetColumns returns SummingMergeTreeTableEngineInput.Columns, and is useful for accessing the field via an interface.
 func (v *SummingMergeTreeTableEngineInput) GetColumns() []string { return v.Columns }
 
-// SyncData includes the GraphQL fields of Sync requested by the fragment SyncData.
-// The GraphQL type's documentation follows.
-//
-// The Sync object.
-//
-// This represents the process of syncing data from your Data Source (for example, a Snowflake data warehouse) to your Data Pool.
-type SyncData struct {
-	// The Sync's unique identifier.
-	Id string `json:"id"`
-	// The status of the Sync (all Syncs begin as SYNCING before transitioning to SUCCEEDED or FAILED).
-	Status SyncStatus `json:"status"`
-	// The number of new records contained within the Sync, if known. This excludes filtered records.
-	NewRecords *string `json:"newRecords"`
-	// The number of updated records contained within the Sync, if known. This excludes filtered records.
-	UpdatedRecords *string `json:"updatedRecords"`
-	// The number of deleted records contained within the Sync, if known. This excludes filtered records.
-	DeletedRecords *string `json:"deletedRecords"`
-	// The number of filtered records contained within the Sync, due to issues such as a missing timestamp Dimension, if any are known to be invalid.
-	InvalidRecords *string `json:"invalidRecords"`
-	// The time at which the Sync started.
-	StartedAt *time.Time `json:"startedAt"`
-	// The time at which the Sync succeeded.
-	SucceededAt *time.Time `json:"succeededAt"`
-	// The time at which the Sync failed.
-	FailedAt *time.Time `json:"failedAt"`
-	// If the Sync failed, this represents the reason the Sync failed.
-	Error *SyncDataError `json:"error"`
-	// The Sync's creation date and time in UTC.
-	CreatedAt time.Time `json:"createdAt"`
-	// The Sync's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
-	CreatedBy string `json:"createdBy"`
-	// The Sync's last modification date and time in UTC.
-	ModifiedAt time.Time `json:"modifiedAt"`
-	// The Sync's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
-	ModifiedBy string `json:"modifiedBy"`
-}
-
-// GetId returns SyncData.Id, and is useful for accessing the field via an interface.
-func (v *SyncData) GetId() string { return v.Id }
-
-// GetStatus returns SyncData.Status, and is useful for accessing the field via an interface.
-func (v *SyncData) GetStatus() SyncStatus { return v.Status }
-
-// GetNewRecords returns SyncData.NewRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetNewRecords() *string { return v.NewRecords }
-
-// GetUpdatedRecords returns SyncData.UpdatedRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetUpdatedRecords() *string { return v.UpdatedRecords }
-
-// GetDeletedRecords returns SyncData.DeletedRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetDeletedRecords() *string { return v.DeletedRecords }
-
-// GetInvalidRecords returns SyncData.InvalidRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetInvalidRecords() *string { return v.InvalidRecords }
-
-// GetStartedAt returns SyncData.StartedAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetStartedAt() *time.Time { return v.StartedAt }
-
-// GetSucceededAt returns SyncData.SucceededAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetSucceededAt() *time.Time { return v.SucceededAt }
-
-// GetFailedAt returns SyncData.FailedAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetFailedAt() *time.Time { return v.FailedAt }
-
-// GetError returns SyncData.Error, and is useful for accessing the field via an interface.
-func (v *SyncData) GetError() *SyncDataError { return v.Error }
-
-// GetCreatedAt returns SyncData.CreatedAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetCreatedBy returns SyncData.CreatedBy, and is useful for accessing the field via an interface.
-func (v *SyncData) GetCreatedBy() string { return v.CreatedBy }
-
-// GetModifiedAt returns SyncData.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetModifiedAt() time.Time { return v.ModifiedAt }
-
-// GetModifiedBy returns SyncData.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *SyncData) GetModifiedBy() string { return v.ModifiedBy }
-
-// SyncDataError includes the requested fields of the GraphQL type Error.
-// The GraphQL type's documentation follows.
-//
-// The error object.
-type SyncDataError struct {
-	// The error message.
-	Message string `json:"message"`
-}
-
-// GetMessage returns SyncDataError.Message, and is useful for accessing the field via an interface.
-func (v *SyncDataError) GetMessage() string { return v.Message }
-
-// The status of a Sync.
-type SyncStatus string
-
-const (
-	// Propel is actively syncing records contained within the Sync.
-	SyncStatusSyncing SyncStatus = "SYNCING"
-	// The Sync succeeded. Propel successfully synced all records contained within the Sync.
-	SyncStatusSucceeded SyncStatus = "SUCCEEDED"
-	// The Sync failed. Propel failed to sync some or all records contained within the Sync.
-	SyncStatusFailed SyncStatus = "FAILED"
-	// Propel is deleting the Sync.
-	SyncStatusDeleting SyncStatus = "DELETING"
-)
-
 // A Data Pool's table engine.
 type TableEngineInput struct {
 	// Field for specifying the MergeTree table engine.
@@ -19360,11 +19032,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -19529,24 +19196,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -19980,11 +19629,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -20149,24 +19793,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -20391,11 +20017,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -20560,24 +20181,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -20802,11 +20405,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -20972,24 +20570,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -21121,11 +20701,6 @@ fragment DataPoolData on DataPool {
 			message
 		}
 		completedAt
-	}
-	syncs {
-		nodes {
-			... SyncData
-		}
 	}
 	dataPoolAccessPolicies {
 		nodes {
@@ -21284,24 +20859,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -22104,11 +21661,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -22273,24 +21825,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -22515,11 +22049,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -22684,24 +22213,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -23403,11 +22914,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -23572,24 +23078,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -23927,11 +23415,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -24089,24 +23572,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -24330,11 +23795,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -24492,24 +23952,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -24666,11 +24108,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -24828,24 +24265,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -26088,11 +25507,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -26257,24 +25671,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -26496,11 +25892,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -26665,24 +26056,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -26921,11 +26294,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -27090,24 +26458,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -27461,11 +26811,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -27627,24 +26972,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
@@ -28444,11 +27771,6 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
@@ -28613,24 +27935,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	status
 	interval
 	lastSyncedAt
-}
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
 }
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id

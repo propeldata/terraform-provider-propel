@@ -20,7 +20,6 @@ operations:
 - fragments/Metric.fragment.graphql
 - fragments/Policy.fragment.graphql
 - fragments/PageInfo.fragment.graphql
-- fragments/Sync.fragment.graphql
 - fragments/DataPoolSyncing.fragment.graphql
 - fragments/TableIntrospection.fragment.graphql
 - fragments/TableSettings.fragment.graphql
@@ -55,7 +54,6 @@ operations:
 - mutations/deleteMetric.mutation.graphql
 - mutations/deleteMetricByName.mutation.graphql
 - mutations/deletePolicy.mutation.graphql
-#- mutations/introspectTables.mutation.graphql
 #- mutations/modifyApplication.mutation.graphql
 - mutations/modifyDataPool.mutation.graphql
 - mutations/modifyDataPoolAccessPolicy.mutation.graphql
@@ -63,15 +61,12 @@ operations:
 - mutations/modifyMaterializedView.mutation.graphql
 - mutations/modifyMetric.mutation.graphql
 - mutations/modifyPolicy.mutation.graphql
-#- mutations/reconnectDataPool.mutation.graphql
-#- mutations/reconnectDataSource.mutation.graphql
 - mutations/unAssignDataPoolAccessPolicy.mutation.graphql
 - queries/addColumnToDataPoolJob.query.graphql
 #- queries/application.query.graphql
 #- queries/applicationByClientId.query.graphql
 #- queries/applicationByName.query.graphql
 #- queries/applications.query.graphql
-#- queries/counter.query.graphql
 - queries/dataPool.query.graphql
 - queries/dataPoolByName.query.graphql
 - queries/dataPoolAccessPolicy.query.graphql
@@ -79,15 +74,11 @@ operations:
 - queries/dataSource.query.graphql
 - queries/dataSourceByName.query.graphql
 - queries/dataSources.query.graphql
-#- queries/dimensionStats.query.graphql
-#- queries/leaderboard.query.graphql
 - queries/materializedView.query.graphql
 - queries/metric.query.graphql
 - queries/metricByName.query.graphql
 - queries/metrics.query.graphql
 - queries/policy.query.graphql
-#- queries/sync.query.graphql
-#- queries/timeSeries.query.graphql
 generated: generated.go
 bindings:
   DateTime:
