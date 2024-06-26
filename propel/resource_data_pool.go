@@ -68,8 +68,8 @@ func resourceDataPool() *schema.Resource {
 			},
 			"column": {
 				Type:        schema.TypeList,
-				Required:    true,
-				ForceNew:    false,
+				Optional:    true,
+				Computed:    true,
 				Description: "The list of columns, their types and nullability.",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{

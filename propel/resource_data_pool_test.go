@@ -22,7 +22,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckPropelDataPoolDestroy,
 		Steps: []resource.TestStep{
-			// should create the data pool
+			// should create the Data Pool
 			{
 				Config: testAccCheckPropelDataPoolConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
@@ -32,7 +32,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "description", "Data Pool test"),
 				),
 			},
-			// should update the data pool
+			// should update the Data Pool
 			{
 				Config: testAccUpdatePropelDataPoolConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(

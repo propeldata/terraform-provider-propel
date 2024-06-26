@@ -1476,7 +1476,7 @@ input CreateDataPoolInputV2 {
   "The Data Pool's description."
   description: String
   "The list of columns."
-  columns: [DataPoolColumnInput!]!
+  columns: [DataPoolColumnInput!]
   "The Data Pool's optional tenant ID column. The tenant ID column is used to control access to your data with access policies."
   tenant: TenantInput @deprecated(reason: "Will be removed; use Data Pool Access Policies instead")
   """
