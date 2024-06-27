@@ -31,7 +31,7 @@ resource "propel_data_source" "snowflake_data_source" {
 resource "propel_data_source" "http_data_source" {
   unique_name = "My HTTP Data Source"
   description = "This is an example of an HTTP Data Source"
-  type        = "Http"
+  type        = "HTTP"
 
   http_connection_settings {
     basic_auth {

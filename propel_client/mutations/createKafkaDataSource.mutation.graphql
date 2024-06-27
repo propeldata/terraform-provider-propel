@@ -1,0 +1,7 @@
+mutation CreateKafkaDataSource($input: CreateKafkaDataSourceInput!) {
+    createKafkaDataSource(input: $input) {
+        dataSource {
+            ...DataSourceData
+        }
+    }
+}

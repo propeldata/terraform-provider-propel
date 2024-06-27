@@ -4,14 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/retry"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
+	"github.com/propeldata/terraform-provider-propel/propel/internal"
 	"github.com/propeldata/terraform-provider-propel/propel/internal/utils"
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
@@ -69,8 +68,8 @@ func resourceDataPool() *schema.Resource {
 			},
 			"column": {
 				Type:        schema.TypeList,
-				Required:    true,
-				ForceNew:    false,
+				Optional:    true,
+				Computed:    true,
 				Description: "The list of columns, their types and nullability.",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -98,12 +97,11 @@ func resourceDataPool() *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 				Description: "The tenant ID for restricting access between customers.",
-				Deprecated:  "Remove this attribute's configuration as it no longer is used and the attribute will be removed in the next major version of the provider.",
+				Deprecated:  "Use Data Pool Access Policies instead. This attribute will be removed in the next major version of the provider.",
 			},
 			"timestamp": {
 				Type:        schema.TypeString,
-				Required:    true,
-				ForceNew:    true,
+				Optional:    true,
 				Description: "The Data Pool's timestamp column.",
 			},
 			"unique_id": {
@@ -111,6 +109,7 @@ func resourceDataPool() *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 				Description: "The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool. Only for Snowflake Data Pools.",
+				Deprecated:  "Use Table Settings to define the primary key. This attribute will be removed in the next major version of the provider.",
 			},
 			"syncing": {
 				Type:        schema.TypeList,
@@ -141,8 +140,10 @@ func resourceDataPool() *schema.Resource {
 			"access_control_enabled": {
 				Type:        schema.TypeBool,
 				Optional:    true,
+				Default:     false,
 				Description: "Whether the Data Pool has access control enabled or not. If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.",
 			},
+			"table_settings": internal.TableSettingsSchema(),
 		},
 	}
 }
@@ -168,8 +169,6 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 
 	var diags diag.Diagnostics
 
-	uniqueName := d.Get("unique_name").(string)
-	description := d.Get("description").(string)
 	accessControlEnabled := d.Get("access_control_enabled").(bool)
 
 	columns := make([]*pc.DataPoolColumnInput, 0)
@@ -178,13 +177,18 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 	}
 
 	input := &pc.CreateDataPoolInputV2{
-		UniqueName:  &uniqueName,
-		Description: &description,
-		Timestamp: &pc.TimestampInput{
-			ColumnName: d.Get("timestamp").(string),
-		},
 		Columns:              columns,
 		AccessControlEnabled: &accessControlEnabled,
+	}
+
+	if t, exists := d.GetOk("unique_name"); exists && t.(string) != "" {
+		uniqueName := t.(string)
+		input.UniqueName = &uniqueName
+	}
+
+	if t, exists := d.GetOk("description"); exists && t.(string) != "" {
+		description := t.(string)
+		input.Description = &description
 	}
 
 	if t, exists := d.GetOk("data_source"); exists && t.(string) != "" {
@@ -197,16 +201,31 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 		input.Table = &table
 	}
 
-	if _, exists := d.GetOk("tenant_id"); exists {
+	if v, exists := d.GetOk("tenant_id"); exists && v.(string) != "" {
 		input.Tenant = &pc.TenantInput{
-			ColumnName: d.Get("tenant_id").(string),
+			ColumnName: v.(string),
 		}
 	}
 
-	if _, exists := d.GetOk("unique_id"); exists {
-		input.UniqueId = &pc.UniqueIdInput{
-			ColumnName: d.Get("unique_id").(string),
+	if v, exists := d.GetOk("timestamp"); exists && v.(string) != "" {
+		input.Timestamp = &pc.TimestampInput{
+			ColumnName: d.Get("timestamp").(string),
 		}
+	}
+
+	if v, exists := d.GetOk("unique_id"); exists && v.(string) != "" {
+		input.UniqueId = &pc.UniqueIdInput{
+			ColumnName: v.(string),
+		}
+	}
+
+	if v, exists := d.GetOk("table_settings.0"); exists {
+		s, err := internal.BuildTableSettingsInput(v.(map[string]any))
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		input.TableSettings = s
 	}
 
 	if _, exists := d.GetOk("syncing"); exists {
@@ -226,8 +245,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 
 	timeout := d.Timeout(schema.TimeoutCreate)
 
-	err = waitForDataPoolLive(ctx, c, d.Id(), timeout)
-	if err != nil {
+	if err := internal.WaitForDataPoolLive(ctx, c, d.Id(), timeout); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -299,6 +317,12 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) di
 		}
 	}
 
+	if response.DataPool.TableSettings != nil {
+		if err := d.Set("table_settings", []map[string]any{internal.ParseTableSettings(response.DataPool.TableSettings.TableSettingsData)}); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
 	syncing := map[string]any{
 		"status":   response.DataPool.Syncing.GetStatus(),
 		"interval": response.DataPool.Syncing.GetInterval(),
@@ -340,7 +364,7 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m any) 
 		IdOrUniqueName: &pc.IdOrUniqueName{Id: &id},
 	}
 
-	if d.HasChanges("unique_name", "description", "access_control_enabled") {
+	if d.HasChanges("unique_name", "description", "access_control_enabled", "timestamp") {
 		uniqueName := d.Get("unique_name").(string)
 		description := d.Get("description").(string)
 		accessControlEnabled := d.Get("access_control_enabled").(bool)
@@ -348,6 +372,7 @@ func resourceDataPoolUpdate(ctx context.Context, d *schema.ResourceData, m any) 
 		input.UniqueName = &uniqueName
 		input.Description = &description
 		input.AccessControlEnabled = &accessControlEnabled
+		input.Timestamp = &pc.TimestampInput{ColumnName: d.Get("timestamp").(string)}
 	}
 
 	if d.HasChange("syncing") {
@@ -445,7 +470,7 @@ func addNewDataPoolColumns(ctx context.Context, d *schema.ResourceData, c graphq
 
 		timeout := d.Timeout(schema.TimeoutUpdate)
 
-		if err = waitForAddColumnJob(ctx, c, response.CreateAddColumnToDataPoolJob.Job.Id, timeout); err != nil {
+		if err = internal.WaitForAddColumnJobSucceeded(ctx, c, response.CreateAddColumnToDataPoolJob.Job.Id, timeout); err != nil {
 			return err
 		}
 	}
@@ -458,113 +483,15 @@ func resourceDataPoolDelete(ctx context.Context, d *schema.ResourceData, m any) 
 
 	var diags diag.Diagnostics
 
-	_, err := pc.DeleteDataPool(ctx, c, d.Id())
-	if err != nil {
+	if _, err := pc.DeleteDataPool(ctx, c, d.Id()); err != nil {
 		return diag.FromErr(err)
 	}
 
 	timeout := d.Timeout(schema.TimeoutDelete)
-	err = waitForDataPoolDeletion(ctx, c, d.Id(), timeout)
-	if err != nil {
+	if err := internal.WaitForDataPoolDeletion(ctx, c, d.Id(), timeout); err != nil {
 		return diag.FromErr(err)
 	}
 
 	d.SetId("")
 	return diags
-}
-
-func waitForDataPoolLive(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
-	createStateConf := &retry.StateChangeConf{
-		Pending: []string{
-			string(pc.DataPoolStatusCreated),
-			string(pc.DataPoolStatusPending),
-		},
-		Target: []string{
-			string(pc.DataPoolStatusLive),
-		},
-		Refresh: func() (any, string, error) {
-			resp, err := pc.DataPool(ctx, client, id)
-			if err != nil {
-				return 0, "", fmt.Errorf("error trying to read Data Pool status: %s", err)
-			}
-
-			return resp, string(resp.DataPool.Status), nil
-		},
-		Timeout:                   timeout - time.Minute,
-		Delay:                     10 * time.Second,
-		MinTimeout:                5 * time.Second,
-		ContinuousTargetOccurence: 3,
-	}
-
-	_, err := createStateConf.WaitForStateContext(ctx)
-	if err != nil {
-		return fmt.Errorf("error waiting for Data Pool to be LIVE: %s", err)
-	}
-
-	return nil
-}
-
-func waitForDataPoolDeletion(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
-	tickerInterval := 10 // 10s
-	timeoutSeconds := int(timeout.Seconds())
-	n := 0
-
-	ticker := time.NewTicker(time.Duration(tickerInterval) * time.Second)
-	for range ticker.C {
-		if n*tickerInterval > timeoutSeconds {
-			ticker.Stop()
-			break
-		}
-
-		_, err := pc.DataPool(ctx, client, id)
-		if err != nil {
-			ticker.Stop()
-
-			if strings.Contains(err.Error(), "not found") {
-				return nil
-			}
-
-			return fmt.Errorf("error trying to fetch Data Pool: %s", err)
-		}
-
-		n++
-	}
-	return nil
-}
-
-func waitForAddColumnJob(ctx context.Context, client graphql.Client, id string, timeout time.Duration) error {
-	createStateConf := &retry.StateChangeConf{
-		Pending: []string{
-			string(pc.JobStatusCreated),
-			string(pc.JobStatusInProgress),
-		},
-		Target: []string{
-			string(pc.JobStatusSucceeded),
-			string(pc.JobStatusFailed),
-		},
-		Refresh: func() (any, string, error) {
-			resp, err := pc.AddColumnToDataPoolJob(ctx, client, id)
-			if err != nil {
-				return 0, "", fmt.Errorf("error trying to read Add Column Job status: %s", err)
-			}
-
-			return resp, string(resp.AddColumnToDataPoolJob.Status), nil
-		},
-		Timeout:                   timeout - time.Minute,
-		Delay:                     10 * time.Second,
-		MinTimeout:                5 * time.Second,
-		ContinuousTargetOccurence: 3,
-	}
-
-	resp, err := createStateConf.WaitForStateContext(ctx)
-	if err != nil {
-		return fmt.Errorf("error waiting for Add Column Job to succeed: %s", err)
-	}
-
-	addColumnJobResponse, ok := resp.(*pc.AddColumnToDataPoolJobResponse)
-	if !ok || addColumnJobResponse.AddColumnToDataPoolJob.Status == pc.JobStatusFailed {
-		return fmt.Errorf("add column job failed: %s", addColumnJobResponse.AddColumnToDataPoolJob.Error.Message)
-	}
-
-	return nil
 }

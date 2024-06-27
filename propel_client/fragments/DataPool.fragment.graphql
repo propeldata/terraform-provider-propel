@@ -46,15 +46,13 @@ fragment DataPoolData on DataPool {
         }
         completedAt
     }
-    syncs {
-        nodes {
-            ...SyncData
-        }
-    }
     dataPoolAccessPolicies {
         nodes {
             ...DataPoolAccessPolicyData
         }
     }
     accessControlEnabled
+    tableSettings {
+        ...TableSettingsData
+    }
 }

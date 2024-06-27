@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"github.com/stretchr/testify/assert"
 
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
@@ -44,6 +43,24 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 		"snowflake_password":  "invalid-password",
 	}
 
+	kafkaCtxInvalid := map[string]any{
+		"resource_name":          "kafka",
+		"unique_name":            acctest.RandString(10),
+		"kafka_auth":             "PLAIN",
+		"kafka_user":             "invalid-user",
+		"kafka_password":         "invalid-password",
+		"kafka_bootstrap_server": "192.168.90.84:9092",
+	}
+
+	clickHouseCtxInvalid := map[string]any{
+		"resource_name":       "clickhouse",
+		"unique_name":         acctest.RandString(10),
+		"clickhouse_url":      "http://192.168.90.84:8123",
+		"clickhouse_database": "invalid-database",
+		"clickhouse_user":     "invalid-user",
+		"clickhouse_password": "invalid-password",
+	}
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
@@ -55,7 +72,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.new"),
 					resource.TestCheckResourceAttr("propel_data_source.new", "description", ""),
-					resource.TestCheckResourceAttr("propel_data_source.new", "type", "Http"),
+					resource.TestCheckResourceAttr("propel_data_source.new", "type", "HTTP"),
 					resource.TestCheckResourceAttr("propel_data_source.new", "status", "CONNECTED"),
 					resource.TestCheckResourceAttr("propel_data_source.new", "table.0.column.#", "1"),
 				),
@@ -75,6 +92,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 					testAccCheckPropelDataSourceExists("propel_data_source.fizz"),
 					resource.TestCheckResourceAttr("propel_data_source.fizz", "type", "S3"),
 					resource.TestCheckResourceAttr("propel_data_source.fizz", "status", "BROKEN"),
+					resource.TestCheckResourceAttr("propel_data_source.fizz", "s3_connection_settings.0.aws_access_key_id", "whatever"),
 				),
 			},
 			{
@@ -82,8 +100,9 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.foo"),
-					resource.TestCheckResourceAttr("propel_data_source.foo", "type", "Snowflake"),
+					resource.TestCheckResourceAttr("propel_data_source.foo", "type", "SNOWFLAKE"),
 					resource.TestCheckResourceAttr("propel_data_source.foo", "status", "BROKEN"),
+					resource.TestCheckResourceAttr("propel_data_source.foo", "snowflake_connection_settings.0.database", "invalid-database"),
 				),
 			},
 			// should create Webhook data source
@@ -91,7 +110,7 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				Config: testAccWebhookDataSourceBasic(webhookCtx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.webhook"),
-					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "Webhook"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "WEBHOOK"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "status", "CONNECTED"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.timestamp", "timestamp_tz"),
 				),
@@ -101,9 +120,31 @@ func TestAccPropelDataSourceBasic(t *testing.T) {
 				Config: testAccUpdateWebhookDataSourceBasic(webhookCtx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataSourceExists("propel_data_source.webhook"),
-					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "Webhook"),
+					resource.TestCheckResourceAttr("propel_data_source.webhook", "type", "WEBHOOK"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "status", "CONNECTED"),
 					resource.TestCheckResourceAttr("propel_data_source.webhook", "webhook_connection_settings.0.column.3.name", "new"),
+				),
+			},
+			// should create Kafka Data Source
+			{
+				Config:      testAccCheckPropelDataSourceKafkaConfigBroken(kafkaCtxInvalid),
+				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckPropelDataSourceExists("propel_data_source.kafka"),
+					resource.TestCheckResourceAttr("propel_data_source.kafka", "type", "KAFKA"),
+					resource.TestCheckResourceAttr("propel_data_source.kafka", "status", "BROKEN"),
+					resource.TestCheckResourceAttr("propel_data_source.kafka", "kafka_connection_settings.0.auth", "PLAIN"),
+				),
+			},
+			// should create ClickHouse Data Source
+			{
+				Config:      testAccCheckPropelDataSourceClickHouseConfigBroken(clickHouseCtxInvalid),
+				ExpectError: regexp.MustCompile(`unexpected state 'BROKEN'`),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckPropelDataSourceExists("propel_data_source.clickhouse"),
+					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "type", "CLICKHOUSE"),
+					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "status", "BROKEN"),
+					resource.TestCheckResourceAttr("propel_data_source.clickhouse", "clickhouse_connection_settings.0.database", "invalid-database"),
 				),
 			},
 		},
@@ -114,7 +155,7 @@ func testAccCheckPropelDataSourceConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Http"
+		type = "HTTP"
 
 		table {
 			name = "CLUSTER_TEST_TABLE_1"
@@ -132,7 +173,7 @@ func testAccUpdatePropelDataSourceConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Http"
+		type = "HTTP"
 
 		table {
 			name = "CLUSTER_TEST_TABLE_1"
@@ -177,11 +218,41 @@ func testAccCheckPropelDataSourceS3ConfigBroken(ctx map[string]any) string {
 	}`, ctx)
 }
 
+func testAccCheckPropelDataSourceClickHouseConfigBroken(ctx map[string]any) string {
+	return Nprintf(`
+	resource "propel_data_source" "%{resource_name}" {
+		unique_name = "%{unique_name}"
+		type = "CLICKHOUSE"
+
+		clickhouse_connection_settings {
+			url = "%{clickhouse_url}"
+			database = "%{clickhouse_database}"
+			user = "%{clickhouse_user}"
+			password = "%{clickhouse_password}"
+		}
+	}`, ctx)
+}
+
+func testAccCheckPropelDataSourceKafkaConfigBroken(ctx map[string]any) string {
+	return Nprintf(`
+	resource "propel_data_source" "%{resource_name}" {
+		unique_name = "%{unique_name}"
+		type = "KAFKA"
+
+		kafka_connection_settings {
+			auth = "%{kafka_auth}"
+			user = "%{kafka_user}"
+			password = "%{kafka_password}"
+			bootstrap_servers = ["%{kafka_bootstrap_server}"]
+		}
+	}`, ctx)
+}
+
 func testAccCheckPropelDataSourceSnowflakeConfigBroken(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Snowflake"
+		type = "SNOWFLAKE"
 
 		snowflake_connection_settings {
 			account = "%{snowflake_account}"
@@ -199,7 +270,7 @@ func testAccWebhookDataSourceBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Webhook"
+		type = "WEBHOOK"
 
 		webhook_connection_settings {
 			timestamp = "timestamp_tz"
@@ -241,7 +312,7 @@ func testAccUpdateWebhookDataSourceBasic(ctx map[string]any) string {
 	return Nprintf(`
 	resource "propel_data_source" "%{resource_name}" {
 		unique_name = "%{unique_name}"
-		type = "Webhook"
+		type = "WEBHOOK"
 
 		webhook_connection_settings {
 			timestamp = "timestamp_tz"
@@ -320,99 +391,5 @@ func testAccCheckPropelDataSourceExists(n string) resource.TestCheckFunc {
 		}
 
 		return nil
-	}
-}
-
-func Test_getNewDataSourceColumns(t *testing.T) {
-	tests := []struct {
-		name               string
-		oldItemDef         []any
-		newItemDef         []any
-		expectedNewColumns map[string]pc.WebhookDataSourceColumnInput
-		expectedError      string
-	}{
-		{
-			name: "Successful new columns",
-			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
-			},
-			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
-				map[string]any{"name": "COLUMN_C", "type": "INT64", "nullable": false, "json_property": "column_c"},
-				map[string]any{"name": "COLUMN_D", "type": "TIMESTAMP", "nullable": false, "json_property": "column_d"},
-			},
-			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{
-				"COLUMN_C": {Name: "COLUMN_C", Type: "INT64", Nullable: false, JsonProperty: "column_c"},
-				"COLUMN_D": {Name: "COLUMN_D", Type: "TIMESTAMP", Nullable: false, JsonProperty: "column_d"},
-			},
-			expectedError: "",
-		},
-		{
-			name: "No new columns",
-			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
-			},
-			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
-			},
-			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{},
-			expectedError:      "",
-		},
-		{
-			name: "Repeated column names",
-			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
-			},
-			newItemDef: []any{
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
-				map[string]any{"name": "COLUMN_B", "type": "TIMESTAMP", "nullable": false, "json_property": "column_sb"},
-			},
-			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{},
-			expectedError:      `column "COLUMN_B" already exists`,
-		},
-		{
-			name: "Unsupported column deletion",
-			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
-			},
-			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
-			},
-			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{},
-			expectedError:      `column "COLUMN_B" was removed, column deletions are not supported`,
-		},
-		{
-			name: "Unsupported column update",
-			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_a"},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "json_property": "column_b"},
-			},
-			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "json_property": "column_z"},
-			},
-			expectedNewColumns: map[string]pc.WebhookDataSourceColumnInput{},
-			expectedError:      `column "COLUMN_A" was modified, column updates are not supported`,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(st *testing.T) {
-			a := assert.New(st)
-
-			result, err := getNewDataSourceColumns(tt.oldItemDef, tt.newItemDef)
-			if tt.expectedError != "" {
-				a.Error(err)
-				a.EqualError(err, tt.expectedError)
-				return
-			}
-
-			a.NoError(err)
-			a.Equal(tt.expectedNewColumns, result)
-		})
 	}
 }

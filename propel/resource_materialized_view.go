@@ -6,8 +6,8 @@ import (
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
+	"github.com/propeldata/terraform-provider-propel/propel/internal"
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
@@ -97,65 +97,7 @@ func resourceMaterializedView() *schema.Resource {
 							Optional:    true,
 							Description: "Enables or disables access control for the Data Pool. If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.",
 						},
-						"table_settings": {
-							Type:        schema.TypeList,
-							Optional:    true,
-							Description: "Override the Data Pool's table settings. These describe how the Data Pool's table is created in ClickHouse, and a default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if any. You can override these defaults in order to specify a custom table engine, custom ORDER BY, etc.",
-							MaxItems:    1,
-							Elem: &schema.Resource{
-								Schema: map[string]*schema.Schema{
-									"engine": {
-										Type:        schema.TypeList,
-										Optional:    true,
-										Description: "The ClickHouse table engine for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.",
-										MaxItems:    1,
-										Elem: &schema.Resource{
-											Schema: map[string]*schema.Schema{
-												"type": {
-													Type:     schema.TypeString,
-													Optional: true,
-													ValidateFunc: validation.StringInSlice([]string{
-														"MERGE_TREE",
-														"REPLACING_MERGE_TREE",
-														"SUMMING_MERGE_TREE",
-														"AGGREGATING_MERGE_TREE",
-													}, true),
-												},
-												"ver": {
-													Type:        schema.TypeString,
-													Optional:    true,
-													Description: "The `ver` parameter to the ReplacingMergeTree table engine.",
-												},
-												"columns": {
-													Type:        schema.TypeSet,
-													Optional:    true,
-													Description: "The columns argument for the SummingMergeTree table engine.",
-													Elem:        &schema.Schema{Type: schema.TypeString},
-												},
-											},
-										},
-									},
-									"partition_by": {
-										Type:        schema.TypeSet,
-										Optional:    true,
-										Description: "The PARTITION BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.",
-										Elem:        &schema.Schema{Type: schema.TypeString},
-									},
-									"primary_key": {
-										Type:        schema.TypeSet,
-										Optional:    true,
-										Description: "The PRIMARY KEY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.",
-										Elem:        &schema.Schema{Type: schema.TypeString},
-									},
-									"order_by": {
-										Type:        schema.TypeSet,
-										Optional:    true,
-										Description: "The ORDER BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.",
-										Elem:        &schema.Schema{Type: schema.TypeString},
-									},
-								},
-							},
-						},
+						"table_settings": internal.TableSettingsSchema(),
 					},
 				},
 			},
@@ -226,90 +168,14 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 		}
 
 		if t, ok := attrs["table_settings"]; ok && len(t.([]any)) == 1 {
-			destination.NewDataPool.TableSettings = &pc.TableSettingsInput{}
-			settings := attrs["table_settings"].([]any)[0].(map[string]any)
+			settings := t.([]any)[0].(map[string]any)
 
-			if t, ok := settings["engine"]; ok && len(t.([]any)) == 1 {
-				destination.NewDataPool.TableSettings.Engine = &pc.TableEngineInput{}
-				engine := settings["engine"].([]any)[0].(map[string]any)
-				engineType := pc.TableEngineType(engine["type"].(string))
-
-				switch engine["type"].(string) {
-				case "MERGE_TREE":
-					if _, ok := engine["ver"]; ok {
-						diag.Errorf("%q field should not be set for MERGE_TREE engine", "ver")
-					}
-
-					if _, ok := engine["columns"]; ok {
-						diag.Errorf("%q field should not be set for MERGE_TREE engine", "columns")
-					}
-
-					destination.NewDataPool.TableSettings.Engine.MergeTree = &pc.MergeTreeTableEngineInput{Type: &engineType}
-				case "REPLACING_MERGE_TREE":
-					if _, ok := engine["columns"]; ok {
-						diag.Errorf("%q field should not be set for REPLACING_MERGE_TREE engine", "columns")
-					}
-
-					destination.NewDataPool.TableSettings.Engine.ReplacingMergeTree = &pc.ReplacingMergeTreeTableEngineInput{Type: &engineType}
-
-					if v, ok := engine["ver"]; ok && v.(string) != "" {
-						ver := engine["ver"].(string)
-						destination.NewDataPool.TableSettings.Engine.ReplacingMergeTree.Ver = &ver
-					}
-				case "SUMMING_MERGE_TREE":
-					if _, ok := engine["ver"]; ok {
-						diag.Errorf("%q field should not be set for SUMMING_MERGE_TREE engine", "ver")
-					}
-
-					destination.NewDataPool.TableSettings.Engine.SummingMergeTree = &pc.SummingMergeTreeTableEngineInput{Type: &engineType}
-
-					if v, ok := engine["columns"]; ok && len(v.(*schema.Set).List()) > 0 {
-						columns := make([]string, 0)
-						for _, col := range engine["columns"].(*schema.Set).List() {
-							columns = append(columns, col.(string))
-						}
-
-						destination.NewDataPool.TableSettings.Engine.SummingMergeTree.Columns = columns
-					}
-				case "AGGREGATING_MERGE_TREE":
-					if _, ok := engine["ver"]; ok {
-						diag.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "ver")
-					}
-
-					if _, ok := engine["columns"]; ok {
-						diag.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "columns")
-					}
-
-					destination.NewDataPool.TableSettings.Engine.AggregatingMergeTree = &pc.AggregatingMergeTreeTableEngineInput{Type: &engineType}
-				}
+			s, err := internal.BuildTableSettingsInput(settings)
+			if err != nil {
+				return diag.FromErr(err)
 			}
 
-			if v, ok := settings["partition_by"]; ok && len(v.(*schema.Set).List()) > 0 {
-				partitions := make([]string, 0)
-				for _, part := range settings["partition_by"].(*schema.Set).List() {
-					partitions = append(partitions, part.(string))
-				}
-
-				destination.NewDataPool.TableSettings.PartitionBy = partitions
-			}
-
-			if v, ok := settings["primary_key"]; ok && len(v.(*schema.Set).List()) > 0 {
-				primaryKeys := make([]string, 0)
-				for _, k := range settings["primary_key"].(*schema.Set).List() {
-					primaryKeys = append(primaryKeys, k.(string))
-				}
-
-				destination.NewDataPool.TableSettings.PrimaryKey = primaryKeys
-			}
-
-			if v, ok := settings["order_by"]; ok && len(v.(*schema.Set).List()) > 0 {
-				orderBy := make([]string, 0)
-				for _, k := range settings["order_by"].(*schema.Set).List() {
-					orderBy = append(orderBy, k.(string))
-				}
-
-				destination.NewDataPool.TableSettings.OrderBy = orderBy
-			}
+			destination.NewDataPool.TableSettings = s
 		}
 	}
 
@@ -331,6 +197,13 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 	d.SetId(response.CreateMaterializedView.MaterializedView.Id)
 
 	resourceMaterializedViewRead(ctx, d, meta)
+
+	timeout := d.Timeout(schema.TimeoutCreate)
+	dataPoolId := d.Get("destination").(string)
+
+	if err := internal.WaitForDataPoolLive(ctx, c, dataPoolId, timeout); err != nil {
+		return diag.FromErr(err)
+	}
 
 	return nil
 }
@@ -411,9 +284,21 @@ func resourceMaterializedViewUpdate(ctx context.Context, d *schema.ResourceData,
 func resourceMaterializedViewDelete(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	_, err := pc.DeleteMaterializedView(ctx, c, d.Id())
-	if err != nil {
+	if _, err := pc.DeleteMaterializedView(ctx, c, d.Id()); err != nil {
 		return diag.FromErr(err)
+	}
+
+	// If Materialized View created a Data Pool, ensure it is deleted.
+	if _, exists := d.GetOk("new_data_pool.0"); exists {
+		dataPoolID := d.Get("destination").(string)
+		if _, err := pc.DeleteDataPool(ctx, c, dataPoolID); err != nil {
+			return diag.FromErr(err)
+		}
+
+		timeout := d.Timeout(schema.TimeoutDelete)
+		if err := internal.WaitForDataPoolDeletion(ctx, c, dataPoolID, timeout); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	d.SetId("")

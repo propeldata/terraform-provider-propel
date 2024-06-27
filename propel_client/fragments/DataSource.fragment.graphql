@@ -10,6 +10,9 @@ fragment DataSourceData on DataSource {
         nodes {
             id
             accessControlEnabled
+            timestamp {
+                ...TimestampData
+            }
         }
     }
     connectionSettings {
@@ -63,9 +66,25 @@ fragment DataSourceData on DataSource {
                 nullable
             }
             tenant
-            timestamp
             uniqueId
+            tableSettings {
+                ...TableSettingsData
+            }
             webhookUrl
+        }
+        ... on KafkaConnectionSettings {
+            auth
+            user
+            password
+            tls
+            bootstrapServers
+        }
+        ... on ClickHouseConnectionSettings {
+            url
+            database
+            user
+            password
+            readonly
         }
     }
     tables (first: 100) {

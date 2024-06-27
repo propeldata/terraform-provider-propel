@@ -1,0 +1,21 @@
+fragment TableSettingsData on TableSettings {
+    engine {
+        ... on MergeTreeTableEngine {
+            type
+        }
+        ... on ReplacingMergeTreeTableEngine {
+            type
+            ver
+        }
+        ... on SummingMergeTreeTableEngine {
+            type
+            columns
+        }
+        ... on AggregatingMergeTreeTableEngine {
+            type
+        }
+    }
+    partitionBy
+    primaryKey
+    orderBy
+}

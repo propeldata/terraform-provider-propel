@@ -1,0 +1,7 @@
+mutation CreateClickHouseDataSource($input: CreateClickHouseDataSourceInput!) {
+    createClickHouseDataSource(input: $input) {
+        dataSource {
+            ...DataSourceData
+        }
+    }
+}

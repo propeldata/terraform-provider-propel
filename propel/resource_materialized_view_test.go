@@ -40,7 +40,7 @@ func testAccCheckPropelMaterializedViewConfigBasic(ctx map[string]any) string {
 	return Nprintf(`
 		resource "propel_data_source" "terraform_mv_source_dp" {
 			unique_name = "terraform-mv-source-dp"
-			type = "Webhook"
+			type = "WEBHOOK"
 	
 			webhook_connection_settings {
 				timestamp = "timestamp_tz"
@@ -112,12 +112,6 @@ func testAccCheckPropelMaterializedViewDestroy(s *terraform.State) error {
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "propel_materialized_view" {
 			continue
-		}
-
-		destinationDataPool := rs.Primary.Attributes["destination"]
-
-		if _, err := pc.DeleteDataPool(context.Background(), c, destinationDataPool); err != nil {
-			return err
 		}
 
 		materializedViewID := rs.Primary.ID

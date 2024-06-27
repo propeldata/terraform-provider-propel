@@ -530,7 +530,7 @@ type InternalConnectionSettings {
   _: Boolean
 }
 
-union ConnectionSettings = SnowflakeConnectionSettings | InternalConnectionSettings | HttpConnectionSettings | KafkaConnectionSettings | S3ConnectionSettings | WebhookConnectionSettings
+union ConnectionSettings = SnowflakeConnectionSettings | InternalConnectionSettings | ClickHouseConnectionSettings | HttpConnectionSettings | KafkaConnectionSettings | S3ConnectionSettings | WebhookConnectionSettings
 
 """The Snowflake Data Source connection settings."""
 type SnowflakeConnectionSettings {
@@ -878,7 +878,7 @@ type DataPool implements Node & Common {
   "The Data Pool's tenant ID, if configured."
   tenant: Tenant @deprecated(reason: "Will be removed; use Data Pool Access Policies instead")
   "The Data Pool's unique ID column. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated within the Data Pool."
-  uniqueId: UniqueId
+  uniqueId: UniqueId @deprecated(reason: "Will be removed; use Table Settings to define the primary key.")
   "The number of records in the Data Pool."
   recordCount: String
   "The amount of storage in terabytes used by the Data Pool."
@@ -1220,7 +1220,7 @@ input CreateMaterializedViewDestinationNewDataPoolInput {
   """
   Optionally specify the Data Pool's unique ID. This will influence the Data Pool's engine settings.
   """
-  uniqueId: UniqueIdInput
+  uniqueId: UniqueIdInput @deprecated(reason: "Will be removed; use Table Settings to define the primary key.")
   """
   Enables or disables access control for the Data Pool.
 
@@ -1476,7 +1476,7 @@ input CreateDataPoolInputV2 {
   "The Data Pool's description."
   description: String
   "The list of columns."
-  columns: [DataPoolColumnInput!]!
+  columns: [DataPoolColumnInput!]
   "The Data Pool's optional tenant ID column. The tenant ID column is used to control access to your data with access policies."
   tenant: TenantInput @deprecated(reason: "Will be removed; use Data Pool Access Policies instead")
   """
@@ -1512,6 +1512,16 @@ input modifyDataPoolInput {
   dataRetentionInDays: Int
   """ The Data Pool's new syncing settings. """
   syncing: DataPoolSyncingInput
+  """
+  The table's primary timestamp column.
+
+  Propel uses the primary timestamp to order and partition your data in Data Pools. It's part of what makes Propel
+  fast for larger data sets. It will also serve as the time dimension for your Metrics.
+
+  If you do not provide a primary timestamp column, you will need to supply an alternate timestamp when querying your
+  Data Pool or its Metrics using the TimeRangeInput.
+  """
+  timestamp: TimestampInput
   """
   Enables or disables access control for the Data Pool.
 
@@ -3573,6 +3583,18 @@ type Mutation {
   """
   deleteMaterializedView(id: ID!): ID
   """
+  This mutation creates a new ClickHouse Data Source.
+
+  The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+  """
+  createClickHouseDataSource(input: CreateClickHouseDataSourceInput!): DataSourceResponse!
+  """
+  This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
+
+  If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+  """
+  modifyClickHouseDataSource(input: ModifyClickHouseDataSourceInput!): DataSourceResponse!
+  """
   Creates a new HTTP Data Source from the given settings.
 
   Returns the newly created Data Source (or an error message if creating the Data Source fails).
@@ -4389,6 +4411,82 @@ type UpdateDataPoolRecordsJobEdge {
   node: UpdateDataPoolRecordsJob!
 }
 
+"""The ClickHouse Data Source connection settings."""
+type ClickHouseConnectionSettings {
+  """Which database to connect to"""
+  database: String!
+  """The password for the provided user"""
+  password: String!
+  """
+  Whether the user has readonly permissions or not for querying ClickHouse
+  """
+  readonly: Boolean
+  """The URL where the ClickHouse host is listening to HTTP[S] connections"""
+  url: String!
+  """The user for authenticating against the ClickHouse host"""
+  user: String!
+}
+
+"""The ClickHouse Data Source connection settings."""
+input ClickHouseConnectionSettingsInput {
+  """Which database to connect to"""
+  database: String!
+  """The password for the provided user"""
+  password: String!
+  """The URL where the ClickHouse host is listening to HTTP[S] connections"""
+  url: String!
+  """The user for authenticating against the ClickHouse host"""
+  user: String!
+}
+
+input CreateClickHouseDataSourceInput {
+  """The ClickHouse Data Source's connection settings"""
+  connectionSettings: ClickHouseConnectionSettingsInput!
+  """The ClickHouse Data Source's description."""
+  description: String
+  """
+  The ClickHouse Data Source's unique name. If not specified, Propel will set the ID as unique name.
+  """
+  uniqueName: String
+}
+
+input ModifyClickHouseDataSourceInput {
+  """
+  The ClickHouse Data Source's new connection settings. If not provided this property will not be modified.
+  """
+  connectionSettings: PartialClickHouseConnectionSettingsInput
+  """
+  The ClickHouse Data Source's new description. If not provided this property will not be modified.
+  """
+  description: String
+  """The ID or unique name of the ClickHouse Data Source to modify."""
+  idOrUniqueName: idOrUniqueName!
+  """
+  The ClickHouse Data Source's new unique name. If not provided this property will not be modified.
+  """
+  uniqueName: String
+}
+
+"""The ClickHouse Data Source connection settings."""
+input PartialClickHouseConnectionSettingsInput {
+  """
+  Which database to connect to If not provided this property will not be modified.
+  """
+  database: String
+  """
+  The password for the provided user If not provided this property will not be modified.
+  """
+  password: String
+  """
+  The URL where the ClickHouse host is listening to HTTP[S] connections If not provided this property will not be modified.
+  """
+  url: String
+  """
+  The user for authenticating against the ClickHouse host If not provided this property will not be modified.
+  """
+  user: String
+}
+
 input CreateHttpDataSourceInput {
   """The HTTP Data Source's connection settings"""
   connectionSettings: HttpConnectionSettingsInput!
@@ -4668,6 +4766,11 @@ input PartialWebhookConnectionSettingsInput {
 """The Webhook Data Source connection settings."""
 type WebhookConnectionSettings {
   """
+  Enables or disables access control for the Data Pool.
+  If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.
+  """
+  accessControlEnabled: Boolean
+  """
   The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
   """
   basicAuth: HttpBasicAuthSettings
@@ -4680,19 +4783,24 @@ type WebhookConnectionSettings {
   """
   tableSettings: TableSettings
   """The tenant ID column, if any."""
-  tenant: String
+  tenant: String @deprecated(reason: "Will be removed; use Data Pool Access Policies instead.")
   """The primary timestamp column, if any."""
   timestamp: String
   """
   The unique ID column, if any. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
   """
-  uniqueId: String
+  uniqueId: String @deprecated(reason: "Will be removed; use Table Settings to define the primary key.")
   """The Webhook URL for posting JSON events"""
   webhookUrl: String!
 }
 
 """The Webhook Data Source connection settings."""
 input WebhookConnectionSettingsInput {
+  """
+  Enables or disables access control for the Data Pool.
+  If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.
+  """
+  accessControlEnabled: Boolean
   """
   The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
   """

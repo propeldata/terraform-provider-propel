@@ -281,6 +281,30 @@ type BackfillOptionsInput struct {
 // GetBackfill returns BackfillOptionsInput.Backfill, and is useful for accessing the field via an interface.
 func (v *BackfillOptionsInput) GetBackfill() *bool { return v.Backfill }
 
+// The ClickHouse Data Source connection settings.
+type ClickHouseConnectionSettingsInput struct {
+	// Which database to connect to
+	Database string `json:"database"`
+	// The password for the provided user
+	Password string `json:"password"`
+	// The URL where the ClickHouse host is listening to HTTP[S] connections
+	Url string `json:"url"`
+	// The user for authenticating against the ClickHouse host
+	User string `json:"user"`
+}
+
+// GetDatabase returns ClickHouseConnectionSettingsInput.Database, and is useful for accessing the field via an interface.
+func (v *ClickHouseConnectionSettingsInput) GetDatabase() string { return v.Database }
+
+// GetPassword returns ClickHouseConnectionSettingsInput.Password, and is useful for accessing the field via an interface.
+func (v *ClickHouseConnectionSettingsInput) GetPassword() string { return v.Password }
+
+// GetUrl returns ClickHouseConnectionSettingsInput.Url, and is useful for accessing the field via an interface.
+func (v *ClickHouseConnectionSettingsInput) GetUrl() string { return v.Url }
+
+// GetUser returns ClickHouseConnectionSettingsInput.User, and is useful for accessing the field via an interface.
+func (v *ClickHouseConnectionSettingsInput) GetUser() string { return v.User }
+
 // ColumnData includes the GraphQL fields of Column requested by the fragment ColumnData.
 // The GraphQL type's documentation follows.
 //
@@ -344,11 +368,11 @@ const (
 //
 // CommonData is implemented by the following types:
 // CommonDataApplication
-// CommonDataDataSource
 // CommonDataDataPool
+// CommonDataDataPoolAccessPolicy
+// CommonDataDataSource
 // CommonDataMaterializedView
 // CommonDataMetric
-// CommonDataDataPoolAccessPolicy
 type CommonData interface {
 	implementsGraphQLInterfaceCommonData()
 	// GetUniqueName returns the interface-field "uniqueName" from its implementation.
@@ -394,11 +418,11 @@ type CommonData interface {
 }
 
 func (v *CommonDataApplication) implementsGraphQLInterfaceCommonData()          {}
-func (v *CommonDataDataSource) implementsGraphQLInterfaceCommonData()           {}
 func (v *CommonDataDataPool) implementsGraphQLInterfaceCommonData()             {}
+func (v *CommonDataDataPoolAccessPolicy) implementsGraphQLInterfaceCommonData() {}
+func (v *CommonDataDataSource) implementsGraphQLInterfaceCommonData()           {}
 func (v *CommonDataMaterializedView) implementsGraphQLInterfaceCommonData()     {}
 func (v *CommonDataMetric) implementsGraphQLInterfaceCommonData()               {}
-func (v *CommonDataDataPoolAccessPolicy) implementsGraphQLInterfaceCommonData() {}
 
 func __unmarshalCommonData(b []byte, v *CommonData) error {
 	if string(b) == "null" {
@@ -417,20 +441,20 @@ func __unmarshalCommonData(b []byte, v *CommonData) error {
 	case "Application":
 		*v = new(CommonDataApplication)
 		return json.Unmarshal(b, *v)
-	case "DataSource":
-		*v = new(CommonDataDataSource)
-		return json.Unmarshal(b, *v)
 	case "DataPool":
 		*v = new(CommonDataDataPool)
+		return json.Unmarshal(b, *v)
+	case "DataPoolAccessPolicy":
+		*v = new(CommonDataDataPoolAccessPolicy)
+		return json.Unmarshal(b, *v)
+	case "DataSource":
+		*v = new(CommonDataDataSource)
 		return json.Unmarshal(b, *v)
 	case "MaterializedView":
 		*v = new(CommonDataMaterializedView)
 		return json.Unmarshal(b, *v)
 	case "Metric":
 		*v = new(CommonDataMetric)
-		return json.Unmarshal(b, *v)
-	case "DataPoolAccessPolicy":
-		*v = new(CommonDataDataPoolAccessPolicy)
 		return json.Unmarshal(b, *v)
 	case "":
 		return fmt.Errorf(
@@ -453,20 +477,28 @@ func __marshalCommonData(v *CommonData) ([]byte, error) {
 			*CommonDataApplication
 		}{typename, v}
 		return json.Marshal(result)
-	case *CommonDataDataSource:
-		typename = "DataSource"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*CommonDataDataSource
-		}{typename, v}
-		return json.Marshal(result)
 	case *CommonDataDataPool:
 		typename = "DataPool"
 
 		result := struct {
 			TypeName string `json:"__typename"`
 			*CommonDataDataPool
+		}{typename, v}
+		return json.Marshal(result)
+	case *CommonDataDataPoolAccessPolicy:
+		typename = "DataPoolAccessPolicy"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CommonDataDataPoolAccessPolicy
+		}{typename, v}
+		return json.Marshal(result)
+	case *CommonDataDataSource:
+		typename = "DataSource"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CommonDataDataSource
 		}{typename, v}
 		return json.Marshal(result)
 	case *CommonDataMaterializedView:
@@ -483,14 +515,6 @@ func __marshalCommonData(v *CommonData) ([]byte, error) {
 		result := struct {
 			TypeName string `json:"__typename"`
 			*CommonDataMetric
-		}{typename, v}
-		return json.Marshal(result)
-	case *CommonDataDataPoolAccessPolicy:
-		typename = "DataPoolAccessPolicy"
-
-		result := struct {
-			TypeName string `json:"__typename"`
-			*CommonDataDataPoolAccessPolicy
 		}{typename, v}
 		return json.Marshal(result)
 	case nil:
@@ -1235,6 +1259,253 @@ type CreateAverageMetricResponse struct {
 // GetCreateAverageMetric returns CreateAverageMetricResponse.CreateAverageMetric, and is useful for accessing the field via an interface.
 func (v *CreateAverageMetricResponse) GetCreateAverageMetric() *CreateAverageMetricCreateAverageMetricMetricResponse {
 	return v.CreateAverageMetric
+}
+
+// CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse) GetDataSource() *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetDataPools returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
+// GetConnectionSettings returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalCreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalCreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+type CreateClickHouseDataSourceInput struct {
+	// The ClickHouse Data Source's connection settings
+	ConnectionSettings *ClickHouseConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The ClickHouse Data Source's description.
+	Description *string `json:"description"`
+	// The ClickHouse Data Source's unique name. If not specified, Propel will set the ID as unique name.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns CreateClickHouseDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceInput) GetConnectionSettings() *ClickHouseConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns CreateClickHouseDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetUniqueName returns CreateClickHouseDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// CreateClickHouseDataSourceResponse is returned by CreateClickHouseDataSource on success.
+type CreateClickHouseDataSourceResponse struct {
+	// This mutation creates a new ClickHouse Data Source.
+	//
+	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+	CreateClickHouseDataSource *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse `json:"createClickHouseDataSource"`
+}
+
+// GetCreateClickHouseDataSource returns CreateClickHouseDataSourceResponse.CreateClickHouseDataSource, and is useful for accessing the field via an interface.
+func (v *CreateClickHouseDataSourceResponse) GetCreateClickHouseDataSource() *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse {
+	return v.CreateClickHouseDataSource
 }
 
 // CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
@@ -2309,11 +2580,6 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetSetupTasks()
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
-	return v.DataPoolData.Syncs
-}
-
 // GetDataPoolAccessPolicies returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -2322,6 +2588,11 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetDataPoolAcce
 // GetAccessControlEnabled returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetAccessControlEnabled() bool {
 	return v.DataPoolData.AccessControlEnabled
+}
+
+// GetTableSettings returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
 }
 
 // GetUniqueName returns CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool.UniqueName, and is useful for accessing the field via an interface.
@@ -2414,11 +2685,11 @@ type __premarshalCreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -2460,9 +2731,9 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool) __premarshalJSO
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -2804,6 +3075,253 @@ type CreateHttpDataSourceResponse struct {
 // GetCreateHttpDataSource returns CreateHttpDataSourceResponse.CreateHttpDataSource, and is useful for accessing the field via an interface.
 func (v *CreateHttpDataSourceResponse) GetCreateHttpDataSource() *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse {
 	return v.CreateHttpDataSource
+}
+
+// CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse) GetDataSource() *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetDataPools returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
+// GetConnectionSettings returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalCreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalCreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+type CreateKafkaDataSourceInput struct {
+	// The Kafka Data Source's connection settings
+	ConnectionSettings *KafkaConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The Kafka Data Source's description.
+	Description *string `json:"description"`
+	// The Kafka Data Source's unique name. If not specified, Propel will set the ID as unique name.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns CreateKafkaDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceInput) GetConnectionSettings() *KafkaConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns CreateKafkaDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetUniqueName returns CreateKafkaDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// CreateKafkaDataSourceResponse is returned by CreateKafkaDataSource on success.
+type CreateKafkaDataSourceResponse struct {
+	// This mutation creates a new Kafka Data Source.
+	//
+	// The mutation returns the newly created Data Source (or an error message if creating the Data Source fails).
+	CreateKafkaDataSource *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse `json:"createKafkaDataSource"`
+}
+
+// GetCreateKafkaDataSource returns CreateKafkaDataSourceResponse.CreateKafkaDataSource, and is useful for accessing the field via an interface.
+func (v *CreateKafkaDataSourceResponse) GetCreateKafkaDataSource() *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse {
+	return v.CreateKafkaDataSource
 }
 
 // CreateMaterializedViewCreateMaterializedViewMaterializedViewResponse includes the requested fields of the GraphQL type MaterializedViewResponse.
@@ -5495,11 +6013,6 @@ func (v *DataPoolByNameDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPo
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns DataPoolByNameDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolByNameDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
-	return v.DataPoolData.Syncs
-}
-
 // GetDataPoolAccessPolicies returns DataPoolByNameDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -5508,6 +6021,11 @@ func (v *DataPoolByNameDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPo
 // GetAccessControlEnabled returns DataPoolByNameDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *DataPoolByNameDataPool) GetAccessControlEnabled() bool {
 	return v.DataPoolData.AccessControlEnabled
+}
+
+// GetTableSettings returns DataPoolByNameDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *DataPoolByNameDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
 }
 
 // GetUniqueName returns DataPoolByNameDataPool.UniqueName, and is useful for accessing the field via an interface.
@@ -5600,11 +6118,11 @@ type __premarshalDataPoolByNameDataPool struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -5646,9 +6164,9 @@ func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByName
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -5744,8 +6262,6 @@ type DataPoolData struct {
 	AvailableMeasures *DataPoolDataAvailableMeasuresDataPoolColumnConnection `json:"availableMeasures"`
 	// A list of setup tasks performed on the Data Pool during its most recent setup attempt.
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
-	// The list of Syncs of the Data Pool.
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
 	// A paginated list of Data Pool Access Policies available on the Data Pool.
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 	// Whether the Data Pool has access control enabled or not.
@@ -5753,6 +6269,8 @@ type DataPoolData struct {
 	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
 	// Policies in order to query the Data Pool and its Metrics.
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+	// The Data Pool's table settings.
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
 }
 
 // GetId returns DataPoolData.Id, and is useful for accessing the field via an interface.
@@ -5795,9 +6313,6 @@ func (v *DataPoolData) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetupTas
 	return v.SetupTasks
 }
 
-// GetSyncs returns DataPoolData.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolData) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.Syncs }
-
 // GetDataPoolAccessPolicies returns DataPoolData.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolAccessPolicies
@@ -5805,6 +6320,9 @@ func (v *DataPoolData) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPo
 
 // GetAccessControlEnabled returns DataPoolData.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetAccessControlEnabled() bool { return v.AccessControlEnabled }
+
+// GetTableSettings returns DataPoolData.TableSettings, and is useful for accessing the field via an interface.
+func (v *DataPoolData) GetTableSettings() *DataPoolDataTableSettings { return v.TableSettings }
 
 // GetUniqueName returns DataPoolData.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolData) GetUniqueName() string { return v.CommonDataDataPool.UniqueName }
@@ -5882,11 +6400,11 @@ type __premarshalDataPoolData struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -5928,9 +6446,9 @@ func (v *DataPoolData) __premarshalJSON() (*__premarshalDataPoolData, error) {
 	retval.Syncing = v.Syncing
 	retval.AvailableMeasures = v.AvailableMeasures
 	retval.SetupTasks = v.SetupTasks
-	retval.Syncs = v.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.AccessControlEnabled
+	retval.TableSettings = v.TableSettings
 	retval.UniqueName = v.CommonDataDataPool.UniqueName
 	retval.Description = v.CommonDataDataPool.Description
 	retval.Account = v.CommonDataDataPool.Account
@@ -6530,9 +7048,6 @@ func (v *DataPoolDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSetu
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns DataPoolDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
-
 // GetDataPoolAccessPolicies returns DataPoolDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -6540,6 +7055,11 @@ func (v *DataPoolDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAcce
 
 // GetAccessControlEnabled returns DataPoolDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetAccessControlEnabled() bool { return v.DataPoolData.AccessControlEnabled }
+
+// GetTableSettings returns DataPoolDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *DataPoolDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
+}
 
 // GetUniqueName returns DataPoolDataPool.UniqueName, and is useful for accessing the field via an interface.
 func (v *DataPoolDataPool) GetUniqueName() string {
@@ -6629,11 +7149,11 @@ type __premarshalDataPoolDataPool struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -6675,9 +7195,9 @@ func (v *DataPoolDataPool) __premarshalJSON() (*__premarshalDataPoolDataPool, er
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -6819,105 +7339,41 @@ func (v *DataPoolDataSyncingDataPoolSyncing) __premarshalJSON() (*__premarshalDa
 	return &retval, nil
 }
 
-// DataPoolDataSyncsSyncConnection includes the requested fields of the GraphQL type SyncConnection.
+// DataPoolDataTableSettings includes the requested fields of the GraphQL type TableSettings.
 // The GraphQL type's documentation follows.
 //
-// The Sync connection object.
+// A Data Pool's table settings.
 //
-// Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
-type DataPoolDataSyncsSyncConnection struct {
-	// The Sync connection's nodes.
-	Nodes []*DataPoolDataSyncsSyncConnectionNodesSync `json:"nodes"`
+// These describe how the Data Pool's table is created in ClickHouse.
+type DataPoolDataTableSettings struct {
+	TableSettingsData `json:"-"`
 }
 
-// GetNodes returns DataPoolDataSyncsSyncConnection.Nodes, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnection) GetNodes() []*DataPoolDataSyncsSyncConnectionNodesSync {
-	return v.Nodes
+// GetEngine returns DataPoolDataTableSettings.Engine, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTableSettings) GetEngine() *TableSettingsDataEngineTableEngine {
+	return v.TableSettingsData.Engine
 }
 
-// DataPoolDataSyncsSyncConnectionNodesSync includes the requested fields of the GraphQL type Sync.
-// The GraphQL type's documentation follows.
-//
-// The Sync object.
-//
-// This represents the process of syncing data from your Data Source (for example, a Snowflake data warehouse) to your Data Pool.
-type DataPoolDataSyncsSyncConnectionNodesSync struct {
-	SyncData `json:"-"`
-}
+// GetPartitionBy returns DataPoolDataTableSettings.PartitionBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTableSettings) GetPartitionBy() []string { return v.TableSettingsData.PartitionBy }
 
-// GetId returns DataPoolDataSyncsSyncConnectionNodesSync.Id, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetId() string { return v.SyncData.Id }
+// GetPrimaryKey returns DataPoolDataTableSettings.PrimaryKey, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTableSettings) GetPrimaryKey() []string { return v.TableSettingsData.PrimaryKey }
 
-// GetStatus returns DataPoolDataSyncsSyncConnectionNodesSync.Status, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetStatus() SyncStatus { return v.SyncData.Status }
+// GetOrderBy returns DataPoolDataTableSettings.OrderBy, and is useful for accessing the field via an interface.
+func (v *DataPoolDataTableSettings) GetOrderBy() []string { return v.TableSettingsData.OrderBy }
 
-// GetNewRecords returns DataPoolDataSyncsSyncConnectionNodesSync.NewRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetNewRecords() *string {
-	return v.SyncData.NewRecords
-}
-
-// GetUpdatedRecords returns DataPoolDataSyncsSyncConnectionNodesSync.UpdatedRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetUpdatedRecords() *string {
-	return v.SyncData.UpdatedRecords
-}
-
-// GetDeletedRecords returns DataPoolDataSyncsSyncConnectionNodesSync.DeletedRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetDeletedRecords() *string {
-	return v.SyncData.DeletedRecords
-}
-
-// GetInvalidRecords returns DataPoolDataSyncsSyncConnectionNodesSync.InvalidRecords, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetInvalidRecords() *string {
-	return v.SyncData.InvalidRecords
-}
-
-// GetStartedAt returns DataPoolDataSyncsSyncConnectionNodesSync.StartedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetStartedAt() *time.Time {
-	return v.SyncData.StartedAt
-}
-
-// GetSucceededAt returns DataPoolDataSyncsSyncConnectionNodesSync.SucceededAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetSucceededAt() *time.Time {
-	return v.SyncData.SucceededAt
-}
-
-// GetFailedAt returns DataPoolDataSyncsSyncConnectionNodesSync.FailedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetFailedAt() *time.Time {
-	return v.SyncData.FailedAt
-}
-
-// GetError returns DataPoolDataSyncsSyncConnectionNodesSync.Error, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetError() *SyncDataError { return v.SyncData.Error }
-
-// GetCreatedAt returns DataPoolDataSyncsSyncConnectionNodesSync.CreatedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetCreatedAt() time.Time {
-	return v.SyncData.CreatedAt
-}
-
-// GetCreatedBy returns DataPoolDataSyncsSyncConnectionNodesSync.CreatedBy, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetCreatedBy() string { return v.SyncData.CreatedBy }
-
-// GetModifiedAt returns DataPoolDataSyncsSyncConnectionNodesSync.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetModifiedAt() time.Time {
-	return v.SyncData.ModifiedAt
-}
-
-// GetModifiedBy returns DataPoolDataSyncsSyncConnectionNodesSync.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) GetModifiedBy() string {
-	return v.SyncData.ModifiedBy
-}
-
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) UnmarshalJSON(b []byte) error {
+func (v *DataPoolDataTableSettings) UnmarshalJSON(b []byte) error {
 
 	if string(b) == "null" {
 		return nil
 	}
 
 	var firstPass struct {
-		*DataPoolDataSyncsSyncConnectionNodesSync
+		*DataPoolDataTableSettings
 		graphql.NoUnmarshalJSON
 	}
-	firstPass.DataPoolDataSyncsSyncConnectionNodesSync = v
+	firstPass.DataPoolDataTableSettings = v
 
 	err := json.Unmarshal(b, &firstPass)
 	if err != nil {
@@ -6925,44 +7381,24 @@ func (v *DataPoolDataSyncsSyncConnectionNodesSync) UnmarshalJSON(b []byte) error
 	}
 
 	err = json.Unmarshal(
-		b, &v.SyncData)
+		b, &v.TableSettingsData)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-type __premarshalDataPoolDataSyncsSyncConnectionNodesSync struct {
-	Id string `json:"id"`
+type __premarshalDataPoolDataTableSettings struct {
+	Engine json.RawMessage `json:"engine"`
 
-	Status SyncStatus `json:"status"`
+	PartitionBy []string `json:"partitionBy"`
 
-	NewRecords *string `json:"newRecords"`
+	PrimaryKey []string `json:"primaryKey"`
 
-	UpdatedRecords *string `json:"updatedRecords"`
-
-	DeletedRecords *string `json:"deletedRecords"`
-
-	InvalidRecords *string `json:"invalidRecords"`
-
-	StartedAt *time.Time `json:"startedAt"`
-
-	SucceededAt *time.Time `json:"succeededAt"`
-
-	FailedAt *time.Time `json:"failedAt"`
-
-	Error *SyncDataError `json:"error"`
-
-	CreatedAt time.Time `json:"createdAt"`
-
-	CreatedBy string `json:"createdBy"`
-
-	ModifiedAt time.Time `json:"modifiedAt"`
-
-	ModifiedBy string `json:"modifiedBy"`
+	OrderBy []string `json:"orderBy"`
 }
 
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) MarshalJSON() ([]byte, error) {
+func (v *DataPoolDataTableSettings) MarshalJSON() ([]byte, error) {
 	premarshaled, err := v.__premarshalJSON()
 	if err != nil {
 		return nil, err
@@ -6970,23 +7406,26 @@ func (v *DataPoolDataSyncsSyncConnectionNodesSync) MarshalJSON() ([]byte, error)
 	return json.Marshal(premarshaled)
 }
 
-func (v *DataPoolDataSyncsSyncConnectionNodesSync) __premarshalJSON() (*__premarshalDataPoolDataSyncsSyncConnectionNodesSync, error) {
-	var retval __premarshalDataPoolDataSyncsSyncConnectionNodesSync
+func (v *DataPoolDataTableSettings) __premarshalJSON() (*__premarshalDataPoolDataTableSettings, error) {
+	var retval __premarshalDataPoolDataTableSettings
 
-	retval.Id = v.SyncData.Id
-	retval.Status = v.SyncData.Status
-	retval.NewRecords = v.SyncData.NewRecords
-	retval.UpdatedRecords = v.SyncData.UpdatedRecords
-	retval.DeletedRecords = v.SyncData.DeletedRecords
-	retval.InvalidRecords = v.SyncData.InvalidRecords
-	retval.StartedAt = v.SyncData.StartedAt
-	retval.SucceededAt = v.SyncData.SucceededAt
-	retval.FailedAt = v.SyncData.FailedAt
-	retval.Error = v.SyncData.Error
-	retval.CreatedAt = v.SyncData.CreatedAt
-	retval.CreatedBy = v.SyncData.CreatedBy
-	retval.ModifiedAt = v.SyncData.ModifiedAt
-	retval.ModifiedBy = v.SyncData.ModifiedBy
+	{
+
+		dst := &retval.Engine
+		src := v.TableSettingsData.Engine
+		if src != nil {
+			var err error
+			*dst, err = __marshalTableSettingsDataEngineTableEngine(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal DataPoolDataTableSettings.TableSettingsData.Engine: %w", err)
+			}
+		}
+	}
+	retval.PartitionBy = v.TableSettingsData.PartitionBy
+	retval.PrimaryKey = v.TableSettingsData.PrimaryKey
+	retval.OrderBy = v.TableSettingsData.OrderBy
 	return &retval, nil
 }
 
@@ -7353,11 +7792,6 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetS
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
-	return v.DataPoolData.Syncs
-}
-
 // GetDataPoolAccessPolicies returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -7366,6 +7800,11 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetD
 // GetAccessControlEnabled returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetAccessControlEnabled() bool {
 	return v.DataPoolData.AccessControlEnabled
+}
+
+// GetTableSettings returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
 }
 
 // GetUniqueName returns DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool.UniqueName, and is useful for accessing the field via an interface.
@@ -7458,11 +7897,11 @@ type __premarshalDataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPo
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -7504,9 +7943,9 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool) __pr
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -8100,6 +8539,7 @@ func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return 
 // DataSourceDataConnectionSettings includes the requested fields of the GraphQL interface ConnectionSettings.
 //
 // DataSourceDataConnectionSettings is implemented by the following types:
+// DataSourceDataConnectionSettingsClickHouseConnectionSettings
 // DataSourceDataConnectionSettingsHttpConnectionSettings
 // DataSourceDataConnectionSettingsInternalConnectionSettings
 // DataSourceDataConnectionSettingsKafkaConnectionSettings
@@ -8112,6 +8552,8 @@ type DataSourceDataConnectionSettings interface {
 	GetTypename() *string
 }
 
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
+}
 func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 func (v *DataSourceDataConnectionSettingsInternalConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
@@ -8139,6 +8581,9 @@ func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConn
 	}
 
 	switch tn.TypeName {
+	case "ClickHouseConnectionSettings":
+		*v = new(DataSourceDataConnectionSettingsClickHouseConnectionSettings)
+		return json.Unmarshal(b, *v)
 	case "HttpConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsHttpConnectionSettings)
 		return json.Unmarshal(b, *v)
@@ -8170,6 +8615,14 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 
 	var typename string
 	switch v := (*v).(type) {
+	case *DataSourceDataConnectionSettingsClickHouseConnectionSettings:
+		typename = "ClickHouseConnectionSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DataSourceDataConnectionSettingsClickHouseConnectionSettings
+		}{typename, v}
+		return json.Marshal(result)
 	case *DataSourceDataConnectionSettingsHttpConnectionSettings:
 		typename = "HttpConnectionSettings"
 
@@ -8224,6 +8677,52 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 		return nil, fmt.Errorf(
 			`unexpected concrete type for DataSourceDataConnectionSettings: "%T"`, v)
 	}
+}
+
+// DataSourceDataConnectionSettingsClickHouseConnectionSettings includes the requested fields of the GraphQL type ClickHouseConnectionSettings.
+// The GraphQL type's documentation follows.
+//
+// The ClickHouse Data Source connection settings.
+type DataSourceDataConnectionSettingsClickHouseConnectionSettings struct {
+	Typename *string `json:"__typename"`
+	// The URL where the ClickHouse host is listening to HTTP[S] connections
+	Url string `json:"url"`
+	// Which database to connect to
+	Database string `json:"database"`
+	// The user for authenticating against the ClickHouse host
+	User string `json:"user"`
+	// The password for the provided user
+	Password string `json:"password"`
+	// Whether the user has readonly permissions or not for querying ClickHouse
+	Readonly *bool `json:"readonly"`
+}
+
+// GetTypename returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.Typename, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetTypename() *string {
+	return v.Typename
+}
+
+// GetUrl returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.Url, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetUrl() string { return v.Url }
+
+// GetDatabase returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.Database, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetDatabase() string {
+	return v.Database
+}
+
+// GetUser returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.User, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetUser() string {
+	return v.User
+}
+
+// GetPassword returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.Password, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetPassword() string {
+	return v.Password
+}
+
+// GetReadonly returns DataSourceDataConnectionSettingsClickHouseConnectionSettings.Readonly, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsClickHouseConnectionSettings) GetReadonly() *bool {
+	return v.Readonly
 }
 
 // DataSourceDataConnectionSettingsHttpConnectionSettings includes the requested fields of the GraphQL type HttpConnectionSettings.
@@ -8348,11 +8847,40 @@ func (v *DataSourceDataConnectionSettingsInternalConnectionSettings) GetTypename
 // The Kafka Data Source connection settings.
 type DataSourceDataConnectionSettingsKafkaConnectionSettings struct {
 	Typename *string `json:"__typename"`
+	// The type of authentication to use. Can be SCRAM-SHA-256, SCRAM-SHA-512, PLAIN or NONE
+	Auth string `json:"auth"`
+	// The user for authenticating against the Kafka servers
+	User string `json:"user"`
+	// The password for the provided user
+	Password string `json:"password"`
+	// Whether the the connection to the Kafka servers is encrypted or not
+	Tls *bool `json:"tls"`
+	// The bootstrap server(s) to connect to
+	BootstrapServers []string `json:"bootstrapServers"`
 }
 
 // GetTypename returns DataSourceDataConnectionSettingsKafkaConnectionSettings.Typename, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetTypename() *string {
 	return v.Typename
+}
+
+// GetAuth returns DataSourceDataConnectionSettingsKafkaConnectionSettings.Auth, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetAuth() string { return v.Auth }
+
+// GetUser returns DataSourceDataConnectionSettingsKafkaConnectionSettings.User, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetUser() string { return v.User }
+
+// GetPassword returns DataSourceDataConnectionSettingsKafkaConnectionSettings.Password, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetPassword() string {
+	return v.Password
+}
+
+// GetTls returns DataSourceDataConnectionSettingsKafkaConnectionSettings.Tls, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetTls() *bool { return v.Tls }
+
+// GetBootstrapServers returns DataSourceDataConnectionSettingsKafkaConnectionSettings.BootstrapServers, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetBootstrapServers() []string {
+	return v.BootstrapServers
 }
 
 // DataSourceDataConnectionSettingsS3ConnectionSettings includes the requested fields of the GraphQL type S3ConnectionSettings.
@@ -8515,10 +9043,12 @@ type DataSourceDataConnectionSettingsWebhookConnectionSettings struct {
 	Columns []*DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhookDataSourceColumn `json:"columns"`
 	// The tenant ID column, if any.
 	Tenant *string `json:"tenant"`
-	// The primary timestamp column, if any.
-	Timestamp *string `json:"timestamp"`
 	// The unique ID column, if any. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 	UniqueId *string `json:"uniqueId"`
+	// Override the Data Pool's table settings. These describe how the Data Pool's table is created in ClickHouse, and a
+	// default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if any. You can override these
+	// defaults in order to specify a custom table engine, custom ORDER BY, etc.
+	TableSettings *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings `json:"tableSettings"`
 	// The Webhook URL for posting JSON events
 	WebhookUrl string `json:"webhookUrl"`
 }
@@ -8543,14 +9073,14 @@ func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTenant() 
 	return v.Tenant
 }
 
-// GetTimestamp returns DataSourceDataConnectionSettingsWebhookConnectionSettings.Timestamp, and is useful for accessing the field via an interface.
-func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTimestamp() *string {
-	return v.Timestamp
-}
-
 // GetUniqueId returns DataSourceDataConnectionSettingsWebhookConnectionSettings.UniqueId, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetUniqueId() *string {
 	return v.UniqueId
+}
+
+// GetTableSettings returns DataSourceDataConnectionSettingsWebhookConnectionSettings.TableSettings, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettings) GetTableSettings() *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings {
+	return v.TableSettings
 }
 
 // GetWebhookUrl returns DataSourceDataConnectionSettingsWebhookConnectionSettings.WebhookUrl, and is useful for accessing the field via an interface.
@@ -8618,6 +9148,102 @@ func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsColumnsWebhook
 	return v.Nullable
 }
 
+// DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings includes the requested fields of the GraphQL type TableSettings.
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's table settings.
+//
+// These describe how the Data Pool's table is created in ClickHouse.
+type DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings struct {
+	TableSettingsData `json:"-"`
+}
+
+// GetEngine returns DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings.Engine, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) GetEngine() *TableSettingsDataEngineTableEngine {
+	return v.TableSettingsData.Engine
+}
+
+// GetPartitionBy returns DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings.PartitionBy, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) GetPartitionBy() []string {
+	return v.TableSettingsData.PartitionBy
+}
+
+// GetPrimaryKey returns DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings.PrimaryKey, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) GetPrimaryKey() []string {
+	return v.TableSettingsData.PrimaryKey
+}
+
+// GetOrderBy returns DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings.OrderBy, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) GetOrderBy() []string {
+	return v.TableSettingsData.OrderBy
+}
+
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.TableSettingsData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings struct {
+	Engine json.RawMessage `json:"engine"`
+
+	PartitionBy []string `json:"partitionBy"`
+
+	PrimaryKey []string `json:"primaryKey"`
+
+	OrderBy []string `json:"orderBy"`
+}
+
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings) __premarshalJSON() (*__premarshalDataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings, error) {
+	var retval __premarshalDataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings
+
+	{
+
+		dst := &retval.Engine
+		src := v.TableSettingsData.Engine
+		if src != nil {
+			var err error
+			*dst, err = __marshalTableSettingsDataEngineTableEngine(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal DataSourceDataConnectionSettingsWebhookConnectionSettingsTableSettings.TableSettingsData.Engine: %w", err)
+			}
+		}
+	}
+	retval.PartitionBy = v.TableSettingsData.PartitionBy
+	retval.PrimaryKey = v.TableSettingsData.PrimaryKey
+	retval.OrderBy = v.TableSettingsData.OrderBy
+	return &retval, nil
+}
+
 // DataSourceDataDataPoolsDataPoolConnection includes the requested fields of the GraphQL type DataPoolConnection.
 // The GraphQL type's documentation follows.
 //
@@ -8648,6 +9274,8 @@ type DataSourceDataDataPoolsDataPoolConnectionNodesDataPool struct {
 	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
 	// Policies in order to query the Data Pool and its Metrics.
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+	// The Data Pool's primary timestamp column, if any.
+	Timestamp *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp `json:"timestamp"`
 }
 
 // GetId returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.Id, and is useful for accessing the field via an interface.
@@ -8656,6 +9284,76 @@ func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetId() string 
 // GetAccessControlEnabled returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetAccessControlEnabled() bool {
 	return v.AccessControlEnabled
+}
+
+// GetTimestamp returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPool.Timestamp, and is useful for accessing the field via an interface.
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPool) GetTimestamp() *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp {
+	return v.Timestamp
+}
+
+// DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp includes the requested fields of the GraphQL type Timestamp.
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's primary timestamp column. Propel uses the primary timestamp to order and partition your data in Data Pools. It will serve as the time dimension for your Metrics.
+type DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp struct {
+	TimestampData `json:"-"`
+}
+
+// GetColumnName returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp.ColumnName, and is useful for accessing the field via an interface.
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp) GetColumnName() string {
+	return v.TimestampData.ColumnName
+}
+
+// GetType returns DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp.Type, and is useful for accessing the field via an interface.
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp) GetType() string {
+	return v.TimestampData.Type
+}
+
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.TimestampData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalDataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp struct {
+	ColumnName string `json:"columnName"`
+
+	Type string `json:"type"`
+}
+
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *DataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp) __premarshalJSON() (*__premarshalDataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp, error) {
+	var retval __premarshalDataSourceDataDataPoolsDataPoolConnectionNodesDataPoolTimestamp
+
+	retval.ColumnName = v.TimestampData.ColumnName
+	retval.Type = v.TimestampData.Type
+	return &retval, nil
 }
 
 // DataSourceDataError includes the requested fields of the GraphQL type Error.
@@ -9994,6 +10692,35 @@ const (
 	JobStatusFailed JobStatus = "FAILED"
 )
 
+// The Kafka Data Source connection settings.
+type KafkaConnectionSettingsInput struct {
+	// The type of authentication to use. Can be SCRAM-SHA-256, SCRAM-SHA-512, PLAIN or NONE
+	Auth string `json:"auth"`
+	// The bootstrap server(s) to connect to
+	BootstrapServers []string `json:"bootstrapServers"`
+	// The password for the provided user
+	Password string `json:"password"`
+	// Whether the the connection to the Kafka servers is encrypted or not
+	Tls *bool `json:"tls"`
+	// The user for authenticating against the Kafka servers
+	User string `json:"user"`
+}
+
+// GetAuth returns KafkaConnectionSettingsInput.Auth, and is useful for accessing the field via an interface.
+func (v *KafkaConnectionSettingsInput) GetAuth() string { return v.Auth }
+
+// GetBootstrapServers returns KafkaConnectionSettingsInput.BootstrapServers, and is useful for accessing the field via an interface.
+func (v *KafkaConnectionSettingsInput) GetBootstrapServers() []string { return v.BootstrapServers }
+
+// GetPassword returns KafkaConnectionSettingsInput.Password, and is useful for accessing the field via an interface.
+func (v *KafkaConnectionSettingsInput) GetPassword() string { return v.Password }
+
+// GetTls returns KafkaConnectionSettingsInput.Tls, and is useful for accessing the field via an interface.
+func (v *KafkaConnectionSettingsInput) GetTls() *bool { return v.Tls }
+
+// GetUser returns KafkaConnectionSettingsInput.User, and is useful for accessing the field via an interface.
+func (v *KafkaConnectionSettingsInput) GetUser() string { return v.User }
+
 // MaterializedViewData includes the GraphQL fields of MaterializedView requested by the fragment MaterializedViewData.
 type MaterializedViewData struct {
 	// The Materialized View's unique identifier.
@@ -10779,9 +11506,6 @@ func (v *MetricDataDataPool) GetSetupTasks() []*DataPoolDataSetupTasksDataPoolSe
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns MetricDataDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *MetricDataDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection { return v.DataPoolData.Syncs }
-
 // GetDataPoolAccessPolicies returns MetricDataDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -10790,6 +11514,11 @@ func (v *MetricDataDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAc
 // GetAccessControlEnabled returns MetricDataDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *MetricDataDataPool) GetAccessControlEnabled() bool {
 	return v.DataPoolData.AccessControlEnabled
+}
+
+// GetTableSettings returns MetricDataDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *MetricDataDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
 }
 
 // GetUniqueName returns MetricDataDataPool.UniqueName, and is useful for accessing the field via an interface.
@@ -10882,11 +11611,11 @@ type __premarshalMetricDataDataPool struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -10928,9 +11657,9 @@ func (v *MetricDataDataPool) __premarshalJSON() (*__premarshalMetricDataDataPool
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -13421,6 +14150,260 @@ type MetricsResponse struct {
 // GetMetrics returns MetricsResponse.Metrics, and is useful for accessing the field via an interface.
 func (v *MetricsResponse) GetMetrics() *MetricsMetricsMetricConnection { return v.Metrics }
 
+type ModifyClickHouseDataSourceInput struct {
+	// The ClickHouse Data Source's new connection settings. If not provided this property will not be modified.
+	ConnectionSettings *PartialClickHouseConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The ClickHouse Data Source's new description. If not provided this property will not be modified.
+	Description *string `json:"description"`
+	// The ID or unique name of the ClickHouse Data Source to modify.
+	IdOrUniqueName *IdOrUniqueName `json:"idOrUniqueName,omitempty"`
+	// The ClickHouse Data Source's new unique name. If not provided this property will not be modified.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns ModifyClickHouseDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceInput) GetConnectionSettings() *PartialClickHouseConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns ModifyClickHouseDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetIdOrUniqueName returns ModifyClickHouseDataSourceInput.IdOrUniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceInput) GetIdOrUniqueName() *IdOrUniqueName {
+	return v.IdOrUniqueName
+}
+
+// GetUniqueName returns ModifyClickHouseDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse) GetDataSource() *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetDataPools returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
+// GetConnectionSettings returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyClickHouseDataSourceResponse is returned by ModifyClickHouseDataSource on success.
+type ModifyClickHouseDataSourceResponse struct {
+	// This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
+	//
+	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+	ModifyClickHouseDataSource *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse `json:"modifyClickHouseDataSource"`
+}
+
+// GetModifyClickHouseDataSource returns ModifyClickHouseDataSourceResponse.ModifyClickHouseDataSource, and is useful for accessing the field via an interface.
+func (v *ModifyClickHouseDataSourceResponse) GetModifyClickHouseDataSource() *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse {
+	return v.ModifyClickHouseDataSource
+}
+
 type ModifyDataPoolAccessPolicyInput struct {
 	Id string `json:"id"`
 	// The Data Pool Access Policy's new unique name.
@@ -13631,6 +14614,14 @@ type ModifyDataPoolInput struct {
 	DataRetentionInDays *int `json:"dataRetentionInDays"`
 	// The Data Pool's new syncing settings.
 	Syncing *DataPoolSyncingInput `json:"syncing,omitempty"`
+	// The table's primary timestamp column.
+	//
+	// Propel uses the primary timestamp to order and partition your data in Data Pools. It's part of what makes Propel
+	// fast for larger data sets. It will also serve as the time dimension for your Metrics.
+	//
+	// If you do not provide a primary timestamp column, you will need to supply an alternate timestamp when querying your
+	// Data Pool or its Metrics using the TimeRangeInput.
+	Timestamp *TimestampInput `json:"timestamp,omitempty"`
 	// Enables or disables access control for the Data Pool.
 	//
 	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access
@@ -13652,6 +14643,9 @@ func (v *ModifyDataPoolInput) GetDataRetentionInDays() *int { return v.DataReten
 
 // GetSyncing returns ModifyDataPoolInput.Syncing, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolInput) GetSyncing() *DataPoolSyncingInput { return v.Syncing }
+
+// GetTimestamp returns ModifyDataPoolInput.Timestamp, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolInput) GetTimestamp() *TimestampInput { return v.Timestamp }
 
 // GetAccessControlEnabled returns ModifyDataPoolInput.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolInput) GetAccessControlEnabled() *bool { return v.AccessControlEnabled }
@@ -13823,11 +14817,6 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSetupTasks() [
 	return v.DataPoolData.SetupTasks
 }
 
-// GetSyncs returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.Syncs, and is useful for accessing the field via an interface.
-func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetSyncs() *DataPoolDataSyncsSyncConnection {
-	return v.DataPoolData.Syncs
-}
-
 // GetDataPoolAccessPolicies returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDataPoolAccessPolicies() *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
 	return v.DataPoolData.DataPoolAccessPolicies
@@ -13836,6 +14825,11 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetDataPoolAccess
 // GetAccessControlEnabled returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.AccessControlEnabled, and is useful for accessing the field via an interface.
 func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetAccessControlEnabled() bool {
 	return v.DataPoolData.AccessControlEnabled
+}
+
+// GetTableSettings returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.TableSettings, and is useful for accessing the field via an interface.
+func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) GetTableSettings() *DataPoolDataTableSettings {
+	return v.DataPoolData.TableSettings
 }
 
 // GetUniqueName returns ModifyDataPoolModifyDataPoolDataPoolResponseDataPool.UniqueName, and is useful for accessing the field via an interface.
@@ -13928,11 +14922,11 @@ type __premarshalModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 
 	SetupTasks []*DataPoolDataSetupTasksDataPoolSetupTask `json:"setupTasks"`
 
-	Syncs *DataPoolDataSyncsSyncConnection `json:"syncs"`
-
 	DataPoolAccessPolicies *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
 
 	AccessControlEnabled bool `json:"accessControlEnabled"`
+
+	TableSettings *DataPoolDataTableSettings `json:"tableSettings"`
 
 	UniqueName string `json:"uniqueName"`
 
@@ -13974,9 +14968,9 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponseDataPool) __premarshalJSON(
 	retval.Syncing = v.DataPoolData.Syncing
 	retval.AvailableMeasures = v.DataPoolData.AvailableMeasures
 	retval.SetupTasks = v.DataPoolData.SetupTasks
-	retval.Syncs = v.DataPoolData.Syncs
 	retval.DataPoolAccessPolicies = v.DataPoolData.DataPoolAccessPolicies
 	retval.AccessControlEnabled = v.DataPoolData.AccessControlEnabled
+	retval.TableSettings = v.DataPoolData.TableSettings
 	retval.UniqueName = v.DataPoolData.CommonDataDataPool.UniqueName
 	retval.Description = v.DataPoolData.CommonDataDataPool.Description
 	retval.Account = v.DataPoolData.CommonDataDataPool.Account
@@ -14396,6 +15390,258 @@ type ModifyHttpDataSourceResponse struct {
 // GetModifyHttpDataSource returns ModifyHttpDataSourceResponse.ModifyHttpDataSource, and is useful for accessing the field via an interface.
 func (v *ModifyHttpDataSourceResponse) GetModifyHttpDataSource() *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponse {
 	return v.ModifyHttpDataSource
+}
+
+type ModifyKafkaDataSourceInput struct {
+	// The Kafka Data Source's new connection settings. If not provided this property will not be modified.
+	ConnectionSettings *PartialKafkaConnectionSettingsInput `json:"connectionSettings,omitempty"`
+	// The Kafka Data Source's new description. If not provided this property will not be modified.
+	Description *string `json:"description"`
+	// The ID or unique name of the Kafka Data Source to modify.
+	IdOrUniqueName *IdOrUniqueName `json:"idOrUniqueName,omitempty"`
+	// The Kafka Data Source's new unique name. If not provided this property will not be modified.
+	UniqueName *string `json:"uniqueName"`
+}
+
+// GetConnectionSettings returns ModifyKafkaDataSourceInput.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceInput) GetConnectionSettings() *PartialKafkaConnectionSettingsInput {
+	return v.ConnectionSettings
+}
+
+// GetDescription returns ModifyKafkaDataSourceInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceInput) GetDescription() *string { return v.Description }
+
+// GetIdOrUniqueName returns ModifyKafkaDataSourceInput.IdOrUniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceInput) GetIdOrUniqueName() *IdOrUniqueName { return v.IdOrUniqueName }
+
+// GetUniqueName returns ModifyKafkaDataSourceInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceInput) GetUniqueName() *string { return v.UniqueName }
+
+// ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse includes the requested fields of the GraphQL type DataSourceResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies a Data Source.
+type ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse struct {
+	// The Data Source which was created or modified.
+	DataSource *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource `json:"dataSource"`
+}
+
+// GetDataSource returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse.DataSource, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse) GetDataSource() *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource {
+	return v.DataSource
+}
+
+// ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource includes the requested fields of the GraphQL type DataSource.
+// The GraphQL type's documentation follows.
+//
+// The Data Source object.
+//
+// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
+type ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource struct {
+	DataSourceData `json:"-"`
+}
+
+// GetId returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Id, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetId() string {
+	return v.DataSourceData.Id
+}
+
+// GetType returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Type, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetType() DataSourceType {
+	return v.DataSourceData.Type
+}
+
+// GetStatus returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Status, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetStatus() DataSourceStatus {
+	return v.DataSourceData.Status
+}
+
+// GetError returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Error, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetError() *DataSourceDataError {
+	return v.DataSourceData.Error
+}
+
+// GetDataPools returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.DataPools, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetDataPools() *DataSourceDataDataPoolsDataPoolConnection {
+	return v.DataSourceData.DataPools
+}
+
+// GetConnectionSettings returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.ConnectionSettings, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetConnectionSettings() DataSourceDataConnectionSettings {
+	return v.DataSourceData.ConnectionSettings
+}
+
+// GetTables returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Tables, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetTables() *DataSourceDataTablesTableConnection {
+	return v.DataSourceData.Tables
+}
+
+// GetChecks returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Checks, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetChecks() []*DataSourceDataChecksDataSourceCheck {
+	return v.DataSourceData.Checks
+}
+
+// GetTableIntrospections returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.TableIntrospections, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetTableIntrospections() *DataSourceDataTableIntrospectionsTableIntrospectionConnection {
+	return v.DataSourceData.TableIntrospections
+}
+
+// GetUniqueName returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetUniqueName() string {
+	return v.DataSourceData.CommonDataDataSource.UniqueName
+}
+
+// GetDescription returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Description, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetDescription() string {
+	return v.DataSourceData.CommonDataDataSource.Description
+}
+
+// GetAccount returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Account, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetAccount() *CommonDataAccount {
+	return v.DataSourceData.CommonDataDataSource.Account
+}
+
+// GetEnvironment returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetEnvironment() *CommonDataEnvironment {
+	return v.DataSourceData.CommonDataDataSource.Environment
+}
+
+// GetCreatedAt returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetCreatedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.CreatedAt
+}
+
+// GetModifiedAt returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetModifiedAt() time.Time {
+	return v.DataSourceData.CommonDataDataSource.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetCreatedBy() string {
+	return v.DataSourceData.CommonDataDataSource.CreatedBy
+}
+
+// GetModifiedBy returns ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) GetModifiedBy() string {
+	return v.DataSourceData.CommonDataDataSource.ModifiedBy
+}
+
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataSourceData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource struct {
+	Id string `json:"id"`
+
+	Type DataSourceType `json:"type"`
+
+	Status DataSourceStatus `json:"status"`
+
+	Error *DataSourceDataError `json:"error"`
+
+	DataPools *DataSourceDataDataPoolsDataPoolConnection `json:"dataPools"`
+
+	ConnectionSettings json.RawMessage `json:"connectionSettings"`
+
+	Tables *DataSourceDataTablesTableConnection `json:"tables"`
+
+	Checks []*DataSourceDataChecksDataSourceCheck `json:"checks"`
+
+	TableIntrospections *DataSourceDataTableIntrospectionsTableIntrospectionConnection `json:"tableIntrospections"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource) __premarshalJSON() (*__premarshalModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource, error) {
+	var retval __premarshalModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource
+
+	retval.Id = v.DataSourceData.Id
+	retval.Type = v.DataSourceData.Type
+	retval.Status = v.DataSourceData.Status
+	retval.Error = v.DataSourceData.Error
+	retval.DataPools = v.DataSourceData.DataPools
+	{
+
+		dst := &retval.ConnectionSettings
+		src := v.DataSourceData.ConnectionSettings
+		var err error
+		*dst, err = __marshalDataSourceDataConnectionSettings(
+			&src)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"unable to marshal ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource.DataSourceData.ConnectionSettings: %w", err)
+		}
+	}
+	retval.Tables = v.DataSourceData.Tables
+	retval.Checks = v.DataSourceData.Checks
+	retval.TableIntrospections = v.DataSourceData.TableIntrospections
+	retval.UniqueName = v.DataSourceData.CommonDataDataSource.UniqueName
+	retval.Description = v.DataSourceData.CommonDataDataSource.Description
+	retval.Account = v.DataSourceData.CommonDataDataSource.Account
+	retval.Environment = v.DataSourceData.CommonDataDataSource.Environment
+	retval.CreatedAt = v.DataSourceData.CommonDataDataSource.CreatedAt
+	retval.ModifiedAt = v.DataSourceData.CommonDataDataSource.ModifiedAt
+	retval.CreatedBy = v.DataSourceData.CommonDataDataSource.CreatedBy
+	retval.ModifiedBy = v.DataSourceData.CommonDataDataSource.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyKafkaDataSourceResponse is returned by ModifyKafkaDataSource on success.
+type ModifyKafkaDataSourceResponse struct {
+	// This mutation selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
+	//
+	// If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+	ModifyKafkaDataSource *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse `json:"modifyKafkaDataSource"`
+}
+
+// GetModifyKafkaDataSource returns ModifyKafkaDataSourceResponse.ModifyKafkaDataSource, and is useful for accessing the field via an interface.
+func (v *ModifyKafkaDataSourceResponse) GetModifyKafkaDataSource() *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse {
+	return v.ModifyKafkaDataSource
 }
 
 // The fields for modifying a Materialized View.
@@ -15982,6 +17228,30 @@ func (v *PageInfoData) GetHasNextPage() bool { return v.HasNextPage }
 // GetHasPreviousPage returns PageInfoData.HasPreviousPage, and is useful for accessing the field via an interface.
 func (v *PageInfoData) GetHasPreviousPage() bool { return v.HasPreviousPage }
 
+// The ClickHouse Data Source connection settings.
+type PartialClickHouseConnectionSettingsInput struct {
+	// Which database to connect to If not provided this property will not be modified.
+	Database *string `json:"database"`
+	// The password for the provided user If not provided this property will not be modified.
+	Password *string `json:"password"`
+	// The URL where the ClickHouse host is listening to HTTP[S] connections If not provided this property will not be modified.
+	Url *string `json:"url"`
+	// The user for authenticating against the ClickHouse host If not provided this property will not be modified.
+	User *string `json:"user"`
+}
+
+// GetDatabase returns PartialClickHouseConnectionSettingsInput.Database, and is useful for accessing the field via an interface.
+func (v *PartialClickHouseConnectionSettingsInput) GetDatabase() *string { return v.Database }
+
+// GetPassword returns PartialClickHouseConnectionSettingsInput.Password, and is useful for accessing the field via an interface.
+func (v *PartialClickHouseConnectionSettingsInput) GetPassword() *string { return v.Password }
+
+// GetUrl returns PartialClickHouseConnectionSettingsInput.Url, and is useful for accessing the field via an interface.
+func (v *PartialClickHouseConnectionSettingsInput) GetUrl() *string { return v.Url }
+
+// GetUser returns PartialClickHouseConnectionSettingsInput.User, and is useful for accessing the field via an interface.
+func (v *PartialClickHouseConnectionSettingsInput) GetUser() *string { return v.User }
+
 // The HTTP Data Source connection settings.
 type PartialHttpConnectionSettingsInput struct {
 	// The HTTP Basic authentication settings for uploading new data.
@@ -16002,6 +17272,37 @@ func (v *PartialHttpConnectionSettingsInput) GetBasicAuthEnabled() *bool { retur
 
 // GetTables returns PartialHttpConnectionSettingsInput.Tables, and is useful for accessing the field via an interface.
 func (v *PartialHttpConnectionSettingsInput) GetTables() []*HttpDataSourceTableInput { return v.Tables }
+
+// The Kafka Data Source connection settings.
+type PartialKafkaConnectionSettingsInput struct {
+	// The type of authentication to use. Can be SCRAM-SHA-256, SCRAM-SHA-512, PLAIN or NONE If not provided this property will not be modified.
+	Auth *string `json:"auth"`
+	// The bootstrap server(s) to connect to If not provided this property will not be modified.
+	BootstrapServers []string `json:"bootstrapServers"`
+	// The password for the provided user If not provided this property will not be modified.
+	Password *string `json:"password"`
+	// Whether the the connection to the Kafka servers is encrypted or not If not provided this property will not be modified.
+	Tls *bool `json:"tls"`
+	// The user for authenticating against the Kafka servers If not provided this property will not be modified.
+	User *string `json:"user"`
+}
+
+// GetAuth returns PartialKafkaConnectionSettingsInput.Auth, and is useful for accessing the field via an interface.
+func (v *PartialKafkaConnectionSettingsInput) GetAuth() *string { return v.Auth }
+
+// GetBootstrapServers returns PartialKafkaConnectionSettingsInput.BootstrapServers, and is useful for accessing the field via an interface.
+func (v *PartialKafkaConnectionSettingsInput) GetBootstrapServers() []string {
+	return v.BootstrapServers
+}
+
+// GetPassword returns PartialKafkaConnectionSettingsInput.Password, and is useful for accessing the field via an interface.
+func (v *PartialKafkaConnectionSettingsInput) GetPassword() *string { return v.Password }
+
+// GetTls returns PartialKafkaConnectionSettingsInput.Tls, and is useful for accessing the field via an interface.
+func (v *PartialKafkaConnectionSettingsInput) GetTls() *bool { return v.Tls }
+
+// GetUser returns PartialKafkaConnectionSettingsInput.User, and is useful for accessing the field via an interface.
+func (v *PartialKafkaConnectionSettingsInput) GetUser() *string { return v.User }
 
 // The connection settings for an S3 Data Source. These include the S3 bucket name, the AWS access key ID, and the tables (along with their paths). We do not allow fetching the AWS secret access key after it has been set.
 type PartialS3ConnectionSettingsInput struct {
@@ -16366,111 +17667,6 @@ func (v *SummingMergeTreeTableEngineInput) GetType() *TableEngineType { return v
 // GetColumns returns SummingMergeTreeTableEngineInput.Columns, and is useful for accessing the field via an interface.
 func (v *SummingMergeTreeTableEngineInput) GetColumns() []string { return v.Columns }
 
-// SyncData includes the GraphQL fields of Sync requested by the fragment SyncData.
-// The GraphQL type's documentation follows.
-//
-// The Sync object.
-//
-// This represents the process of syncing data from your Data Source (for example, a Snowflake data warehouse) to your Data Pool.
-type SyncData struct {
-	// The Sync's unique identifier.
-	Id string `json:"id"`
-	// The status of the Sync (all Syncs begin as SYNCING before transitioning to SUCCEEDED or FAILED).
-	Status SyncStatus `json:"status"`
-	// The number of new records contained within the Sync, if known. This excludes filtered records.
-	NewRecords *string `json:"newRecords"`
-	// The number of updated records contained within the Sync, if known. This excludes filtered records.
-	UpdatedRecords *string `json:"updatedRecords"`
-	// The number of deleted records contained within the Sync, if known. This excludes filtered records.
-	DeletedRecords *string `json:"deletedRecords"`
-	// The number of filtered records contained within the Sync, due to issues such as a missing timestamp Dimension, if any are known to be invalid.
-	InvalidRecords *string `json:"invalidRecords"`
-	// The time at which the Sync started.
-	StartedAt *time.Time `json:"startedAt"`
-	// The time at which the Sync succeeded.
-	SucceededAt *time.Time `json:"succeededAt"`
-	// The time at which the Sync failed.
-	FailedAt *time.Time `json:"failedAt"`
-	// If the Sync failed, this represents the reason the Sync failed.
-	Error *SyncDataError `json:"error"`
-	// The Sync's creation date and time in UTC.
-	CreatedAt time.Time `json:"createdAt"`
-	// The Sync's creator. It can be either a User ID, an Application ID, or "system" if it was created by Propel.
-	CreatedBy string `json:"createdBy"`
-	// The Sync's last modification date and time in UTC.
-	ModifiedAt time.Time `json:"modifiedAt"`
-	// The Sync's last modifier. It can be either a User ID, an Application ID, or "system" if it was modified by Propel.
-	ModifiedBy string `json:"modifiedBy"`
-}
-
-// GetId returns SyncData.Id, and is useful for accessing the field via an interface.
-func (v *SyncData) GetId() string { return v.Id }
-
-// GetStatus returns SyncData.Status, and is useful for accessing the field via an interface.
-func (v *SyncData) GetStatus() SyncStatus { return v.Status }
-
-// GetNewRecords returns SyncData.NewRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetNewRecords() *string { return v.NewRecords }
-
-// GetUpdatedRecords returns SyncData.UpdatedRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetUpdatedRecords() *string { return v.UpdatedRecords }
-
-// GetDeletedRecords returns SyncData.DeletedRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetDeletedRecords() *string { return v.DeletedRecords }
-
-// GetInvalidRecords returns SyncData.InvalidRecords, and is useful for accessing the field via an interface.
-func (v *SyncData) GetInvalidRecords() *string { return v.InvalidRecords }
-
-// GetStartedAt returns SyncData.StartedAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetStartedAt() *time.Time { return v.StartedAt }
-
-// GetSucceededAt returns SyncData.SucceededAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetSucceededAt() *time.Time { return v.SucceededAt }
-
-// GetFailedAt returns SyncData.FailedAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetFailedAt() *time.Time { return v.FailedAt }
-
-// GetError returns SyncData.Error, and is useful for accessing the field via an interface.
-func (v *SyncData) GetError() *SyncDataError { return v.Error }
-
-// GetCreatedAt returns SyncData.CreatedAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetCreatedAt() time.Time { return v.CreatedAt }
-
-// GetCreatedBy returns SyncData.CreatedBy, and is useful for accessing the field via an interface.
-func (v *SyncData) GetCreatedBy() string { return v.CreatedBy }
-
-// GetModifiedAt returns SyncData.ModifiedAt, and is useful for accessing the field via an interface.
-func (v *SyncData) GetModifiedAt() time.Time { return v.ModifiedAt }
-
-// GetModifiedBy returns SyncData.ModifiedBy, and is useful for accessing the field via an interface.
-func (v *SyncData) GetModifiedBy() string { return v.ModifiedBy }
-
-// SyncDataError includes the requested fields of the GraphQL type Error.
-// The GraphQL type's documentation follows.
-//
-// The error object.
-type SyncDataError struct {
-	// The error message.
-	Message string `json:"message"`
-}
-
-// GetMessage returns SyncDataError.Message, and is useful for accessing the field via an interface.
-func (v *SyncDataError) GetMessage() string { return v.Message }
-
-// The status of a Sync.
-type SyncStatus string
-
-const (
-	// Propel is actively syncing records contained within the Sync.
-	SyncStatusSyncing SyncStatus = "SYNCING"
-	// The Sync succeeded. Propel successfully synced all records contained within the Sync.
-	SyncStatusSucceeded SyncStatus = "SUCCEEDED"
-	// The Sync failed. Propel failed to sync some or all records contained within the Sync.
-	SyncStatusFailed SyncStatus = "FAILED"
-	// Propel is deleting the Sync.
-	SyncStatusDeleting SyncStatus = "DELETING"
-)
-
 // A Data Pool's table engine.
 type TableEngineInput struct {
 	// Field for specifying the MergeTree table engine.
@@ -16591,6 +17787,296 @@ const (
 	TableIntrospectionStatusFailed TableIntrospectionStatus = "FAILED"
 )
 
+// TableSettingsData includes the GraphQL fields of TableSettings requested by the fragment TableSettingsData.
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's table settings.
+//
+// These describe how the Data Pool's table is created in ClickHouse.
+type TableSettingsData struct {
+	// The ClickHouse table engine for the Data Pool's table.
+	Engine *TableSettingsDataEngineTableEngine `json:"-"`
+	// The PARTITION BY clause for the Data Pool's table.
+	PartitionBy []string `json:"partitionBy"`
+	// The PRIMARY KEY clause for the Data Pool's table.
+	PrimaryKey []string `json:"primaryKey"`
+	// The ORDER BY clause for the Data Pool's table.
+	OrderBy []string `json:"orderBy"`
+}
+
+// GetEngine returns TableSettingsData.Engine, and is useful for accessing the field via an interface.
+func (v *TableSettingsData) GetEngine() *TableSettingsDataEngineTableEngine { return v.Engine }
+
+// GetPartitionBy returns TableSettingsData.PartitionBy, and is useful for accessing the field via an interface.
+func (v *TableSettingsData) GetPartitionBy() []string { return v.PartitionBy }
+
+// GetPrimaryKey returns TableSettingsData.PrimaryKey, and is useful for accessing the field via an interface.
+func (v *TableSettingsData) GetPrimaryKey() []string { return v.PrimaryKey }
+
+// GetOrderBy returns TableSettingsData.OrderBy, and is useful for accessing the field via an interface.
+func (v *TableSettingsData) GetOrderBy() []string { return v.OrderBy }
+
+func (v *TableSettingsData) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*TableSettingsData
+		Engine json.RawMessage `json:"engine"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.TableSettingsData = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.Engine
+		src := firstPass.Engine
+		if len(src) != 0 && string(src) != "null" {
+			*dst = new(TableSettingsDataEngineTableEngine)
+			err = __unmarshalTableSettingsDataEngineTableEngine(
+				src, *dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal TableSettingsData.Engine: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalTableSettingsData struct {
+	Engine json.RawMessage `json:"engine"`
+
+	PartitionBy []string `json:"partitionBy"`
+
+	PrimaryKey []string `json:"primaryKey"`
+
+	OrderBy []string `json:"orderBy"`
+}
+
+func (v *TableSettingsData) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *TableSettingsData) __premarshalJSON() (*__premarshalTableSettingsData, error) {
+	var retval __premarshalTableSettingsData
+
+	{
+
+		dst := &retval.Engine
+		src := v.Engine
+		if src != nil {
+			var err error
+			*dst, err = __marshalTableSettingsDataEngineTableEngine(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal TableSettingsData.Engine: %w", err)
+			}
+		}
+	}
+	retval.PartitionBy = v.PartitionBy
+	retval.PrimaryKey = v.PrimaryKey
+	retval.OrderBy = v.OrderBy
+	return &retval, nil
+}
+
+// TableSettingsDataEngineAggregatingMergeTreeTableEngine includes the requested fields of the GraphQL type AggregatingMergeTreeTableEngine.
+// The GraphQL type's documentation follows.
+//
+// Parameters for the AggregatingMergeTree table engine.
+type TableSettingsDataEngineAggregatingMergeTreeTableEngine struct {
+	Typename *string `json:"__typename"`
+	// The type is always `AGGREGATING_MERGE_TREE`.
+	Type TableEngineType `json:"type"`
+}
+
+// GetTypename returns TableSettingsDataEngineAggregatingMergeTreeTableEngine.Typename, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineAggregatingMergeTreeTableEngine) GetTypename() *string {
+	return v.Typename
+}
+
+// GetType returns TableSettingsDataEngineAggregatingMergeTreeTableEngine.Type, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineAggregatingMergeTreeTableEngine) GetType() TableEngineType {
+	return v.Type
+}
+
+// TableSettingsDataEngineMergeTreeTableEngine includes the requested fields of the GraphQL type MergeTreeTableEngine.
+// The GraphQL type's documentation follows.
+//
+// Parameters for the MergeTree table engine.
+type TableSettingsDataEngineMergeTreeTableEngine struct {
+	Typename *string `json:"__typename"`
+	// The type is always `MERGE_TREE`.
+	Type TableEngineType `json:"type"`
+}
+
+// GetTypename returns TableSettingsDataEngineMergeTreeTableEngine.Typename, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineMergeTreeTableEngine) GetTypename() *string { return v.Typename }
+
+// GetType returns TableSettingsDataEngineMergeTreeTableEngine.Type, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineMergeTreeTableEngine) GetType() TableEngineType { return v.Type }
+
+// TableSettingsDataEngineReplacingMergeTreeTableEngine includes the requested fields of the GraphQL type ReplacingMergeTreeTableEngine.
+// The GraphQL type's documentation follows.
+//
+// Parameters for the ReplacingMergeTree table engine.
+type TableSettingsDataEngineReplacingMergeTreeTableEngine struct {
+	Typename *string `json:"__typename"`
+	// The type is always `REPLACING_MERGE_TREE`.
+	Type TableEngineType `json:"type"`
+	// The `ver` parameter to the ReplacingMergeTree engine.
+	Ver *string `json:"ver"`
+}
+
+// GetTypename returns TableSettingsDataEngineReplacingMergeTreeTableEngine.Typename, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineReplacingMergeTreeTableEngine) GetTypename() *string {
+	return v.Typename
+}
+
+// GetType returns TableSettingsDataEngineReplacingMergeTreeTableEngine.Type, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineReplacingMergeTreeTableEngine) GetType() TableEngineType {
+	return v.Type
+}
+
+// GetVer returns TableSettingsDataEngineReplacingMergeTreeTableEngine.Ver, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineReplacingMergeTreeTableEngine) GetVer() *string { return v.Ver }
+
+// TableSettingsDataEngineSummingMergeTreeTableEngine includes the requested fields of the GraphQL type SummingMergeTreeTableEngine.
+// The GraphQL type's documentation follows.
+//
+// Parameters for the SummingMergeTree table engine.
+type TableSettingsDataEngineSummingMergeTreeTableEngine struct {
+	Typename *string `json:"__typename"`
+	// The type is always `SUMMING_MERGE_TREE`.
+	Type TableEngineType `json:"type"`
+	// The columns argument for the SummingMergeTree table engine
+	Columns []string `json:"columns"`
+}
+
+// GetTypename returns TableSettingsDataEngineSummingMergeTreeTableEngine.Typename, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineSummingMergeTreeTableEngine) GetTypename() *string { return v.Typename }
+
+// GetType returns TableSettingsDataEngineSummingMergeTreeTableEngine.Type, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineSummingMergeTreeTableEngine) GetType() TableEngineType { return v.Type }
+
+// GetColumns returns TableSettingsDataEngineSummingMergeTreeTableEngine.Columns, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEngineSummingMergeTreeTableEngine) GetColumns() []string { return v.Columns }
+
+// TableSettingsDataEngineTableEngine includes the requested fields of the GraphQL interface TableEngine.
+//
+// TableSettingsDataEngineTableEngine is implemented by the following types:
+// TableSettingsDataEngineAggregatingMergeTreeTableEngine
+// TableSettingsDataEngineMergeTreeTableEngine
+// TableSettingsDataEngineReplacingMergeTreeTableEngine
+// TableSettingsDataEngineSummingMergeTreeTableEngine
+// The GraphQL type's documentation follows.
+//
+// A Data Pool's table engine.
+type TableSettingsDataEngineTableEngine interface {
+	implementsGraphQLInterfaceTableSettingsDataEngineTableEngine()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *TableSettingsDataEngineAggregatingMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
+}
+func (v *TableSettingsDataEngineMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
+}
+func (v *TableSettingsDataEngineReplacingMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
+}
+func (v *TableSettingsDataEngineSummingMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
+}
+
+func __unmarshalTableSettingsDataEngineTableEngine(b []byte, v *TableSettingsDataEngineTableEngine) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "AggregatingMergeTreeTableEngine":
+		*v = new(TableSettingsDataEngineAggregatingMergeTreeTableEngine)
+		return json.Unmarshal(b, *v)
+	case "MergeTreeTableEngine":
+		*v = new(TableSettingsDataEngineMergeTreeTableEngine)
+		return json.Unmarshal(b, *v)
+	case "ReplacingMergeTreeTableEngine":
+		*v = new(TableSettingsDataEngineReplacingMergeTreeTableEngine)
+		return json.Unmarshal(b, *v)
+	case "SummingMergeTreeTableEngine":
+		*v = new(TableSettingsDataEngineSummingMergeTreeTableEngine)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing TableEngine.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for TableSettingsDataEngineTableEngine: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalTableSettingsDataEngineTableEngine(v *TableSettingsDataEngineTableEngine) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *TableSettingsDataEngineAggregatingMergeTreeTableEngine:
+		typename = "AggregatingMergeTreeTableEngine"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*TableSettingsDataEngineAggregatingMergeTreeTableEngine
+		}{typename, v}
+		return json.Marshal(result)
+	case *TableSettingsDataEngineMergeTreeTableEngine:
+		typename = "MergeTreeTableEngine"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*TableSettingsDataEngineMergeTreeTableEngine
+		}{typename, v}
+		return json.Marshal(result)
+	case *TableSettingsDataEngineReplacingMergeTreeTableEngine:
+		typename = "ReplacingMergeTreeTableEngine"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*TableSettingsDataEngineReplacingMergeTreeTableEngine
+		}{typename, v}
+		return json.Marshal(result)
+	case *TableSettingsDataEngineSummingMergeTreeTableEngine:
+		typename = "SummingMergeTreeTableEngine"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*TableSettingsDataEngineSummingMergeTreeTableEngine
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for TableSettingsDataEngineTableEngine: "%T"`, v)
+	}
+}
+
 // A Data Pool's table settings.
 //
 // These describe how the Data Pool's table is created in ClickHouse.
@@ -16705,6 +18191,9 @@ func (v *UniqueIdInput) GetColumnName() string { return v.ColumnName }
 
 // The Webhook Data Source connection settings.
 type WebhookConnectionSettingsInput struct {
+	// Enables or disables access control for the Data Pool.
+	// If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.
+	AccessControlEnabled *bool `json:"accessControlEnabled"`
 	// The HTTP basic authentication settings for the Webhook Data Source URL. If this parameter is not provided, anyone with the webhook URL will be able to send events. While it's OK to test without HTTP Basic authentication, we recommend enabling it.
 	BasicAuth *HttpBasicAuthInput `json:"basicAuth,omitempty"`
 	// The additional columns for the Webhook Data Source table.
@@ -16719,6 +18208,11 @@ type WebhookConnectionSettingsInput struct {
 	Timestamp *string `json:"timestamp"`
 	// The unique ID column, if any. Propel uses the primary timestamp and a unique ID to compose a primary key for determining whether records should be inserted, deleted, or updated.
 	UniqueId *string `json:"uniqueId"`
+}
+
+// GetAccessControlEnabled returns WebhookConnectionSettingsInput.AccessControlEnabled, and is useful for accessing the field via an interface.
+func (v *WebhookConnectionSettingsInput) GetAccessControlEnabled() *bool {
+	return v.AccessControlEnabled
 }
 
 // GetBasicAuth returns WebhookConnectionSettingsInput.BasicAuth, and is useful for accessing the field via an interface.
@@ -16811,6 +18305,16 @@ type __CreateAverageMetricInput struct {
 // GetInput returns __CreateAverageMetricInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateAverageMetricInput) GetInput() *CreateAverageMetricInput { return v.Input }
 
+// __CreateClickHouseDataSourceInput is used internally by genqlient
+type __CreateClickHouseDataSourceInput struct {
+	Input *CreateClickHouseDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateClickHouseDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateClickHouseDataSourceInput) GetInput() *CreateClickHouseDataSourceInput {
+	return v.Input
+}
+
 // __CreateCountDistinctMetricInput is used internally by genqlient
 type __CreateCountDistinctMetricInput struct {
 	Input *CreateCountDistinctMetricInput `json:"input,omitempty"`
@@ -16860,6 +18364,14 @@ type __CreateHttpDataSourceInput struct {
 
 // GetInput returns __CreateHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__CreateHttpDataSourceInput) GetInput() *CreateHttpDataSourceInput { return v.Input }
+
+// __CreateKafkaDataSourceInput is used internally by genqlient
+type __CreateKafkaDataSourceInput struct {
+	Input *CreateKafkaDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateKafkaDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateKafkaDataSourceInput) GetInput() *CreateKafkaDataSourceInput { return v.Input }
 
 // __CreateMaterializedViewInput is used internally by genqlient
 type __CreateMaterializedViewInput struct {
@@ -17121,6 +18633,16 @@ func (v *__MetricsInput) GetAfter() *string { return v.After }
 // GetBefore returns __MetricsInput.Before, and is useful for accessing the field via an interface.
 func (v *__MetricsInput) GetBefore() *string { return v.Before }
 
+// __ModifyClickHouseDataSourceInput is used internally by genqlient
+type __ModifyClickHouseDataSourceInput struct {
+	Input *ModifyClickHouseDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyClickHouseDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyClickHouseDataSourceInput) GetInput() *ModifyClickHouseDataSourceInput {
+	return v.Input
+}
+
 // __ModifyDataPoolAccessPolicyInput is used internally by genqlient
 type __ModifyDataPoolAccessPolicyInput struct {
 	Input *ModifyDataPoolAccessPolicyInput `json:"input,omitempty"`
@@ -17146,6 +18668,14 @@ type __ModifyHttpDataSourceInput struct {
 
 // GetInput returns __ModifyHttpDataSourceInput.Input, and is useful for accessing the field via an interface.
 func (v *__ModifyHttpDataSourceInput) GetInput() *ModifyHttpDataSourceInput { return v.Input }
+
+// __ModifyKafkaDataSourceInput is used internally by genqlient
+type __ModifyKafkaDataSourceInput struct {
+	Input *ModifyKafkaDataSourceInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyKafkaDataSourceInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyKafkaDataSourceInput) GetInput() *ModifyKafkaDataSourceInput { return v.Input }
 
 // __ModifyMaterializedViewInput is used internally by genqlient
 type __ModifyMaterializedViewInput struct {
@@ -17243,29 +18773,29 @@ fragment GqlError on Error {
 `
 
 func AddColumnToDataPoolJob(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*AddColumnToDataPoolJobResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "AddColumnToDataPoolJob",
 		Query:  AddColumnToDataPoolJob_Operation,
 		Variables: &__AddColumnToDataPoolJobInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data AddColumnToDataPoolJobResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ AddColumnToDataPoolJobResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by AssignDataPoolAccessPolicy.
@@ -17276,12 +18806,12 @@ mutation AssignDataPoolAccessPolicy ($application: ID!, $dataPoolAccessPolicy: I
 `
 
 func AssignDataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	application string,
 	dataPoolAccessPolicy string,
 ) (*AssignDataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "AssignDataPoolAccessPolicy",
 		Query:  AssignDataPoolAccessPolicy_Operation,
 		Variables: &__AssignDataPoolAccessPolicyInput{
@@ -17289,18 +18819,18 @@ func AssignDataPoolAccessPolicy(
 			DataPoolAccessPolicy: dataPoolAccessPolicy,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data AssignDataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ AssignDataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateAddColumnToDataPoolJob.
@@ -17331,29 +18861,29 @@ fragment GqlError on Error {
 `
 
 func CreateAddColumnToDataPoolJob(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateAddColumnToDataPoolJobInput,
 ) (*CreateAddColumnToDataPoolJobResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateAddColumnToDataPoolJob",
 		Query:  CreateAddColumnToDataPoolJob_Operation,
 		Variables: &__CreateAddColumnToDataPoolJobInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateAddColumnToDataPoolJobResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateAddColumnToDataPoolJobResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateAverageMetric.
@@ -17502,17 +19032,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -17547,6 +19075,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -17600,9 +19131,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -17650,24 +19197,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -17678,6 +19207,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -17698,29 +19249,238 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateAverageMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateAverageMetricInput,
 ) (*CreateAverageMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateAverageMetric",
 		Query:  CreateAverageMetric_Operation,
 		Variables: &__CreateAverageMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateAverageMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateAverageMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
+}
+
+// The query or mutation executed by CreateClickHouseDataSource.
+const CreateClickHouseDataSource_Operation = `
+mutation CreateClickHouseDataSource ($input: CreateClickHouseDataSourceInput!) {
+	createClickHouseDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	dataPools {
+		nodes {
+			id
+			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
+		}
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				path
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			tenant
+			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
+			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`
+
+func CreateClickHouseDataSource(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	input *CreateClickHouseDataSourceInput,
+) (*CreateClickHouseDataSourceResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "CreateClickHouseDataSource",
+		Query:  CreateClickHouseDataSource_Operation,
+		Variables: &__CreateClickHouseDataSourceInput{
+			Input: input,
+		},
+	}
+	var err_ error
+
+	var data_ CreateClickHouseDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateCountDistinctMetric.
@@ -17869,17 +19629,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -17914,6 +19672,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -17967,9 +19728,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -18017,24 +19794,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -18045,6 +19804,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -18065,29 +19846,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateCountDistinctMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateCountDistinctMetricInput,
 ) (*CreateCountDistinctMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateCountDistinctMetric",
 		Query:  CreateCountDistinctMetric_Operation,
 		Variables: &__CreateCountDistinctMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateCountDistinctMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateCountDistinctMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateCountMetric.
@@ -18236,17 +20017,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -18281,6 +20060,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -18334,9 +20116,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -18384,24 +20182,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -18412,6 +20192,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -18432,29 +20234,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateCountMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateCountMetricInput,
 ) (*CreateCountMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateCountMetric",
 		Query:  CreateCountMetric_Operation,
 		Variables: &__CreateCountMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateCountMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateCountMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateCustomMetric.
@@ -18603,17 +20405,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -18648,6 +20448,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -18701,9 +20504,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -18751,24 +20570,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -18779,6 +20580,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -18799,29 +20622,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateCustomMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateCustomMetricInput,
 ) (*CreateCustomMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateCustomMetric",
 		Query:  CreateCustomMetric_Operation,
 		Variables: &__CreateCustomMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateCustomMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateCustomMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateDataPool.
@@ -18879,17 +20702,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -18917,6 +20738,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -18970,9 +20794,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -19020,24 +20860,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -19048,6 +20870,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -19083,29 +20927,29 @@ fragment FilterData on Filter {
 `
 
 func CreateDataPool(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateDataPoolInputV2,
 ) (*CreateDataPoolResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateDataPool",
 		Query:  CreateDataPool_Operation,
 		Variables: &__CreateDataPoolInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateDataPoolResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateDataPoolResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateDataPoolAccessPolicy.
@@ -19160,29 +21004,29 @@ fragment FilterData on Filter {
 `
 
 func CreateDataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateDataPoolAccessPolicyInput,
 ) (*CreateDataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateDataPoolAccessPolicy",
 		Query:  CreateDataPoolAccessPolicy_Operation,
 		Variables: &__CreateDataPoolAccessPolicyInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateDataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateDataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateHttpDataSource.
@@ -19206,6 +21050,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -19259,9 +21106,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -19305,6 +21168,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -19324,29 +21213,238 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateHttpDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateHttpDataSourceInput,
 ) (*CreateHttpDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateHttpDataSource",
 		Query:  CreateHttpDataSource_Operation,
 		Variables: &__CreateHttpDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateHttpDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateHttpDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
+}
+
+// The query or mutation executed by CreateKafkaDataSource.
+const CreateKafkaDataSource_Operation = `
+mutation CreateKafkaDataSource ($input: CreateKafkaDataSourceInput!) {
+	createKafkaDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	dataPools {
+		nodes {
+			id
+			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
+		}
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				path
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			tenant
+			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
+			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`
+
+func CreateKafkaDataSource(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	input *CreateKafkaDataSourceInput,
+) (*CreateKafkaDataSourceResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "CreateKafkaDataSource",
+		Query:  CreateKafkaDataSource_Operation,
+		Variables: &__CreateKafkaDataSourceInput{
+			Input: input,
+		},
+	}
+	var err_ error
+
+	var data_ CreateKafkaDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateMaterializedView.
@@ -19392,29 +21490,29 @@ fragment CommonData on Common {
 `
 
 func CreateMaterializedView(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateMaterializedViewInput,
 ) (*CreateMaterializedViewResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateMaterializedView",
 		Query:  CreateMaterializedView_Operation,
 		Variables: &__CreateMaterializedViewInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateMaterializedViewResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateMaterializedViewResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateMaxMetric.
@@ -19563,17 +21661,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -19608,6 +21704,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -19661,9 +21760,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -19711,24 +21826,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -19739,6 +21836,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -19759,29 +21878,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateMaxMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateMaxMetricInput,
 ) (*CreateMaxMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateMaxMetric",
 		Query:  CreateMaxMetric_Operation,
 		Variables: &__CreateMaxMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateMaxMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateMaxMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateMinMetric.
@@ -19930,17 +22049,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -19975,6 +22092,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -20028,9 +22148,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -20078,24 +22214,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -20106,6 +22224,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -20126,29 +22266,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateMinMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateMinMetricInput,
 ) (*CreateMinMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateMinMetric",
 		Query:  CreateMinMetric_Operation,
 		Variables: &__CreateMinMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateMinMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateMinMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreatePolicy.
@@ -20173,29 +22313,29 @@ fragment PolicyData on Policy {
 `
 
 func CreatePolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreatePolicyInput,
 ) (*CreatePolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreatePolicy",
 		Query:  CreatePolicy_Operation,
 		Variables: &__CreatePolicyInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreatePolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreatePolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateS3DataSource.
@@ -20219,6 +22359,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -20272,9 +22415,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -20318,6 +22477,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -20337,29 +22522,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateS3DataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateS3DataSourceInput,
 ) (*CreateS3DataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateS3DataSource",
 		Query:  CreateS3DataSource_Operation,
 		Variables: &__CreateS3DataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateS3DataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateS3DataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateSnowflakeDataSource.
@@ -20391,6 +22576,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -20444,9 +22632,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -20494,6 +22698,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -20513,29 +22743,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateSnowflakeDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateSnowflakeDataSourceInput,
 ) (*CreateSnowflakeDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateSnowflakeDataSource",
 		Query:  CreateSnowflakeDataSource_Operation,
 		Variables: &__CreateSnowflakeDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateSnowflakeDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateSnowflakeDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateSumMetric.
@@ -20684,17 +22914,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -20729,6 +22957,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -20782,9 +23013,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -20832,24 +23079,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -20860,6 +23089,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -20880,29 +23131,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateSumMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateSumMetricInput,
 ) (*CreateSumMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateSumMetric",
 		Query:  CreateSumMetric_Operation,
 		Variables: &__CreateSumMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateSumMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateSumMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by CreateWebhookDataSource.
@@ -20926,6 +23177,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -20979,9 +23233,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -21025,6 +23295,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -21044,29 +23340,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func CreateWebhookDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *CreateWebhookDataSourceInput,
 ) (*CreateWebhookDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "CreateWebhookDataSource",
 		Query:  CreateWebhookDataSource_Operation,
 		Variables: &__CreateWebhookDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data CreateWebhookDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ CreateWebhookDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataPool.
@@ -21119,17 +23415,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -21157,6 +23451,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -21210,9 +23507,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -21260,24 +23573,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -21288,6 +23583,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -21323,29 +23640,29 @@ fragment FilterData on Filter {
 `
 
 func DataPool(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DataPoolResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataPool",
 		Query:  DataPool_Operation,
 		Variables: &__DataPoolInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataPoolResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataPoolResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataPoolAccessPolicy.
@@ -21403,29 +23720,29 @@ fragment FilterData on Filter {
 `
 
 func DataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataPoolAccessPolicy",
 		Query:  DataPoolAccessPolicy_Operation,
 		Variables: &__DataPoolAccessPolicyInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataPoolByName.
@@ -21478,17 +23795,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -21516,6 +23831,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -21569,9 +23887,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -21619,24 +23953,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -21647,6 +23963,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -21682,29 +24020,29 @@ fragment FilterData on Filter {
 `
 
 func DataPoolByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*DataPoolByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataPoolByName",
 		Query:  DataPoolByName_Operation,
 		Variables: &__DataPoolByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataPoolByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataPoolByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataPools.
@@ -21770,17 +24108,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment CommonData on Common {
 	uniqueName
@@ -21808,6 +24144,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -21861,9 +24200,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -21911,24 +24266,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -21939,6 +24276,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -21974,14 +24333,14 @@ fragment FilterData on Filter {
 `
 
 func DataPools(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	first *int,
 	last *int,
 	after *string,
 	before *string,
 ) (*DataPoolsResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataPools",
 		Query:  DataPools_Operation,
 		Variables: &__DataPoolsInput{
@@ -21991,18 +24350,18 @@ func DataPools(
 			Before: before,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataPoolsResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataPoolsResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataSource.
@@ -22024,6 +24383,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -22077,9 +24439,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -22123,6 +24501,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -22142,29 +24546,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func DataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataSource",
 		Query:  DataSource_Operation,
 		Variables: &__DataSourceInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataSourceByName.
@@ -22186,6 +24590,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -22239,9 +24646,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -22285,6 +24708,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -22304,29 +24753,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func DataSourceByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*DataSourceByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataSourceByName",
 		Query:  DataSourceByName_Operation,
 		Variables: &__DataSourceByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataSourceByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataSourceByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DataSources.
@@ -22361,6 +24810,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -22414,9 +24866,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -22460,6 +24928,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -22479,14 +24973,14 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func DataSources(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	first *int,
 	last *int,
 	after *string,
 	before *string,
 ) (*DataSourcesResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DataSources",
 		Query:  DataSources_Operation,
 		Variables: &__DataSourcesInput{
@@ -22496,18 +24990,18 @@ func DataSources(
 			Before: before,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DataSourcesResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DataSourcesResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteDataPool.
@@ -22518,29 +25012,29 @@ mutation DeleteDataPool ($id: ID!) {
 `
 
 func DeleteDataPool(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeleteDataPoolResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteDataPool",
 		Query:  DeleteDataPool_Operation,
 		Variables: &__DeleteDataPoolInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteDataPoolResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteDataPoolResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteDataPoolAccessPolicy.
@@ -22551,29 +25045,29 @@ mutation DeleteDataPoolAccessPolicy ($id: ID!) {
 `
 
 func DeleteDataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeleteDataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteDataPoolAccessPolicy",
 		Query:  DeleteDataPoolAccessPolicy_Operation,
 		Variables: &__DeleteDataPoolAccessPolicyInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteDataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteDataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteDataPoolByName.
@@ -22584,29 +25078,29 @@ mutation DeleteDataPoolByName ($uniqueName: String!) {
 `
 
 func DeleteDataPoolByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*DeleteDataPoolByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteDataPoolByName",
 		Query:  DeleteDataPoolByName_Operation,
 		Variables: &__DeleteDataPoolByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteDataPoolByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteDataPoolByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteDataSource.
@@ -22617,29 +25111,29 @@ mutation DeleteDataSource ($id: ID!) {
 `
 
 func DeleteDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeleteDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteDataSource",
 		Query:  DeleteDataSource_Operation,
 		Variables: &__DeleteDataSourceInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteDataSourceByName.
@@ -22650,29 +25144,29 @@ mutation DeleteDataSourceByName ($uniqueName: String!) {
 `
 
 func DeleteDataSourceByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*DeleteDataSourceByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteDataSourceByName",
 		Query:  DeleteDataSourceByName_Operation,
 		Variables: &__DeleteDataSourceByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteDataSourceByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteDataSourceByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteMaterializedView.
@@ -22683,29 +25177,29 @@ mutation DeleteMaterializedView ($id: ID!) {
 `
 
 func DeleteMaterializedView(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeleteMaterializedViewResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteMaterializedView",
 		Query:  DeleteMaterializedView_Operation,
 		Variables: &__DeleteMaterializedViewInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteMaterializedViewResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteMaterializedViewResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteMetric.
@@ -22716,29 +25210,29 @@ mutation DeleteMetric ($id: ID!) {
 `
 
 func DeleteMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeleteMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteMetric",
 		Query:  DeleteMetric_Operation,
 		Variables: &__DeleteMetricInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeleteMetricByName.
@@ -22749,29 +25243,29 @@ mutation DeleteMetricByName ($uniqueName: String!) {
 `
 
 func DeleteMetricByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*DeleteMetricByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeleteMetricByName",
 		Query:  DeleteMetricByName_Operation,
 		Variables: &__DeleteMetricByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeleteMetricByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeleteMetricByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by DeletePolicy.
@@ -22782,29 +25276,29 @@ mutation DeletePolicy ($id: ID!) {
 `
 
 func DeletePolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*DeletePolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "DeletePolicy",
 		Query:  DeletePolicy_Operation,
 		Variables: &__DeletePolicyInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data DeletePolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ DeletePolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by MaterializedView.
@@ -22845,29 +25339,29 @@ fragment CommonData on Common {
 `
 
 func MaterializedView(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*MaterializedViewResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "MaterializedView",
 		Query:  MaterializedView_Operation,
 		Variables: &__MaterializedViewInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data MaterializedViewResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ MaterializedViewResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by Metric.
@@ -23013,17 +25507,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -23058,6 +25550,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -23111,9 +25606,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -23161,24 +25672,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -23189,6 +25682,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -23209,29 +25724,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func Metric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*MetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "Metric",
 		Query:  Metric_Operation,
 		Variables: &__MetricInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data MetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ MetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by MetricByName.
@@ -23377,17 +25892,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -23422,6 +25935,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -23475,9 +25991,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -23525,24 +26057,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -23553,6 +26067,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -23573,29 +26109,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func MetricByName(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	uniqueName string,
 ) (*MetricByNameResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "MetricByName",
 		Query:  MetricByName_Operation,
 		Variables: &__MetricByNameInput{
 			UniqueName: uniqueName,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data MetricByNameResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ MetricByNameResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by Metrics.
@@ -23758,17 +26294,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -23803,6 +26337,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -23856,9 +26393,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -23906,24 +26459,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -23934,6 +26469,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -23954,14 +26511,14 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func Metrics(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	first *int,
 	last *int,
 	after *string,
 	before *string,
 ) (*MetricsResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "Metrics",
 		Query:  Metrics_Operation,
 		Variables: &__MetricsInput{
@@ -23971,18 +26528,227 @@ func Metrics(
 			Before: before,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data MetricsResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ MetricsResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
+}
+
+// The query or mutation executed by ModifyClickHouseDataSource.
+const ModifyClickHouseDataSource_Operation = `
+mutation ModifyClickHouseDataSource ($input: ModifyClickHouseDataSourceInput!) {
+	modifyClickHouseDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	dataPools {
+		nodes {
+			id
+			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
+		}
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				path
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			tenant
+			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
+			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`
+
+func ModifyClickHouseDataSource(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	input *ModifyClickHouseDataSourceInput,
+) (*ModifyClickHouseDataSourceResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "ModifyClickHouseDataSource",
+		Query:  ModifyClickHouseDataSource_Operation,
+		Variables: &__ModifyClickHouseDataSourceInput{
+			Input: input,
+		},
+	}
+	var err_ error
+
+	var data_ ModifyClickHouseDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyDataPool.
@@ -24045,17 +26811,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment GqlError on Error {
 	code
@@ -24087,6 +26851,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -24140,9 +26907,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -24190,24 +26973,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -24218,6 +26983,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -24253,29 +27040,29 @@ fragment FilterData on Filter {
 `
 
 func ModifyDataPool(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyDataPoolInput,
 ) (*ModifyDataPoolResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyDataPool",
 		Query:  ModifyDataPool_Operation,
 		Variables: &__ModifyDataPoolInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyDataPoolResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyDataPoolResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyDataPoolAccessPolicy.
@@ -24330,29 +27117,29 @@ fragment FilterData on Filter {
 `
 
 func ModifyDataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyDataPoolAccessPolicyInput,
 ) (*ModifyDataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyDataPoolAccessPolicy",
 		Query:  ModifyDataPoolAccessPolicy_Operation,
 		Variables: &__ModifyDataPoolAccessPolicyInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyDataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyDataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyHttpDataSource.
@@ -24376,6 +27163,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -24429,9 +27219,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -24475,6 +27281,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -24494,29 +27326,238 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifyHttpDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyHttpDataSourceInput,
 ) (*ModifyHttpDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyHttpDataSource",
 		Query:  ModifyHttpDataSource_Operation,
 		Variables: &__ModifyHttpDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyHttpDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyHttpDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
+}
+
+// The query or mutation executed by ModifyKafkaDataSource.
+const ModifyKafkaDataSource_Operation = `
+mutation ModifyKafkaDataSource ($input: ModifyKafkaDataSourceInput!) {
+	modifyKafkaDataSource(input: $input) {
+		dataSource {
+			... DataSourceData
+		}
+	}
+}
+fragment DataSourceData on DataSource {
+	id
+	... CommonData
+	type
+	status
+	error {
+		message
+	}
+	dataPools {
+		nodes {
+			id
+			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
+		}
+	}
+	connectionSettings {
+		__typename
+		... on SnowflakeConnectionSettings {
+			account
+			database
+			warehouse
+			schema
+			username
+			role
+		}
+		... on HttpConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			tables {
+				id
+				name
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on S3ConnectionSettings {
+			bucket
+			awsAccessKeyId
+			tables {
+				id
+				name
+				path
+				columns {
+					name
+					type
+					nullable
+				}
+			}
+		}
+		... on WebhookConnectionSettings {
+			basicAuth {
+				username
+				password
+			}
+			columns {
+				name
+				type
+				jsonProperty
+				nullable
+			}
+			tenant
+			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
+			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
+		}
+	}
+	tables(first: 100) {
+		nodes {
+			id
+			name
+			columns(first: 100) {
+				nodes {
+					... ColumnData
+				}
+			}
+		}
+	}
+	checks {
+		name
+		description
+		status
+		error {
+			code
+			message
+		}
+		checkedAt
+	}
+	tableIntrospections(first: 100) {
+		nodes {
+			... TableIntrospectionData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
+fragment ColumnData on Column {
+	name
+	type
+	isNullable
+}
+fragment TableIntrospectionData on TableIntrospection {
+	dataSource {
+		id
+	}
+	status
+	createdAt
+	createdBy
+	modifiedAt
+	modifiedBy
+	numTables
+}
+`
+
+func ModifyKafkaDataSource(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	input *ModifyKafkaDataSourceInput,
+) (*ModifyKafkaDataSourceResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "ModifyKafkaDataSource",
+		Query:  ModifyKafkaDataSource_Operation,
+		Variables: &__ModifyKafkaDataSourceInput{
+			Input: input,
+		},
+	}
+	var err_ error
+
+	var data_ ModifyKafkaDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyMaterializedView.
@@ -24559,29 +27600,29 @@ fragment CommonData on Common {
 `
 
 func ModifyMaterializedView(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyMaterializedViewInput,
 ) (*ModifyMaterializedViewResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyMaterializedView",
 		Query:  ModifyMaterializedView_Operation,
 		Variables: &__ModifyMaterializedViewInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyMaterializedViewResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyMaterializedViewResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyMetric.
@@ -24730,17 +27771,15 @@ fragment DataPoolData on DataPool {
 		}
 		completedAt
 	}
-	syncs {
-		nodes {
-			... SyncData
-		}
-	}
 	dataPoolAccessPolicies {
 		nodes {
 			... DataPoolAccessPolicyData
 		}
 	}
 	accessControlEnabled
+	tableSettings {
+		... TableSettingsData
+	}
 }
 fragment DimensionData on Dimension {
 	columnName
@@ -24775,6 +27814,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -24828,9 +27870,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -24878,24 +27936,6 @@ fragment DataPoolSyncingData on DataPoolSyncing {
 	interval
 	lastSyncedAt
 }
-fragment SyncData on Sync {
-	id
-	status
-	newRecords
-	updatedRecords
-	deletedRecords
-	invalidRecords
-	startedAt
-	succeededAt
-	failedAt
-	error {
-		message
-	}
-	createdAt
-	createdBy
-	modifiedAt
-	modifiedBy
-}
 fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	id
 	... CommonData
@@ -24906,6 +27946,28 @@ fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
 	dataPool {
 		id
 	}
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
 }
 fragment ColumnData on Column {
 	name
@@ -24926,29 +27988,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifyMetric(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyMetricInput,
 ) (*ModifyMetricResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyMetric",
 		Query:  ModifyMetric_Operation,
 		Variables: &__ModifyMetricInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyMetricResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyMetricResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyPolicy.
@@ -24973,29 +28035,29 @@ fragment PolicyData on Policy {
 `
 
 func ModifyPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyPolicyInput,
 ) (*ModifyPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyPolicy",
 		Query:  ModifyPolicy_Operation,
 		Variables: &__ModifyPolicyInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyS3DataSource.
@@ -25019,6 +28081,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -25072,9 +28137,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -25118,6 +28199,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -25137,29 +28244,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifyS3DataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyS3DataSourceInput,
 ) (*ModifyS3DataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyS3DataSource",
 		Query:  ModifyS3DataSource_Operation,
 		Variables: &__ModifyS3DataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyS3DataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyS3DataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifySnowflakeDataSource.
@@ -25191,6 +28298,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -25244,9 +28354,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -25294,6 +28420,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -25313,29 +28465,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifySnowflakeDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifySnowflakeDataSourceInput,
 ) (*ModifySnowflakeDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifySnowflakeDataSource",
 		Query:  ModifySnowflakeDataSource_Operation,
 		Variables: &__ModifySnowflakeDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifySnowflakeDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifySnowflakeDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by ModifyWebhookDataSource.
@@ -25359,6 +28511,9 @@ fragment DataSourceData on DataSource {
 		nodes {
 			id
 			accessControlEnabled
+			timestamp {
+				... TimestampData
+			}
 		}
 	}
 	connectionSettings {
@@ -25412,9 +28567,25 @@ fragment DataSourceData on DataSource {
 				nullable
 			}
 			tenant
-			timestamp
 			uniqueId
+			tableSettings {
+				... TableSettingsData
+			}
 			webhookUrl
+		}
+		... on KafkaConnectionSettings {
+			auth
+			user
+			password
+			tls
+			bootstrapServers
+		}
+		... on ClickHouseConnectionSettings {
+			url
+			database
+			user
+			password
+			readonly
 		}
 	}
 	tables(first: 100) {
@@ -25458,6 +28629,32 @@ fragment CommonData on Common {
 	createdBy
 	modifiedBy
 }
+fragment TimestampData on Timestamp {
+	columnName
+	type
+}
+fragment TableSettingsData on TableSettings {
+	engine {
+		__typename
+		... on MergeTreeTableEngine {
+			type
+		}
+		... on ReplacingMergeTreeTableEngine {
+			type
+			ver
+		}
+		... on SummingMergeTreeTableEngine {
+			type
+			columns
+		}
+		... on AggregatingMergeTreeTableEngine {
+			type
+		}
+	}
+	partitionBy
+	primaryKey
+	orderBy
+}
 fragment ColumnData on Column {
 	name
 	type
@@ -25477,29 +28674,29 @@ fragment TableIntrospectionData on TableIntrospection {
 `
 
 func ModifyWebhookDataSource(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	input *ModifyWebhookDataSourceInput,
 ) (*ModifyWebhookDataSourceResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "ModifyWebhookDataSource",
 		Query:  ModifyWebhookDataSource_Operation,
 		Variables: &__ModifyWebhookDataSourceInput{
 			Input: input,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data ModifyWebhookDataSourceResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ ModifyWebhookDataSourceResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by Policy.
@@ -25522,29 +28719,29 @@ fragment PolicyData on Policy {
 `
 
 func Policy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	id string,
 ) (*PolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "Policy",
 		Query:  Policy_Operation,
 		Variables: &__PolicyInput{
 			Id: id,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data PolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ PolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }
 
 // The query or mutation executed by UnAssignDataPoolAccessPolicy.
@@ -25555,12 +28752,12 @@ mutation UnAssignDataPoolAccessPolicy ($dataPoolAccessPolicy: ID!, $application:
 `
 
 func UnAssignDataPoolAccessPolicy(
-	ctx context.Context,
-	client graphql.Client,
+	ctx_ context.Context,
+	client_ graphql.Client,
 	dataPoolAccessPolicy string,
 	application string,
 ) (*UnAssignDataPoolAccessPolicyResponse, error) {
-	req := &graphql.Request{
+	req_ := &graphql.Request{
 		OpName: "UnAssignDataPoolAccessPolicy",
 		Query:  UnAssignDataPoolAccessPolicy_Operation,
 		Variables: &__UnAssignDataPoolAccessPolicyInput{
@@ -25568,16 +28765,16 @@ func UnAssignDataPoolAccessPolicy(
 			Application:          application,
 		},
 	}
-	var err error
+	var err_ error
 
-	var data UnAssignDataPoolAccessPolicyResponse
-	resp := &graphql.Response{Data: &data}
+	var data_ UnAssignDataPoolAccessPolicyResponse
+	resp_ := &graphql.Response{Data: &data_}
 
-	err = client.MakeRequest(
-		ctx,
-		req,
-		resp,
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
 	)
 
-	return &data, err
+	return &data_, err_
 }

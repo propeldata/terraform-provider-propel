@@ -35,4 +35,4 @@ test: $(GO_FILES)
 	go test ./... || exit 1
 
 testacc: $(GO_FILES)
-	TF_ACC=1 go test ./... -timeout 120m
+	TF_ACC=1 go test -v ./... -timeout 120m

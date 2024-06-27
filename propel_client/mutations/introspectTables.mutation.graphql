@@ -1,5 +1,0 @@
-mutation introspectTables ($dataSourceId: String!) {
-    introspectTables(input: {id: $dataSourceId}) {
-        ...TableIntrospectionData
-    }
-}

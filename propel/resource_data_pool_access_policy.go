@@ -40,6 +40,7 @@ func resourceDataPoolAccessPolicy() *schema.Resource {
 			"data_pool": {
 				Type:        schema.TypeString,
 				Required:    true,
+				ForceNew:    true,
 				Description: "The Data Pool to which this Access Policy belongs.",
 			},
 			"account": {

@@ -70,6 +70,7 @@ func resourceMetric() *schema.Resource {
 			"data_pool": {
 				Type:        schema.TypeString,
 				Required:    true,
+				ForceNew:    true,
 				Description: "The Data Pool that powers this Metric.",
 			},
 			"filter": {
@@ -143,6 +144,7 @@ func resourceMetric() *schema.Resource {
 				Optional:    true,
 				Computed:    true,
 				Description: "Whether or not access control is enabled for the Metric.",
+				Deprecated:  "Use Data Pool Access Policies instead. This attribute will be removed in the next major version of the provider.",
 			},
 		},
 	}
