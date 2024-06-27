@@ -63,6 +63,11 @@ resource "propel_data_source" "my_webhook_data_source" {
   }
 }
 
+variable "kafka_password" {
+  type = string
+  sensitive = true
+}
+
 resource "propel_data_source" "my_kafka_data_source" {
   unique_name = "My Kafka Data Source"
   description = "This is an example of a Kafka Data Source"
@@ -74,6 +79,11 @@ resource "propel_data_source" "my_kafka_data_source" {
     tls = true
     bootstrap_servers = ["localhost:9092"]
   }
+}
+
+variable "clickhouse_password" {
+  type = string
+  sensitive = true
 }
 
 resource "propel_data_source" "my_clickhouse_data_source" {
