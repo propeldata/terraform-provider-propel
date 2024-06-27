@@ -198,6 +198,13 @@ func resourceMaterializedViewCreate(ctx context.Context, d *schema.ResourceData,
 
 	resourceMaterializedViewRead(ctx, d, meta)
 
+	timeout := d.Timeout(schema.TimeoutCreate)
+	dataPoolId := d.Get("destination").(string)
+
+	if err := internal.WaitForDataPoolLive(ctx, c, dataPoolId, timeout); err != nil {
+		return diag.FromErr(err)
+	}
+
 	return nil
 }
 
