@@ -173,26 +173,18 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, meta
 	c := meta.(graphql.Client)
 
 	id := d.Id()
+
 	input := &pc.ModifyApplicationInput{
 		IdOrUniqueName: &pc.IdOrUniqueName{Id: &id},
 	}
 
-	if d.HasChange("unique_name") {
+	if d.HasChanges("unique_name", "description", "scopes", "propeller") {
 		uniqueName := d.Get("unique_name").(string)
 		input.UniqueName = &uniqueName
-	}
 
-	if d.HasChange("description") {
 		description := d.Get("description").(string)
 		input.Description = &description
-	}
 
-	if d.HasChange("propeller") {
-		propeller := parsePropeller(d.Get("propeller").(string))
-		input.Propeller = &propeller
-	}
-
-	if d.HasChange("scopes") {
 		scopes := make([]pc.ApplicationScope, 0)
 		for _, v := range d.Get("scopes").(*schema.Set).List() {
 			scope := parseApplicationScope(v.(string))
@@ -200,6 +192,9 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, meta
 		}
 
 		input.Scopes = scopes
+
+		propeller := parsePropeller(d.Get("propeller").(string))
+		input.Propeller = &propeller
 	}
 
 	if _, err := pc.ModifyApplication(ctx, c, input); err != nil {
