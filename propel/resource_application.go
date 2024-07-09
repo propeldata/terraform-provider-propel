@@ -80,8 +80,6 @@ func resourceApplication() *schema.Resource {
 func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
-	var diags diag.Diagnostics
-
 	input := &pc.CreateApplicationInput{
 		Scopes: make([]pc.ApplicationScope, 0),
 	}
@@ -120,7 +118,7 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, meta
 		return diag.FromErr(fmt.Errorf("failed to create Application: %s", r.GetError().GetMessage()))
 	}
 
-	return diags
+	return nil
 }
 
 func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
