@@ -149,6 +149,14 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, meta a
 		return diag.FromErr(err)
 	}
 
+	if err := d.Set("client_id", response.Application.ClientId); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("secret", response.Application.Secret); err != nil {
+		return diag.FromErr(err)
+	}
+
 	if err := d.Set("propeller", response.Application.Propeller); err != nil {
 		return diag.FromErr(err)
 	}
@@ -177,11 +185,6 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, meta
 	if d.HasChange("description") {
 		description := d.Get("description").(string)
 		input.Description = &description
-	}
-
-	if d.HasChange("propeller") {
-		propeller := parsePropeller(d.Get("propeller").(string))
-		input.Propeller = &propeller
 	}
 
 	if d.HasChange("propeller") {
