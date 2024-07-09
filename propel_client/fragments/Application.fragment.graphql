@@ -3,6 +3,8 @@ fragment ApplicationData on Application {
     ...CommonData
     clientId
     secret
+    scopes
+    propeller
     dataPoolAccessPolicies {
         nodes {
             ...DataPoolAccessPolicyData
