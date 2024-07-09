@@ -26,4 +26,4 @@ jobs:
       run: go build -v ./...
 
     - name: Test
-      run: TF_ACC=1 go test -v ./... -timeout 120m
+      run: TF_ACC=1 go test -v ./... -timeout 120m -parallel 3
