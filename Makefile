@@ -2,7 +2,7 @@
 
 GO_FILES=$(wildcard */*.go)
 BINARY=terraform-provider-propel
-VERSION=1.3.1
+VERSION=1.3.2
 
 build: terraform-provider-propel
 
@@ -35,4 +35,4 @@ test: $(GO_FILES)
 	go test ./... || exit 1
 
 testacc: $(GO_FILES)
-	TF_ACC=1 go test -v ./... -timeout 120m
+	TF_ACC=1 go test -v ./... -timeout 120m -parallel 3

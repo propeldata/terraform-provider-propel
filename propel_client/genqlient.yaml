@@ -5,7 +5,7 @@ optional: pointer
 use_struct_references: true
 operations:
 - fragments/AddColumnToDataPoolJob.fragment.graphql
-#- fragments/Application.fragment.graphql
+- fragments/Application.fragment.graphql
 - fragments/Column.fragment.graphql
 - fragments/Common.fragment.graphql
 - fragments/DataPool.fragment.graphql
@@ -24,7 +24,7 @@ operations:
 - fragments/TableIntrospection.fragment.graphql
 - fragments/TableSettings.fragment.graphql
 - mutations/createAddColumnToDataPoolJob.mutation.graphql
-#- mutations/createApplication.mutation.graphql
+- mutations/createApplication.mutation.graphql
 - mutations/assignDataPoolAccessPolicy.mutation.graphql
 - mutations/createAverageMetric.mutation.graphql
 - mutations/createClickHouseDataSource.mutation.graphql
@@ -43,8 +43,7 @@ operations:
 - mutations/createSnowflakeDataSource.mutation.graphql
 - mutations/createSumMetric.mutation.graphql
 - mutations/createWebhookDataSource.mutation.graphql
-#- mutations/deleteApplication.mutation.graphql
-#- mutations/deleteApplicationByName.mutation.graphql
+- mutations/deleteApplication.mutation.graphql
 - mutations/deleteDataPool.mutation.graphql
 - mutations/deleteDataPoolByName.mutation.graphql
 - mutations/deleteDataPoolAccessPolicy.mutation.graphql
@@ -54,7 +53,7 @@ operations:
 - mutations/deleteMetric.mutation.graphql
 - mutations/deleteMetricByName.mutation.graphql
 - mutations/deletePolicy.mutation.graphql
-#- mutations/modifyApplication.mutation.graphql
+- mutations/modifyApplication.mutation.graphql
 - mutations/modifyDataPool.mutation.graphql
 - mutations/modifyDataPoolAccessPolicy.mutation.graphql
 - mutations/modifyDataSource.mutation.graphql
@@ -63,10 +62,7 @@ operations:
 - mutations/modifyPolicy.mutation.graphql
 - mutations/unAssignDataPoolAccessPolicy.mutation.graphql
 - queries/addColumnToDataPoolJob.query.graphql
-#- queries/application.query.graphql
-#- queries/applicationByClientId.query.graphql
-#- queries/applicationByName.query.graphql
-#- queries/applications.query.graphql
+- queries/application.query.graphql
 - queries/dataPool.query.graphql
 - queries/dataPoolByName.query.graphql
 - queries/dataPoolAccessPolicy.query.graphql

@@ -253,6 +253,507 @@ type AggregatingMergeTreeTableEngineInput struct {
 // GetType returns AggregatingMergeTreeTableEngineInput.Type, and is useful for accessing the field via an interface.
 func (v *AggregatingMergeTreeTableEngineInput) GetType() *TableEngineType { return v.Type }
 
+// ApplicationApplication includes the requested fields of the GraphQL type Application.
+// The GraphQL type's documentation follows.
+//
+// The Application object.
+//
+// Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
+//
+// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+type ApplicationApplication struct {
+	ApplicationData `json:"-"`
+}
+
+// GetId returns ApplicationApplication.Id, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetId() string { return v.ApplicationData.Id }
+
+// GetClientId returns ApplicationApplication.ClientId, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetClientId() string { return v.ApplicationData.ClientId }
+
+// GetSecret returns ApplicationApplication.Secret, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetSecret() *string { return v.ApplicationData.Secret }
+
+// GetScopes returns ApplicationApplication.Scopes, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetScopes() []ApplicationScope { return v.ApplicationData.Scopes }
+
+// GetPropeller returns ApplicationApplication.Propeller, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetPropeller() Propeller { return v.ApplicationData.Propeller }
+
+// GetDataPoolAccessPolicies returns ApplicationApplication.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetDataPoolAccessPolicies() *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.ApplicationData.DataPoolAccessPolicies
+}
+
+// GetUniqueName returns ApplicationApplication.UniqueName, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetUniqueName() string {
+	return v.ApplicationData.CommonDataApplication.UniqueName
+}
+
+// GetDescription returns ApplicationApplication.Description, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetDescription() string {
+	return v.ApplicationData.CommonDataApplication.Description
+}
+
+// GetAccount returns ApplicationApplication.Account, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetAccount() *CommonDataAccount {
+	return v.ApplicationData.CommonDataApplication.Account
+}
+
+// GetEnvironment returns ApplicationApplication.Environment, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetEnvironment() *CommonDataEnvironment {
+	return v.ApplicationData.CommonDataApplication.Environment
+}
+
+// GetCreatedAt returns ApplicationApplication.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetCreatedAt() time.Time {
+	return v.ApplicationData.CommonDataApplication.CreatedAt
+}
+
+// GetModifiedAt returns ApplicationApplication.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetModifiedAt() time.Time {
+	return v.ApplicationData.CommonDataApplication.ModifiedAt
+}
+
+// GetCreatedBy returns ApplicationApplication.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetCreatedBy() string {
+	return v.ApplicationData.CommonDataApplication.CreatedBy
+}
+
+// GetModifiedBy returns ApplicationApplication.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ApplicationApplication) GetModifiedBy() string {
+	return v.ApplicationData.CommonDataApplication.ModifiedBy
+}
+
+func (v *ApplicationApplication) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ApplicationApplication
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ApplicationApplication = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.ApplicationData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalApplicationApplication struct {
+	Id string `json:"id"`
+
+	ClientId string `json:"clientId"`
+
+	Secret *string `json:"secret"`
+
+	Scopes []ApplicationScope `json:"scopes"`
+
+	Propeller Propeller `json:"propeller"`
+
+	DataPoolAccessPolicies *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ApplicationApplication) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ApplicationApplication) __premarshalJSON() (*__premarshalApplicationApplication, error) {
+	var retval __premarshalApplicationApplication
+
+	retval.Id = v.ApplicationData.Id
+	retval.ClientId = v.ApplicationData.ClientId
+	retval.Secret = v.ApplicationData.Secret
+	retval.Scopes = v.ApplicationData.Scopes
+	retval.Propeller = v.ApplicationData.Propeller
+	retval.DataPoolAccessPolicies = v.ApplicationData.DataPoolAccessPolicies
+	retval.UniqueName = v.ApplicationData.CommonDataApplication.UniqueName
+	retval.Description = v.ApplicationData.CommonDataApplication.Description
+	retval.Account = v.ApplicationData.CommonDataApplication.Account
+	retval.Environment = v.ApplicationData.CommonDataApplication.Environment
+	retval.CreatedAt = v.ApplicationData.CommonDataApplication.CreatedAt
+	retval.ModifiedAt = v.ApplicationData.CommonDataApplication.ModifiedAt
+	retval.CreatedBy = v.ApplicationData.CommonDataApplication.CreatedBy
+	retval.ModifiedBy = v.ApplicationData.CommonDataApplication.ModifiedBy
+	return &retval, nil
+}
+
+// ApplicationData includes the GraphQL fields of Application requested by the fragment ApplicationData.
+// The GraphQL type's documentation follows.
+//
+// The Application object.
+//
+// Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
+//
+// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+type ApplicationData struct {
+	// The Application's unique identifier.
+	Id                    string `json:"id"`
+	CommonDataApplication `json:"-"`
+	// The Application's OAuth 2.0 client identifier.
+	ClientId string `json:"clientId"`
+	// The Application's OAuth 2.0 client secret.
+	Secret *string `json:"secret"`
+	// The Application's OAuth 2.0 scopes.
+	Scopes []ApplicationScope `json:"scopes"`
+	// The Application's Propeller.
+	Propeller Propeller `json:"propeller"`
+	// A paginated list of Data Pool Access Policies associated with the Application.
+	DataPoolAccessPolicies *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+}
+
+// GetId returns ApplicationData.Id, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetId() string { return v.Id }
+
+// GetClientId returns ApplicationData.ClientId, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetClientId() string { return v.ClientId }
+
+// GetSecret returns ApplicationData.Secret, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetSecret() *string { return v.Secret }
+
+// GetScopes returns ApplicationData.Scopes, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetScopes() []ApplicationScope { return v.Scopes }
+
+// GetPropeller returns ApplicationData.Propeller, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetPropeller() Propeller { return v.Propeller }
+
+// GetDataPoolAccessPolicies returns ApplicationData.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetDataPoolAccessPolicies() *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.DataPoolAccessPolicies
+}
+
+// GetUniqueName returns ApplicationData.UniqueName, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetUniqueName() string { return v.CommonDataApplication.UniqueName }
+
+// GetDescription returns ApplicationData.Description, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetDescription() string { return v.CommonDataApplication.Description }
+
+// GetAccount returns ApplicationData.Account, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetAccount() *CommonDataAccount { return v.CommonDataApplication.Account }
+
+// GetEnvironment returns ApplicationData.Environment, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetEnvironment() *CommonDataEnvironment {
+	return v.CommonDataApplication.Environment
+}
+
+// GetCreatedAt returns ApplicationData.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetCreatedAt() time.Time { return v.CommonDataApplication.CreatedAt }
+
+// GetModifiedAt returns ApplicationData.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetModifiedAt() time.Time { return v.CommonDataApplication.ModifiedAt }
+
+// GetCreatedBy returns ApplicationData.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetCreatedBy() string { return v.CommonDataApplication.CreatedBy }
+
+// GetModifiedBy returns ApplicationData.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ApplicationData) GetModifiedBy() string { return v.CommonDataApplication.ModifiedBy }
+
+func (v *ApplicationData) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ApplicationData
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ApplicationData = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.CommonDataApplication)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalApplicationData struct {
+	Id string `json:"id"`
+
+	ClientId string `json:"clientId"`
+
+	Secret *string `json:"secret"`
+
+	Scopes []ApplicationScope `json:"scopes"`
+
+	Propeller Propeller `json:"propeller"`
+
+	DataPoolAccessPolicies *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ApplicationData) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ApplicationData) __premarshalJSON() (*__premarshalApplicationData, error) {
+	var retval __premarshalApplicationData
+
+	retval.Id = v.Id
+	retval.ClientId = v.ClientId
+	retval.Secret = v.Secret
+	retval.Scopes = v.Scopes
+	retval.Propeller = v.Propeller
+	retval.DataPoolAccessPolicies = v.DataPoolAccessPolicies
+	retval.UniqueName = v.CommonDataApplication.UniqueName
+	retval.Description = v.CommonDataApplication.Description
+	retval.Account = v.CommonDataApplication.Account
+	retval.Environment = v.CommonDataApplication.Environment
+	retval.CreatedAt = v.CommonDataApplication.CreatedAt
+	retval.ModifiedAt = v.CommonDataApplication.ModifiedAt
+	retval.CreatedBy = v.CommonDataApplication.CreatedBy
+	retval.ModifiedBy = v.CommonDataApplication.ModifiedBy
+	return &retval, nil
+}
+
+// ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection includes the requested fields of the GraphQL type DataPoolAccessPolicyConnection.
+// The GraphQL type's documentation follows.
+//
+// The Data Pool Access Policy connection object.
+//
+// Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
+type ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection struct {
+	// The Data Pool Access Policy connection's nodes.
+	Nodes []*ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy `json:"nodes"`
+}
+
+// GetNodes returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection.Nodes, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection) GetNodes() []*ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy {
+	return v.Nodes
+}
+
+// ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy includes the requested fields of the GraphQL type DataPoolAccessPolicy.
+type ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy struct {
+	DataPoolAccessPolicyData `json:"-"`
+}
+
+// GetId returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Id, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetId() string {
+	return v.DataPoolAccessPolicyData.Id
+}
+
+// GetColumns returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Columns, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetColumns() []string {
+	return v.DataPoolAccessPolicyData.Columns
+}
+
+// GetRows returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Rows, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetRows() []*DataPoolAccessPolicyDataRowsFilter {
+	return v.DataPoolAccessPolicyData.Rows
+}
+
+// GetDataPool returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.DataPool, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetDataPool() *DataPoolAccessPolicyDataDataPool {
+	return v.DataPoolAccessPolicyData.DataPool
+}
+
+// GetUniqueName returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.UniqueName, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetUniqueName() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.UniqueName
+}
+
+// GetDescription returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Description, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetDescription() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Description
+}
+
+// GetAccount returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Account, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetAccount() *CommonDataAccount {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Account
+}
+
+// GetEnvironment returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.Environment, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetEnvironment() *CommonDataEnvironment {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Environment
+}
+
+// GetCreatedAt returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetCreatedAt() time.Time {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedAt
+}
+
+// GetModifiedAt returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetModifiedAt() time.Time {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedAt
+}
+
+// GetCreatedBy returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetCreatedBy() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedBy
+}
+
+// GetModifiedBy returns ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) GetModifiedBy() string {
+	return v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedBy
+}
+
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.DataPoolAccessPolicyData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy struct {
+	Id string `json:"id"`
+
+	Columns []string `json:"columns"`
+
+	Rows []*DataPoolAccessPolicyDataRowsFilter `json:"rows"`
+
+	DataPool *DataPoolAccessPolicyDataDataPool `json:"dataPool"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy) __premarshalJSON() (*__premarshalApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy, error) {
+	var retval __premarshalApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDataPoolAccessPolicy
+
+	retval.Id = v.DataPoolAccessPolicyData.Id
+	retval.Columns = v.DataPoolAccessPolicyData.Columns
+	retval.Rows = v.DataPoolAccessPolicyData.Rows
+	retval.DataPool = v.DataPoolAccessPolicyData.DataPool
+	retval.UniqueName = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.UniqueName
+	retval.Description = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Description
+	retval.Account = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Account
+	retval.Environment = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.Environment
+	retval.CreatedAt = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedAt
+	retval.ModifiedAt = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedAt
+	retval.CreatedBy = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.CreatedBy
+	retval.ModifiedBy = v.DataPoolAccessPolicyData.CommonDataDataPoolAccessPolicy.ModifiedBy
+	return &retval, nil
+}
+
+// ApplicationResponse is returned by Application on success.
+type ApplicationResponse struct {
+	// This query returns the Application specified by the given ID.
+	//
+	// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+	Application *ApplicationApplication `json:"application"`
+}
+
+// GetApplication returns ApplicationResponse.Application, and is useful for accessing the field via an interface.
+func (v *ApplicationResponse) GetApplication() *ApplicationApplication { return v.Application }
+
+// The API operations an Application is authorized to perform.
+type ApplicationScope string
+
+const (
+	// Grant read/write access to Data Sources, Data Pools, Metrics and Policies.
+	ApplicationScopeAdmin ApplicationScope = "ADMIN"
+	// Grant read/write access to Applications.
+	ApplicationScopeApplicationAdmin ApplicationScope = "APPLICATION_ADMIN"
+	// Grant read access to query Data Pools.
+	ApplicationScopeDataPoolQuery ApplicationScope = "DATA_POOL_QUERY"
+	// Grant read access to read Data Pools.
+	ApplicationScopeDataPoolRead ApplicationScope = "DATA_POOL_READ"
+	// Grant read access to fetch column statistics from Data Pools.
+	ApplicationScopeDataPoolStats ApplicationScope = "DATA_POOL_STATS"
+	// Grant read access to query Metrics.
+	ApplicationScopeMetricQuery ApplicationScope = "METRIC_QUERY"
+	// Grant read access to fetch Dimension statistics from Metrics.
+	ApplicationScopeMetricStats ApplicationScope = "METRIC_STATS"
+	// Grant read access to Metrics.
+	//
+	// This does not allow querying Metrics. For that, see `METRIC_QUERY`.
+	ApplicationScopeMetricRead ApplicationScope = "METRIC_READ"
+)
+
 // AssignDataPoolAccessPolicyResponse is returned by AssignDataPoolAccessPolicy on success.
 type AssignDataPoolAccessPolicyResponse struct {
 	// Assign a Data Pool Access Policy to an Application.
@@ -995,6 +1496,456 @@ type CreateAddColumnToDataPoolJobResponse struct {
 // GetCreateAddColumnToDataPoolJob returns CreateAddColumnToDataPoolJobResponse.CreateAddColumnToDataPoolJob, and is useful for accessing the field via an interface.
 func (v *CreateAddColumnToDataPoolJobResponse) GetCreateAddColumnToDataPoolJob() *CreateAddColumnToDataPoolJobCreateAddColumnToDataPoolJobAddColumnToDataPoolJobResponse {
 	return v.CreateAddColumnToDataPoolJob
+}
+
+// CreateApplicationCreateApplicationApplicationOrFailureResponse includes the requested fields of the GraphQL interface ApplicationOrFailureResponse.
+//
+// CreateApplicationCreateApplicationApplicationOrFailureResponse is implemented by the following types:
+// CreateApplicationCreateApplicationApplicationResponse
+// CreateApplicationCreateApplicationFailureResponse
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies an Application.
+//
+// If successful, an `ApplicationResponse` will be returned; otherwise, a
+// `FailureResponse` will be returned.
+type CreateApplicationCreateApplicationApplicationOrFailureResponse interface {
+	implementsGraphQLInterfaceCreateApplicationCreateApplicationApplicationOrFailureResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *CreateApplicationCreateApplicationApplicationResponse) implementsGraphQLInterfaceCreateApplicationCreateApplicationApplicationOrFailureResponse() {
+}
+func (v *CreateApplicationCreateApplicationFailureResponse) implementsGraphQLInterfaceCreateApplicationCreateApplicationApplicationOrFailureResponse() {
+}
+
+func __unmarshalCreateApplicationCreateApplicationApplicationOrFailureResponse(b []byte, v *CreateApplicationCreateApplicationApplicationOrFailureResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "ApplicationResponse":
+		*v = new(CreateApplicationCreateApplicationApplicationResponse)
+		return json.Unmarshal(b, *v)
+	case "FailureResponse":
+		*v = new(CreateApplicationCreateApplicationFailureResponse)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing ApplicationOrFailureResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for CreateApplicationCreateApplicationApplicationOrFailureResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalCreateApplicationCreateApplicationApplicationOrFailureResponse(v *CreateApplicationCreateApplicationApplicationOrFailureResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *CreateApplicationCreateApplicationApplicationResponse:
+		typename = "ApplicationResponse"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateApplicationCreateApplicationApplicationResponse
+		}{typename, v}
+		return json.Marshal(result)
+	case *CreateApplicationCreateApplicationFailureResponse:
+		typename = "FailureResponse"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*CreateApplicationCreateApplicationFailureResponse
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for CreateApplicationCreateApplicationApplicationOrFailureResponse: "%T"`, v)
+	}
+}
+
+// CreateApplicationCreateApplicationApplicationResponse includes the requested fields of the GraphQL type ApplicationResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies an Application.
+type CreateApplicationCreateApplicationApplicationResponse struct {
+	Typename *string `json:"__typename"`
+	// The Application which was created or modified.
+	Application *CreateApplicationCreateApplicationApplicationResponseApplication `json:"application"`
+}
+
+// GetTypename returns CreateApplicationCreateApplicationApplicationResponse.Typename, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponse) GetTypename() *string {
+	return v.Typename
+}
+
+// GetApplication returns CreateApplicationCreateApplicationApplicationResponse.Application, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponse) GetApplication() *CreateApplicationCreateApplicationApplicationResponseApplication {
+	return v.Application
+}
+
+// CreateApplicationCreateApplicationApplicationResponseApplication includes the requested fields of the GraphQL type Application.
+// The GraphQL type's documentation follows.
+//
+// The Application object.
+//
+// Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
+//
+// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+type CreateApplicationCreateApplicationApplicationResponseApplication struct {
+	ApplicationData `json:"-"`
+}
+
+// GetId returns CreateApplicationCreateApplicationApplicationResponseApplication.Id, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetId() string {
+	return v.ApplicationData.Id
+}
+
+// GetClientId returns CreateApplicationCreateApplicationApplicationResponseApplication.ClientId, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetClientId() string {
+	return v.ApplicationData.ClientId
+}
+
+// GetSecret returns CreateApplicationCreateApplicationApplicationResponseApplication.Secret, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetSecret() *string {
+	return v.ApplicationData.Secret
+}
+
+// GetScopes returns CreateApplicationCreateApplicationApplicationResponseApplication.Scopes, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetScopes() []ApplicationScope {
+	return v.ApplicationData.Scopes
+}
+
+// GetPropeller returns CreateApplicationCreateApplicationApplicationResponseApplication.Propeller, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetPropeller() Propeller {
+	return v.ApplicationData.Propeller
+}
+
+// GetDataPoolAccessPolicies returns CreateApplicationCreateApplicationApplicationResponseApplication.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetDataPoolAccessPolicies() *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.ApplicationData.DataPoolAccessPolicies
+}
+
+// GetUniqueName returns CreateApplicationCreateApplicationApplicationResponseApplication.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetUniqueName() string {
+	return v.ApplicationData.CommonDataApplication.UniqueName
+}
+
+// GetDescription returns CreateApplicationCreateApplicationApplicationResponseApplication.Description, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetDescription() string {
+	return v.ApplicationData.CommonDataApplication.Description
+}
+
+// GetAccount returns CreateApplicationCreateApplicationApplicationResponseApplication.Account, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetAccount() *CommonDataAccount {
+	return v.ApplicationData.CommonDataApplication.Account
+}
+
+// GetEnvironment returns CreateApplicationCreateApplicationApplicationResponseApplication.Environment, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetEnvironment() *CommonDataEnvironment {
+	return v.ApplicationData.CommonDataApplication.Environment
+}
+
+// GetCreatedAt returns CreateApplicationCreateApplicationApplicationResponseApplication.CreatedAt, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetCreatedAt() time.Time {
+	return v.ApplicationData.CommonDataApplication.CreatedAt
+}
+
+// GetModifiedAt returns CreateApplicationCreateApplicationApplicationResponseApplication.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetModifiedAt() time.Time {
+	return v.ApplicationData.CommonDataApplication.ModifiedAt
+}
+
+// GetCreatedBy returns CreateApplicationCreateApplicationApplicationResponseApplication.CreatedBy, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetCreatedBy() string {
+	return v.ApplicationData.CommonDataApplication.CreatedBy
+}
+
+// GetModifiedBy returns CreateApplicationCreateApplicationApplicationResponseApplication.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) GetModifiedBy() string {
+	return v.ApplicationData.CommonDataApplication.ModifiedBy
+}
+
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateApplicationCreateApplicationApplicationResponseApplication
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateApplicationCreateApplicationApplicationResponseApplication = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.ApplicationData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateApplicationCreateApplicationApplicationResponseApplication struct {
+	Id string `json:"id"`
+
+	ClientId string `json:"clientId"`
+
+	Secret *string `json:"secret"`
+
+	Scopes []ApplicationScope `json:"scopes"`
+
+	Propeller Propeller `json:"propeller"`
+
+	DataPoolAccessPolicies *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateApplicationCreateApplicationApplicationResponseApplication) __premarshalJSON() (*__premarshalCreateApplicationCreateApplicationApplicationResponseApplication, error) {
+	var retval __premarshalCreateApplicationCreateApplicationApplicationResponseApplication
+
+	retval.Id = v.ApplicationData.Id
+	retval.ClientId = v.ApplicationData.ClientId
+	retval.Secret = v.ApplicationData.Secret
+	retval.Scopes = v.ApplicationData.Scopes
+	retval.Propeller = v.ApplicationData.Propeller
+	retval.DataPoolAccessPolicies = v.ApplicationData.DataPoolAccessPolicies
+	retval.UniqueName = v.ApplicationData.CommonDataApplication.UniqueName
+	retval.Description = v.ApplicationData.CommonDataApplication.Description
+	retval.Account = v.ApplicationData.CommonDataApplication.Account
+	retval.Environment = v.ApplicationData.CommonDataApplication.Environment
+	retval.CreatedAt = v.ApplicationData.CommonDataApplication.CreatedAt
+	retval.ModifiedAt = v.ApplicationData.CommonDataApplication.ModifiedAt
+	retval.CreatedBy = v.ApplicationData.CommonDataApplication.CreatedBy
+	retval.ModifiedBy = v.ApplicationData.CommonDataApplication.ModifiedBy
+	return &retval, nil
+}
+
+// CreateApplicationCreateApplicationFailureResponse includes the requested fields of the GraphQL type FailureResponse.
+// The GraphQL type's documentation follows.
+//
+// The failure response object.
+type CreateApplicationCreateApplicationFailureResponse struct {
+	Typename *string `json:"__typename"`
+	// The error that caused the failure.
+	Error *CreateApplicationCreateApplicationFailureResponseError `json:"error"`
+}
+
+// GetTypename returns CreateApplicationCreateApplicationFailureResponse.Typename, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationFailureResponse) GetTypename() *string { return v.Typename }
+
+// GetError returns CreateApplicationCreateApplicationFailureResponse.Error, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationFailureResponse) GetError() *CreateApplicationCreateApplicationFailureResponseError {
+	return v.Error
+}
+
+// CreateApplicationCreateApplicationFailureResponseError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
+type CreateApplicationCreateApplicationFailureResponseError struct {
+	GqlError `json:"-"`
+}
+
+// GetCode returns CreateApplicationCreateApplicationFailureResponseError.Code, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationFailureResponseError) GetCode() *int {
+	return v.GqlError.Code
+}
+
+// GetMessage returns CreateApplicationCreateApplicationFailureResponseError.Message, and is useful for accessing the field via an interface.
+func (v *CreateApplicationCreateApplicationFailureResponseError) GetMessage() string {
+	return v.GqlError.Message
+}
+
+func (v *CreateApplicationCreateApplicationFailureResponseError) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateApplicationCreateApplicationFailureResponseError
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateApplicationCreateApplicationFailureResponseError = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.GqlError)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalCreateApplicationCreateApplicationFailureResponseError struct {
+	Code *int `json:"code"`
+
+	Message string `json:"message"`
+}
+
+func (v *CreateApplicationCreateApplicationFailureResponseError) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateApplicationCreateApplicationFailureResponseError) __premarshalJSON() (*__premarshalCreateApplicationCreateApplicationFailureResponseError, error) {
+	var retval __premarshalCreateApplicationCreateApplicationFailureResponseError
+
+	retval.Code = v.GqlError.Code
+	retval.Message = v.GqlError.Message
+	return &retval, nil
+}
+
+// The fields for creating an Application.
+type CreateApplicationInput struct {
+	// The Application's unique name. If not specified, Propel will set the ID as unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Application's description.
+	Description *string `json:"description"`
+	// The Application's Propeller. If no Propeller is provided, Propel will set the Propeller to `P1_X_SMALL`.
+	Propeller *Propeller `json:"propeller"`
+	// The Application's API authorization scopes. If specified, at least one scope must be provided; otherwise, all scopes will be granted to the Application by default.
+	Scopes []ApplicationScope `json:"scopes"`
+}
+
+// GetUniqueName returns CreateApplicationInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *CreateApplicationInput) GetUniqueName() *string { return v.UniqueName }
+
+// GetDescription returns CreateApplicationInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateApplicationInput) GetDescription() *string { return v.Description }
+
+// GetPropeller returns CreateApplicationInput.Propeller, and is useful for accessing the field via an interface.
+func (v *CreateApplicationInput) GetPropeller() *Propeller { return v.Propeller }
+
+// GetScopes returns CreateApplicationInput.Scopes, and is useful for accessing the field via an interface.
+func (v *CreateApplicationInput) GetScopes() []ApplicationScope { return v.Scopes }
+
+// CreateApplicationResponse is returned by CreateApplication on success.
+type CreateApplicationResponse struct {
+	// Creates a new Application and returns the newly created Application (or an error message if creating the Application fails).
+	//
+	// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+	CreateApplication *CreateApplicationCreateApplicationApplicationOrFailureResponse `json:"-"`
+}
+
+// GetCreateApplication returns CreateApplicationResponse.CreateApplication, and is useful for accessing the field via an interface.
+func (v *CreateApplicationResponse) GetCreateApplication() *CreateApplicationCreateApplicationApplicationOrFailureResponse {
+	return v.CreateApplication
+}
+
+func (v *CreateApplicationResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*CreateApplicationResponse
+		CreateApplication json.RawMessage `json:"createApplication"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.CreateApplicationResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.CreateApplication
+		src := firstPass.CreateApplication
+		if len(src) != 0 && string(src) != "null" {
+			*dst = new(CreateApplicationCreateApplicationApplicationOrFailureResponse)
+			err = __unmarshalCreateApplicationCreateApplicationApplicationOrFailureResponse(
+				src, *dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal CreateApplicationResponse.CreateApplication: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalCreateApplicationResponse struct {
+	CreateApplication json.RawMessage `json:"createApplication"`
+}
+
+func (v *CreateApplicationResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *CreateApplicationResponse) __premarshalJSON() (*__premarshalCreateApplicationResponse, error) {
+	var retval __premarshalCreateApplicationResponse
+
+	{
+
+		dst := &retval.CreateApplication
+		src := v.CreateApplication
+		if src != nil {
+			var err error
+			*dst, err = __marshalCreateApplicationCreateApplicationApplicationOrFailureResponse(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal CreateApplicationResponse.CreateApplication: %w", err)
+			}
+		}
+	}
+	return &retval, nil
 }
 
 // CreateAverageMetricCreateAverageMetricMetricResponse includes the requested fields of the GraphQL type MetricResponse.
@@ -10206,6 +11157,17 @@ func (v *DataSourcesResponse) GetDataSources() *DataSourcesDataSourcesDataSource
 	return v.DataSources
 }
 
+// DeleteApplicationResponse is returned by DeleteApplication on success.
+type DeleteApplicationResponse struct {
+	// Deletes an Application by ID and returns its ID if the Application was deleted successfully.
+	//
+	// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+	DeleteApplication *string `json:"deleteApplication"`
+}
+
+// GetDeleteApplication returns DeleteApplicationResponse.DeleteApplication, and is useful for accessing the field via an interface.
+func (v *DeleteApplicationResponse) GetDeleteApplication() *string { return v.DeleteApplication }
+
 // DeleteDataPoolAccessPolicyResponse is returned by DeleteDataPoolAccessPolicy on success.
 type DeleteDataPoolAccessPolicyResponse struct {
 	// Deletes a Data Pool Access Policy by ID and returns its ID if the Data Pool Access Policy was deleted successfully.
@@ -14150,6 +15112,461 @@ type MetricsResponse struct {
 // GetMetrics returns MetricsResponse.Metrics, and is useful for accessing the field via an interface.
 func (v *MetricsResponse) GetMetrics() *MetricsMetricsMetricConnection { return v.Metrics }
 
+// The fields for modifying an Application.
+type ModifyApplicationInput struct {
+	// The ID or unique name of the Application to modify.
+	IdOrUniqueName *IdOrUniqueName `json:"idOrUniqueName,omitempty"`
+	// The Application's new unique name.
+	UniqueName *string `json:"uniqueName"`
+	// The Application's new description.
+	Description *string `json:"description"`
+	// The Application's new Propeller.
+	Propeller *Propeller `json:"propeller"`
+	// The Application's new API authorization scopes.
+	Scopes []ApplicationScope `json:"scopes"`
+}
+
+// GetIdOrUniqueName returns ModifyApplicationInput.IdOrUniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationInput) GetIdOrUniqueName() *IdOrUniqueName { return v.IdOrUniqueName }
+
+// GetUniqueName returns ModifyApplicationInput.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationInput) GetUniqueName() *string { return v.UniqueName }
+
+// GetDescription returns ModifyApplicationInput.Description, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationInput) GetDescription() *string { return v.Description }
+
+// GetPropeller returns ModifyApplicationInput.Propeller, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationInput) GetPropeller() *Propeller { return v.Propeller }
+
+// GetScopes returns ModifyApplicationInput.Scopes, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationInput) GetScopes() []ApplicationScope { return v.Scopes }
+
+// ModifyApplicationModifyApplicationApplicationOrFailureResponse includes the requested fields of the GraphQL interface ApplicationOrFailureResponse.
+//
+// ModifyApplicationModifyApplicationApplicationOrFailureResponse is implemented by the following types:
+// ModifyApplicationModifyApplicationApplicationResponse
+// ModifyApplicationModifyApplicationFailureResponse
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies an Application.
+//
+// If successful, an `ApplicationResponse` will be returned; otherwise, a
+// `FailureResponse` will be returned.
+type ModifyApplicationModifyApplicationApplicationOrFailureResponse interface {
+	implementsGraphQLInterfaceModifyApplicationModifyApplicationApplicationOrFailureResponse()
+	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
+	GetTypename() *string
+}
+
+func (v *ModifyApplicationModifyApplicationApplicationResponse) implementsGraphQLInterfaceModifyApplicationModifyApplicationApplicationOrFailureResponse() {
+}
+func (v *ModifyApplicationModifyApplicationFailureResponse) implementsGraphQLInterfaceModifyApplicationModifyApplicationApplicationOrFailureResponse() {
+}
+
+func __unmarshalModifyApplicationModifyApplicationApplicationOrFailureResponse(b []byte, v *ModifyApplicationModifyApplicationApplicationOrFailureResponse) error {
+	if string(b) == "null" {
+		return nil
+	}
+
+	var tn struct {
+		TypeName string `json:"__typename"`
+	}
+	err := json.Unmarshal(b, &tn)
+	if err != nil {
+		return err
+	}
+
+	switch tn.TypeName {
+	case "ApplicationResponse":
+		*v = new(ModifyApplicationModifyApplicationApplicationResponse)
+		return json.Unmarshal(b, *v)
+	case "FailureResponse":
+		*v = new(ModifyApplicationModifyApplicationFailureResponse)
+		return json.Unmarshal(b, *v)
+	case "":
+		return fmt.Errorf(
+			"response was missing ApplicationOrFailureResponse.__typename")
+	default:
+		return fmt.Errorf(
+			`unexpected concrete type for ModifyApplicationModifyApplicationApplicationOrFailureResponse: "%v"`, tn.TypeName)
+	}
+}
+
+func __marshalModifyApplicationModifyApplicationApplicationOrFailureResponse(v *ModifyApplicationModifyApplicationApplicationOrFailureResponse) ([]byte, error) {
+
+	var typename string
+	switch v := (*v).(type) {
+	case *ModifyApplicationModifyApplicationApplicationResponse:
+		typename = "ApplicationResponse"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*ModifyApplicationModifyApplicationApplicationResponse
+		}{typename, v}
+		return json.Marshal(result)
+	case *ModifyApplicationModifyApplicationFailureResponse:
+		typename = "FailureResponse"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*ModifyApplicationModifyApplicationFailureResponse
+		}{typename, v}
+		return json.Marshal(result)
+	case nil:
+		return []byte("null"), nil
+	default:
+		return nil, fmt.Errorf(
+			`unexpected concrete type for ModifyApplicationModifyApplicationApplicationOrFailureResponse: "%T"`, v)
+	}
+}
+
+// ModifyApplicationModifyApplicationApplicationResponse includes the requested fields of the GraphQL type ApplicationResponse.
+// The GraphQL type's documentation follows.
+//
+// The result of a mutation which creates or modifies an Application.
+type ModifyApplicationModifyApplicationApplicationResponse struct {
+	Typename *string `json:"__typename"`
+	// The Application which was created or modified.
+	Application *ModifyApplicationModifyApplicationApplicationResponseApplication `json:"application"`
+}
+
+// GetTypename returns ModifyApplicationModifyApplicationApplicationResponse.Typename, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponse) GetTypename() *string {
+	return v.Typename
+}
+
+// GetApplication returns ModifyApplicationModifyApplicationApplicationResponse.Application, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponse) GetApplication() *ModifyApplicationModifyApplicationApplicationResponseApplication {
+	return v.Application
+}
+
+// ModifyApplicationModifyApplicationApplicationResponseApplication includes the requested fields of the GraphQL type Application.
+// The GraphQL type's documentation follows.
+//
+// The Application object.
+//
+// Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
+//
+// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+type ModifyApplicationModifyApplicationApplicationResponseApplication struct {
+	ApplicationData `json:"-"`
+}
+
+// GetId returns ModifyApplicationModifyApplicationApplicationResponseApplication.Id, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetId() string {
+	return v.ApplicationData.Id
+}
+
+// GetClientId returns ModifyApplicationModifyApplicationApplicationResponseApplication.ClientId, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetClientId() string {
+	return v.ApplicationData.ClientId
+}
+
+// GetSecret returns ModifyApplicationModifyApplicationApplicationResponseApplication.Secret, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetSecret() *string {
+	return v.ApplicationData.Secret
+}
+
+// GetScopes returns ModifyApplicationModifyApplicationApplicationResponseApplication.Scopes, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetScopes() []ApplicationScope {
+	return v.ApplicationData.Scopes
+}
+
+// GetPropeller returns ModifyApplicationModifyApplicationApplicationResponseApplication.Propeller, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetPropeller() Propeller {
+	return v.ApplicationData.Propeller
+}
+
+// GetDataPoolAccessPolicies returns ModifyApplicationModifyApplicationApplicationResponseApplication.DataPoolAccessPolicies, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetDataPoolAccessPolicies() *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection {
+	return v.ApplicationData.DataPoolAccessPolicies
+}
+
+// GetUniqueName returns ModifyApplicationModifyApplicationApplicationResponseApplication.UniqueName, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetUniqueName() string {
+	return v.ApplicationData.CommonDataApplication.UniqueName
+}
+
+// GetDescription returns ModifyApplicationModifyApplicationApplicationResponseApplication.Description, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetDescription() string {
+	return v.ApplicationData.CommonDataApplication.Description
+}
+
+// GetAccount returns ModifyApplicationModifyApplicationApplicationResponseApplication.Account, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetAccount() *CommonDataAccount {
+	return v.ApplicationData.CommonDataApplication.Account
+}
+
+// GetEnvironment returns ModifyApplicationModifyApplicationApplicationResponseApplication.Environment, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetEnvironment() *CommonDataEnvironment {
+	return v.ApplicationData.CommonDataApplication.Environment
+}
+
+// GetCreatedAt returns ModifyApplicationModifyApplicationApplicationResponseApplication.CreatedAt, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetCreatedAt() time.Time {
+	return v.ApplicationData.CommonDataApplication.CreatedAt
+}
+
+// GetModifiedAt returns ModifyApplicationModifyApplicationApplicationResponseApplication.ModifiedAt, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetModifiedAt() time.Time {
+	return v.ApplicationData.CommonDataApplication.ModifiedAt
+}
+
+// GetCreatedBy returns ModifyApplicationModifyApplicationApplicationResponseApplication.CreatedBy, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetCreatedBy() string {
+	return v.ApplicationData.CommonDataApplication.CreatedBy
+}
+
+// GetModifiedBy returns ModifyApplicationModifyApplicationApplicationResponseApplication.ModifiedBy, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) GetModifiedBy() string {
+	return v.ApplicationData.CommonDataApplication.ModifiedBy
+}
+
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyApplicationModifyApplicationApplicationResponseApplication
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyApplicationModifyApplicationApplicationResponseApplication = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.ApplicationData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyApplicationModifyApplicationApplicationResponseApplication struct {
+	Id string `json:"id"`
+
+	ClientId string `json:"clientId"`
+
+	Secret *string `json:"secret"`
+
+	Scopes []ApplicationScope `json:"scopes"`
+
+	Propeller Propeller `json:"propeller"`
+
+	DataPoolAccessPolicies *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnection `json:"dataPoolAccessPolicies"`
+
+	UniqueName string `json:"uniqueName"`
+
+	Description string `json:"description"`
+
+	Account *CommonDataAccount `json:"account"`
+
+	Environment *CommonDataEnvironment `json:"environment"`
+
+	CreatedAt time.Time `json:"createdAt"`
+
+	ModifiedAt time.Time `json:"modifiedAt"`
+
+	CreatedBy string `json:"createdBy"`
+
+	ModifiedBy string `json:"modifiedBy"`
+}
+
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyApplicationModifyApplicationApplicationResponseApplication) __premarshalJSON() (*__premarshalModifyApplicationModifyApplicationApplicationResponseApplication, error) {
+	var retval __premarshalModifyApplicationModifyApplicationApplicationResponseApplication
+
+	retval.Id = v.ApplicationData.Id
+	retval.ClientId = v.ApplicationData.ClientId
+	retval.Secret = v.ApplicationData.Secret
+	retval.Scopes = v.ApplicationData.Scopes
+	retval.Propeller = v.ApplicationData.Propeller
+	retval.DataPoolAccessPolicies = v.ApplicationData.DataPoolAccessPolicies
+	retval.UniqueName = v.ApplicationData.CommonDataApplication.UniqueName
+	retval.Description = v.ApplicationData.CommonDataApplication.Description
+	retval.Account = v.ApplicationData.CommonDataApplication.Account
+	retval.Environment = v.ApplicationData.CommonDataApplication.Environment
+	retval.CreatedAt = v.ApplicationData.CommonDataApplication.CreatedAt
+	retval.ModifiedAt = v.ApplicationData.CommonDataApplication.ModifiedAt
+	retval.CreatedBy = v.ApplicationData.CommonDataApplication.CreatedBy
+	retval.ModifiedBy = v.ApplicationData.CommonDataApplication.ModifiedBy
+	return &retval, nil
+}
+
+// ModifyApplicationModifyApplicationFailureResponse includes the requested fields of the GraphQL type FailureResponse.
+// The GraphQL type's documentation follows.
+//
+// The failure response object.
+type ModifyApplicationModifyApplicationFailureResponse struct {
+	Typename *string `json:"__typename"`
+	// The error that caused the failure.
+	Error *ModifyApplicationModifyApplicationFailureResponseError `json:"error"`
+}
+
+// GetTypename returns ModifyApplicationModifyApplicationFailureResponse.Typename, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationFailureResponse) GetTypename() *string { return v.Typename }
+
+// GetError returns ModifyApplicationModifyApplicationFailureResponse.Error, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationFailureResponse) GetError() *ModifyApplicationModifyApplicationFailureResponseError {
+	return v.Error
+}
+
+// ModifyApplicationModifyApplicationFailureResponseError includes the requested fields of the GraphQL type Error.
+// The GraphQL type's documentation follows.
+//
+// The error object.
+type ModifyApplicationModifyApplicationFailureResponseError struct {
+	GqlError `json:"-"`
+}
+
+// GetCode returns ModifyApplicationModifyApplicationFailureResponseError.Code, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationFailureResponseError) GetCode() *int {
+	return v.GqlError.Code
+}
+
+// GetMessage returns ModifyApplicationModifyApplicationFailureResponseError.Message, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationModifyApplicationFailureResponseError) GetMessage() string {
+	return v.GqlError.Message
+}
+
+func (v *ModifyApplicationModifyApplicationFailureResponseError) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyApplicationModifyApplicationFailureResponseError
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyApplicationModifyApplicationFailureResponseError = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(
+		b, &v.GqlError)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type __premarshalModifyApplicationModifyApplicationFailureResponseError struct {
+	Code *int `json:"code"`
+
+	Message string `json:"message"`
+}
+
+func (v *ModifyApplicationModifyApplicationFailureResponseError) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyApplicationModifyApplicationFailureResponseError) __premarshalJSON() (*__premarshalModifyApplicationModifyApplicationFailureResponseError, error) {
+	var retval __premarshalModifyApplicationModifyApplicationFailureResponseError
+
+	retval.Code = v.GqlError.Code
+	retval.Message = v.GqlError.Message
+	return &retval, nil
+}
+
+// ModifyApplicationResponse is returned by ModifyApplication on success.
+type ModifyApplicationResponse struct {
+	// Modifies an Application with the provided unique name, description, Propeller, and scopes. If any of the optional arguments are omitted, those properties will be unchanged on the Application.
+	//
+	// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+	ModifyApplication *ModifyApplicationModifyApplicationApplicationOrFailureResponse `json:"-"`
+}
+
+// GetModifyApplication returns ModifyApplicationResponse.ModifyApplication, and is useful for accessing the field via an interface.
+func (v *ModifyApplicationResponse) GetModifyApplication() *ModifyApplicationModifyApplicationApplicationOrFailureResponse {
+	return v.ModifyApplication
+}
+
+func (v *ModifyApplicationResponse) UnmarshalJSON(b []byte) error {
+
+	if string(b) == "null" {
+		return nil
+	}
+
+	var firstPass struct {
+		*ModifyApplicationResponse
+		ModifyApplication json.RawMessage `json:"modifyApplication"`
+		graphql.NoUnmarshalJSON
+	}
+	firstPass.ModifyApplicationResponse = v
+
+	err := json.Unmarshal(b, &firstPass)
+	if err != nil {
+		return err
+	}
+
+	{
+		dst := &v.ModifyApplication
+		src := firstPass.ModifyApplication
+		if len(src) != 0 && string(src) != "null" {
+			*dst = new(ModifyApplicationModifyApplicationApplicationOrFailureResponse)
+			err = __unmarshalModifyApplicationModifyApplicationApplicationOrFailureResponse(
+				src, *dst)
+			if err != nil {
+				return fmt.Errorf(
+					"unable to unmarshal ModifyApplicationResponse.ModifyApplication: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+type __premarshalModifyApplicationResponse struct {
+	ModifyApplication json.RawMessage `json:"modifyApplication"`
+}
+
+func (v *ModifyApplicationResponse) MarshalJSON() ([]byte, error) {
+	premarshaled, err := v.__premarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(premarshaled)
+}
+
+func (v *ModifyApplicationResponse) __premarshalJSON() (*__premarshalModifyApplicationResponse, error) {
+	var retval __premarshalModifyApplicationResponse
+
+	{
+
+		dst := &retval.ModifyApplication
+		src := v.ModifyApplication
+		if src != nil {
+			var err error
+			*dst, err = __marshalModifyApplicationModifyApplicationApplicationOrFailureResponse(
+				src)
+			if err != nil {
+				return nil, fmt.Errorf(
+					"unable to marshal ModifyApplicationResponse.ModifyApplication: %w", err)
+			}
+		}
+	}
+	return &retval, nil
+}
+
 type ModifyClickHouseDataSourceInput struct {
 	// The ClickHouse Data Source's new connection settings. If not provided this property will not be modified.
 	ConnectionSettings *PartialClickHouseConnectionSettingsInput `json:"connectionSettings,omitempty"`
@@ -17538,6 +18955,24 @@ const (
 	PolicyTypeTenantAccess PolicyType = "TENANT_ACCESS"
 )
 
+// A Propeller determines your Application's query processing power. The larger the Propeller, the faster the queries and the higher the cost. Every Propel Application (and therefore every set of API credentials) has a Propeller that determines the speed and cost of queries.
+//
+// [Learn more about Data Sources](https://www.propeldata.com/docs/applications#propeller).
+type Propeller string
+
+const (
+	// Max records per second: 5,000,000 records per second
+	PropellerP1XSmall Propeller = "P1_X_SMALL"
+	// Max records per second: 25,000,000 records per second
+	PropellerP1Small Propeller = "P1_SMALL"
+	// Max records per second: 100,000,000 records per second
+	PropellerP1Medium Propeller = "P1_MEDIUM"
+	// Max records per second: 250,000,000 records per second
+	PropellerP1Large Propeller = "P1_LARGE"
+	// Max records per second: 500,000,000 records per second
+	PropellerP1XLarge Propeller = "P1_X_LARGE"
+)
+
 // Parameters for the ReplacingMergeTree table engine.
 type ReplacingMergeTreeTableEngineInput struct {
 	// The type is always `REPLACING_MERGE_TREE`.
@@ -18273,6 +19708,14 @@ type __AddColumnToDataPoolJobInput struct {
 // GetId returns __AddColumnToDataPoolJobInput.Id, and is useful for accessing the field via an interface.
 func (v *__AddColumnToDataPoolJobInput) GetId() string { return v.Id }
 
+// __ApplicationInput is used internally by genqlient
+type __ApplicationInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __ApplicationInput.Id, and is useful for accessing the field via an interface.
+func (v *__ApplicationInput) GetId() string { return v.Id }
+
 // __AssignDataPoolAccessPolicyInput is used internally by genqlient
 type __AssignDataPoolAccessPolicyInput struct {
 	Application          string `json:"application"`
@@ -18296,6 +19739,14 @@ type __CreateAddColumnToDataPoolJobInput struct {
 func (v *__CreateAddColumnToDataPoolJobInput) GetInput() *CreateAddColumnToDataPoolJobInput {
 	return v.Input
 }
+
+// __CreateApplicationInput is used internally by genqlient
+type __CreateApplicationInput struct {
+	Input *CreateApplicationInput `json:"input,omitempty"`
+}
+
+// GetInput returns __CreateApplicationInput.Input, and is useful for accessing the field via an interface.
+func (v *__CreateApplicationInput) GetInput() *CreateApplicationInput { return v.Input }
 
 // __CreateAverageMetricInput is used internally by genqlient
 type __CreateAverageMetricInput struct {
@@ -18517,6 +19968,14 @@ func (v *__DataSourcesInput) GetAfter() *string { return v.After }
 // GetBefore returns __DataSourcesInput.Before, and is useful for accessing the field via an interface.
 func (v *__DataSourcesInput) GetBefore() *string { return v.Before }
 
+// __DeleteApplicationInput is used internally by genqlient
+type __DeleteApplicationInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __DeleteApplicationInput.Id, and is useful for accessing the field via an interface.
+func (v *__DeleteApplicationInput) GetId() string { return v.Id }
+
 // __DeleteDataPoolAccessPolicyInput is used internally by genqlient
 type __DeleteDataPoolAccessPolicyInput struct {
 	Id string `json:"id"`
@@ -18632,6 +20091,14 @@ func (v *__MetricsInput) GetAfter() *string { return v.After }
 
 // GetBefore returns __MetricsInput.Before, and is useful for accessing the field via an interface.
 func (v *__MetricsInput) GetBefore() *string { return v.Before }
+
+// __ModifyApplicationInput is used internally by genqlient
+type __ModifyApplicationInput struct {
+	Input *ModifyApplicationInput `json:"input,omitempty"`
+}
+
+// GetInput returns __ModifyApplicationInput.Input, and is useful for accessing the field via an interface.
+func (v *__ModifyApplicationInput) GetInput() *ModifyApplicationInput { return v.Input }
 
 // __ModifyClickHouseDataSourceInput is used internally by genqlient
 type __ModifyClickHouseDataSourceInput struct {
@@ -18798,6 +20265,94 @@ func AddColumnToDataPoolJob(
 	return &data_, err_
 }
 
+// The query or mutation executed by Application.
+const Application_Operation = `
+query Application ($id: ID!) {
+	application(id: $id) {
+		... ApplicationData
+	}
+}
+fragment ApplicationData on Application {
+	id
+	... CommonData
+	clientId
+	secret
+	scopes
+	propeller
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
+}
+`
+
+func Application(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	id string,
+) (*ApplicationResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "Application",
+		Query:  Application_Operation,
+		Variables: &__ApplicationInput{
+			Id: id,
+		},
+	}
+	var err_ error
+
+	var data_ ApplicationResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
 // The query or mutation executed by AssignDataPoolAccessPolicy.
 const AssignDataPoolAccessPolicy_Operation = `
 mutation AssignDataPoolAccessPolicy ($application: ID!, $dataPoolAccessPolicy: ID!) {
@@ -18875,6 +20430,108 @@ func CreateAddColumnToDataPoolJob(
 	var err_ error
 
 	var data_ CreateAddColumnToDataPoolJobResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
+// The query or mutation executed by CreateApplication.
+const CreateApplication_Operation = `
+mutation CreateApplication ($input: createApplicationInput!) {
+	createApplication(input: $input) {
+		__typename
+		... on ApplicationResponse {
+			application {
+				... ApplicationData
+			}
+		}
+		... on FailureResponse {
+			error {
+				... GqlError
+			}
+		}
+	}
+}
+fragment ApplicationData on Application {
+	id
+	... CommonData
+	clientId
+	secret
+	scopes
+	propeller
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
+}
+fragment GqlError on Error {
+	code
+	message
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
+}
+`
+
+func CreateApplication(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	input *CreateApplicationInput,
+) (*CreateApplicationResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "CreateApplication",
+		Query:  CreateApplication_Operation,
+		Variables: &__CreateApplicationInput{
+			Input: input,
+		},
+	}
+	var err_ error
+
+	var data_ CreateApplicationResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(
@@ -25004,6 +26661,39 @@ func DataSources(
 	return &data_, err_
 }
 
+// The query or mutation executed by DeleteApplication.
+const DeleteApplication_Operation = `
+mutation DeleteApplication ($id: ID!) {
+	deleteApplication(id: $id)
+}
+`
+
+func DeleteApplication(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	id string,
+) (*DeleteApplicationResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "DeleteApplication",
+		Query:  DeleteApplication_Operation,
+		Variables: &__DeleteApplicationInput{
+			Id: id,
+		},
+	}
+	var err_ error
+
+	var data_ DeleteApplicationResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
 // The query or mutation executed by DeleteDataPool.
 const DeleteDataPool_Operation = `
 mutation DeleteDataPool ($id: ID!) {
@@ -26531,6 +28221,108 @@ func Metrics(
 	var err_ error
 
 	var data_ MetricsResponse
+	resp_ := &graphql.Response{Data: &data_}
+
+	err_ = client_.MakeRequest(
+		ctx_,
+		req_,
+		resp_,
+	)
+
+	return &data_, err_
+}
+
+// The query or mutation executed by ModifyApplication.
+const ModifyApplication_Operation = `
+mutation ModifyApplication ($input: modifyApplicationInput!) {
+	modifyApplication(input: $input) {
+		__typename
+		... on ApplicationResponse {
+			application {
+				... ApplicationData
+			}
+		}
+		... on FailureResponse {
+			error {
+				... GqlError
+			}
+		}
+	}
+}
+fragment ApplicationData on Application {
+	id
+	... CommonData
+	clientId
+	secret
+	scopes
+	propeller
+	dataPoolAccessPolicies {
+		nodes {
+			... DataPoolAccessPolicyData
+		}
+	}
+}
+fragment GqlError on Error {
+	code
+	message
+}
+fragment CommonData on Common {
+	uniqueName
+	description
+	account {
+		id
+	}
+	environment {
+		id
+	}
+	createdAt
+	modifiedAt
+	createdBy
+	modifiedBy
+}
+fragment DataPoolAccessPolicyData on DataPoolAccessPolicy {
+	id
+	... CommonData
+	columns
+	rows {
+		... FilterData
+	}
+	dataPool {
+		id
+	}
+}
+fragment FilterData on Filter {
+	column
+	operator
+	value
+	and {
+		column
+		operator
+		value
+	}
+	or {
+		column
+		operator
+		value
+	}
+}
+`
+
+func ModifyApplication(
+	ctx_ context.Context,
+	client_ graphql.Client,
+	input *ModifyApplicationInput,
+) (*ModifyApplicationResponse, error) {
+	req_ := &graphql.Request{
+		OpName: "ModifyApplication",
+		Query:  ModifyApplication_Operation,
+		Variables: &__ModifyApplicationInput{
+			Input: input,
+		},
+	}
+	var err_ error
+
+	var data_ ModifyApplicationResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(

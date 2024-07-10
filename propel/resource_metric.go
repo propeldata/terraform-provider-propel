@@ -444,8 +444,7 @@ func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m any) di
 			AccessControlEnabled: &accessControlEnabled,
 		}
 
-		_, err := pc.ModifyMetric(ctx, c, modifyMetric)
-		if err != nil {
+		if _, err := pc.ModifyMetric(ctx, c, modifyMetric); err != nil {
 			return diag.FromErr(err)
 		}
 	}

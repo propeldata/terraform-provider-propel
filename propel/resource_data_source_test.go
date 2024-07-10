@@ -16,6 +16,8 @@ import (
 )
 
 func TestAccPropelDataSourceBasic(t *testing.T) {
+	t.Parallel()
+
 	httpCtx := map[string]any{
 		"resource_name": "new",
 		"unique_name":   acctest.RandString(10),

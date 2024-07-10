@@ -2,8 +2,6 @@ package propel
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/Khan/genqlient/graphql"
@@ -25,9 +23,9 @@ func TestAccPropelMaterializedViewBasic(t *testing.T) {
 			{
 				Config: testAccCheckPropelMaterializedViewConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckPropelMaterializedViewExists("propel_materialized_view.foo"),
+					testAccCheckPropelResourceExists("propel_materialized_view.foo", "Materialized View"),
 					resource.TestCheckResourceAttr("propel_materialized_view.foo", "unique_name", "terraform-mv-1"),
-					testAccCheckPropelMaterializedViewExists("propel_materialized_view.bar"),
+					testAccCheckPropelResourceExists("propel_materialized_view.bar", "Materialized View"),
 					resource.TestCheckResourceAttr("propel_materialized_view.bar", "unique_name", "terraform-mv-2"),
 				),
 			},
@@ -122,20 +120,4 @@ func testAccCheckPropelMaterializedViewDestroy(s *terraform.State) error {
 	}
 
 	return nil
-}
-
-func testAccCheckPropelMaterializedViewExists(n string) resource.TestCheckFunc {
-	return func(s *terraform.State) error {
-		rs, ok := s.RootModule().Resources[n]
-
-		if !ok {
-			return fmt.Errorf("not found: %s", n)
-		}
-
-		if rs.Primary.ID == "" {
-			return errors.New("no Materialized View ID set")
-		}
-
-		return nil
-	}
 }

@@ -170,8 +170,6 @@ func resourceDataPoolAccessPolicyCreate(ctx context.Context, d *schema.ResourceD
 func resourceDataPoolAccessPolicyRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
 	c := m.(graphql.Client)
 
-	var diags diag.Diagnostics
-
 	response, err := pc.DataPoolAccessPolicy(ctx, c, d.Id())
 	if err != nil {
 		return diag.FromErr(err)
@@ -223,7 +221,7 @@ func resourceDataPoolAccessPolicyRead(ctx context.Context, d *schema.ResourceDat
 		}
 	}
 
-	return diags
+	return nil
 }
 
 func resourceDataPoolAccessPolicyUpdate(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {

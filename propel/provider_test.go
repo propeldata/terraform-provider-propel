@@ -3,6 +3,7 @@ package propel
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"log"
 	"os"
 	"strings"
@@ -70,4 +71,20 @@ func Nprintf(format string, params map[string]any) string {
 		format = strings.Replace(format, "%{"+key+"}", fmt.Sprintf("%v", val), -1)
 	}
 	return format
+}
+
+func testAccCheckPropelResourceExists(resourceId string, resourceName string) resource.TestCheckFunc {
+	return func(s *terraform.State) error {
+		rs, ok := s.RootModule().Resources[resourceId]
+
+		if !ok {
+			return fmt.Errorf("not found: %s", resourceId)
+		}
+
+		if rs.Primary.ID == "" {
+			return fmt.Errorf("no %s ID set", resourceName)
+		}
+
+		return nil
+	}
 }
