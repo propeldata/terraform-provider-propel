@@ -98,6 +98,12 @@ func resourceMaterializedView() *schema.Resource {
 							Description: "Enables or disables access control for the Data Pool. If the Data Pool has access control enabled, Applications must be assigned Data Pool Access Policies in order to query the Data Pool and its Metrics.",
 						},
 						"table_settings": internal.TableSettingsSchema(),
+						"prevent_destroy": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Default:     false,
+							Description: "Prevent the destination Data Pool being destroy when the Materialized View is destroyed.",
+						},
 					},
 				},
 			},
@@ -289,15 +295,19 @@ func resourceMaterializedViewDelete(ctx context.Context, d *schema.ResourceData,
 	}
 
 	// If Materialized View created a Data Pool, ensure it is deleted.
-	if _, exists := d.GetOk("new_data_pool.0"); exists {
-		dataPoolID := d.Get("destination").(string)
-		if _, err := pc.DeleteDataPool(ctx, c, dataPoolID); err != nil {
-			return diag.FromErr(err)
-		}
+	if v, exists := d.GetOk("new_data_pool.0"); exists {
+		attrs := v.(map[string]any)
 
-		timeout := d.Timeout(schema.TimeoutDelete)
-		if err := internal.WaitForDataPoolDeletion(ctx, c, dataPoolID, timeout); err != nil {
-			return diag.FromErr(err)
+		if _, ok := attrs["prevent_destroy"]; !ok {
+			dataPoolID := d.Get("destination").(string)
+			if _, err := pc.DeleteDataPool(ctx, c, dataPoolID); err != nil {
+				return diag.FromErr(err)
+			}
+
+			timeout := d.Timeout(schema.TimeoutDelete)
+			if err := internal.WaitForDataPoolDeletion(ctx, c, dataPoolID, timeout); err != nil {
+				return diag.FromErr(err)
+			}
 		}
 	}
 
