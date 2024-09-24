@@ -3,10 +3,12 @@ package propel
 import (
 	"context"
 	"fmt"
+
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
 )
 
@@ -68,7 +70,7 @@ func resourceApplication() *schema.Resource {
 				}, false),
 			},
 			"scopes": {
-				Type:        schema.TypeSet,
+				Type:        schema.TypeList,
 				Optional:    true,
 				Description: "The Application's API authorization scopes. If specified, at least one scope must be provided; otherwise, all scopes will be granted to the Application by default.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
@@ -100,7 +102,7 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, meta
 	}
 
 	if def, ok := d.GetOk("scopes"); ok {
-		for _, v := range def.(*schema.Set).List() {
+		for _, v := range def.([]any) {
 			scope := parseApplicationScope(v.(string))
 			input.Scopes = append(input.Scopes, scope)
 		}
@@ -184,7 +186,7 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, meta
 		input.Description = &description
 
 		scopes := make([]pc.ApplicationScope, 0)
-		for _, v := range d.Get("scopes").(*schema.Set).List() {
+		for _, v := range d.Get("scopes").([]any) {
 			scope := parseApplicationScope(v.(string))
 			scopes = append(scopes, scope)
 		}

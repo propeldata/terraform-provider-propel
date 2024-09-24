@@ -49,7 +49,7 @@ func KafkaDataSourceSchema() *schema.Schema {
 					Description: "Whether the the connection to the Kafka servers is encrypted or not.",
 				},
 				"bootstrap_servers": {
-					Type:        schema.TypeSet,
+					Type:        schema.TypeList,
 					Required:    true,
 					Description: "The bootstrap server(s) to connect to.",
 					Elem:        &schema.Schema{Type: schema.TypeString},
@@ -78,7 +78,7 @@ func KafkaDataSourceCreate(ctx context.Context, d *schema.ResourceData, c graphq
 
 		bootstrapServers := make([]string, 0)
 		if s, exists := connectionSettings["bootstrap_servers"]; exists {
-			for _, bServer := range s.(*schema.Set).List() {
+			for _, bServer := range s.([]any) {
 				bootstrapServers = append(bootstrapServers, bServer.(string))
 			}
 		}
@@ -123,7 +123,7 @@ func KafkaDataSourceUpdate(ctx context.Context, d *schema.ResourceData, c graphq
 
 		bootstrapServers := make([]string, 0)
 		if v, exists := connectionSettings["bootstrap_servers"]; exists {
-			for _, bServer := range v.(*schema.Set).List() {
+			for _, bServer := range v.([]any) {
 				bootstrapServers = append(bootstrapServers, bServer.(string))
 			}
 		}

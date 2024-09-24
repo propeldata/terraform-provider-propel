@@ -54,7 +54,7 @@ func resourceDataPoolAccessPolicy() *schema.Resource {
 				Description: "The Environment to which the Data Pool Access Policy belongs.",
 			},
 			"columns": {
-				Type:        schema.TypeSet,
+				Type:        schema.TypeList,
 				Required:    true,
 				Description: `The list of columns that the Access Policy makes available for querying. Set "*" to allow all columns.`,
 				Elem:        &schema.Schema{Type: schema.TypeString},
@@ -105,7 +105,7 @@ func resourceDataPoolAccessPolicy() *schema.Resource {
 				},
 			},
 			"applications": {
-				Type:        schema.TypeSet,
+				Type:        schema.TypeList,
 				Optional:    true,
 				Description: `The list of applications to which the Access Policy is assigned.`,
 				Elem:        &schema.Schema{Type: schema.TypeString},
@@ -125,7 +125,7 @@ func resourceDataPoolAccessPolicyCreate(ctx context.Context, d *schema.ResourceD
 
 	columns := make([]string, 0)
 	if def, ok := d.GetOk("columns"); ok {
-		for _, col := range def.(*schema.Set).List() {
+		for _, col := range def.([]any) {
 			columns = append(columns, col.(string))
 		}
 	}
@@ -154,7 +154,7 @@ func resourceDataPoolAccessPolicyCreate(ctx context.Context, d *schema.ResourceD
 	d.SetId(response.CreateDataPoolAccessPolicy.DataPoolAccessPolicy.Id)
 
 	if def, ok := d.GetOk("applications"); ok {
-		for _, app := range def.(*schema.Set).List() {
+		for _, app := range def.([]any) {
 			_, err = pc.AssignDataPoolAccessPolicy(ctx, c, app.(string), response.CreateDataPoolAccessPolicy.DataPoolAccessPolicy.Id)
 			if err != nil {
 				return diag.FromErr(err)
@@ -236,7 +236,7 @@ func resourceDataPoolAccessPolicyUpdate(ctx context.Context, d *schema.ResourceD
 
 		columns := make([]string, 0)
 		if def, ok := d.GetOk("columns"); ok {
-			for _, col := range def.(*schema.Set).List() {
+			for _, col := range def.([]any) {
 				columns = append(columns, col.(string))
 			}
 		}
@@ -267,7 +267,7 @@ func resourceDataPoolAccessPolicyUpdate(ctx context.Context, d *schema.ResourceD
 		id := d.Id()
 
 		oldItem, newItem := d.GetChange("applications")
-		oldApplications, newApplications := oldItem.(*schema.Set).List(), newItem.(*schema.Set).List()
+		oldApplications, newApplications := oldItem.([]any), newItem.([]any)
 		oldMap, newMap := map[string]bool{}, map[string]bool{}
 
 		for _, oldApp := range oldApplications {
@@ -302,7 +302,7 @@ func resourceDataPoolAccessPolicyDelete(ctx context.Context, d *schema.ResourceD
 	c := m.(graphql.Client)
 
 	if def, ok := d.GetOk("applications"); ok {
-		applications := def.(*schema.Set).List()
+		applications := def.([]any)
 		for _, app := range applications {
 			_, err := pc.UnAssignDataPoolAccessPolicy(ctx, c, d.Id(), app.(string))
 			if err != nil {

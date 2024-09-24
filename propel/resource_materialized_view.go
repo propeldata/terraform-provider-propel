@@ -118,7 +118,7 @@ func resourceMaterializedView() *schema.Resource {
 				Description: "The Materialized View's source Data Pool.",
 			},
 			"others": {
-				Type:        schema.TypeSet,
+				Type:        schema.TypeList,
 				Computed:    true,
 				Description: "Other Data Pools queried by the Materialized View.",
 				Elem:        &schema.Schema{Type: schema.TypeString},

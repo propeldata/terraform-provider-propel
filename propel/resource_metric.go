@@ -119,7 +119,7 @@ func resourceMetric() *schema.Resource {
 				},
 			},
 			"dimensions": {
-				Type:        schema.TypeSet,
+				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
 				Description: "The Metric's Dimensions. These Dimensions are available to Query Filters.",
@@ -165,7 +165,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta any)
 
 	dimensions := make([]*pc.DimensionInput, 0)
 	if def, ok := d.GetOk("dimensions"); ok {
-		dimensions = expandMetricDimensions(def.(*schema.Set).List())
+		dimensions = expandMetricDimensions(def.([]any))
 	}
 
 	dataPool := d.Get("data_pool").(string)
@@ -430,7 +430,7 @@ func resourceMetricUpdate(ctx context.Context, d *schema.ResourceData, m any) di
 
 		dimensions := make([]*pc.DimensionInput, 0)
 		if def, ok := d.GetOk("dimensions"); ok {
-			dimensions = expandMetricDimensions(def.(*schema.Set).List())
+			dimensions = expandMetricDimensions(def.([]any))
 		}
 
 		accessControlEnabled := d.Get("access_control_enabled").(bool)
