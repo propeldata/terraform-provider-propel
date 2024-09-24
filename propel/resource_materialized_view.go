@@ -246,16 +246,13 @@ func resourceMaterializedViewRead(ctx context.Context, d *schema.ResourceData, m
 		return diag.FromErr(err)
 	}
 
-	if len(response.MaterializedView.Others) > 0 {
-		others := make([]string, 0, len(response.MaterializedView.Others))
+	others := make([]string, 0)
+	for _, dp := range response.MaterializedView.Others {
+		others = append(others, dp.Id)
+	}
 
-		for _, dp := range response.MaterializedView.Others {
-			others = append(others, dp.Id)
-		}
-
-		if err := d.Set("others", others); err != nil {
-			return diag.FromErr(err)
-		}
+	if err := d.Set("others", others); err != nil {
+		return diag.FromErr(err)
 	}
 
 	return nil
