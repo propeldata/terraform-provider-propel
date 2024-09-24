@@ -3,7 +3,7 @@
 [![Terraform Registry](https://img.shields.io/github/v/release/propeldata/terraform-provider-propel?color=5e4fe3&label=Terraform%20Registry&logo=terraform&sort=semver)](https://registry.terraform.io/providers/propeldata/propel/latest)
 [![Go Report Card](https://goreportcard.com/badge/github.com/propeldata/terraform-provider-propel)](https://goreportcard.com/report/github.com/propeldata/terraform-provider-propel)
 
-The [Propel](https://propeldata.com) provider is used to interact with Propel resources, including Data Sources, Data Pools and Metrics. The provider needs to be configured with the proper Application credentials (ID and secret) before it can be used.
+The [Propel](https://www.propeldata.com) Serverless ClickHouse provider interacts with Propel resources, including Data Sources, Data Pools, and Metrics. You need to configure the provider with the proper Application credentials (ID and secret) to get started.
 
 📄 Check out [the documentation](https://registry.terraform.io/providers/propeldata/propel/latest/docs).
 
@@ -20,7 +20,7 @@ terraform {
   required_providers {
     propel = {
       source  = "propeldata/propel"
-      version = "~> 1.3.1"
+      version = "~> 1.3.2"
     }
   }
 }
@@ -36,8 +36,8 @@ provider "propel" {
 }
 ```
 
-Set your Propel Application's secret via the `TF_VAR_propel_application_secret` environment variable.
+We recommend you set your Propel Application's secret via the `TF_VAR_propel_application_secret` environment variable.
 
 # License
 
-This software is distributed under the terms of the MIT license. See [LICENSE](./LICENSE) for detailst.
+This software is distributed under the terms of the MIT license. See [LICENSE](./LICENSE) for details.
