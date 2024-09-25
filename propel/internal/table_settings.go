@@ -44,7 +44,7 @@ func TableSettingsSchema() *schema.Schema {
 								Description: "The `ver` parameter to the ReplacingMergeTree table engine.",
 							},
 							"columns": {
-								Type:        schema.TypeSet,
+								Type:        schema.TypeList,
 								Optional:    true,
 								ForceNew:    true,
 								Description: "The columns argument for the SummingMergeTree table engine.",
@@ -54,21 +54,21 @@ func TableSettingsSchema() *schema.Schema {
 					},
 				},
 				"partition_by": {
-					Type:        schema.TypeSet,
+					Type:        schema.TypeList,
 					Optional:    true,
 					ForceNew:    true,
 					Description: "The PARTITION BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.",
 					Elem:        &schema.Schema{Type: schema.TypeString},
 				},
 				"primary_key": {
-					Type:        schema.TypeSet,
+					Type:        schema.TypeList,
 					Optional:    true,
 					ForceNew:    true,
 					Description: "The PRIMARY KEY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.",
 					Elem:        &schema.Schema{Type: schema.TypeString},
 				},
 				"order_by": {
-					Type:        schema.TypeSet,
+					Type:        schema.TypeList,
 					Optional:    true,
 					ForceNew:    true,
 					Description: "The ORDER BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.",
@@ -93,13 +93,13 @@ func BuildTableSettingsInput(settings map[string]any) (*pc.TableSettingsInput, e
 				return nil, fmt.Errorf("%q field should not be set for MERGE_TREE engine", "ver")
 			}
 
-			if v, ok := engine["columns"]; ok && len(v.(*schema.Set).List()) > 0 {
+			if v, ok := engine["columns"]; ok && len(v.([]any)) > 0 {
 				return nil, fmt.Errorf("%q field should not be set for MERGE_TREE engine", "columns")
 			}
 
 			tableSettingsInput.Engine.MergeTree = &pc.MergeTreeTableEngineInput{Type: &engineType}
 		case "REPLACING_MERGE_TREE":
-			if v, ok := engine["columns"]; ok && len(v.(*schema.Set).List()) > 0 {
+			if v, ok := engine["columns"]; ok && len(v.([]any)) > 0 {
 				return nil, fmt.Errorf("%q field should not be set for REPLACING_MERGE_TREE engine", "columns")
 			}
 
@@ -116,9 +116,9 @@ func BuildTableSettingsInput(settings map[string]any) (*pc.TableSettingsInput, e
 
 			tableSettingsInput.Engine.SummingMergeTree = &pc.SummingMergeTreeTableEngineInput{Type: &engineType}
 
-			if v, ok := engine["columns"]; ok && len(v.(*schema.Set).List()) > 0 {
+			if v, ok := engine["columns"]; ok && len(v.([]any)) > 0 {
 				columns := make([]string, 0)
-				for _, col := range engine["columns"].(*schema.Set).List() {
+				for _, col := range engine["columns"].([]any) {
 					columns = append(columns, col.(string))
 				}
 
@@ -129,7 +129,7 @@ func BuildTableSettingsInput(settings map[string]any) (*pc.TableSettingsInput, e
 				return nil, fmt.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "ver")
 			}
 
-			if v, ok := engine["columns"]; ok && len(v.(*schema.Set).List()) > 0 {
+			if v, ok := engine["columns"]; ok && len(v.([]any)) > 0 {
 				return nil, fmt.Errorf("%q field should not be set for AGGREGATING_MERGE_TREE engine", "columns")
 			}
 
@@ -137,27 +137,27 @@ func BuildTableSettingsInput(settings map[string]any) (*pc.TableSettingsInput, e
 		}
 	}
 
-	if v, ok := settings["partition_by"]; ok && len(v.(*schema.Set).List()) > 0 {
+	if v, ok := settings["partition_by"]; ok && len(v.([]any)) > 0 {
 		partitions := make([]string, 0)
-		for _, part := range settings["partition_by"].(*schema.Set).List() {
+		for _, part := range settings["partition_by"].([]any) {
 			partitions = append(partitions, part.(string))
 		}
 
 		tableSettingsInput.PartitionBy = partitions
 	}
 
-	if v, ok := settings["primary_key"]; ok && len(v.(*schema.Set).List()) > 0 {
+	if v, ok := settings["primary_key"]; ok && len(v.([]any)) > 0 {
 		primaryKeys := make([]string, 0)
-		for _, k := range settings["primary_key"].(*schema.Set).List() {
+		for _, k := range settings["primary_key"].([]any) {
 			primaryKeys = append(primaryKeys, k.(string))
 		}
 
 		tableSettingsInput.PrimaryKey = primaryKeys
 	}
 
-	if v, ok := settings["order_by"]; ok && len(v.(*schema.Set).List()) > 0 {
+	if v, ok := settings["order_by"]; ok && len(v.([]any)) > 0 {
 		orderBy := make([]string, 0)
-		for _, k := range settings["order_by"].(*schema.Set).List() {
+		for _, k := range settings["order_by"].([]any) {
 			orderBy = append(orderBy, k.(string))
 		}
 

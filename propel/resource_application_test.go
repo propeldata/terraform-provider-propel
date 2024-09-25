@@ -2,11 +2,12 @@ package propel
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	pc "github.com/propeldata/terraform-provider-propel/propel_client"
-	"testing"
 )
 
 func TestAccPropelApplication(t *testing.T) {
