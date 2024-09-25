@@ -85,6 +85,7 @@ To release a new version of the Terraform provider a binary has to be built for 
 
 1. Update the versions in the following files to the version you intend to release:
 
+    * README.md
     * Makefile
     * examples/main.tf
     * examples/provider/provider.tf
