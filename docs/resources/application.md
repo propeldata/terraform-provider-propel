@@ -28,7 +28,7 @@ resource "propel_application" "my_application" {
 
 - `description` (String) The Application's description.
 - `propeller` (String) The Application's Propeller. If no Propeller is provided, Propel will set the Propeller to `P1_X_SMALL`. The valid values are `P1_X_SMALL`, `P1_SMALL`, `P1_MEDIUM`, `P1_LARGE` and `P1_X_LARGE`
-- `scopes` (Set of String) The Application's API authorization scopes. If specified, at least one scope must be provided; otherwise, all scopes will be granted to the Application by default.
+- `scopes` (List of String) The Application's API authorization scopes. If specified, at least one scope must be provided; otherwise, all scopes will be granted to the Application by default.
 - `unique_name` (String) The Application's name.
 
 ### Read-Only

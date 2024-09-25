@@ -183,7 +183,7 @@ Required:
 Required:
 
 - `auth` (String) The type of authentication to use. Can be SCRAM-SHA-256, SCRAM-SHA-512, PLAIN or NONE.
-- `bootstrap_servers` (Set of String) The bootstrap server(s) to connect to.
+- `bootstrap_servers` (List of String) The bootstrap server(s) to connect to.
 - `password` (String, Sensitive) The password for the provided user.
 - `user` (String) The user for authenticating against the Kafka servers.
 
@@ -300,16 +300,16 @@ Then you can use the JSON property "greeting.message" to extract "hello, world" 
 Optional:
 
 - `engine` (Block List, Max: 1) The ClickHouse table engine for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified. (see [below for nested schema](#nestedblock--webhook_connection_settings--table_settings--engine))
-- `order_by` (Set of String) The ORDER BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
-- `partition_by` (Set of String) The PARTITION BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
-- `primary_key` (Set of String) The PRIMARY KEY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
+- `order_by` (List of String) The ORDER BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
+- `partition_by` (List of String) The PARTITION BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
+- `primary_key` (List of String) The PRIMARY KEY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
 
 <a id="nestedblock--webhook_connection_settings--table_settings--engine"></a>
 ### Nested Schema for `webhook_connection_settings.table_settings.engine`
 
 Optional:
 
-- `columns` (Set of String) The columns argument for the SummingMergeTree table engine.
+- `columns` (List of String) The columns argument for the SummingMergeTree table engine.
 - `type` (String) The ClickHouse table engine.
 - `ver` (String) The `ver` parameter to the ReplacingMergeTree table engine.
 

@@ -152,7 +152,7 @@ resource "propel_metric" "my_custom_metric" {
 - `access_control_enabled` (Boolean, Deprecated) Whether or not access control is enabled for the Metric.
 - `description` (String) The Metric's description.
 - `dimension` (String) The Dimension where the count distinct operation is going to be performed. Only valid for COUNT_DISTINCT Metrics.
-- `dimensions` (Set of String) The Metric's Dimensions. These Dimensions are available to Query Filters.
+- `dimensions` (List of String) The Metric's Dimensions. These Dimensions are available to Query Filters.
 - `expression` (String) The custom expression for aggregating data in a Metric. Only valid for CUSTOM Metrics.
 - `filter` (Block List) Metric Filters allow defining a Metric with a subset of records from the given Data Pool. If no Metric Filters are present, all records will be included. To filter at query time, add Dimensions and use the `filters` property on the `timeSeriesInput`, `counterInput`, or `leaderboardInput` objects. There is no need to add `filters` to be able to filter at query time. (see [below for nested schema](#nestedblock--filter))
 - `measure` (String) The Dimension to be summed, taken the minimum of, taken the maximum of, averaged, etc. Only valid for SUM, MIN, MAX and AVERAGE Metrics.

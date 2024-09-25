@@ -67,7 +67,7 @@ resource "propel_materialized_view" "existing_data_pool_mv" {
 - `destination` (String) The Materialized View's destination (AKA "target") Data Pool.
 - `environment` (String) The Environment that the Materialized View belongs to.
 - `id` (String) The ID of this resource.
-- `others` (Set of String) Other Data Pools queried by the Materialized View.
+- `others` (List of String) Other Data Pools queried by the Materialized View.
 - `source` (String) The Materialized View's source Data Pool.
 
 <a id="nestedblock--existing_data_pool"></a>
@@ -95,16 +95,16 @@ Optional:
 Optional:
 
 - `engine` (Block List, Max: 1) The ClickHouse table engine for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified. (see [below for nested schema](#nestedblock--new_data_pool--table_settings--engine))
-- `order_by` (Set of String) The ORDER BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
-- `partition_by` (Set of String) The PARTITION BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
-- `primary_key` (Set of String) The PRIMARY KEY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
+- `order_by` (List of String) The ORDER BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
+- `partition_by` (List of String) The PARTITION BY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
+- `primary_key` (List of String) The PRIMARY KEY clause for the Data Pool's table. This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
 
 <a id="nestedblock--new_data_pool--table_settings--engine"></a>
 ### Nested Schema for `new_data_pool.table_settings.engine`
 
 Optional:
 
-- `columns` (Set of String) The columns argument for the SummingMergeTree table engine.
+- `columns` (List of String) The columns argument for the SummingMergeTree table engine.
 - `type` (String) The ClickHouse table engine.
 - `ver` (String) The `ver` parameter to the ReplacingMergeTree table engine.
 
