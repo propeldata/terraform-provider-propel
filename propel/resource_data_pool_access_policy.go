@@ -210,15 +210,15 @@ func resourceDataPoolAccessPolicyRead(ctx context.Context, d *schema.ResourceDat
 		return diag.FromErr(err)
 	}
 
+	apps := make([]string, 0)
 	if response.DataPoolAccessPolicy.Applications != nil {
-		apps := make([]string, 0, len(response.DataPoolAccessPolicy.Applications.Nodes))
 		for _, node := range response.DataPoolAccessPolicy.Applications.Nodes {
 			apps = append(apps, node.Id)
 		}
+	}
 
-		if err := d.Set("applications", apps); err != nil {
-			return diag.FromErr(err)
-		}
+	if err := d.Set("applications", apps); err != nil {
+		return diag.FromErr(err)
 	}
 
 	return nil
