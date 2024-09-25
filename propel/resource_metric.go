@@ -278,7 +278,6 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta any)
 		}
 
 		d.SetId(response.GetCreateMinMetric().Metric.Id)
-
 	case "CUSTOM":
 		input := &pc.CreateCustomMetricInput{
 			DataPool:    dataPool,
@@ -297,7 +296,7 @@ func resourceMetricCreate(ctx context.Context, d *schema.ResourceData, meta any)
 		d.SetId(response.GetCreateCustomMetric().Metric.Id)
 	}
 
-	return diags
+	return resourceMetricRead(ctx, d, meta)
 }
 
 func resourceMetricRead(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {

@@ -167,8 +167,6 @@ func expandDataPoolColumns(def []any) []*pc.DataPoolColumnInput {
 func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {
 	c := meta.(graphql.Client)
 
-	var diags diag.Diagnostics
-
 	accessControlEnabled := d.Get("access_control_enabled").(bool)
 
 	columns := make([]*pc.DataPoolColumnInput, 0)
@@ -249,9 +247,7 @@ func resourceDataPoolCreate(ctx context.Context, d *schema.ResourceData, meta an
 		return diag.FromErr(err)
 	}
 
-	resourceDataPoolRead(ctx, d, meta)
-
-	return diags
+	return resourceDataPoolRead(ctx, d, meta)
 }
 
 func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {

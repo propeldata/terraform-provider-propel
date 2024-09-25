@@ -120,7 +120,7 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, meta
 		return diag.FromErr(fmt.Errorf("failed to create Application: %s", r.GetError().GetMessage()))
 	}
 
-	return nil
+	return resourceApplicationRead(ctx, d, meta)
 }
 
 func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, meta any) diag.Diagnostics {

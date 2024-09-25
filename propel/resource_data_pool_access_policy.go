@@ -162,9 +162,7 @@ func resourceDataPoolAccessPolicyCreate(ctx context.Context, d *schema.ResourceD
 		}
 	}
 
-	resourceDataPoolAccessPolicyRead(ctx, d, meta)
-
-	return diags
+	return resourceDataPoolAccessPolicyRead(ctx, d, meta)
 }
 
 func resourceDataPoolAccessPolicyRead(ctx context.Context, d *schema.ResourceData, m any) diag.Diagnostics {
