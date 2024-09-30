@@ -20,7 +20,7 @@ terraform {
   required_providers {
     propel = {
       source  = "propeldata/propel"
-      version = "~> 1.3.3"
+      version = "~> 1.3.4"
     }
   }
 }
