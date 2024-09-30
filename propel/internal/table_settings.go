@@ -137,28 +137,37 @@ func BuildTableSettingsInput(settings map[string]any) (*pc.TableSettingsInput, e
 		}
 	}
 
-	if v, ok := settings["partition_by"]; ok && len(v.([]any)) > 0 {
+	if v, exists := settings["partition_by"]; exists && len(v.([]any)) > 0 {
 		partitions := make([]string, 0)
+
 		for _, part := range settings["partition_by"].([]any) {
-			partitions = append(partitions, part.(string))
+			if _, ok := part.(string); ok {
+				partitions = append(partitions, part.(string))
+			}
 		}
 
 		tableSettingsInput.PartitionBy = partitions
 	}
 
-	if v, ok := settings["primary_key"]; ok && len(v.([]any)) > 0 {
+	if v, exists := settings["primary_key"]; exists && len(v.([]any)) > 0 {
 		primaryKeys := make([]string, 0)
+
 		for _, k := range settings["primary_key"].([]any) {
-			primaryKeys = append(primaryKeys, k.(string))
+			if _, ok := k.(string); ok {
+				primaryKeys = append(primaryKeys, k.(string))
+			}
 		}
 
 		tableSettingsInput.PrimaryKey = primaryKeys
 	}
 
-	if v, ok := settings["order_by"]; ok && len(v.([]any)) > 0 {
+	if v, exists := settings["order_by"]; exists && len(v.([]any)) > 0 {
 		orderBy := make([]string, 0)
+
 		for _, k := range settings["order_by"].([]any) {
-			orderBy = append(orderBy, k.(string))
+			if _, ok := k.(string); ok {
+				orderBy = append(orderBy, k.(string))
+			}
 		}
 
 		tableSettingsInput.OrderBy = orderBy
