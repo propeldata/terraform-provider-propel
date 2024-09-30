@@ -89,6 +89,7 @@ func testAccCheckPropelMaterializedViewConfigBasic(ctx map[string]any) string {
 						type = "SUMMING_MERGE_TREE"
 						columns = ["value"]
 					}
+					partition_by = [""]
 					order_by = ["timestamp", "customer_id"]
 				}
 			}

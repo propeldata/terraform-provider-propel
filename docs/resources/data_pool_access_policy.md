@@ -48,7 +48,7 @@ resource "propel_data_pool_access_policy" "my_data_pool_access_policy" {
 
 ### Optional
 
-- `applications` (List of String) The list of applications to which the Access Policy is assigned.
+- `applications` (Set of String) The list of applications to which the Access Policy is assigned.
 - `description` (String) The Data Pool Access Policy's description.
 - `row` (Block List) Row-level filters that the Access Policy applies before executing queries. Not setting any row filters means all rows can be queried. (see [below for nested schema](#nestedblock--row))
 - `unique_name` (String) The Data Pool Access Policy's name.
