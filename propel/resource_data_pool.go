@@ -58,12 +58,14 @@ func resourceDataPool() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 				ForceNew:    true,
+				Computed:    true,
 				Description: "The Data Source that the Data Pool belongs to.",
 			},
 			"table": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				ForceNew:    true,
+				Computed:    true,
 				Description: "The name of the Data Pool's table.",
 			},
 			"column": {
@@ -86,7 +88,8 @@ func resourceDataPool() *schema.Resource {
 						},
 						"clickhouse_type": {
 							Type:        schema.TypeString,
-							Required:    true,
+							Optional:    true,
+							Computed:    true,
 							Description: "The ClickHouse type to use when `type` is set to `CLICKHOUSE`.",
 						},
 						"nullable": {
