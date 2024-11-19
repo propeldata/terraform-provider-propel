@@ -7146,6 +7146,8 @@ type DataPoolColumnData struct {
 	ColumnName string `json:"columnName"`
 	// The Data Pool column's type. This may differ from the corresponding Data Source column's type.
 	Type ColumnType `json:"type"`
+	// The ClickHouse type. This is the exact representation of the type in ClickHouse.
+	ClickHouseType string `json:"clickHouseType"`
 	// Whether the column is nullable, meaning whether it accepts a null value.
 	IsNullable bool `json:"isNullable"`
 }
@@ -7155,6 +7157,9 @@ func (v *DataPoolColumnData) GetColumnName() string { return v.ColumnName }
 
 // GetType returns DataPoolColumnData.Type, and is useful for accessing the field via an interface.
 func (v *DataPoolColumnData) GetType() ColumnType { return v.Type }
+
+// GetClickHouseType returns DataPoolColumnData.ClickHouseType, and is useful for accessing the field via an interface.
+func (v *DataPoolColumnData) GetClickHouseType() string { return v.ClickHouseType }
 
 // GetIsNullable returns DataPoolColumnData.IsNullable, and is useful for accessing the field via an interface.
 func (v *DataPoolColumnData) GetIsNullable() bool { return v.IsNullable }
@@ -7442,6 +7447,11 @@ func (v *DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColum
 	return v.DataPoolColumnData.Type
 }
 
+// GetClickHouseType returns DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColumn.ClickHouseType, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColumn) GetClickHouseType() string {
+	return v.DataPoolColumnData.ClickHouseType
+}
+
 // GetIsNullable returns DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColumn.IsNullable, and is useful for accessing the field via an interface.
 func (v *DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColumn) GetIsNullable() bool {
 	return v.DataPoolColumnData.IsNullable
@@ -7477,6 +7487,8 @@ type __premarshalDataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataP
 
 	Type ColumnType `json:"type"`
 
+	ClickHouseType string `json:"clickHouseType"`
+
 	IsNullable bool `json:"isNullable"`
 }
 
@@ -7493,6 +7505,7 @@ func (v *DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColum
 
 	retval.ColumnName = v.DataPoolColumnData.ColumnName
 	retval.Type = v.DataPoolColumnData.Type
+	retval.ClickHouseType = v.DataPoolColumnData.ClickHouseType
 	retval.IsNullable = v.DataPoolColumnData.IsNullable
 	return &retval, nil
 }
@@ -7526,6 +7539,11 @@ func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) GetColu
 // GetType returns DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn.Type, and is useful for accessing the field via an interface.
 func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) GetType() ColumnType {
 	return v.DataPoolColumnData.Type
+}
+
+// GetClickHouseType returns DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn.ClickHouseType, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) GetClickHouseType() string {
+	return v.DataPoolColumnData.ClickHouseType
 }
 
 // GetIsNullable returns DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn.IsNullable, and is useful for accessing the field via an interface.
@@ -7563,6 +7581,8 @@ type __premarshalDataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn 
 
 	Type ColumnType `json:"type"`
 
+	ClickHouseType string `json:"clickHouseType"`
+
 	IsNullable bool `json:"isNullable"`
 }
 
@@ -7579,6 +7599,7 @@ func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) __prema
 
 	retval.ColumnName = v.DataPoolColumnData.ColumnName
 	retval.Type = v.DataPoolColumnData.Type
+	retval.ClickHouseType = v.DataPoolColumnData.ClickHouseType
 	retval.IsNullable = v.DataPoolColumnData.IsNullable
 	return &retval, nil
 }
@@ -20847,6 +20868,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -21444,6 +21466,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -21832,6 +21855,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -22220,6 +22244,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -22510,6 +22535,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -23476,6 +23502,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -23864,6 +23891,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -24729,6 +24757,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -25223,6 +25252,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -25603,6 +25633,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -25916,6 +25947,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -27355,6 +27387,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -27740,6 +27773,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -28142,6 +28176,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -28758,6 +28793,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -29721,6 +29757,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {

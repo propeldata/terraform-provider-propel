@@ -1,6 +1,7 @@
 fragment DataPoolColumnData on DataPoolColumn {
   columnName
   type
+  clickHouseType
   isNullable
 }
 fragment DataPoolData on DataPool {
