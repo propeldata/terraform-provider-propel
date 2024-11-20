@@ -138,6 +138,8 @@ func testAccCheckPropelDataPoolExists(n string) resource.TestCheckFunc {
 }
 
 func Test_getNewDataPoolColumns(t *testing.T) {
+	clickHouseType := "String"
+
 	tests := []struct {
 		name               string
 		oldItemDef         []any
@@ -148,30 +150,32 @@ func Test_getNewDataPoolColumns(t *testing.T) {
 		{
 			name: "Successful new columns",
 			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
 			},
 			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
-				map[string]any{"name": "COLUMN_C", "type": "INT64", "nullable": false},
-				map[string]any{"name": "COLUMN_D", "type": "TIMESTAMP", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_C", "type": "INT64", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_D", "type": "TIMESTAMP", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_E", "type": "CLICKHOUSE", "nullable": true, "clickhouse_type": clickHouseType},
 			},
 			expectedNewColumns: map[string]pc.DataPoolColumnInput{
-				"COLUMN_C": {ColumnName: "COLUMN_C", Type: "INT64", IsNullable: false},
-				"COLUMN_D": {ColumnName: "COLUMN_D", Type: "TIMESTAMP", IsNullable: false},
+				"COLUMN_C": {ColumnName: "COLUMN_C", Type: "INT64", IsNullable: false, ClickHouseType: nil},
+				"COLUMN_D": {ColumnName: "COLUMN_D", Type: "TIMESTAMP", IsNullable: false, ClickHouseType: nil},
+				"COLUMN_E": {ColumnName: "COLUMN_E", Type: "CLICKHOUSE", IsNullable: true, ClickHouseType: &clickHouseType},
 			},
 			expectedError: "",
 		},
 		{
 			name: "No new columns",
 			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
 			},
 			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
 			},
 			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
 			expectedError:      "",
@@ -179,11 +183,11 @@ func Test_getNewDataPoolColumns(t *testing.T) {
 		{
 			name: "Repeated column names",
 			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
 			},
 			newItemDef: []any{
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false, "clickhouse_type": ""},
 			},
 			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
 			expectedError:      `column "COLUMN_B" already exists`,
@@ -191,11 +195,11 @@ func Test_getNewDataPoolColumns(t *testing.T) {
 		{
 			name: "Unsupported column deletion",
 			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false, "clickhouse_type": ""},
 			},
 			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
 			},
 			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
 			expectedError:      `column "COLUMN_B" was removed, column deletions are not supported`,
@@ -203,11 +207,11 @@ func Test_getNewDataPoolColumns(t *testing.T) {
 		{
 			name: "Unsupported column update",
 			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false, "clickhouse_type": ""},
 			},
 			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "FLOAT", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
 			},
 			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
 			expectedError:      `column "COLUMN_A" was modified, column updates are not supported`,
