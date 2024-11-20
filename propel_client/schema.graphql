@@ -46,7 +46,7 @@ type Error {
   message: String!
 }
 
-"""The Account object."""
+""" The Account object. """
 type Account {
   """The Account's unique identifier."""
   id: ID!
@@ -57,9 +57,50 @@ The Environments object.
 
 Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads. Environments are hosted in a specific region, initially in us-east-2 only.
 """
-type Environment {
+type Environment implements Node {
   """The Environment's unique identifier."""
   id: ID!
+  """The Environment's unique name."""
+  uniqueName: String
+  """The Environment's description."""
+  description: String
+  """The Environment's creation date and time in UTC."""
+  createdAt: DateTime
+  """The Environment's last modification date and time in UTC."""
+  modifiedAt: DateTime
+  """
+  The Environment's creator. It can be either a User ID, an Environment ID, or "system" if it was created by Propel.
+  """
+  createdBy: String
+  """
+  The Environment's last modifier. It can be either a User ID, an Environment ID, or "system" if it was modified by Propel.
+  """
+  modifiedBy: String
+  """The Environment's Account."""
+  account: Account
+}
+
+""" The fields for creating an Environment. """
+input CreateEnvironmentInput {
+  """The Environment's unique name."""
+  uniqueName: String!
+  """The Environment's description."""
+  description: String
+}
+
+""" The fields for modifying an Environment. """
+input ModifyEnvironmentInput {
+  id: ID!
+  """The Environment's unique name."""
+  uniqueName: String
+  """The Environment's description."""
+  description: String
+}
+
+"""The result of a mutation which creates or modifies an Environment."""
+type EnvironmentResponse {
+  """ The Environment which was created or modified. """
+  environment: Environment
 }
 
 """
@@ -110,8 +151,6 @@ type PageInfo {
 
 """
 A Propeller determines your Application's query processing power. The larger the Propeller, the faster the queries and the higher the cost. Every Propel Application (and therefore every set of API credentials) has a Propeller that determines the speed and cost of queries.
-
-[Learn more about Data Sources](https://www.propeldata.com/docs/applications#propeller).
 """
 enum Propeller {
   """Max records per second: 5,000,000 records per second"""
@@ -130,8 +169,6 @@ enum Propeller {
 The Application object.
 
 Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
-
-[Learn more about Applications](https://www.propeldata.com/docs/applications).
 """
 type Application implements Node & Common {
   """The Application's unique identifier."""
@@ -183,19 +220,21 @@ enum ApplicationScope {
   """Grant read access to query Data Pools."""
   DATA_POOL_QUERY
   """Grant read access to read Data Pools."""
-  DATA_POOL_READ
+  DATA_POOL_READ @deprecated(reason: "Planned for removal; use `DATA_POOL_QUERY` instead.")
   """Grant read access to fetch column statistics from Data Pools."""
-  DATA_POOL_STATS
+  DATA_POOL_STATS @deprecated(reason: "Planned for removal; use `DATA_POOL_QUERY` instead.")
+  """Grant read/write access to Environments."""
+  ENVIRONMENT_ADMIN
   """Grant read access to query Metrics."""
   METRIC_QUERY
   """Grant read access to fetch Dimension statistics from Metrics."""
-  METRIC_STATS
+  METRIC_STATS @deprecated(reason: "Planned for removal; use `METRIC_QUERY` instead.")
   """
   Grant read access to Metrics.
 
   This does not allow querying Metrics. For that, see `METRIC_QUERY`.
   """
-  METRIC_READ
+  METRIC_READ @deprecated(reason: "Planned for removal; use `METRIC_QUERY` instead.")
 }
 
 """The fields for creating an Application."""
@@ -248,8 +287,6 @@ type ApplicationResponse {
 The Data Source object.
 
 A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-
-[Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 """
 type DataSource implements Node & Common {
   """The Data Source's unique identifier."""
@@ -295,7 +332,7 @@ type DataSource implements Node & Common {
   """
   If you list Data Pools via the `dataPools` field on a Data Source, you will get Data Pools for the Data Source.
 
-  The `dataPools` field uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+  The `dataPools` field uses cursor-based pagination typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
 
   For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 
@@ -484,8 +521,6 @@ type Column {
   This is the set of supported Data Pool column types you can use when converting this Data Source column to a Data Pool column. If the Data Source column type is unsupported, this field returns an empty array.
 
   For example, a numeric Data Source column type could be converted to a narrower or wider numeric Data Pool column type; a string-valued Data Source column type could be mapped to a date or timestamp Data Pool column type.
-
-  To learn more about the supported conversions, refer to [the docs](https://www.propeldata.com/docs) for your particular Data Source.
   """
   supportedDataPoolColumnTypes: [ColumnType!]!
 }
@@ -498,14 +533,14 @@ enum DataSourceType {
   S3
   """Indicates a Redshift Data Source."""
   Redshift
+  """Indicates a PostgreSQL Data Source."""
+  POSTGRESQL
   """Indicates a Kafka Data Source."""
   KAFKA
   """Indicates an Http Data Source."""
   Http
   """Indicates a ClickHouse Data Source."""
   CLICKHOUSE
-  """Indicates a BigQuery Data Source."""
-  BIGQUERY
   """Indicates a Snowflake Data Source."""
   Snowflake
   """Indicates an internal Data Source."""
@@ -530,7 +565,7 @@ type InternalConnectionSettings {
   _: Boolean
 }
 
-union ConnectionSettings = SnowflakeConnectionSettings | InternalConnectionSettings | ClickHouseConnectionSettings | HttpConnectionSettings | KafkaConnectionSettings | S3ConnectionSettings | WebhookConnectionSettings
+union ConnectionSettings = SnowflakeConnectionSettings | InternalConnectionSettings | ClickHouseConnectionSettings | HttpConnectionSettings | KafkaConnectionSettings | PostgreSqlConnectionSettings | S3ConnectionSettings | WebhookConnectionSettings
 
 """The Snowflake Data Source connection settings."""
 type SnowflakeConnectionSettings {
@@ -838,8 +873,6 @@ type DataSourceResponse {
 
 """
 The Data Pool object. Data Pools are Propel's high-speed data store and cache
-
-[Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 """
 type DataPool implements Node & Common {
   "The Data Pool's unique identifier."
@@ -936,6 +969,8 @@ type TableSettings {
   primaryKey: [String!]
   "The ORDER BY clause for the Data Pool's table."
   orderBy: [String!]
+  "The TTL clause for the Data Pool's table."
+  ttl: String
 }
 
 """
@@ -968,6 +1003,8 @@ input TableSettingsInput {
   This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
   """
   orderBy: [String!]
+  "The TTL clause for the Data Pool's table."
+  ttl: String
 }
 
 """ClickHouse table engine types."""
@@ -980,6 +1017,8 @@ enum TableEngineType {
   SUMMING_MERGE_TREE
   "The AggregatingMergeTree table engine."
   AGGREGATING_MERGE_TREE
+  "The PostgreSQL table engine."
+  POSTGRESQL
 }
 
 """An interface for accessing a table engine's type."""
@@ -989,7 +1028,7 @@ interface HasTableEngineType {
 }
 
 """A Data Pool's table engine."""
-union TableEngine = MergeTreeTableEngine | ReplacingMergeTreeTableEngine | SummingMergeTreeTableEngine | AggregatingMergeTreeTableEngine
+union TableEngine = MergeTreeTableEngine | ReplacingMergeTreeTableEngine | SummingMergeTreeTableEngine | AggregatingMergeTreeTableEngine | PostgreSqlTableEngine
 
 """A Data Pool's table engine."""
 input TableEngineInput @oneOf {
@@ -1001,6 +1040,8 @@ input TableEngineInput @oneOf {
   summingMergeTree: SummingMergeTreeTableEngineInput
   """Field for specifying the AggregatingMergeTree table engine."""
   aggregatingMergeTree: AggregatingMergeTreeTableEngineInput
+  """Field for specifying the PostgreSQL table engine."""
+  postgreSql: PostgreSqlTableEngineInput
 }
 
 """Parameters for the MergeTree table engine."""
@@ -1056,6 +1097,18 @@ type AggregatingMergeTreeTableEngine implements HasTableEngineType {
 """Parameters for the AggregatingMergeTree table engine."""
 input AggregatingMergeTreeTableEngineInput {
   "The type is always `AGGREGATING_MERGE_TREE`."
+  type: TableEngineType
+}
+
+"""Parameters for the PostgreSQL table engine."""
+type PostgreSqlTableEngine implements HasTableEngineType {
+  "The type is always `POSTGRESQL`."
+  type: TableEngineType!
+}
+
+"""Parameters for the PostgreSQL table engine."""
+input PostgreSqlTableEngineInput {
+  "The type is always `POSTGRESQL`."
   type: TableEngineType
 }
 
@@ -1150,7 +1203,7 @@ type MaterializedView implements Node & Common {
   """The Materialized View's destination (AKA "target") Data Pool."""
   destination: DataPool!
   "The Materialized View's source Data Pool."
-  source: DataPool!
+  source: DataPool
   "Other Data Pools queried by the Materialized View."
   others: [DataPool!]!
 }
@@ -1788,8 +1841,6 @@ The Metric Report connection object.
 
 It includes `headers` and `rows` for a single page of a report. It also allows paging forward and backward to other
 pages of the report.
-
-Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
 """
 type MetricReportConnection {
   """The report connection's page info."""
@@ -1810,11 +1861,7 @@ type MetricReportConnection {
   query: QueryInfo!
 }
 
-"""
-The Metric Report edge object.
-
-Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
-"""
+"""The Metric Report edge object."""
 type MetricReportEdge {
   """The edge's node."""
   node: MetricReportNode!
@@ -1826,8 +1873,6 @@ type MetricReportEdge {
 The Metric Report node object.
 
 This type represents a single row of a report.
-
-Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
 """
 type MetricReportNode {
   """
@@ -1844,8 +1889,6 @@ type MetricReportNode {
 The Metric object.
 
 A Metric is a business indicator measured over time.
-
-[Learn more about Metrics](/docs/key-concepts#metric).
 """
 type Metric implements Node & Common {
   """The Metric's unique identifier."""
@@ -2405,6 +2448,8 @@ input TimeSeriesInput {
   """ The Query Filters to apply before retrieving the time series data, in the form of SQL. If no Query Filters are provided, all data is included.
   """
   filterSql: String
+  """ Columns to group by. """
+  groupBy: [String!]
 }
 
 """
@@ -2757,8 +2802,22 @@ type TimeSeriesResponse {
   labels: [String!]!
   """The time series values."""
   values: [String]!
+  """The time series values for each group in `groupBy`, if specified."""
+  groups: [TimeSeriesResponseGroup!]
   """The Query statistics and metadata."""
   query: QueryInfo!
+}
+
+"""
+The time series response object for a group specified in `groupBy`. It contains an array of time series labels and an array of Metric values for a particular group.
+"""
+type TimeSeriesResponseGroup {
+  """The time series group's columns."""
+  group: [String]!
+  """The time series group's labels."""
+  labels: [String!]!
+  """The time series group's values."""
+  values: [String]!
 }
 
 """
@@ -2818,6 +2877,8 @@ type QueryInfo {
   type: QueryType!
   """The Query subtype."""
   subtype: QuerySubtype
+  """The SQL the query executed."""
+  sql: String!
 }
 
 """The Query status."""
@@ -3167,6 +3228,10 @@ type AddColumnToDataPoolJob implements Node & Job {
   columnName: String!
   "Type of the new column."
   columnType: ColumnType!
+  """
+  The ClickHouse type of the new column when `columnType` is set to `CLICKHOUSE`.
+  """
+  columnClickHouseType: String
   "JSON property to which the new column corresponds."
   jsonProperty: String
   "The error that occurred while adding the column data, if any."
@@ -3189,6 +3254,10 @@ input CreateAddColumnToDataPoolJobInput {
   columnName: String!
   "Type of the new column."
   columnType: ColumnType!
+  """
+  The ClickHouse type of the new column when `columnType` is set to `CLICKHOUSE`.
+  """
+  columnClickHouseType: String
   "JSON property to which the new column corresponds."
   jsonProperty: String
 }
@@ -3343,21 +3412,21 @@ input ModifyDataPoolAccessPolicyInput {
 
 type Mutation {
   """
-  Creates a Data Pool Access Policy for the specified Data Pool.
-
-  [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
+  Creates an Environment and returns the newly created Environment (or an error if creating the Environment fails).
   """
+  createEnvironment(input: CreateEnvironmentInput!): EnvironmentResponse!
+  """
+  Modifies an Environment with the provided fields. If any of the optional fields are omitted, those properties will be unchanged on the Environment.
+  """
+  modifyEnvironment(input: ModifyEnvironmentInput!): EnvironmentResponse!
+  """Creates a Data Pool Access Policy for the specified Data Pool."""
   createDataPoolAccessPolicy(input: CreateDataPoolAccessPolicyInput!): DataPoolAccessPolicyResponse!
   """
   Modifies a Data Pool Access Policy with the provided unique name, description, columns and rows. If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool Access Policy.
-
-  [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
   """
   modifyDataPoolAccessPolicy(input: ModifyDataPoolAccessPolicyInput!): DataPoolAccessPolicyResponse!
   """
   Deletes a Data Pool Access Policy by ID and returns its ID if the Data Pool Access Policy was deleted successfully.
-
-  [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
   """
   deleteDataPoolAccessPolicy(id: ID!): ID
   """
@@ -3386,25 +3455,46 @@ type Mutation {
   """
   Creates a new Application and returns the newly created Application (or an error message if creating the Application fails).
 
-  [Learn more about Applications](https://www.propeldata.com/docs/applications).
+  Required scopes:
+  - APPLICATION_ADMIN
+
+  ```graphql
+  mutation {
+  createApplication(
+  input: {
+  uniqueName: "example_sample_application"
+  description: "My dashboard app"
+  scopes: [DATA_POOL_QUERY]
+  propeller: P1_X_SMALL
+  }
+  ) {
+  ... on ApplicationResponse {
+  application {
+  id
+  uniqueName
+  }
+  }
+  ... on FailureResponse {
+  error {
+  code
+  message
+  }
+  }
+  }
+  }
+  ```
   """
   createApplication(input: createApplicationInput!): ApplicationOrFailureResponse
   """
   Modifies an Application with the provided unique name, description, Propeller, and scopes. If any of the optional arguments are omitted, those properties will be unchanged on the Application.
-
-  [Learn more about Applications](https://www.propeldata.com/docs/applications).
   """
   modifyApplication(input: modifyApplicationInput!): ApplicationOrFailureResponse
   """
   Deletes an Application by ID and returns its ID if the Application was deleted successfully.
-
-  [Learn more about Applications](https://www.propeldata.com/docs/applications).
   """
   deleteApplication(id: ID!): ID
   """
   Deletes an Application by unique name and returns its ID if the Application was deleted successfully.
-
-  [Learn more about Applications](https://www.propeldata.com/docs/applications).
   """
   deleteApplicationByName(uniqueName: String!): ID
   """
@@ -3440,11 +3530,83 @@ type Mutation {
   """
   deleteDataSourceByName(uniqueName: String!): ID
   """
-  Creates a new Data Pool from the given Data Source based on the specified table and using a particular column as the timestamp.
+  Creates a new Data Pool.
 
-  Returns the newly created Data Pool (or an error message if creating the Data Pool fails).
+  Returns the newly created Data Pool or an error message if it fails.
 
-  [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
+  ```graphql
+  mutation {
+  createDataPoolV2(input: {
+  dataSource: "DSOXXXXX"
+  table: "tacosoft_sales_analytics"
+  timestamp: { columnName: "timestamp" }
+  columns: [
+  {
+  columnName: "timestamp",
+  type: TIMESTAMP,
+  isNullable: true
+  },
+  {
+  columnName: "order_id",
+  type: STRING,
+  isNullable: true
+  },
+  {
+  columnName: "taco_name",
+  type: STRING,
+  isNullable: true
+  },
+  {
+  columnName: "toppings",
+  type: JSON,
+  isNullable: true
+  },
+  {
+  columnName: "quantity",
+  type: INT32,
+  isNullable: true
+  },
+  {
+  columnName: "taco_unit_price",
+  type: INT32,
+  isNullable: true
+  },
+  {
+  columnName: "taco_total_price",
+  type: INT32,
+  isNullable: true
+  }
+  ]
+  }) {
+  dataPool {
+  id
+  uniqueName
+  tableSettings {
+  orderBy
+  engine {
+  ... on MergeTreeTableEngine {
+  type
+  }
+  ... on ReplacingMergeTreeTableEngine {
+  type
+  ver
+  }
+  ... on SummingMergeTreeTableEngine {
+  type
+  columns
+  }
+  ... on AggregatingMergeTreeTableEngine {
+  type
+  }
+  ... on PostgreSqlTableEngine {
+  type
+  }
+  }
+  }
+  }
+  }
+  }
+  ```
   """
   createDataPoolV2(input: CreateDataPoolInputV2!): DataPoolResponse
   """
@@ -3477,44 +3639,30 @@ type Mutation {
   enableSyncing(id: ID!): DataPool
   """
   Creates a new Count Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-
-  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createCountMetric(input: CreateCountMetricInput): MetricResponse
   """
   Creates a new Count Distinct Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-
-  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createCountDistinctMetric(input: CreateCountDistinctMetricInput): MetricResponse
   """
   Creates a new Sum Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-
-  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createSumMetric(input: CreateSumMetricInput): MetricResponse
   """
   Creates a new Average Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-
-  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createAverageMetric(input: CreateAverageMetricInput): MetricResponse
   """
   Creates a new Min Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-
-  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createMinMetric(input: CreateMinMetricInput): MetricResponse
   """
   Creates a new Max Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-
-  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createMaxMetric(input: CreateMaxMetricInput): MetricResponse
   """
   Creates a new Custom Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-
-  [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
   """
   createCustomMetric(input: CreateCustomMetricInput): MetricResponse
   """
@@ -3619,6 +3767,43 @@ type Mutation {
   """
   modifyKafkaDataSource(input: ModifyKafkaDataSourceInput!): DataSourceResponse!
   """
+  Creates a new PostgreSQL Data Source.
+
+  Returns the newly created Data Source (or an error message if creating the Data Source fails).
+
+  Example:
+
+  ```graphql
+  mutation {
+  createPostgreSqlDataSource(input: {
+  uniqueName: "example_postgresql_data_source"
+  description: "My PostgreSQL Data Source"
+  connectionSettings: {
+  database: "example_database"
+  schema: "public"
+  host: "postgresql.example.com"
+  port: 5432
+  user: "user"
+  password: "password"
+  }
+  }) {
+  dataSource {
+  id
+  uniqueName
+  }
+  }
+  }
+  ```
+  Replace the placeholder values with your actual configuration.
+  """
+  createPostgreSqlDataSource(input: CreatePostgreSqlDataSourceInput!): DataSourceResponse!
+  """
+  Selects a Data Source by its ID or unique name and modifies it to have the given unique name, description, and connection settings.
+
+  If any of the optional arguments are omitted, those properties will be unchanged on the Data Source.
+  """
+  modifyPostgreSqlDataSource(input: ModifyPostgreSqlDataSourceInput!): DataSourceResponse!
+  """
   Creates a new Amazon S3 Data Source pointed at the specified S3 bucket.
 
   Returns the newly created Data Source (or an error message if creating the Data Source fails).
@@ -3648,12 +3833,28 @@ type Mutation {
 input SqlV1Input {
   """The SQL query."""
   query: String!
+  """
+  The SQL dialect to use. If not provided, the query is parsed on a best-effort basis.
+  """
+  dialect: SqlDialectV1
+}
+
+"""The SQL dialect to use when parsing queries."""
+enum SqlDialectV1 {
+  """Parse as PostgreSQL-compatible SQL."""
+  POSTGRESQL
+  """Parse as ClickHouse-compatible SQL."""
+  CLICKHOUSE
 }
 
 """Input for describing SqlV1 inputs."""
 input DescribeSqlV1Input {
   """The SQL query."""
   query: String!
+  """
+  The SQL dialect to use. If not provided, the query is parsed on a best-effort basis.
+  """
+  dialect: SqlDialectV1
 }
 
 type SqlColumnResponse {
@@ -3692,8 +3893,6 @@ The Data Grid connection.
 
 It includes `headers` and `rows` for a single page of a Data Grid table. It also allows paging forward and backward to other
 pages of the Data Grid table.
-
-Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
 """
 type DataGridConnection {
   """The Data Grid table's headers."""
@@ -3712,11 +3911,7 @@ type DataGridConnection {
   nodes: [DataGridNode!]!
 }
 
-"""
-The Data Grid edge object.
-
-Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
-"""
+"""The Data Grid edge object."""
 type DataGridEdge {
   """The edge's node."""
   node: DataGridNode!
@@ -3728,8 +3923,6 @@ type DataGridEdge {
 The Data Grid table's node.
 
 This type represents a single row of a Data Grid table.
-
-Learn more about [pagination in GraphQL](https://www.propeldata.com/docs/api/pagination).
 """
 type DataGridNode {
   """The Data Grid table's headers."""
@@ -3787,24 +3980,15 @@ type TopValuesResponse {
 }
 
 type Query {
-  """
-  This query returns the Application specified by the given ID.
-
-  [Learn more about Applications](https://www.propeldata.com/docs/applications).
-  """
+  """Returns the Application specified by the given ID."""
   application(id: ID!): Application
-  """
-  This query returns the Application with the given unique name.
-
-  [Learn more about Applications](https://www.propeldata.com/docs/applications).
-  """
+  """Returns the Application with the given unique name."""
   applicationByName(uniqueName: String!): Application
   """
-  This query returns the Applications within the Environment.
+  Returns the Applications within the Environment.
 
-  [Learn more about Applications](https://www.propeldata.com/docs/applications).
 
-  The `applications` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+  The `applications` query uses cursor-based pagination typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
 
   For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 
@@ -3812,23 +3996,41 @@ type Query {
   """
   applications(first: Int, after: String, last: Int, before: String): ApplicationConnection
   """
-  This query returns the Data Source specified by the given ID.
+  Returns the Data Source specified by the given ID.
 
-  A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+  ```graphql
+  query {
+  dataSource(id: "DSOXXXXX") {
+  id
+  uniqueName
+  type
+  tables (first: 100){
+  nodes {
+  id
+  name
+  columns (first: 100) {
+  nodes {
+  name
+  type
+  isNullable
+  supportedDataPoolColumnTypes
+  }
+  }
+  }
+  }
+  }
+  }
+  ```
   """
   dataSource(id: ID!): DataSource
-  """
-  This query returns the Data Source specified by the given unique name.
-
-  A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-  """
+  """Returns the Data Source specified by the given unique name."""
   dataSourceByName(uniqueName: String!): DataSource
   """
-  This query returns the Data Sources within the Environment.
+  Returns the Data Sources within the Environment.
 
   A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source. Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 
-  The `dataSources` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+  The `dataSources` query uses cursor-based pagination typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
 
   For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 
@@ -3836,33 +4038,35 @@ type Query {
   """
   dataSources(first: Int, after: String, last: Int, before: String): DataSourceConnection
   """
-  This query returns the Data Pool specified by the given ID.
+  Returns the Data Pool specified by the given ID.
 
   A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
   """
   dataPool(id: ID!): DataPool
   """
-  This query returns the Data Pool specified by the given unique name.
+  Returns the Data Pool specified by the given unique name.
 
   A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
   """
   dataPoolByName(uniqueName: String!): DataPool
   """
-  This query returns the Data Pools within the Environment.
+  Returns the Data Pools within the Environment.
 
   A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries. Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 
-  The `dataPools` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+  The `dataPools` query uses cursor-based pagination typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
 
   For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 
   For backward pagination, the `last` parameter defines the number of results to return, and the `before` parameter defines the cursor to continue from. You should pass the cursor for the _first_ result of the current page to `before`.
   """
   dataPools(first: Int, after: String, last: Int, before: String): DataPoolConnection
+  """Returns the Environment specified by the given ID."""
+  environment(id: ID!): Environment
   """
-  This query returns the Materialized Views within the Environment.
+  Returns the Materialized Views within the Environment.
 
-  The `materializedViews` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+  The `materializedViews` query uses cursor-based pagination typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
 
   For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 
@@ -3870,29 +4074,29 @@ type Query {
   """
   materializedViews(first: Int, after: String, last: Int, before: String): MaterializedViewConnection
   """
-  This query returns the Data Pool Access Policy specified by the given ID.
+  Returns the Data Pool Access Policy specified by the given ID.
 
   A Data Pool Access Policy limits the data that Applications can access within a Data Pool.
   """
   dataPoolAccessPolicy(id: ID!): DataPoolAccessPolicy
   """
-  This query returns the Metric specified by the given ID.
+  Returns the Metric specified by the given ID.
 
   A Metric is a business indicator measured over time.
   """
   metric(id: ID!): Metric
   """
-  This query returns the Metric specified by the given unique name.
+  Returns the Metric specified by the given unique name.
 
   A Metric is a business indicator measured over time.
   """
   metricByName(uniqueName: String!): Metric
   """
-  This query returns the Metrics within the Environment.
+  Returns the Metrics within the Environment.
 
   A Metric is a business indicator measured over time. Each Metric is associated with one Data Pool, which is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries. Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 
-  The `metrics` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+  The `metrics` query uses cursor-based pagination typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
 
   For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 
@@ -3900,7 +4104,7 @@ type Query {
   """
   metrics(first: Int, after: String, last: Int, before: String): MetricConnection
   """
-  This query returns the Booster specified by the given ID.
+  Returns the Booster specified by the given ID.
 
   A Booster significantly improves the query performance for a Metric.
   """
@@ -3918,7 +4122,7 @@ type Query {
   Metrics you choose to query. By default, the report sorts on the first Metric in descending order, but you can
   configure this with the `orderByMetric` and `sort` inputs.
 
-  Finally, reports use [cursor-based pagination](/docs/api/pagination). You can control page size with the `first` and
+  Finally, reports use cursor-based pagination. You can control page size with the `first` and
   `last` inputs.
   """
   metricReport(input: MetricReportInput!): MetricReportConnection
@@ -3927,13 +4131,13 @@ type Query {
   """Describe SQL statements Data Pools."""
   describeSqlV1(input: DescribeSqlV1Input!): DescribeSqlResponse!
   """
-  This query returns the individual records of a Data Pool with the convenience of built-in pagination, filtering, and sorting.
+  Returns the individual records of a Data Pool with the convenience of built-in pagination, filtering, and sorting.
   """
   dataGrid(input: DataGridInput!): DataGridConnection!
-  """This query returns records by the given unique IDs."""
+  """Returns records by the given unique IDs."""
   recordsByUniqueId(input: RecordsByUniqueIdInput!): RecordsByUniqueIdResponse!
   """
-  This query returns an array of the most frequent values in a given column. The resulting array is sorted in descending order of approximate frequency of values.
+  Returns an array of the most frequent values in a given column. The resulting array is sorted in descending order of approximate frequency of values.
   """
   topValues(input: TopValuesInput!): TopValuesResponse!
   """
@@ -3953,37 +4157,33 @@ type Query {
   """
   leaderboard(input: LeaderboardInput!): LeaderboardResponse
   """
-  This query returns the Deletion Job specified by the given ID.
+  Returns the Deletion Job specified by the given ID.
 
   The Deletion Job represents the asynchronous process of deleting data
   given some filters inside a Data Pool.
   """
   deletionJob(id: ID!): DeletionJob
   """
-  This query returns the AddColumnToDataPoolJob specified by the given ID.
+  Returns the AddColumnToDataPoolJob specified by the given ID.
 
   The AddColumnToDataPoolJob represents the asynchronous process of adding
   a column, given its name and type, to a Data Pool.
   """
   addColumnToDataPoolJob(id: ID!): AddColumnToDataPoolJob
-  """
-  This query returns the AddColumnToDataPool Job specified by a given status.
-  """
+  """Returns the AddColumnToDataPool Job specified by a given status."""
   addColumnToDataPoolJobByStatus(status: JobStatus!, first: Int, after: String, last: Int, before: String): AddColumnToDataPoolJobConnection!
   """
-  This query returns the UpdateDataPoolRecords Job specified by the given ID.
+  Returns the UpdateDataPoolRecords Job specified by the given ID.
 
   The UpdateDataPoolRecords Job represents the asynchronous process of updating
   records inside a Data Pool.
   """
   updateDataPoolRecordsJob(id: ID!): UpdateDataPoolRecordsJob
-  """
-  This query returns the UpdateDataPoolRecords Job specified by a given status.
-  """
+  """Returns the UpdateDataPoolRecords Job specified by a given status."""
   updateDataPoolRecordsJobByStatus(status: JobStatus!, first: Int, after: String, last: Int, before: String): UpdateDataPoolRecordsJobConnection!
-  """This query returns the Materialized View specified by the given ID."""
+  """Returns the Materialized View specified by the given ID."""
   materializedView(id: ID!): MaterializedView
-  """This query returns the Materialized View specified by its unique name."""
+  """Returns the Materialized View specified by its unique name."""
   materializedViewByName(uniqueName: String!): MaterializedView
 }
 
@@ -4639,6 +4839,92 @@ input PartialKafkaConnectionSettingsInput {
   The user for authenticating against the Kafka servers If not provided this property will not be modified.
   """
   user: String
+}
+
+input CreatePostgreSqlDataSourceInput {
+  """The PostgreSQL Data Source's connection settings"""
+  connectionSettings: PostgreSqlConnectionSettingsInput!
+  """The PostgreSQL Data Source's description."""
+  description: String
+  """
+  The PostgreSQL Data Source's unique name. If not specified, Propel will set the ID as unique name.
+  """
+  uniqueName: String
+}
+
+input ModifyPostgreSqlDataSourceInput {
+  """
+  The PostgreSQL Data Source's new connection settings. If not provided this property will not be modified.
+  """
+  connectionSettings: PartialPostgreSqlConnectionSettingsInput
+  """
+  The PostgreSQL Data Source's new description. If not provided this property will not be modified.
+  """
+  description: String
+  """The ID or unique name of the PostgreSQL Data Source to modify."""
+  idOrUniqueName: idOrUniqueName!
+  """
+  The PostgreSQL Data Source's new unique name. If not provided this property will not be modified.
+  """
+  uniqueName: String
+}
+
+"""The PostgreSQL Data Source connection settings."""
+input PartialPostgreSqlConnectionSettingsInput {
+  """
+  Which database to connect to If not provided this property will not be modified.
+  """
+  database: String
+  """
+  The host where PostgreSQL is listening If not provided this property will not be modified.
+  """
+  host: String
+  """
+  The password for the provided user If not provided this property will not be modified.
+  """
+  password: String
+  """
+  The port where PostgreSQL is listening (usually 5432) If not provided this property will not be modified.
+  """
+  port: Int
+  """
+  Which schema to use If not provided this property will not be modified.
+  """
+  schema: String
+  """
+  The user for authenticating against PostgreSQL If not provided this property will not be modified.
+  """
+  user: String
+}
+
+"""The PostgreSQL Data Source connection settings."""
+type PostgreSqlConnectionSettings {
+  """Which database to connect to"""
+  database: String
+  """The host where PostgreSQL is listening"""
+  host: String!
+  """The port where PostgreSQL is listening (usually 5432)"""
+  port: Int
+  """Which schema to use"""
+  schema: String
+  """The user for authenticating against PostgreSQL"""
+  user: String!
+}
+
+"""The PostgreSQL Data Source connection settings."""
+input PostgreSqlConnectionSettingsInput {
+  """Which database to connect to"""
+  database: String
+  """The host where PostgreSQL is listening"""
+  host: String!
+  """The password for the provided user"""
+  password: String!
+  """The port where PostgreSQL is listening (usually 5432)"""
+  port: Int
+  """Which schema to use"""
+  schema: String
+  """The user for authenticating against PostgreSQL"""
+  user: String!
 }
 
 input CreateS3DataSourceInput {
