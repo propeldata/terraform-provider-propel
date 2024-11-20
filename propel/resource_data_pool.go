@@ -480,9 +480,10 @@ func addNewDataPoolColumns(ctx context.Context, d *schema.ResourceData, c graphq
 		}
 
 		response, err := pc.CreateAddColumnToDataPoolJob(ctx, c, &pc.CreateAddColumnToDataPoolJobInput{
-			DataPool:   dataPoolId,
-			ColumnName: newColumn.ColumnName,
-			ColumnType: newColumn.Type,
+			DataPool:             dataPoolId,
+			ColumnName:           newColumn.ColumnName,
+			ColumnType:           newColumn.Type,
+			ColumnClickHouseType: newColumn.ClickHouseType,
 		})
 		if err != nil {
 			return err

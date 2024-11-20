@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/Khan/genqlient/graphql"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/stretchr/testify/assert"
@@ -15,7 +16,9 @@ import (
 )
 
 func TestAccPropelDataPoolBasic(t *testing.T) {
-	ctx := map[string]any{}
+	ctx := map[string]any{
+		"unique_name": acctest.RandString(12),
+	}
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
@@ -27,7 +30,8 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 				Config: testAccCheckPropelDataPoolConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataPoolExists("propel_data_pool.bar"),
-					resource.TestCheckResourceAttr("propel_data_pool.bar", "table", "CLUSTER_TEST_TABLE_1"),
+					resource.TestCheckResourceAttr("propel_data_pool.bar", "unique_name", ctx["unique_name"].(string)),
+					resource.TestCheckResourceAttrSet("propel_data_pool.bar", "table"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "tenant_id", "account_id"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "description", "Data Pool test"),
 				),
@@ -37,7 +41,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 				Config: testAccUpdatePropelDataPoolConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataPoolExists("propel_data_pool.bar"),
-					resource.TestCheckResourceAttr("propel_data_pool.bar", "table", "CLUSTER_TEST_TABLE_1"),
+					resource.TestCheckResourceAttrSet("propel_data_pool.bar", "table"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "tenant_id", "account_id"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "description", "Updated description"),
 				),
@@ -49,38 +53,10 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
 	// language=hcl-terraform
 	return Nprintf(`
-	resource "propel_data_source" "foo" {
-		unique_name = "terraform-test-3"
-		type = "HTTP"
-
-		http_connection_settings {
-			basic_auth {
-				username = "foo"
-				password = "bar"
-			}
-		}
-
-		table {
-			name = "CLUSTER_TEST_TABLE_1"
-
-			column {
-				name = "timestamp_tz"
-				type = "TIMESTAMP"
-				nullable = false
-			}
-
-			column {
-				name = "account_id"
-				type = "STRING"
-				nullable = false
-			}
-		}
-	}
 
 	resource "propel_data_pool" "bar" {
-		unique_name = "terraform-test-3"
+		unique_name = "%{unique_name}"
 		description = "Data Pool test"
-		table = "${propel_data_source.foo.table[0].name}"
 
 		column {
 			name = "timestamp_tz"
@@ -93,46 +69,17 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
 			nullable = false
 		}
 		tenant_id = "account_id"
-		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
-		data_source = "${propel_data_source.foo.id}"
+		timestamp = "timestamp_tz"
 	}`, ctx)
 }
 
 func testAccUpdatePropelDataPoolConfigBasic(ctx map[string]any) string {
 	// language=hcl-terraform
 	return Nprintf(`
-	resource "propel_data_source" "foo" {
-		unique_name = "terraform-test-3"
-		type = "HTTP"
-
-		http_connection_settings {
-			basic_auth {
-				username = "foo"
-				password = "bar"
-			}
-		}
-
-		table {
-			name = "CLUSTER_TEST_TABLE_1"
-
-			column {
-				name = "timestamp_tz"
-				type = "TIMESTAMP"
-				nullable = false
-			}
-
-			column {
-				name = "account_id"
-				type = "STRING"
-				nullable = false
-			}
-		}
-	}
 
 	resource "propel_data_pool" "bar" {
-		unique_name = "terraform-test-3"
+		unique_name = "%{unique_name}"
 		description = "Updated description"
-		table = "${propel_data_source.foo.table[0].name}"
 
 		column {
 			name = "timestamp_tz"
@@ -144,9 +91,14 @@ func testAccUpdatePropelDataPoolConfigBasic(ctx map[string]any) string {
 			type = "STRING"
 			nullable = false
 		}
+		column {
+			name = "product_id"
+			type = "CLICKHOUSE"
+			clickhouse_type = "String"
+			nullable = true
+		}
 		tenant_id = "account_id"
-		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
-		data_source = "${propel_data_source.foo.id}"
+		timestamp = "timestamp_tz"
 	}`, ctx)
 }
 
