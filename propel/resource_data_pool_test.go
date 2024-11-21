@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/Khan/genqlient/graphql"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/stretchr/testify/assert"
@@ -15,7 +16,9 @@ import (
 )
 
 func TestAccPropelDataPoolBasic(t *testing.T) {
-	ctx := map[string]any{}
+	ctx := map[string]any{
+		"unique_name": acctest.RandString(12),
+	}
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
@@ -27,7 +30,8 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 				Config: testAccCheckPropelDataPoolConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataPoolExists("propel_data_pool.bar"),
-					resource.TestCheckResourceAttr("propel_data_pool.bar", "table", "CLUSTER_TEST_TABLE_1"),
+					resource.TestCheckResourceAttr("propel_data_pool.bar", "unique_name", ctx["unique_name"].(string)),
+					resource.TestCheckResourceAttrSet("propel_data_pool.bar", "table"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "tenant_id", "account_id"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "description", "Data Pool test"),
 				),
@@ -37,7 +41,7 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 				Config: testAccUpdatePropelDataPoolConfigBasic(ctx),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataPoolExists("propel_data_pool.bar"),
-					resource.TestCheckResourceAttr("propel_data_pool.bar", "table", "CLUSTER_TEST_TABLE_1"),
+					resource.TestCheckResourceAttrSet("propel_data_pool.bar", "table"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "tenant_id", "account_id"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "description", "Updated description"),
 				),
@@ -49,38 +53,10 @@ func TestAccPropelDataPoolBasic(t *testing.T) {
 func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
 	// language=hcl-terraform
 	return Nprintf(`
-	resource "propel_data_source" "foo" {
-		unique_name = "terraform-test-3"
-		type = "HTTP"
-
-		http_connection_settings {
-			basic_auth {
-				username = "foo"
-				password = "bar"
-			}
-		}
-
-		table {
-			name = "CLUSTER_TEST_TABLE_1"
-
-			column {
-				name = "timestamp_tz"
-				type = "TIMESTAMP"
-				nullable = false
-			}
-
-			column {
-				name = "account_id"
-				type = "STRING"
-				nullable = false
-			}
-		}
-	}
 
 	resource "propel_data_pool" "bar" {
-		unique_name = "terraform-test-3"
+		unique_name = "%{unique_name}"
 		description = "Data Pool test"
-		table = "${propel_data_source.foo.table[0].name}"
 
 		column {
 			name = "timestamp_tz"
@@ -93,46 +69,17 @@ func testAccCheckPropelDataPoolConfigBasic(ctx map[string]any) string {
 			nullable = false
 		}
 		tenant_id = "account_id"
-		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
-		data_source = "${propel_data_source.foo.id}"
+		timestamp = "timestamp_tz"
 	}`, ctx)
 }
 
 func testAccUpdatePropelDataPoolConfigBasic(ctx map[string]any) string {
 	// language=hcl-terraform
 	return Nprintf(`
-	resource "propel_data_source" "foo" {
-		unique_name = "terraform-test-3"
-		type = "HTTP"
-
-		http_connection_settings {
-			basic_auth {
-				username = "foo"
-				password = "bar"
-			}
-		}
-
-		table {
-			name = "CLUSTER_TEST_TABLE_1"
-
-			column {
-				name = "timestamp_tz"
-				type = "TIMESTAMP"
-				nullable = false
-			}
-
-			column {
-				name = "account_id"
-				type = "STRING"
-				nullable = false
-			}
-		}
-	}
 
 	resource "propel_data_pool" "bar" {
-		unique_name = "terraform-test-3"
+		unique_name = "%{unique_name}"
 		description = "Updated description"
-		table = "${propel_data_source.foo.table[0].name}"
 
 		column {
 			name = "timestamp_tz"
@@ -144,9 +91,14 @@ func testAccUpdatePropelDataPoolConfigBasic(ctx map[string]any) string {
 			type = "STRING"
 			nullable = false
 		}
+		column {
+			name = "product_id"
+			type = "CLICKHOUSE"
+			clickhouse_type = "String"
+			nullable = true
+		}
 		tenant_id = "account_id"
-		timestamp = "${propel_data_source.foo.table[0].column[0].name}"
-		data_source = "${propel_data_source.foo.id}"
+		timestamp = "timestamp_tz"
 	}`, ctx)
 }
 
@@ -186,6 +138,8 @@ func testAccCheckPropelDataPoolExists(n string) resource.TestCheckFunc {
 }
 
 func Test_getNewDataPoolColumns(t *testing.T) {
+	clickHouseType := "String"
+
 	tests := []struct {
 		name               string
 		oldItemDef         []any
@@ -196,30 +150,32 @@ func Test_getNewDataPoolColumns(t *testing.T) {
 		{
 			name: "Successful new columns",
 			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
 			},
 			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
-				map[string]any{"name": "COLUMN_C", "type": "INT64", "nullable": false},
-				map[string]any{"name": "COLUMN_D", "type": "TIMESTAMP", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_C", "type": "INT64", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_D", "type": "TIMESTAMP", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_E", "type": "CLICKHOUSE", "nullable": true, "clickhouse_type": clickHouseType},
 			},
 			expectedNewColumns: map[string]pc.DataPoolColumnInput{
-				"COLUMN_C": {ColumnName: "COLUMN_C", Type: "INT64", IsNullable: false},
-				"COLUMN_D": {ColumnName: "COLUMN_D", Type: "TIMESTAMP", IsNullable: false},
+				"COLUMN_C": {ColumnName: "COLUMN_C", Type: "INT64", IsNullable: false, ClickHouseType: nil},
+				"COLUMN_D": {ColumnName: "COLUMN_D", Type: "TIMESTAMP", IsNullable: false, ClickHouseType: nil},
+				"COLUMN_E": {ColumnName: "COLUMN_E", Type: "CLICKHOUSE", IsNullable: true, ClickHouseType: &clickHouseType},
 			},
 			expectedError: "",
 		},
 		{
 			name: "No new columns",
 			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
 			},
 			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
 			},
 			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
 			expectedError:      "",
@@ -227,11 +183,11 @@ func Test_getNewDataPoolColumns(t *testing.T) {
 		{
 			name: "Repeated column names",
 			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
 			},
 			newItemDef: []any{
-				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false},
+				map[string]any{"name": "COLUMN_B", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false, "clickhouse_type": ""},
 			},
 			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
 			expectedError:      `column "COLUMN_B" already exists`,
@@ -239,11 +195,11 @@ func Test_getNewDataPoolColumns(t *testing.T) {
 		{
 			name: "Unsupported column deletion",
 			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false, "clickhouse_type": ""},
 			},
 			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
 			},
 			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
 			expectedError:      `column "COLUMN_B" was removed, column deletions are not supported`,
@@ -251,11 +207,11 @@ func Test_getNewDataPoolColumns(t *testing.T) {
 		{
 			name: "Unsupported column update",
 			oldItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false},
-				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "STRING", "nullable": false, "clickhouse_type": ""},
+				map[string]any{"name": "COLUMN_B", "type": "INT64", "nullable": false, "clickhouse_type": ""},
 			},
 			newItemDef: []any{
-				map[string]any{"name": "COLUMN_A", "type": "FLOAT", "nullable": false},
+				map[string]any{"name": "COLUMN_A", "type": "FLOAT", "nullable": false, "clickhouse_type": ""},
 			},
 			expectedNewColumns: map[string]pc.DataPoolColumnInput{},
 			expectedError:      `column "COLUMN_A" was modified, column updates are not supported`,

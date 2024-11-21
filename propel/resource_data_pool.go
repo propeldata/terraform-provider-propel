@@ -58,12 +58,14 @@ func resourceDataPool() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 				ForceNew:    true,
+				Computed:    true,
 				Description: "The Data Source that the Data Pool belongs to.",
 			},
 			"table": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				ForceNew:    true,
+				Computed:    true,
 				Description: "The name of the Data Pool's table.",
 			},
 			"column": {
@@ -83,6 +85,12 @@ func resourceDataPool() *schema.Resource {
 							Required:     true,
 							Description:  "The column type.",
 							ValidateFunc: utils.IsValidColumnType,
+						},
+						"clickhouse_type": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							Description: "The ClickHouse type to use when `type` is set to `CLICKHOUSE`.",
 						},
 						"nullable": {
 							Type:        schema.TypeBool,
@@ -158,6 +166,11 @@ func expandDataPoolColumns(def []any) []*pc.DataPoolColumnInput {
 			ColumnName: column["name"].(string),
 			Type:       pc.ColumnType(column["type"].(string)),
 			IsNullable: column["nullable"].(bool),
+		}
+
+		columnClickHouseType := column["clickhouse_type"].(string)
+		if columnClickHouseType != "" {
+			columns[i].ClickHouseType = &columnClickHouseType
 		}
 	}
 
@@ -339,9 +352,10 @@ func resourceDataPoolRead(ctx context.Context, d *schema.ResourceData, m any) di
 
 		for _, node := range columnNodes {
 			columns = append(columns, map[string]any{
-				"name":     node.GetColumnName(),
-				"type":     node.GetType(),
-				"nullable": node.GetIsNullable(),
+				"name":            node.GetColumnName(),
+				"type":            node.GetType(),
+				"clickhouse_type": node.GetClickHouseType(),
+				"nullable":        node.GetIsNullable(),
 			})
 		}
 
@@ -419,6 +433,11 @@ func getNewDataPoolColumns(oldItemDef []any, newItemDef []any) (map[string]pc.Da
 			IsNullable: column["nullable"].(bool),
 		}
 
+		columnClickHouseType := column["clickhouse_type"].(string)
+		if columnClickHouseType != "" {
+			columnInput.ClickHouseType = &columnClickHouseType
+		}
+
 		if _, ok := newColumns[columnInput.ColumnName]; ok {
 			return nil, fmt.Errorf(`column "%s" already exists`, columnInput.ColumnName)
 		}
@@ -432,6 +451,11 @@ func getNewDataPoolColumns(oldItemDef []any, newItemDef []any) (map[string]pc.Da
 			ColumnName: column["name"].(string),
 			Type:       pc.ColumnType(column["type"].(string)),
 			IsNullable: column["nullable"].(bool),
+		}
+
+		columnClickHouseType := column["clickhouse_type"].(string)
+		if columnClickHouseType != "" {
+			columnInput.ClickHouseType = &columnClickHouseType
 		}
 
 		newColumnInput, ok := newColumns[columnInput.ColumnName]
@@ -456,9 +480,10 @@ func addNewDataPoolColumns(ctx context.Context, d *schema.ResourceData, c graphq
 		}
 
 		response, err := pc.CreateAddColumnToDataPoolJob(ctx, c, &pc.CreateAddColumnToDataPoolJobInput{
-			DataPool:   dataPoolId,
-			ColumnName: newColumn.ColumnName,
-			ColumnType: newColumn.Type,
+			DataPool:             dataPoolId,
+			ColumnName:           newColumn.ColumnName,
+			ColumnType:           newColumn.Type,
+			ColumnClickHouseType: newColumn.ClickHouseType,
 		})
 		if err != nil {
 			return err

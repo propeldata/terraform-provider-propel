@@ -159,8 +159,6 @@ func (v *AddColumnToDataPoolJobData) GetColumnType() ColumnType { return v.Colum
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type AddColumnToDataPoolJobDataDataPool struct {
 	// The Data Pool's unique identifier.
 	Id string `json:"id"`
@@ -232,7 +230,7 @@ func (v *AddColumnToDataPoolJobDataError) __premarshalJSON() (*__premarshalAddCo
 
 // AddColumnToDataPoolJobResponse is returned by AddColumnToDataPoolJob on success.
 type AddColumnToDataPoolJobResponse struct {
-	// This query returns the AddColumnToDataPoolJob specified by the given ID.
+	// Returns the AddColumnToDataPoolJob specified by the given ID.
 	//
 	// The AddColumnToDataPoolJob represents the asynchronous process of adding
 	// a column, given its name and type, to a Data Pool.
@@ -259,8 +257,6 @@ func (v *AggregatingMergeTreeTableEngineInput) GetType() *TableEngineType { retu
 // The Application object.
 //
 // Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
-//
-// [Learn more about Applications](https://www.propeldata.com/docs/applications).
 type ApplicationApplication struct {
 	ApplicationData `json:"-"`
 }
@@ -414,8 +410,6 @@ func (v *ApplicationApplication) __premarshalJSON() (*__premarshalApplicationApp
 // The Application object.
 //
 // Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
-//
-// [Learn more about Applications](https://www.propeldata.com/docs/applications).
 type ApplicationData struct {
 	// The Application's unique identifier.
 	Id                    string `json:"id"`
@@ -721,9 +715,7 @@ func (v *ApplicationDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNode
 
 // ApplicationResponse is returned by Application on success.
 type ApplicationResponse struct {
-	// This query returns the Application specified by the given ID.
-	//
-	// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+	// Returns the Application specified by the given ID.
 	Application *ApplicationApplication `json:"application"`
 }
 
@@ -744,6 +736,8 @@ const (
 	ApplicationScopeDataPoolRead ApplicationScope = "DATA_POOL_READ"
 	// Grant read access to fetch column statistics from Data Pools.
 	ApplicationScopeDataPoolStats ApplicationScope = "DATA_POOL_STATS"
+	// Grant read/write access to Environments.
+	ApplicationScopeEnvironmentAdmin ApplicationScope = "ENVIRONMENT_ADMIN"
 	// Grant read access to query Metrics.
 	ApplicationScopeMetricQuery ApplicationScope = "METRIC_QUERY"
 	// Grant read access to fetch Dimension statistics from Metrics.
@@ -1471,6 +1465,8 @@ type CreateAddColumnToDataPoolJobInput struct {
 	ColumnName string `json:"columnName"`
 	// Type of the new column.
 	ColumnType ColumnType `json:"columnType"`
+	// The ClickHouse type of the new column when `columnType` is set to `CLICKHOUSE`.
+	ColumnClickHouseType *string `json:"columnClickHouseType"`
 	// JSON property to which the new column corresponds.
 	JsonProperty *string `json:"jsonProperty"`
 }
@@ -1483,6 +1479,11 @@ func (v *CreateAddColumnToDataPoolJobInput) GetColumnName() string { return v.Co
 
 // GetColumnType returns CreateAddColumnToDataPoolJobInput.ColumnType, and is useful for accessing the field via an interface.
 func (v *CreateAddColumnToDataPoolJobInput) GetColumnType() ColumnType { return v.ColumnType }
+
+// GetColumnClickHouseType returns CreateAddColumnToDataPoolJobInput.ColumnClickHouseType, and is useful for accessing the field via an interface.
+func (v *CreateAddColumnToDataPoolJobInput) GetColumnClickHouseType() *string {
+	return v.ColumnClickHouseType
+}
 
 // GetJsonProperty returns CreateAddColumnToDataPoolJobInput.JsonProperty, and is useful for accessing the field via an interface.
 func (v *CreateAddColumnToDataPoolJobInput) GetJsonProperty() *string { return v.JsonProperty }
@@ -1603,8 +1604,6 @@ func (v *CreateApplicationCreateApplicationApplicationResponse) GetApplication()
 // The Application object.
 //
 // Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
-//
-// [Learn more about Applications](https://www.propeldata.com/docs/applications).
 type CreateApplicationCreateApplicationApplicationResponseApplication struct {
 	ApplicationData `json:"-"`
 }
@@ -1873,7 +1872,34 @@ func (v *CreateApplicationInput) GetScopes() []ApplicationScope { return v.Scope
 type CreateApplicationResponse struct {
 	// Creates a new Application and returns the newly created Application (or an error message if creating the Application fails).
 	//
-	// [Learn more about Applications](https://www.propeldata.com/docs/applications).
+	// Required scopes:
+	// - APPLICATION_ADMIN
+	//
+	// ```graphql
+	// mutation {
+	// createApplication(
+	// input: {
+	// uniqueName: "example_sample_application"
+	// description: "My dashboard app"
+	// scopes: [DATA_POOL_QUERY]
+	// propeller: P1_X_SMALL
+	// }
+	// ) {
+	// ... on ApplicationResponse {
+	// application {
+	// id
+	// uniqueName
+	// }
+	// }
+	// ... on FailureResponse {
+	// error {
+	// code
+	// message
+	// }
+	// }
+	// }
+	// }
+	// ```
 	CreateApplication *CreateApplicationCreateApplicationApplicationOrFailureResponse `json:"-"`
 }
 
@@ -1974,8 +2000,6 @@ func (v *CreateAverageMetricCreateAverageMetricMetricResponse) GetMetric() *Crea
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type CreateAverageMetricCreateAverageMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -2202,8 +2226,6 @@ func (v *CreateAverageMetricInput) GetMeasure() *DimensionInput { return v.Measu
 // CreateAverageMetricResponse is returned by CreateAverageMetric on success.
 type CreateAverageMetricResponse struct {
 	// Creates a new Average Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-	//
-	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateAverageMetric *CreateAverageMetricCreateAverageMetricMetricResponse `json:"createAverageMetric"`
 }
 
@@ -2232,8 +2254,6 @@ func (v *CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponse)
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type CreateClickHouseDataSourceCreateClickHouseDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -2485,8 +2505,6 @@ func (v *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse) GetMe
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type CreateCountDistinctMetricCreateCountDistinctMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -2713,8 +2731,6 @@ func (v *CreateCountDistinctMetricInput) GetDimension() *DimensionInput { return
 // CreateCountDistinctMetricResponse is returned by CreateCountDistinctMetric on success.
 type CreateCountDistinctMetricResponse struct {
 	// Creates a new Count Distinct Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-	//
-	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateCountDistinctMetric *CreateCountDistinctMetricCreateCountDistinctMetricMetricResponse `json:"createCountDistinctMetric"`
 }
 
@@ -2747,8 +2763,6 @@ func (v *CreateCountMetricCreateCountMetricMetricResponse) GetMetric() *CreateCo
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type CreateCountMetricCreateCountMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -2970,8 +2984,6 @@ func (v *CreateCountMetricInput) GetDimensions() []*DimensionInput { return v.Di
 // CreateCountMetricResponse is returned by CreateCountMetric on success.
 type CreateCountMetricResponse struct {
 	// Creates a new Count Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-	//
-	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateCountMetric *CreateCountMetricCreateCountMetricMetricResponse `json:"createCountMetric"`
 }
 
@@ -3004,8 +3016,6 @@ func (v *CreateCustomMetricCreateCustomMetricMetricResponse) GetMetric() *Create
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type CreateCustomMetricCreateCustomMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -3232,8 +3242,6 @@ func (v *CreateCustomMetricInput) GetExpression() string { return v.Expression }
 // CreateCustomMetricResponse is returned by CreateCustomMetric on success.
 type CreateCustomMetricResponse struct {
 	// Creates a new Custom Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-	//
-	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateCustomMetric *CreateCustomMetricCreateCustomMetricMetricResponse `json:"createCustomMetric"`
 }
 
@@ -3433,8 +3441,6 @@ func (v *CreateDataPoolAccessPolicyInput) GetFilterSql() *string { return v.Filt
 // CreateDataPoolAccessPolicyResponse is returned by CreateDataPoolAccessPolicy on success.
 type CreateDataPoolAccessPolicyResponse struct {
 	// Creates a Data Pool Access Policy for the specified Data Pool.
-	//
-	// [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
 	CreateDataPoolAccessPolicy *CreateDataPoolAccessPolicyCreateDataPoolAccessPolicyDataPoolAccessPolicyResponse `json:"createDataPoolAccessPolicy"`
 }
 
@@ -3465,8 +3471,6 @@ func (v *CreateDataPoolCreateDataPoolV2DataPoolResponse) GetDataPool() *CreateDa
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type CreateDataPoolCreateDataPoolV2DataPoolResponseDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -3768,11 +3772,83 @@ func (v *CreateDataPoolInputV2) GetTableSettings() *TableSettingsInput { return 
 
 // CreateDataPoolResponse is returned by CreateDataPool on success.
 type CreateDataPoolResponse struct {
-	// Creates a new Data Pool from the given Data Source based on the specified table and using a particular column as the timestamp.
+	// Creates a new Data Pool.
 	//
-	// Returns the newly created Data Pool (or an error message if creating the Data Pool fails).
+	// Returns the newly created Data Pool or an error message if it fails.
 	//
-	// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
+	// ```graphql
+	// mutation {
+	// createDataPoolV2(input: {
+	// dataSource: "DSOXXXXX"
+	// table: "tacosoft_sales_analytics"
+	// timestamp: { columnName: "timestamp" }
+	// columns: [
+	// {
+	// columnName: "timestamp",
+	// type: TIMESTAMP,
+	// isNullable: true
+	// },
+	// {
+	// columnName: "order_id",
+	// type: STRING,
+	// isNullable: true
+	// },
+	// {
+	// columnName: "taco_name",
+	// type: STRING,
+	// isNullable: true
+	// },
+	// {
+	// columnName: "toppings",
+	// type: JSON,
+	// isNullable: true
+	// },
+	// {
+	// columnName: "quantity",
+	// type: INT32,
+	// isNullable: true
+	// },
+	// {
+	// columnName: "taco_unit_price",
+	// type: INT32,
+	// isNullable: true
+	// },
+	// {
+	// columnName: "taco_total_price",
+	// type: INT32,
+	// isNullable: true
+	// }
+	// ]
+	// }) {
+	// dataPool {
+	// id
+	// uniqueName
+	// tableSettings {
+	// orderBy
+	// engine {
+	// ... on MergeTreeTableEngine {
+	// type
+	// }
+	// ... on ReplacingMergeTreeTableEngine {
+	// type
+	// ver
+	// }
+	// ... on SummingMergeTreeTableEngine {
+	// type
+	// columns
+	// }
+	// ... on AggregatingMergeTreeTableEngine {
+	// type
+	// }
+	// ... on PostgreSqlTableEngine {
+	// type
+	// }
+	// }
+	// }
+	// }
+	// }
+	// }
+	// ```
 	CreateDataPoolV2 *CreateDataPoolCreateDataPoolV2DataPoolResponse `json:"createDataPoolV2"`
 }
 
@@ -3801,8 +3877,6 @@ func (v *CreateHttpDataSourceCreateHttpDataSourceDataSourceResponse) GetDataSour
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type CreateHttpDataSourceCreateHttpDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -4048,8 +4122,6 @@ func (v *CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponse) GetDataSo
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type CreateKafkaDataSourceCreateKafkaDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -4588,8 +4660,6 @@ func (v *CreateMaxMetricCreateMaxMetricMetricResponse) GetMetric() *CreateMaxMet
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type CreateMaxMetricCreateMaxMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -4814,8 +4884,6 @@ func (v *CreateMaxMetricInput) GetMeasure() *DimensionInput { return v.Measure }
 // CreateMaxMetricResponse is returned by CreateMaxMetric on success.
 type CreateMaxMetricResponse struct {
 	// Creates a new Max Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-	//
-	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateMaxMetric *CreateMaxMetricCreateMaxMetricMetricResponse `json:"createMaxMetric"`
 }
 
@@ -4848,8 +4916,6 @@ func (v *CreateMinMetricCreateMinMetricMetricResponse) GetMetric() *CreateMinMet
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type CreateMinMetricCreateMinMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -5073,8 +5139,6 @@ func (v *CreateMinMetricInput) GetMeasure() *DimensionInput { return v.Measure }
 // CreateMinMetricResponse is returned by CreateMinMetric on success.
 type CreateMinMetricResponse struct {
 	// Creates a new Min Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-	//
-	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateMinMetric *CreateMinMetricCreateMinMetricMetricResponse `json:"createMinMetric"`
 }
 
@@ -5224,8 +5288,6 @@ func (v *CreateS3DataSourceCreateS3DataSourceDataSourceResponse) GetDataSource()
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type CreateS3DataSourceCreateS3DataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -5556,8 +5618,6 @@ func (v *CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponse) G
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type CreateSnowflakeDataSourceCreateSnowflakeDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -5959,8 +6019,6 @@ func (v *CreateSumMetricCreateSumMetricMetricResponse) GetMetric() *CreateSumMet
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type CreateSumMetricCreateSumMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -6185,8 +6243,6 @@ func (v *CreateSumMetricInput) GetMeasure() *DimensionInput { return v.Measure }
 // CreateSumMetricResponse is returned by CreateSumMetric on success.
 type CreateSumMetricResponse struct {
 	// Creates a new Sum Metric from the given Data Pool and returns the newly created Metric (or an error message if creating the Metric fails).
-	//
-	// [Learn more about Metrics](https://www.propeldata.com/docs/metrics).
 	CreateSumMetric *CreateSumMetricCreateSumMetricMetricResponse `json:"createSumMetric"`
 }
 
@@ -6215,8 +6271,6 @@ func (v *CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponse) GetDa
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type CreateWebhookDataSourceCreateWebhookDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -6588,8 +6642,6 @@ func (v *DataPoolAccessPolicyData) __premarshalJSON() (*__premarshalDataPoolAcce
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolAccessPolicyDataDataPool struct {
 	// The Data Pool's unique identifier.
 	Id string `json:"id"`
@@ -6772,8 +6824,6 @@ func (v *DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnecti
 // The Application object.
 //
 // Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
-//
-// [Learn more about Applications](https://www.propeldata.com/docs/applications).
 type DataPoolAccessPolicyDataPoolAccessPolicyApplicationsApplicationConnectionNodesApplication struct {
 	// The Application's unique identifier.
 	Id string `json:"id"`
@@ -6895,7 +6945,7 @@ func (v *DataPoolAccessPolicyDataRowsFilter) __premarshalJSON() (*__premarshalDa
 
 // DataPoolAccessPolicyResponse is returned by DataPoolAccessPolicy on success.
 type DataPoolAccessPolicyResponse struct {
-	// This query returns the Data Pool Access Policy specified by the given ID.
+	// Returns the Data Pool Access Policy specified by the given ID.
 	//
 	// A Data Pool Access Policy limits the data that Applications can access within a Data Pool.
 	DataPoolAccessPolicy *DataPoolAccessPolicyDataPoolAccessPolicy `json:"dataPoolAccessPolicy"`
@@ -6910,8 +6960,6 @@ func (v *DataPoolAccessPolicyResponse) GetDataPoolAccessPolicy() *DataPoolAccess
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolByNameDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -7131,7 +7179,7 @@ func (v *DataPoolByNameDataPool) __premarshalJSON() (*__premarshalDataPoolByName
 
 // DataPoolByNameResponse is returned by DataPoolByName on success.
 type DataPoolByNameResponse struct {
-	// This query returns the Data Pool specified by the given unique name.
+	// Returns the Data Pool specified by the given unique name.
 	//
 	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
 	DataPool *DataPoolByNameDataPool `json:"dataPool"`
@@ -7146,6 +7194,8 @@ type DataPoolColumnData struct {
 	ColumnName string `json:"columnName"`
 	// The Data Pool column's type. This may differ from the corresponding Data Source column's type.
 	Type ColumnType `json:"type"`
+	// The ClickHouse type. This is the exact representation of the type in ClickHouse.
+	ClickHouseType string `json:"clickHouseType"`
 	// Whether the column is nullable, meaning whether it accepts a null value.
 	IsNullable bool `json:"isNullable"`
 }
@@ -7155,6 +7205,9 @@ func (v *DataPoolColumnData) GetColumnName() string { return v.ColumnName }
 
 // GetType returns DataPoolColumnData.Type, and is useful for accessing the field via an interface.
 func (v *DataPoolColumnData) GetType() ColumnType { return v.Type }
+
+// GetClickHouseType returns DataPoolColumnData.ClickHouseType, and is useful for accessing the field via an interface.
+func (v *DataPoolColumnData) GetClickHouseType() string { return v.ClickHouseType }
 
 // GetIsNullable returns DataPoolColumnData.IsNullable, and is useful for accessing the field via an interface.
 func (v *DataPoolColumnData) GetIsNullable() bool { return v.IsNullable }
@@ -7186,8 +7239,6 @@ func (v *DataPoolColumnInput) GetIsNullable() bool { return v.IsNullable }
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolData struct {
 	// The Data Pool's unique identifier.
 	Id                 string `json:"id"`
@@ -7442,6 +7493,11 @@ func (v *DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColum
 	return v.DataPoolColumnData.Type
 }
 
+// GetClickHouseType returns DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColumn.ClickHouseType, and is useful for accessing the field via an interface.
+func (v *DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColumn) GetClickHouseType() string {
+	return v.DataPoolColumnData.ClickHouseType
+}
+
 // GetIsNullable returns DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColumn.IsNullable, and is useful for accessing the field via an interface.
 func (v *DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColumn) GetIsNullable() bool {
 	return v.DataPoolColumnData.IsNullable
@@ -7477,6 +7533,8 @@ type __premarshalDataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataP
 
 	Type ColumnType `json:"type"`
 
+	ClickHouseType string `json:"clickHouseType"`
+
 	IsNullable bool `json:"isNullable"`
 }
 
@@ -7493,6 +7551,7 @@ func (v *DataPoolDataAvailableMeasuresDataPoolColumnConnectionNodesDataPoolColum
 
 	retval.ColumnName = v.DataPoolColumnData.ColumnName
 	retval.Type = v.DataPoolColumnData.Type
+	retval.ClickHouseType = v.DataPoolColumnData.ClickHouseType
 	retval.IsNullable = v.DataPoolColumnData.IsNullable
 	return &retval, nil
 }
@@ -7526,6 +7585,11 @@ func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) GetColu
 // GetType returns DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn.Type, and is useful for accessing the field via an interface.
 func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) GetType() ColumnType {
 	return v.DataPoolColumnData.Type
+}
+
+// GetClickHouseType returns DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn.ClickHouseType, and is useful for accessing the field via an interface.
+func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) GetClickHouseType() string {
+	return v.DataPoolColumnData.ClickHouseType
 }
 
 // GetIsNullable returns DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn.IsNullable, and is useful for accessing the field via an interface.
@@ -7563,6 +7627,8 @@ type __premarshalDataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn 
 
 	Type ColumnType `json:"type"`
 
+	ClickHouseType string `json:"clickHouseType"`
+
 	IsNullable bool `json:"isNullable"`
 }
 
@@ -7579,6 +7645,7 @@ func (v *DataPoolDataColumnsDataPoolColumnConnectionNodesDataPoolColumn) __prema
 
 	retval.ColumnName = v.DataPoolColumnData.ColumnName
 	retval.Type = v.DataPoolColumnData.Type
+	retval.ClickHouseType = v.DataPoolColumnData.ClickHouseType
 	retval.IsNullable = v.DataPoolColumnData.IsNullable
 	return &retval, nil
 }
@@ -7747,8 +7814,6 @@ func (v *DataPoolDataDataPoolAccessPoliciesDataPoolAccessPolicyConnectionNodesDa
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type DataPoolDataDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -7949,8 +8014,6 @@ func (v *DataPoolDataError) GetMessage() string { return v.Message }
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -8529,7 +8592,7 @@ func (v *DataPoolInput) GetName() *string { return v.Name }
 
 // DataPoolResponse is returned by DataPool on success.
 type DataPoolResponse struct {
-	// This query returns the Data Pool specified by the given ID.
+	// Returns the Data Pool specified by the given ID.
 	//
 	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries.
 	DataPool *DataPoolDataPool `json:"dataPool"`
@@ -8677,8 +8740,6 @@ func (v *DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdge) GetNode() *DataP
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataPoolsDataPoolsDataPoolConnectionEdgesDataPoolEdgeNodeDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -8991,11 +9052,11 @@ func (v *DataPoolsDataPoolsDataPoolConnectionPageInfo) __premarshalJSON() (*__pr
 
 // DataPoolsResponse is returned by DataPools on success.
 type DataPoolsResponse struct {
-	// This query returns the Data Pools within the Environment.
+	// Returns the Data Pools within the Environment.
 	//
 	// A Data Pool is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries. Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 	//
-	// The `dataPools` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+	// The `dataPools` query uses cursor-based pagination typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
 	//
 	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 	//
@@ -9012,8 +9073,6 @@ func (v *DataPoolsResponse) GetDataPools() *DataPoolsDataPoolsDataPoolConnection
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type DataSourceByNameDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -9200,9 +9259,7 @@ func (v *DataSourceByNameDataSource) __premarshalJSON() (*__premarshalDataSource
 
 // DataSourceByNameResponse is returned by DataSourceByName on success.
 type DataSourceByNameResponse struct {
-	// This query returns the Data Source specified by the given unique name.
-	//
-	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+	// Returns the Data Source specified by the given unique name.
 	DataSource *DataSourceByNameDataSource `json:"dataSource"`
 }
 
@@ -9227,8 +9284,6 @@ const (
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type DataSourceData struct {
 	// The Data Source's unique identifier.
 	Id                   string `json:"id"`
@@ -9240,7 +9295,7 @@ type DataSourceData struct {
 	Error  *DataSourceDataError `json:"error"`
 	// If you list Data Pools via the `dataPools` field on a Data Source, you will get Data Pools for the Data Source.
 	//
-	// The `dataPools` field uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+	// The `dataPools` field uses cursor-based pagination typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
 	//
 	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 	//
@@ -9494,6 +9549,7 @@ func (v *DataSourceDataChecksDataSourceCheckError) GetMessage() string { return 
 // DataSourceDataConnectionSettingsHttpConnectionSettings
 // DataSourceDataConnectionSettingsInternalConnectionSettings
 // DataSourceDataConnectionSettingsKafkaConnectionSettings
+// DataSourceDataConnectionSettingsPostgreSqlConnectionSettings
 // DataSourceDataConnectionSettingsS3ConnectionSettings
 // DataSourceDataConnectionSettingsSnowflakeConnectionSettings
 // DataSourceDataConnectionSettingsWebhookConnectionSettings
@@ -9510,6 +9566,8 @@ func (v *DataSourceDataConnectionSettingsHttpConnectionSettings) implementsGraph
 func (v *DataSourceDataConnectionSettingsInternalConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
+}
+func (v *DataSourceDataConnectionSettingsPostgreSqlConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
 func (v *DataSourceDataConnectionSettingsS3ConnectionSettings) implementsGraphQLInterfaceDataSourceDataConnectionSettings() {
 }
@@ -9543,6 +9601,9 @@ func __unmarshalDataSourceDataConnectionSettings(b []byte, v *DataSourceDataConn
 		return json.Unmarshal(b, *v)
 	case "KafkaConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsKafkaConnectionSettings)
+		return json.Unmarshal(b, *v)
+	case "PostgreSqlConnectionSettings":
+		*v = new(DataSourceDataConnectionSettingsPostgreSqlConnectionSettings)
 		return json.Unmarshal(b, *v)
 	case "S3ConnectionSettings":
 		*v = new(DataSourceDataConnectionSettingsS3ConnectionSettings)
@@ -9596,6 +9657,14 @@ func __marshalDataSourceDataConnectionSettings(v *DataSourceDataConnectionSettin
 		result := struct {
 			TypeName string `json:"__typename"`
 			*DataSourceDataConnectionSettingsKafkaConnectionSettings
+		}{typename, v}
+		return json.Marshal(result)
+	case *DataSourceDataConnectionSettingsPostgreSqlConnectionSettings:
+		typename = "PostgreSqlConnectionSettings"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*DataSourceDataConnectionSettingsPostgreSqlConnectionSettings
 		}{typename, v}
 		return json.Marshal(result)
 	case *DataSourceDataConnectionSettingsS3ConnectionSettings:
@@ -9832,6 +9901,19 @@ func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetTls() *bool
 // GetBootstrapServers returns DataSourceDataConnectionSettingsKafkaConnectionSettings.BootstrapServers, and is useful for accessing the field via an interface.
 func (v *DataSourceDataConnectionSettingsKafkaConnectionSettings) GetBootstrapServers() []string {
 	return v.BootstrapServers
+}
+
+// DataSourceDataConnectionSettingsPostgreSqlConnectionSettings includes the requested fields of the GraphQL type PostgreSqlConnectionSettings.
+// The GraphQL type's documentation follows.
+//
+// The PostgreSQL Data Source connection settings.
+type DataSourceDataConnectionSettingsPostgreSqlConnectionSettings struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns DataSourceDataConnectionSettingsPostgreSqlConnectionSettings.Typename, and is useful for accessing the field via an interface.
+func (v *DataSourceDataConnectionSettingsPostgreSqlConnectionSettings) GetTypename() *string {
+	return v.Typename
 }
 
 // DataSourceDataConnectionSettingsS3ConnectionSettings includes the requested fields of the GraphQL type S3ConnectionSettings.
@@ -10215,8 +10297,6 @@ func (v *DataSourceDataDataPoolsDataPoolConnection) GetNodes() []*DataSourceData
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type DataSourceDataDataPoolsDataPoolConnectionNodesDataPool struct {
 	// The Data Pool's unique identifier.
 	Id string `json:"id"`
@@ -10325,8 +10405,6 @@ func (v *DataSourceDataError) GetMessage() string { return v.Message }
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type DataSourceDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -10769,9 +10847,31 @@ func (v *DataSourceDataTablesTableConnectionNodesTableColumnsColumnConnectionNod
 
 // DataSourceResponse is returned by DataSource on success.
 type DataSourceResponse struct {
-	// This query returns the Data Source specified by the given ID.
+	// Returns the Data Source specified by the given ID.
 	//
-	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
+	// ```graphql
+	// query {
+	// dataSource(id: "DSOXXXXX") {
+	// id
+	// uniqueName
+	// type
+	// tables (first: 100){
+	// nodes {
+	// id
+	// name
+	// columns (first: 100) {
+	// nodes {
+	// name
+	// type
+	// isNullable
+	// supportedDataPoolColumnTypes
+	// }
+	// }
+	// }
+	// }
+	// }
+	// }
+	// ```
 	DataSource *DataSourceDataSource `json:"dataSource"`
 }
 
@@ -10804,14 +10904,14 @@ const (
 	DataSourceTypeS3 DataSourceType = "S3"
 	// Indicates a Redshift Data Source.
 	DataSourceTypeRedshift DataSourceType = "Redshift"
+	// Indicates a PostgreSQL Data Source.
+	DataSourceTypePostgresql DataSourceType = "POSTGRESQL"
 	// Indicates a Kafka Data Source.
 	DataSourceTypeKafka DataSourceType = "KAFKA"
 	// Indicates an Http Data Source.
 	DataSourceTypeHttp DataSourceType = "Http"
 	// Indicates a ClickHouse Data Source.
 	DataSourceTypeClickhouse DataSourceType = "CLICKHOUSE"
-	// Indicates a BigQuery Data Source.
-	DataSourceTypeBigquery DataSourceType = "BIGQUERY"
 	// Indicates a Snowflake Data Source.
 	DataSourceTypeSnowflake DataSourceType = "Snowflake"
 	// Indicates an internal Data Source.
@@ -10863,8 +10963,6 @@ func (v *DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdge) GetNode(
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type DataSourcesDataSourcesDataSourceConnectionEdgesDataSourceEdgeNodeDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -11140,11 +11238,11 @@ func (v *DataSourcesDataSourcesDataSourceConnectionPageInfo) __premarshalJSON() 
 
 // DataSourcesResponse is returned by DataSources on success.
 type DataSourcesResponse struct {
-	// This query returns the Data Sources within the Environment.
+	// Returns the Data Sources within the Environment.
 	//
 	// A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source. Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 	//
-	// The `dataSources` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+	// The `dataSources` query uses cursor-based pagination typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
 	//
 	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 	//
@@ -11160,8 +11258,6 @@ func (v *DataSourcesResponse) GetDataSources() *DataSourcesDataSourcesDataSource
 // DeleteApplicationResponse is returned by DeleteApplication on success.
 type DeleteApplicationResponse struct {
 	// Deletes an Application by ID and returns its ID if the Application was deleted successfully.
-	//
-	// [Learn more about Applications](https://www.propeldata.com/docs/applications).
 	DeleteApplication *string `json:"deleteApplication"`
 }
 
@@ -11171,8 +11267,6 @@ func (v *DeleteApplicationResponse) GetDeleteApplication() *string { return v.De
 // DeleteDataPoolAccessPolicyResponse is returned by DeleteDataPoolAccessPolicy on success.
 type DeleteDataPoolAccessPolicyResponse struct {
 	// Deletes a Data Pool Access Policy by ID and returns its ID if the Data Pool Access Policy was deleted successfully.
-	//
-	// [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
 	DeleteDataPoolAccessPolicy *string `json:"deleteDataPoolAccessPolicy"`
 }
 
@@ -11833,8 +11927,6 @@ func (v *MaterializedViewData) __premarshalJSON() (*__premarshalMaterializedView
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type MaterializedViewDataDestinationDataPool struct {
 	// The Data Pool's unique identifier.
 	Id string `json:"id"`
@@ -11847,8 +11939,6 @@ func (v *MaterializedViewDataDestinationDataPool) GetId() string { return v.Id }
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type MaterializedViewDataOthersDataPool struct {
 	// The Data Pool's unique identifier.
 	Id string `json:"id"`
@@ -11861,8 +11951,6 @@ func (v *MaterializedViewDataOthersDataPool) GetId() string { return v.Id }
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type MaterializedViewDataSourceDataPool struct {
 	// The Data Pool's unique identifier.
 	Id string `json:"id"`
@@ -12019,7 +12107,7 @@ func (v *MaterializedViewMaterializedView) __premarshalJSON() (*__premarshalMate
 
 // MaterializedViewResponse is returned by MaterializedView on success.
 type MaterializedViewResponse struct {
-	// This query returns the Materialized View specified by the given ID.
+	// Returns the Materialized View specified by the given ID.
 	MaterializedView *MaterializedViewMaterializedView `json:"materializedView"`
 }
 
@@ -12043,8 +12131,6 @@ func (v *MergeTreeTableEngineInput) GetType() *TableEngineType { return v.Type }
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type MetricByNameMetric struct {
 	MetricData `json:"-"`
 }
@@ -12213,7 +12299,7 @@ func (v *MetricByNameMetric) __premarshalJSON() (*__premarshalMetricByNameMetric
 
 // MetricByNameResponse is returned by MetricByName on success.
 type MetricByNameResponse struct {
-	// This query returns the Metric specified by the given unique name.
+	// Returns the Metric specified by the given unique name.
 	//
 	// A Metric is a business indicator measured over time.
 	Metric *MetricByNameMetric `json:"metric"`
@@ -12228,8 +12314,6 @@ func (v *MetricByNameResponse) GetMetric() *MetricByNameMetric { return v.Metric
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type MetricData struct {
 	CommonDataMetric `json:"-"`
 	// The Metric's unique identifier.
@@ -12416,8 +12500,6 @@ func (v *MetricData) __premarshalJSON() (*__premarshalMetricData, error) {
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type MetricDataDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -14394,8 +14476,6 @@ func (v *MetricDataTimestampDimension) __premarshalJSON() (*__premarshalMetricDa
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type MetricMetric struct {
 	MetricData `json:"-"`
 }
@@ -14554,7 +14634,7 @@ func (v *MetricMetric) __premarshalJSON() (*__premarshalMetricMetric, error) {
 
 // MetricResponse is returned by Metric on success.
 type MetricResponse struct {
-	// This query returns the Metric specified by the given ID.
+	// Returns the Metric specified by the given ID.
 	//
 	// A Metric is a business indicator measured over time.
 	Metric *MetricMetric `json:"metric"`
@@ -14640,8 +14720,6 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdge) GetNode() *MetricsMetric
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric struct {
 	MetricData `json:"-"`
 }
@@ -14832,8 +14910,6 @@ func (v *MetricsMetricsMetricConnectionEdgesMetricEdgeNodeMetric) __premarshalJS
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type MetricsMetricsMetricConnectionNodesMetric struct {
 	MetricData `json:"-"`
 }
@@ -15097,11 +15173,11 @@ func (v *MetricsMetricsMetricConnectionPageInfo) __premarshalJSON() (*__premarsh
 
 // MetricsResponse is returned by Metrics on success.
 type MetricsResponse struct {
-	// This query returns the Metrics within the Environment.
+	// Returns the Metrics within the Environment.
 	//
 	// A Metric is a business indicator measured over time. Each Metric is associated with one Data Pool, which is a cached table hydrated from your data warehouse optimized for high-concurrency and low-latency queries. Environments are independent and isolated Propel workspaces for development, staging (testing), and production workloads.
 	//
-	// The `metrics` query uses [cursor-based pagination](/docs/api/pagination) typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
+	// The `metrics` query uses cursor-based pagination typical of GraphQL APIs. You can use the pairs of parameters `first` and `after` or `last` and `before` to page forward or backward through the results, respectively.
 	//
 	// For forward pagination, the `first` parameter defines the number of results to return, and the `after` parameter defines the cursor to continue from. You should pass the cursor for the _last_ result of the current page to `after`.
 	//
@@ -15246,8 +15322,6 @@ func (v *ModifyApplicationModifyApplicationApplicationResponse) GetApplication()
 // The Application object.
 //
 // Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
-//
-// [Learn more about Applications](https://www.propeldata.com/docs/applications).
 type ModifyApplicationModifyApplicationApplicationResponseApplication struct {
 	ApplicationData `json:"-"`
 }
@@ -15491,8 +15565,6 @@ func (v *ModifyApplicationModifyApplicationFailureResponseError) __premarshalJSO
 // ModifyApplicationResponse is returned by ModifyApplication on success.
 type ModifyApplicationResponse struct {
 	// Modifies an Application with the provided unique name, description, Propeller, and scopes. If any of the optional arguments are omitted, those properties will be unchanged on the Application.
-	//
-	// [Learn more about Applications](https://www.propeldata.com/docs/applications).
 	ModifyApplication *ModifyApplicationModifyApplicationApplicationOrFailureResponse `json:"-"`
 }
 
@@ -15614,8 +15686,6 @@ func (v *ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponse)
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type ModifyClickHouseDataSourceModifyClickHouseDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -16009,8 +16079,6 @@ func (v *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolic
 // ModifyDataPoolAccessPolicyResponse is returned by ModifyDataPoolAccessPolicy on success.
 type ModifyDataPoolAccessPolicyResponse struct {
 	// Modifies a Data Pool Access Policy with the provided unique name, description, columns and rows. If any of the optional arguments are omitted, those properties will be unchanged on the Data Pool Access Policy.
-	//
-	// [Learn more about Data Pool Access Policy](https://www.propeldata.com/docs/control-access).
 	ModifyDataPoolAccessPolicy *ModifyDataPoolAccessPolicyModifyDataPoolAccessPolicyDataPoolAccessPolicyResponse `json:"modifyDataPoolAccessPolicy"`
 }
 
@@ -16168,8 +16236,6 @@ func (v *ModifyDataPoolModifyDataPoolDataPoolResponse) GetDataPool() *ModifyData
 // The GraphQL type's documentation follows.
 //
 // The Data Pool object. Data Pools are Propel's high-speed data store and cache
-//
-// [Learn more about Data Pools](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools).
 type ModifyDataPoolModifyDataPoolDataPoolResponseDataPool struct {
 	DataPoolData `json:"-"`
 }
@@ -16602,8 +16668,6 @@ func (v *ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponse) GetDataSour
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type ModifyHttpDataSourceModifyHttpDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -16854,8 +16918,6 @@ func (v *ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponse) GetDataSo
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type ModifyKafkaDataSourceModifyKafkaDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -17318,8 +17380,6 @@ func (v *ModifyMetricModifyMetricMetricResponse) GetMetric() *ModifyMetricModify
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type ModifyMetricModifyMetricMetricResponseMetric struct {
 	MetricData `json:"-"`
 }
@@ -17672,8 +17732,6 @@ func (v *ModifyS3DataSourceModifyS3DataSourceDataSourceResponse) GetDataSource()
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type ModifyS3DataSourceModifyS3DataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -18010,8 +18068,6 @@ func (v *ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponse) G
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type ModifySnowflakeDataSourceModifySnowflakeDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -18411,8 +18467,6 @@ func (v *ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponse) GetDa
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type ModifyWebhookDataSourceModifyWebhookDataSourceDataSourceResponseDataSource struct {
 	DataSourceData `json:"-"`
 }
@@ -18837,8 +18891,6 @@ func (v *PolicyData) GetApplication() *PolicyDataApplication { return v.Applicat
 // The Application object.
 //
 // Propel Applications represent the web or mobile app you are building. They provide the API credentials that allow your client- or server-side app to access the Propel API. The Application's Propeller determines the speed and cost of your Metric Queries.
-//
-// [Learn more about Applications](https://www.propeldata.com/docs/applications).
 type PolicyDataApplication struct {
 	// The Application's unique identifier.
 	Id string `json:"id"`
@@ -18853,8 +18905,6 @@ func (v *PolicyDataApplication) GetId() string { return v.Id }
 // The Metric object.
 //
 // A Metric is a business indicator measured over time.
-//
-// [Learn more about Metrics](/docs/key-concepts#metric).
 type PolicyDataMetric struct {
 	// The Metric's unique identifier.
 	Id string `json:"id"`
@@ -18955,9 +19005,16 @@ const (
 	PolicyTypeTenantAccess PolicyType = "TENANT_ACCESS"
 )
 
+// Parameters for the PostgreSQL table engine.
+type PostgreSqlTableEngineInput struct {
+	// The type is always `POSTGRESQL`.
+	Type *TableEngineType `json:"type"`
+}
+
+// GetType returns PostgreSqlTableEngineInput.Type, and is useful for accessing the field via an interface.
+func (v *PostgreSqlTableEngineInput) GetType() *TableEngineType { return v.Type }
+
 // A Propeller determines your Application's query processing power. The larger the Propeller, the faster the queries and the higher the cost. Every Propel Application (and therefore every set of API credentials) has a Propeller that determines the speed and cost of queries.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/applications#propeller).
 type Propeller string
 
 const (
@@ -19112,6 +19169,8 @@ type TableEngineInput struct {
 	SummingMergeTree *SummingMergeTreeTableEngineInput `json:"summingMergeTree,omitempty"`
 	// Field for specifying the AggregatingMergeTree table engine.
 	AggregatingMergeTree *AggregatingMergeTreeTableEngineInput `json:"aggregatingMergeTree,omitempty"`
+	// Field for specifying the PostgreSQL table engine.
+	PostgreSql *PostgreSqlTableEngineInput `json:"postgreSql,omitempty"`
 }
 
 // GetMergeTree returns TableEngineInput.MergeTree, and is useful for accessing the field via an interface.
@@ -19132,6 +19191,9 @@ func (v *TableEngineInput) GetAggregatingMergeTree() *AggregatingMergeTreeTableE
 	return v.AggregatingMergeTree
 }
 
+// GetPostgreSql returns TableEngineInput.PostgreSql, and is useful for accessing the field via an interface.
+func (v *TableEngineInput) GetPostgreSql() *PostgreSqlTableEngineInput { return v.PostgreSql }
+
 // ClickHouse table engine types.
 type TableEngineType string
 
@@ -19144,6 +19206,8 @@ const (
 	TableEngineTypeSummingMergeTree TableEngineType = "SUMMING_MERGE_TREE"
 	// The AggregatingMergeTree table engine.
 	TableEngineTypeAggregatingMergeTree TableEngineType = "AGGREGATING_MERGE_TREE"
+	// The PostgreSQL table engine.
+	TableEngineTypePostgresql TableEngineType = "POSTGRESQL"
 )
 
 // TableIntrospectionData includes the GraphQL fields of TableIntrospection requested by the fragment TableIntrospectionData.
@@ -19198,8 +19262,6 @@ func (v *TableIntrospectionData) GetNumTables() *int { return v.NumTables }
 // The Data Source object.
 //
 // A Data Source is a connection to your data warehouse. It has the necessary connection details for Propel to access Snowflake or any other supported Data Source.
-//
-// [Learn more about Data Sources](https://www.propeldata.com/docs/data-sources).
 type TableIntrospectionDataDataSource struct {
 	// The Data Source's unique identifier.
 	Id string `json:"id"`
@@ -19362,6 +19424,17 @@ func (v *TableSettingsDataEngineMergeTreeTableEngine) GetTypename() *string { re
 // GetType returns TableSettingsDataEngineMergeTreeTableEngine.Type, and is useful for accessing the field via an interface.
 func (v *TableSettingsDataEngineMergeTreeTableEngine) GetType() TableEngineType { return v.Type }
 
+// TableSettingsDataEnginePostgreSqlTableEngine includes the requested fields of the GraphQL type PostgreSqlTableEngine.
+// The GraphQL type's documentation follows.
+//
+// Parameters for the PostgreSQL table engine.
+type TableSettingsDataEnginePostgreSqlTableEngine struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns TableSettingsDataEnginePostgreSqlTableEngine.Typename, and is useful for accessing the field via an interface.
+func (v *TableSettingsDataEnginePostgreSqlTableEngine) GetTypename() *string { return v.Typename }
+
 // TableSettingsDataEngineReplacingMergeTreeTableEngine includes the requested fields of the GraphQL type ReplacingMergeTreeTableEngine.
 // The GraphQL type's documentation follows.
 //
@@ -19413,6 +19486,7 @@ func (v *TableSettingsDataEngineSummingMergeTreeTableEngine) GetColumns() []stri
 // TableSettingsDataEngineTableEngine is implemented by the following types:
 // TableSettingsDataEngineAggregatingMergeTreeTableEngine
 // TableSettingsDataEngineMergeTreeTableEngine
+// TableSettingsDataEnginePostgreSqlTableEngine
 // TableSettingsDataEngineReplacingMergeTreeTableEngine
 // TableSettingsDataEngineSummingMergeTreeTableEngine
 // The GraphQL type's documentation follows.
@@ -19427,6 +19501,8 @@ type TableSettingsDataEngineTableEngine interface {
 func (v *TableSettingsDataEngineAggregatingMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
 }
 func (v *TableSettingsDataEngineMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
+}
+func (v *TableSettingsDataEnginePostgreSqlTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
 }
 func (v *TableSettingsDataEngineReplacingMergeTreeTableEngine) implementsGraphQLInterfaceTableSettingsDataEngineTableEngine() {
 }
@@ -19452,6 +19528,9 @@ func __unmarshalTableSettingsDataEngineTableEngine(b []byte, v *TableSettingsDat
 		return json.Unmarshal(b, *v)
 	case "MergeTreeTableEngine":
 		*v = new(TableSettingsDataEngineMergeTreeTableEngine)
+		return json.Unmarshal(b, *v)
+	case "PostgreSqlTableEngine":
+		*v = new(TableSettingsDataEnginePostgreSqlTableEngine)
 		return json.Unmarshal(b, *v)
 	case "ReplacingMergeTreeTableEngine":
 		*v = new(TableSettingsDataEngineReplacingMergeTreeTableEngine)
@@ -19486,6 +19565,14 @@ func __marshalTableSettingsDataEngineTableEngine(v *TableSettingsDataEngineTable
 		result := struct {
 			TypeName string `json:"__typename"`
 			*TableSettingsDataEngineMergeTreeTableEngine
+		}{typename, v}
+		return json.Marshal(result)
+	case *TableSettingsDataEnginePostgreSqlTableEngine:
+		typename = "PostgreSqlTableEngine"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*TableSettingsDataEnginePostgreSqlTableEngine
 		}{typename, v}
 		return json.Marshal(result)
 	case *TableSettingsDataEngineReplacingMergeTreeTableEngine:
@@ -19532,6 +19619,8 @@ type TableSettingsInput struct {
 	//
 	// This field is optional. A default will be chosen based on the Data Pool's `timestamp` and `uniqueId` values, if specified.
 	OrderBy []string `json:"orderBy"`
+	// The TTL clause for the Data Pool's table.
+	Ttl *string `json:"ttl"`
 }
 
 // GetEngine returns TableSettingsInput.Engine, and is useful for accessing the field via an interface.
@@ -19545,6 +19634,9 @@ func (v *TableSettingsInput) GetPrimaryKey() []string { return v.PrimaryKey }
 
 // GetOrderBy returns TableSettingsInput.OrderBy, and is useful for accessing the field via an interface.
 func (v *TableSettingsInput) GetOrderBy() []string { return v.OrderBy }
+
+// GetTtl returns TableSettingsInput.Ttl, and is useful for accessing the field via an interface.
+func (v *TableSettingsInput) GetTtl() *string { return v.Ttl }
 
 // TenantData includes the GraphQL fields of Tenant requested by the fragment TenantData.
 // The GraphQL type's documentation follows.
@@ -20847,6 +20939,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -21444,6 +21537,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -21832,6 +21926,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -22220,6 +22315,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -22510,6 +22606,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -23476,6 +23573,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -23864,6 +23962,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -24729,6 +24828,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -25223,6 +25323,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -25603,6 +25704,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -25916,6 +26018,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -27355,6 +27458,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -27740,6 +27844,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -28142,6 +28247,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -28758,6 +28864,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {
@@ -29721,6 +29828,7 @@ fragment TimestampData on Timestamp {
 fragment DataPoolColumnData on DataPoolColumn {
 	columnName
 	type
+	clickHouseType
 	isNullable
 }
 fragment DataPoolSyncingData on DataPoolSyncing {

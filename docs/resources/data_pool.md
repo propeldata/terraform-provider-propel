@@ -73,6 +73,10 @@ Required:
 - `nullable` (Boolean) Whether the column's type is nullable or not.
 - `type` (String) The column type.
 
+Optional:
+
+- `clickhouse_type` (String) The ClickHouse type to use when `type` is set to `CLICKHOUSE`.
+
 
 <a id="nestedblock--syncing"></a>
 ### Nested Schema for `syncing`

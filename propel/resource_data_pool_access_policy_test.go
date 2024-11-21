@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/Khan/genqlient/graphql"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
@@ -13,7 +14,9 @@ import (
 )
 
 func TestAccPropelDataPoolAccessPolicyBasic(t *testing.T) {
-	ctx := map[string]any{}
+	ctx := map[string]any{
+		"unique_name": acctest.RandString(11),
+	}
 
 	if v := os.Getenv("PROPEL_CLIENT_ID"); v != "" {
 		ctx["app_id"] = v
@@ -29,7 +32,7 @@ func TestAccPropelDataPoolAccessPolicyBasic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckPropelDataPoolExists("propel_data_pool_access_policy.baz"),
 					resource.TestCheckResourceAttr("propel_data_pool.bar", "access_control_enabled", "true"),
-					resource.TestCheckResourceAttr("propel_data_pool_access_policy.baz", "unique_name", "terraform-test-5"),
+					resource.TestCheckResourceAttr("propel_data_pool_access_policy.baz", "unique_name", ctx["unique_name"].(string)),
 					resource.TestCheckResourceAttr("propel_data_pool_access_policy.baz", "description", "This is an example of a Data Pool Access Policy"),
 				),
 			},
@@ -41,7 +44,7 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 	// language=hcl-terraform
 	return Nprintf(`
 	resource "propel_data_source" "foo" {
-		unique_name = "terraform-test-5"
+		unique_name = "%{unique_name}"
 		type = "HTTP"
 
 		http_connection_settings {
@@ -69,7 +72,7 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 	}
 
 	resource "propel_data_pool" "bar" {
-		unique_name = "terraform-test-5"
+		unique_name = "%{unique_name}"
 		table = "${propel_data_source.foo.table[0].name}"
 
 		column {
@@ -89,7 +92,7 @@ func testAccCheckPropelDataPoolAccessPolicyConfigBasic(ctx map[string]any) strin
 	}
 	
 	resource "propel_data_pool_access_policy" "baz" {
-		unique_name = "terraform-test-5"
+		unique_name = "%{unique_name}"
 		description = "This is an example of a Data Pool Access Policy"
 		data_pool   = propel_data_pool.bar.id
 		

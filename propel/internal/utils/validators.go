@@ -16,6 +16,7 @@ var IsValidColumnType = validation.StringInSlice([]string{
 	"JSON",
 	"STRING",
 	"TIMESTAMP",
+	"CLICKHOUSE",
 }, false)
 
 var IsValidOperator = validation.StringInSlice([]string{
